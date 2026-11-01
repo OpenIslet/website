@@ -25,8 +25,9 @@
   "vars": {
     // Which bundle answers by default.
     "ACTIVE_BUNDLE": "islet-1-draft",
-    // Submissions stay closed until you switch them on (connector/DEPLOY.md, step 10).
-    "SUBMISSIONS_OPEN": "false",
+    // Open since the launch on 1 November 2026. To close every submit path in seconds: set "false" and run `wrangler deploy`
+    // (connector/DEPLOY.md, step 10). Reading is not affected.
+    "SUBMISSIONS_OPEN": "true",
     // Scenario scores appear only inside the designs section, with their caveat. The freeze was lifted on 24 Oct 2026.
     "UNFREEZE_SCENARIO_SCORES": "true",
     // The patient layer's simulated "5-year survival" percentages read like clinical figures, so they always come under the

@@ -16,7 +16,8 @@
   // Answer only on openislet.org addresses. Cloudflare's own *.workers.dev address would show the account's subdomain.
   "workers_dev": false,
   "preview_urls": false,
-  // When the live address is ready, add: "routes": [{ "pattern": "openislet.org", "custom_domain": true }]
+  // The live address. With this line, a plain `wrangler deploy -c wrangler.site.jsonc` (no --env) puts the site on openislet.org.
+  "routes": [{ "pattern": "openislet.org", "custom_domain": true }],
 
   // The private dress rehearsal before launch. Behind a password, and hidden from search engines by the build itself.
   "env": {

@@ -10,13 +10,13 @@
     "founding": true,
     "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
     "models": [
-      "Gemini 4 Argon (High Effort)",
-      "ChatGPT 6 Astra (Max Effort & xhigh)",
-      "Kimi K3.1 Pro (xhigh)",
-      "Claude 5.5 Sonnet (Max Effort)",
-      "ChatGPT 6.1 Pro / Sol 6.1",
-      "Spark Muse Wonder",
-      "Grok 4.7 Heavy"
+      "Gemini 4 Argon (high)",
+      "ChatGPT 6 Astra (max & ultracode)",
+      "Kimi K3.1 Pro (max)",
+      "Claude 5.5 Sonnet (max & ultracode)",
+      "ChatGPT 6.1 Sol (max & ultracode)",
+      "Muse Wonder Full (max)",
+      "Grok 4.7 (xhigh)"
     ],
     "outcome": null
   }
