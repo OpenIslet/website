@@ -1,0 +1,80 @@
+---
+// A small picture for each of Design X's three proposed upgrades. They are only proposals, so each picture is a sketch of the idea.
+//  signals: a cell with two raised "don't attack me" flags, and a killer T cell whose helper grip is crossed out.
+//  line:    a dish of stem cells with one cell picked out by a protective tag.
+//  gel:     a graft in cross-section: calming gel in the middle, a Fas-ligand ring only at the outer edge, beta cells in between.
+interface Props {
+  id: 'signals' | 'line' | 'gel';
+}
+const { id } = Astro.props;
+const dish = [
+  [74, 52], [102, 40], [130, 56], [158, 44], [88, 78], [116, 76], [144, 82], [170, 70],
+];
+---
+
+{
+  id === 'signals' && (
+    <svg viewBox="0 0 240 110" role="img" aria-label="A cell with two raised flags, standing for the HLA-E and CD47 signals. A killer T cell on the right has a grip marked with a cross, standing for a signal it can no longer hold on to.">
+      <circle cx="78" cy="68" r="30" fill="#5b73ff" stroke="#0b1b26" stroke-width="2.5"></circle>
+      <circle cx="72" cy="72" r="10" fill="#0b1b26" fill-opacity="0.3"></circle>
+      <g stroke="#8ea0ff" stroke-width="2.5" stroke-linecap="round">
+        <path d="M66 40 V12"></path>
+        <path d="M92 41 V18"></path>
+      </g>
+      <path d="M66 12 H88 L82 19 L88 26 H66 Z" fill="#8ea0ff" stroke="#0b1b26" stroke-width="2" stroke-linejoin="round"></path>
+      <path d="M92 18 H112 L107 24 L112 30 H92 Z" fill="#8ea0ff" stroke="#0b1b26" stroke-width="2" stroke-linejoin="round"></path>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="9.5" font-weight="700" fill="#0b1b26">
+        <text x="68" y="23">E</text>
+        <text x="95" y="28">47</text>
+      </g>
+      <circle cx="194" cy="42" r="22" fill="#a6b6c2" stroke="#0b1b26" stroke-width="2.5"></circle>
+      <circle cx="190" cy="46" r="7.5" fill="#0b1b26" fill-opacity="0.3"></circle>
+      <path d="M173 36 C 163 30, 155 33, 152 42" fill="none" stroke="#e6edf2" stroke-width="3" stroke-linecap="round"></path>
+      <path d="M130 36 L144 52 M144 36 L130 52" stroke="#f2a93b" stroke-width="3.4" stroke-linecap="round"></path>
+      <text x="194" y="84" font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">T cell grip</text>
+    </svg>
+  )
+}
+{
+  id === 'line' && (
+    <svg viewBox="0 0 240 110" role="img" aria-label="A dish of stem cells. One cell is picked out with a ring and a small shield tag, standing for a starting cell line chosen because it carries a natural, protective variant of the insulin gene.">
+      <g transform="translate(0 -10)">
+        <ellipse cx="122" cy="62" rx="100" ry="40" fill="#13293a" stroke="#8ea0ff" stroke-width="2.5"></ellipse>
+        <ellipse cx="122" cy="62" rx="88" ry="30" fill="none" stroke="#8ea0ff" stroke-opacity="0.35" stroke-width="1.5"></ellipse>
+        {dish.map(([x, y], i) => <circle cx={x} cy={y} r={i === 3 ? 12 : 10} fill={i === 3 ? '#e6edf2' : '#5b73ff'} stroke="#0b1b26" stroke-width="2"></circle>)}
+        <circle cx="158" cy="44" r="19" fill="none" stroke="#f2a93b" stroke-width="3" stroke-dasharray="4 4"></circle>
+      </g>
+      <g transform="translate(210 2) scale(0.78) translate(-176 -9)">
+        <path d="M176 14 L190 9 L204 14 V26 C204 34 198 39 190 42 C182 39 176 34 176 26 Z" fill="#13293a" stroke="#f2a93b" stroke-width="3.2" stroke-linejoin="round"></path>
+        <path d="M183 25 l5 5 l9 -10" fill="none" stroke="#f2a93b" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </g>
+      <path d="M176 29 L207 17" stroke="#f2a93b" stroke-width="2" stroke-linecap="round"></path>
+      <text x="122" y="106" font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">a starting line, not an edit</text>
+    </svg>
+  )
+}
+{
+  id === 'gel' && (
+    <svg viewBox="0 0 240 110" role="img" aria-label="A graft in cross-section. In the middle, particles that calm clotting and block complement. Around the edge, a ring marked FasL. Beta cells sit between the two, away from the ring.">
+      <circle cx="120" cy="52" r="46" fill="#13293a" stroke="#f2a93b" stroke-width="5" stroke-dasharray="10 6"></circle>
+      <circle cx="120" cy="52" r="29" fill="#102a3b" stroke="#8ea0ff" stroke-width="2" stroke-opacity="0.6"></circle>
+      <g fill="#8ea0ff" stroke="#0b1b26" stroke-width="1.5">
+        <circle cx="112" cy="46" r="4.5"></circle><circle cx="126" cy="42" r="4.5"></circle><circle cx="120" cy="58" r="4.5"></circle><circle cx="106" cy="60" r="4.5"></circle><circle cx="132" cy="58" r="4.5"></circle>
+      </g>
+      <g fill="#5b73ff" stroke="#0b1b26" stroke-width="2">
+        <circle cx="86" cy="52" r="7"></circle><circle cx="154" cy="52" r="7"></circle><circle cx="120" cy="22" r="7"></circle><circle cx="120" cy="82" r="7"></circle>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="700" fill="#f2a93b">
+        <text x="196" y="40">FasL</text>
+        <text x="196" y="53" font-size="9.5" fill="#a6b6c2" font-weight="600">outer ring</text>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="9.5" font-weight="600" fill="#a6b6c2">
+        <text x="6" y="40">calming</text>
+        <text x="6" y="52">gel</text>
+        <text x="6" y="64">in the</text>
+        <text x="6" y="76">middle</text>
+      </g>
+      <path d="M44 54 H72 M200 56 H168" stroke="#a6b6c2" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="2 3"></path>
+    </svg>
+  )
+}

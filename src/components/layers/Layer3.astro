@@ -1,0 +1,46 @@
+---
+// Layer 3: the proteins. Two proteins that fit together like a lock and a key. Each blob is a union of circles,
+// drawn twice (outline first, fill on top) so only the outer edge shows.
+const left = [
+  [78, 90, 40],
+  [96, 48, 25],
+  [96, 132, 25],
+  [50, 70, 24],
+];
+const right = [
+  [200, 90, 44],
+  [136, 90, 17],
+  [226, 130, 24],
+  [226, 50, 22],
+];
+---
+
+<svg viewBox="0 0 280 176" role="img" aria-label="Two proteins drawn as blobs that fit together like a lock and key, with dotted lines where they touch.">
+  <circle cx="123" cy="90" r="30" fill="#8ea0ff" fill-opacity="0.18"></circle>
+  <g fill="#5b73ff" stroke="#0b1b26" stroke-width="5">
+    {left.map(([x, y, r]) => <circle cx={x} cy={y} r={r}></circle>)}
+  </g>
+  <g fill="#5b73ff">
+    {left.map(([x, y, r]) => <circle cx={x} cy={y} r={r - 1}></circle>)}
+  </g>
+  <g fill="#c9d3ff" stroke="#0b1b26" stroke-width="5">
+    {right.map(([x, y, r]) => <circle cx={x} cy={y} r={r}></circle>)}
+  </g>
+  <g fill="#c9d3ff">
+    {right.map(([x, y, r]) => <circle cx={x} cy={y} r={r - 1}></circle>)}
+  </g>
+
+  <g fill="none" stroke="#0b1b26" stroke-opacity="0.35" stroke-width="3" stroke-linecap="round">
+    <path d="M44 100 C56 82, 70 82, 84 98 S100 114, 108 104"></path>
+    <path d="M178 70 C192 58, 208 62, 214 76 S232 96, 244 86"></path>
+    <path d="M190 118 C200 130, 214 128, 224 118"></path>
+  </g>
+
+  <g stroke="#f2a93b" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="1 6">
+    <path d="M116 70 L126 76"></path>
+    <path d="M122 90 L120 90"></path>
+    <path d="M116 110 L126 104"></path>
+    <path d="M108 66 L130 82"></path>
+    <path d="M108 114 L130 98"></path>
+  </g>
+</svg>

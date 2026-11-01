@@ -1,0 +1,34 @@
+---
+// The empty changelog: a calendar page marked with the day the open draft opens, and a blank list waiting for the first change.
+// The changelog starts at release. Nothing done before the open draft opens is reported (Kev, 26 October 2026).
+// The day comes from src/data/versions.ts, so it moves with the launch date.
+import { draft } from '../data/versions';
+
+const opens = new Date(`${draft.opens}T00:00:00Z`);
+const month = new Intl.DateTimeFormat('en-GB', { month: 'short', timeZone: 'UTC' }).format(opens).toUpperCase();
+const dayOfMonth = String(opens.getUTCDate());
+const when = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(opens);
+---
+
+<svg viewBox="0 0 280 120" role="img" aria-label={`A calendar page marked ${when}, with a dotted line to a blank list that is waiting for the first change.`}>
+  <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="22" y="14" width="86" height="92" rx="10" fill="#e6edf2"></rect>
+    <path d="M22 24 a10 10 0 0 1 10 -10 h66 a10 10 0 0 1 10 10 v18 h-86 z" fill="#f2a93b"></path>
+    <path d="M42 8 v14 M88 8 v14" fill="none" stroke="#8ea0ff" stroke-width="4"></path>
+  </g>
+  <g font-family="IBM Plex Sans, sans-serif" text-anchor="middle" fill="#0b1b26">
+    <text x="65" y="36" font-size="13" font-weight="700" letter-spacing="1.5">{month}</text>
+    <text x="65" y="85" font-size="38" font-weight="700">{dayOfMonth}</text>
+  </g>
+  <path d="M118 60 H150" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round"></path>
+  <path d="M146 54 L152 60 L146 66" fill="none" stroke="#8ea0ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  <g fill="none" stroke="#8ea0ff" stroke-width="2.2" stroke-linecap="round">
+    <rect x="162" y="14" width="98" height="92" rx="10" fill="#13293a" stroke-dasharray="5 5"></rect>
+    <circle cx="180" cy="38" r="5" stroke-opacity="0.6"></circle>
+    <path d="M194 38 H244" stroke-opacity="0.45"></path>
+    <circle cx="180" cy="62" r="5" stroke-opacity="0.6"></circle>
+    <path d="M194 62 H234" stroke-opacity="0.45"></path>
+    <circle cx="180" cy="86" r="5" stroke-opacity="0.6"></circle>
+    <path d="M194 86 H240" stroke-opacity="0.45"></path>
+  </g>
+</svg>

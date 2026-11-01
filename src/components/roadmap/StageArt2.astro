@@ -1,0 +1,37 @@
+---
+// Stage 2: blood supply and oxygen. A small cluster of cells, a blood-vessel fragment, and oxygen bubbles for the early days.
+// No sizes or hours here: the project keeps the detail of Stages 1 to 5 off the site.
+const ring = Array.from({ length: 7 }, (_, i) => {
+  const a = (i / 7) * Math.PI * 2 - 0.4;
+  return { x: 96 + Math.cos(a) * 30, y: 84 + Math.sin(a) * 30 };
+});
+---
+
+<svg viewBox="0 0 280 176" role="img" aria-label="A small cluster of insulin-making cells wrapped by a blood-vessel fragment, with oxygen bubbles drifting in to help in the early days.">
+  <path d="M26 40 C 60 12, 168 26, 170 88 S 118 152, 54 138" fill="none" stroke="#0b1b26" stroke-width="13" stroke-linecap="round"></path>
+  <path d="M26 40 C 60 12, 168 26, 170 88 S 118 152, 54 138" fill="none" stroke="#ff8fa3" stroke-width="7" stroke-linecap="round"></path>
+  <circle cx="120" cy="22" r="3.4" fill="#e6edf2"></circle>
+  <circle cx="171" cy="70" r="3.4" fill="#e6edf2"></circle>
+  <circle cx="148" cy="130" r="3.4" fill="#e6edf2"></circle>
+  <circle cx="96" cy="84" r="50" fill="#8ea0ff" fill-opacity="0.1" stroke="#8ea0ff" stroke-width="2" stroke-dasharray="5 5"></circle>
+  <g stroke="#0b1b26" stroke-width="2.4">
+    {ring.map((p) => <circle cx={p.x} cy={p.y} r="14" fill="#5b73ff"></circle>)}
+    <circle cx="96" cy="84" r="15" fill="#e6edf2"></circle>
+  </g>
+  <g fill="#0b1b26" fill-opacity="0.28">
+    {ring.map((p) => <circle cx={p.x - 2} cy={p.y + 2} r="5"></circle>)}
+    <circle cx="94" cy="86" r="5.4"></circle>
+  </g>
+  <g stroke="#e6edf2" stroke-width="2.4" fill="#e6edf2" fill-opacity="0.1">
+    <circle cx="226" cy="112" r="15"></circle>
+    <circle cx="198" cy="140" r="9"></circle>
+    <circle cx="246" cy="146" r="7"></circle>
+    <circle cx="204" cy="100" r="5"></circle>
+  </g>
+  <text x="226" y="117" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="700" fill="#e6edf2" text-anchor="middle">O₂</text>
+  <path d="M186 118 H174" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="2 5" stroke-linecap="round"></path>
+  <g>
+    <circle cx="238" cy="42" r="23" fill="#13293a" stroke="#f2a93b" stroke-width="3"></circle>
+    <text x="238" y="47" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="700" fill="#f2a93b" text-anchor="middle">early</text>
+  </g>
+</svg>

@@ -1,0 +1,65 @@
+[
+  {
+    "group": "read",
+    "title": "The full blueprint",
+    "path": "ISLET-1-BLUEPRINT.md",
+    "license": "CC-BY-4.0",
+    "format": "Text (Markdown)",
+    "what": "The whole blueprint in one document: every design detail, check and caveat. Long and technical.",
+    "for": "Scientists and curious readers"
+  },
+  {
+    "group": "read",
+    "title": "Design options report",
+    "path": "docs/ISLET-1-CANDIDATE-BLUEPRINTS-AND-OPTIMIZER-v0.2.md",
+    "license": "CC-BY-4.0",
+    "format": "Text (Markdown)",
+    "what": "An earlier report that compares candidate designs and explains how they are ranked.",
+    "for": "Scientists"
+  },
+  {
+    "group": "check",
+    "title": "All findings",
+    "path": "data/extracted/ring1_atomic_effects_v0.5.jsonl",
+    "license": "CC-BY-4.0",
+    "format": "JSON Lines",
+    "what": "Every finding pulled out of the studies, one per line, with its source and quotations where sharing is allowed.",
+    "for": "Scientists and developers"
+  },
+  {
+    "group": "check",
+    "title": "How the studies link together",
+    "path": "data/extracted/cross_study_discovery_graph.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "The web of connections between studies and genes, for exploring the evidence as a network.",
+    "for": "Scientists and developers"
+  },
+  {
+    "group": "check",
+    "title": "Idea Graveyard data",
+    "path": "data/graveyard/idea_graveyard_v0.5.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "The Idea Graveyard rules, in a form that software can read and enforce.",
+    "for": "Developers"
+  },
+  {
+    "group": "trust",
+    "title": "Data format rules",
+    "path": "schemas/extraction_schema_v0.2.json",
+    "license": "Apache-2.0",
+    "format": "JSON Schema",
+    "what": "The rules every finding must follow, so anyone can check that none have been bent.",
+    "for": "Developers"
+  },
+  {
+    "group": "trust",
+    "title": "File list with fingerprints",
+    "path": "manifest.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "Every file in this release with a unique fingerprint (SHA-256), so you can confirm your copy is unchanged.",
+    "for": "Anyone checking a download"
+  }
+]

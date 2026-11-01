@@ -1,0 +1,361 @@
+[
+  {
+    "id": "OQ-001",
+    "title": "Is there enough CD47 and HLA-E on the cells in the first hours?",
+    "plain": "Two signals tell the immune system's natural killer cells and macrophages to leave the new cells alone. If the cells carry too little of either signal in the first hours, those attackers can destroy them before the other protections matter.",
+    "detail": "In Design A (Arm 1B), an internal EEF1A1 promoter drives CD47 constitutively (238,004 molecules per cell computational prior; Stage-0 gate at least 200,000) and an internal 5xISRE promoter drives HLA-E (release gate at least 15,000 molecules per cell, while the proposed Design X signal aims for 25,000; 10,890 computational resting prior). Endogenous B2M read-through is not credited as productive HLA-E expression, and resting surface density on stage 7 beta cells and endothelial cells is unmeasured (rule GY-009).",
+    "tests": [
+      "3",
+      "2A"
+    ],
+    "designs": [
+      "A",
+      "X"
+    ],
+    "rules": [
+      "GY-009"
+    ],
+    "pmids": [
+      "38508139",
+      "37156915",
+      "37820008",
+      "30778232",
+      "28504668",
+      "37264229"
+    ],
+    "settle": "Count CD47 and HLA-E molecules on the surface of edited cells at hour zero with calibrated flow cytometry (the rule names QuantiBRITE beads), and compare with the target.",
+    "source": "Concise specification section 9; rule GY-009",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-002",
+    "title": "Does SERPINB9 really block the killer-cell toxin as designed?",
+    "plain": "Killer immune cells fire a toxin called granzyme B into their targets. The design makes the cells carry SERPINB9, a protein that should block that toxin. A computer cannot tell us whether it works, so only a lab test can.",
+    "detail": "The flexible loop of SERPINB9 that engages granzyme B cannot be modelled reliably by structure prediction, so whether the inserted protein blocks granzyme B at the needed level is unresolved.",
+    "tests": [
+      "4"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "A lab test of whether cells carrying the SERPINB9 design survive exposure to granzyme B.",
+    "source": "Concise specification sections 4.3 and 9",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-003",
+    "title": "Can the patient's own immune cells restart the attack using debris from the graft?",
+    "plain": "Cells with no HLA flags are hard for T cells to see directly. But the patient's own immune cells can pick up debris from the graft and show it to T cells, which can restart the attack that caused the diabetes.",
+    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). The design responds with small clusters, pre-built vessels and protection that switches on with inflammation, but this is not yet measured.",
+    "tests": [
+      "2B"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [
+      "GY-010"
+    ],
+    "pmids": [],
+    "settle": "Mix the patient's immune cells with debris from flag-free islets, and look for T-cell activation and cell damage.",
+    "source": "Concise specification sections 4.2 and 9; rule GY-010",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-004",
+    "title": "Does one kept HLA-C gene calm natural killer cells enough?",
+    "plain": "Design B keeps one matched HLA-C gene so that natural killer cells see the cells as the patient's own. It is not yet known whether a single copy gives enough of that calming signal.",
+    "detail": "After HLA-A and HLA-B deletion, a single retained HLA-C allele must supply enough leader peptide to stabilise surface HLA-E (rule GY-005). It also requires choosing the right HLA-C haplotype.",
+    "tests": [
+      "3",
+      "2A"
+    ],
+    "designs": [
+      "B"
+    ],
+    "rules": [
+      "GY-005"
+    ],
+    "pmids": [
+      "30853558",
+      "29302013",
+      "37264229"
+    ],
+    "settle": "Measure surface HLA-E and natural killer cell response in cells that keep a single HLA-C allele after HLA-A and HLA-B are switched off.",
+    "source": "Concise specification sections 4.5 and 9; rule GY-005",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-005",
+    "title": "Does the oxygen supply hold up under pessimistic assumptions?",
+    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In the computer model the margin inside each cluster of cells is thin: with a few unfavourable assumptions the oxygen drops below the safe level.",
+    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, which cannot establish oxygen inside discrete 120 micrometre clusters. In the two-zone cluster model, the conservative gel-only core oxygen is 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), and none of these computational outputs is an experimentally established safety margin.",
+    "tests": [
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "Measure oxygen inside real graft slabs over the first 3 days and compare it with the model.",
+    "source": "Concise specification sections 5 and 9",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-006",
+    "title": "Do many gene edits at once cause DNA rearrangements?",
+    "plain": "Each extra edit is another chance for the cell's DNA to be rearranged by mistake, and cells with cancer-linked changes could take over. This is why the scoring model penalises extra edits.",
+    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Manufacturing would need deep sequencing checks for cancer-linked changes.",
+    "tests": [
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [
+      "GY-006"
+    ],
+    "pmids": [
+      "39529170"
+    ],
+    "settle": "Deep sequencing of edited cell lines for rearrangements and cancer-linked changes, with the same checks repeated at manufacturing scale.",
+    "source": "Concise specification sections 4.5 and 9; rule GY-006",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-007",
+    "title": "Which starting assumptions drive the scores?",
+    "plain": "The scores are estimates, not predictions. Almost all of the difference between designs comes from the team's starting assumptions and very little from published findings. Lab results will replace the assumptions one at a time.",
+    "detail": "{{assumptions}} per cent of the spread in scores across the {{designs}} designs comes from starting assumptions, {{overlap}} per cent from the overlap of assumptions and findings, and {{findingsShare}} per cent from published findings.",
+    "tests": [
+      "1",
+      "2A",
+      "2B",
+      "3",
+      "4",
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "Replace each assumption with a measurement as lab results arrive, starting with the ones that move the scores most.",
+    "source": "Concise specification sections 7 and 9",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-008",
+    "title": "Which form of CD47 is best: the full-length protein or a surface-anchored form?",
+    "plain": "CD47 tells macrophages not to eat the cell. The full-length version also sends signals inside the cell that can blunt insulin release. A shorter, surface-anchored version leaves out the inside signals and keeps the macrophage signal. Whether insulin release is spared is not yet tested, so the two are being compared.",
+    "detail": "Full-length CD47 can blunt glucose-stimulated insulin secretion (Ghimire 2023, PMID 37820008) and block new blood vessels, while an IgV-GPI form keeps the macrophage signal without cell death or blocked blood-vessel growth in other cell types (Xu 2024, PMID 38508139); insulin release with it is untested.",
+    "tests": [
+      "1",
+      "3"
+    ],
+    "designs": [
+      "A",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [
+      "37820008",
+      "38508139",
+      "37156915"
+    ],
+    "settle": "Compare insulin release and macrophage protection side by side for each CD47 form in the same cells.",
+    "source": "Concise specification section 4.1",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-009",
+    "title": "Which layout should be used to add CD47 and HLA-E at B2M?",
+    "plain": "Two ways of adding the two genes are being compared. One reads them as a single unit and is too long for the usual delivery virus. The other gives each gene its own switch and fits.",
+    "detail": "Layout 1 joins the genes with a 2A sequence (4,880 base pairs, over the single-AAV6 limit, so non-viral delivery would be needed). Layout 2 uses two promoters facing opposite directions with no 2A joint (3,974 base pairs, fits one AAV6 virus).",
+    "tests": [
+      "2A",
+      "3"
+    ],
+    "designs": [
+      "A",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "Build both layouts and compare expression level, editing yield and delivery.",
+    "source": "Concise specification section 4.1",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-010",
+    "title": "At CXCL10, does it matter which protective gene comes first?",
+    "plain": "The design adds two protective genes at one spot, SERPINB9 and PD-L1, so they switch on only when inflammation appears. The current order is SERPINB9 first. A lab test would compare it with the reverse order.",
+    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1. It is compared with CXCL10::PD-L1-GSG-P2A-SERPINB9 in a planned decision experiment.",
+    "tests": [
+      "4",
+      "2B"
+    ],
+    "designs": [
+      "A",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [
+      "28526819",
+      "30952982",
+      "28813417"
+    ],
+    "settle": "Edit cells with each order and compare survival under inflammation and killer-cell attack.",
+    "source": "Concise specification section 4.3",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-011",
+    "title": "Does a sequence in Design B's CXCL10 edit act as an unintended switch?",
+    "plain": "Design B drops one linking sequence at the CXCL10 spot to avoid leaving a piece that the kept HLA-C gene could show to T cells as foreign. In exchange, a piece of the design might switch genes on at the wrong time. That has to be ruled out.",
+    "detail": "Design B uses a 2A-free layout at the CXCL10 locus. An internal promoter or eIF4G leader sequence can have cryptic promoter activity (PMID 12370285).",
+    "tests": [
+      "4"
+    ],
+    "designs": [
+      "B"
+    ],
+    "rules": [],
+    "pmids": [
+      "12370285"
+    ],
+    "settle": "Test whether the sequence drives expression on its own, outside inflammation.",
+    "source": "Concise specification sections 4.5 and 9",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-012",
+    "title": "Can the safety switch remove almost every cell?",
+    "plain": "Every cell carries a safety switch that a drug (AP1903) should trigger to remove them. The proposed target is fewer than one cell in 100 million able to regrow. Nothing has shown that yet.",
+    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches).",
+    "tests": [
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [
+      "GY-002"
+    ],
+    "pmids": [
+      "23307570",
+      "28860464",
+      "26455413",
+      "11242052"
+    ],
+    "settle": "Give the drug to edited cultures, including at low oxygen, and count survivors.",
+    "source": "Concise specification sections 4.4 and 9",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-013",
+    "title": "Is switching off TYK2 worth its cost in insulin-making cells?",
+    "plain": "In the model, switching off TYK2 helps against rejection, autoimmune attack and early attack. But it costs about a third of the insulin-making cells while they grow. Whether the trade is worth it in the full design is not known.",
+    "detail": "Design B switches off TYK2. Chandra 2022 (PMID 36289205) reports about 32 per cent fewer insulin-making cells during differentiation.",
+    "tests": [
+      "1",
+      "2A",
+      "2B",
+      "3"
+    ],
+    "designs": [
+      "B"
+    ],
+    "rules": [],
+    "pmids": [
+      "36289205"
+    ],
+    "settle": "Measure insulin-making cell yield and immune protection in the full Design B, with and without the TYK2 edit.",
+    "source": "Concise specification section 4.5",
+    "status": "open",
+    "added": "2026-10-24",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-014",
+    "title": "X is two different candidates, not one verified product",
+    "plain": "The scored grid candidate adds an INS edit to A and is tied for second place with another candidate. The separate molecular proposal changes the promoter and proteins at K=4, B=0; it has no materialized donor or measured performance.",
+    "detail": "The scored grid candidate adds an INS edit to A and is tied for second place with another candidate. The separate molecular proposal changes the promoter and proteins at K=4, B=0; it has no materialized donor or measured performance.",
+    "tests": [
+      "1",
+      "2A",
+      "2B",
+      "3",
+      "4",
+      "5"
+    ],
+    "designs": [
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "Keep separate identities, provide the exact donor and protein ledger, and qualify each product before any promotion.",
+    "source": "Concise specification section 4.6",
+    "status": "open",
+    "added": "2026-10-25",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-015",
+    "title": "Does the proposed outer-band pouch physically fit?",
+    "plain": "The scored baseline leaves two outer bands of 115.5 micrometres, a little narrower than its 120 micrometre clusters. Design X thins the central layer to 100 micrometres, which leaves 125 micrometre bands and caps clusters at 100 micrometres, so on paper they fit. Nothing has been built or measured yet.",
+    "detail": "Changing source-lamina porosity while holding oxygen inventory fixed is only a sensitivity. In the scored baseline, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to fully contain 120 micrometre spheres. Design X and Embodiment A* (the Stage-0 version of Design A) use a 100 micrometre lamina, 125 micrometre outer bands and clusters of at most 100 micrometres, which fit on paper. Whether the pouch can be built and packed to that geometry is untested.",
+    "tests": [
+      "5"
+    ],
+    "designs": [
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "Reconcile local cell packing, bead inventory, source geometry and cluster dimensions in one physical design before claiming an oxygen improvement.",
+    "source": "Concise specification section 5",
+    "status": "open",
+    "added": "2026-10-25",
+    "since": "v0.8.0"
+  }
+]

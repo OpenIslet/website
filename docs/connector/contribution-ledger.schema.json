@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://openislet.org/schemas/contribution-ledger.schema.json",
+  "title": "OpenIslet contribution ledger record",
+  "description": "One record per submission, derived from its public GitHub issue. The id is IIP- plus the issue number padded to four digits, so IIP-0001 is issue 1 (the founding record). The website's Contributions page reads these records. There are no scores: a person decides each IIP's outcome and writes it in words, and later events are added as follow-ups. Nothing in this schema involves payment.",
+  "type": "object",
+  "required": ["id", "issue", "title", "type", "status", "submitted_at", "target_version", "contributor"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "pattern": "^IIP-[0-9]{4,}$" },
+    "issue": {
+      "type": "object",
+      "required": ["number", "url"],
+      "additionalProperties": false,
+      "properties": {
+        "number": { "type": "integer", "minimum": 1 },
+        "url": { "type": "string", "format": "uri" }
+      }
+    },
+    "title": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "summary": { "type": "string", "maxLength": 600 },
+    "type": {
+      "type": "string",
+      "enum": ["Blueprint", "Problem found", "Improvement", "Missing evidence", "Lab test", "Lab result", "Correction"]
+    },
+    "status": {
+      "type": "string",
+      "description": "Where the submission is: queued (software checks done), closed-triage (set aside in the weekly review, with a public reason), reviewed (examined in the weekly review), then merged, declined or needs-work. The website groups queued and reviewed as 'review'.",
+      "enum": ["queued", "closed-triage", "reviewed", "merged", "declined", "needs-work", "withdrawn"]
+    },
+    "submitted_at": { "type": "string", "format": "date" },
+    "decided_at": { "type": ["string", "null"], "format": "date" },
+    "target_version": { "type": "string", "description": "The version it was written against, such as islet-1-draft or islet-1.1.", "examples": ["islet-1-draft", "islet-1.1"] },
+    "landed_in": { "type": ["string", "null"], "description": "The locked version the accepted change first appears in. Null until it is merged and a version is locked.", "examples": ["islet-1.0"] },
+    "founding": { "type": "boolean", "default": false },
+    "contributor": {
+      "type": "object",
+      "required": ["handle", "kind", "verified"],
+      "additionalProperties": false,
+      "properties": {
+        "handle": { "type": "string", "description": "A public GitHub handle. GitHub is the only sign-in." },
+        "kind": { "type": "string", "enum": ["person", "lab"] },
+        "github": { "type": ["string", "null"] },
+        "name": { "type": ["string", "null"], "maxLength": 80, "description": "A display name the contributor typed on the submission form. Shown as typed, not checked." },
+        "orcid": { "type": ["string", "null"], "pattern": "^[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{3}[0-9X]$", "description": "An ORCID iD the contributor typed on the submission form. Checked for shape and check digit, never verified as theirs, so verified.orcid stays false." },
+        "x": { "type": ["string", "null"], "pattern": "^[A-Za-z0-9_]{1,15}$", "description": "An X handle the contributor typed on the submission form, without the @. Shown as typed, not checked." },
+        "ror": { "type": ["string", "null"], "description": "Optional Research Organization Registry id for a lab." },
+        "verified": {
+          "type": "object",
+          "required": ["github", "orcid"],
+          "additionalProperties": false,
+          "properties": {
+            "github": { "type": "boolean" },
+            "orcid": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "ai_tools": {
+      "type": "object",
+      "description": "Model names and effort settings as the contributor reported them. Never shown as verified.",
+      "additionalProperties": false,
+      "properties": {
+        "draft": { "type": "string" },
+        "review": { "type": "string" }
+      }
+    },
+    "models": {
+      "type": "array",
+      "description": "Every model the contributor reported, when the contribution is not a single draft and review (for example the founding blueprint). Never shown as verified.",
+      "items": { "type": "string" }
+    },
+    "outcome": {
+      "description": "What a person decided the IIP did, in words. Null until then. The four kinds changed_blueprint, dead_end, evidence and open_question are named in the next locked version. There are no scores or weights.",
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["kind", "note"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": { "type": "string", "enum": ["changed_blueprint", "dead_end", "evidence", "open_question", "later", "not_taken_up", "already_covered"] },
+            "note": { "type": "string", "minLength": 1, "maxLength": 400, "description": "One plain sentence: what it changed, or why not." },
+            "where": { "type": ["string", "null"], "description": "Where it landed on openislet.org: a blueprint section, an Idea Graveyard entry or an open question." },
+            "with": { "type": "array", "items": { "type": "string", "pattern": "^IIP-[0-9]{4,}$" }, "description": "Other IIPs credited for the same change (reviewed in the same week)." },
+            "same_as": { "type": ["string", "null"], "pattern": "^IIP-[0-9]{4,}$", "description": "For already_covered: the IIP that had it first." },
+            "key_change": { "type": "boolean", "description": "Set when a version is locked: one of the changes that mattered most in it." }
+          }
+        }
+      ]
+    },
+    "follow_ups": {
+      "type": "array",
+      "description": "What happened later, newest last: a later IIP built on it, a lab tested it, or its outcome was changed (with the reason). Nothing is removed.",
+      "items": {
+        "type": "object",
+        "required": ["date", "note"],
+        "additionalProperties": false,
+        "properties": {
+          "date": { "type": "string", "format": "date" },
+          "note": { "type": "string", "minLength": 1, "maxLength": 300 },
+          "ref": { "type": ["string", "null"], "description": "The IIP or lab result it refers to, such as IIP-0057." }
+        }
+      }
+    },
+    "links": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "commit": { "type": ["string", "null"], "format": "uri" },
+        "changelog": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+---
+// Islet-1: matched to the patient. Most get the universal design (A); where the immune type calls for it, a matched design (B).
+import Person from '../art/Person.astro';
+import Cell from '../art/Cell.astro';
+
+const people = [
+  { x: 44, fill: '#e6edf2', plan: 'A' },
+  { x: 112, fill: '#c9d3ff', plan: 'B' },
+  { x: 180, fill: '#a6b6c2', plan: 'A' },
+  { x: 248, fill: '#8ea0ff', plan: 'B' },
+  { x: 316, fill: '#e6edf2', plan: 'A' },
+];
+---
+
+<svg viewBox="0 0 360 150" role="img" aria-label="The same five patients. Most receive the universal design, A. Two receive a matched design, B, with one extra flag kept. The aim is that all five are protected.">
+  <g font-family="IBM Plex Sans, sans-serif">
+    {people.map((p) => <Person x={p.x} y={30} fill={p.fill} />)}
+    {
+      people.map((p) => (
+        <g>
+          <circle cx={p.x} cy="102" r="19" fill="none" stroke="#8ea0ff" stroke-width="2" stroke-dasharray="3 5" stroke-opacity="0.8"></circle>
+          <Cell x={p.x} y={102} r={13} kind="beta" />
+          {p.plan === 'B' && <path d={`M${p.x + 12} 90 l12 -10 M${p.x + 24} 80 h9 v6 h-9`} stroke="#e6edf2" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>}
+          <rect x={p.x - 14} y="124" width="28" height="18" rx="9" fill={p.plan === 'A' ? '#4258ee' : '#e6edf2'} stroke="#0b1b26" stroke-width="2"></rect>
+          <text x={p.x} y="138" font-size="13" font-weight="700" fill={p.plan === 'A' ? '#ffffff' : '#0b1b26'} text-anchor="middle">{p.plan}</text>
+          <path d={`M${p.x + 14} 122 l4 4 l8 -9`} stroke="#8ea0ff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" transform="translate(-6 -4)"></path>
+        </g>
+      ))
+    }
+  </g>
+</svg>

@@ -1,0 +1,35 @@
+{
+  // The website, served as static files by Cloudflare. Nothing here deploys until someone runs `wrangler deploy` with this file.
+  //   Staging:  PUBLIC_MCP_ENDPOINT=https://mcp-staging.openislet.org/mcp PUBLIC_CONNECTOR_STATUS=live PUBLIC_SUBMISSIONS_OPEN=true \
+  //             npx astro build --outDir dist-staging
+  //             connector/node_modules/.bin/wrangler deploy -c wrangler.site.jsonc --env staging
+  //   Live:     the launch-day settings in README.md, `npx astro build`, then the same deploy without --env.
+  // The old addresses (/graveyard and the rest) are pages that forward, so they need nothing here.
+  "$schema": "connector/node_modules/wrangler/config-schema.json",
+  "name": "openislet-site",
+  "compatibility_date": "2026-10-01",
+  // Cloudflare serves the static files itself. Only /media/* (the launch film, from R2) goes to site-worker/site.js first.
+  "main": "site-worker/site.js",
+  "assets": { "directory": "./dist", "binding": "ASSETS", "run_worker_first": ["/media/*"], "not_found_handling": "404-page", "html_handling": "auto-trailing-slash" },
+  // The launch film's video files (site-worker/media.js). The bucket must exist, with the files in it, before a deploy.
+  "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "openislet-media" }],
+  // Answer only on openislet.org addresses. Cloudflare's own *.workers.dev address would show the account's subdomain.
+  "workers_dev": false,
+  "preview_urls": false,
+  // When the live address is ready, add: "routes": [{ "pattern": "openislet.org", "custom_domain": true }]
+
+  // The private dress rehearsal before launch. Behind a password, and hidden from search engines by the build itself.
+  "env": {
+    "staging": {
+      "name": "openislet-site-staging",
+      // A simple password page in front of everything (site-worker/staging-gate.js). The password is the secret STAGING_PASSWORD.
+      "main": "site-worker/staging-gate.js",
+      "assets": { "directory": "./dist-staging", "binding": "ASSETS", "run_worker_first": true, "not_found_handling": "404-page", "html_handling": "auto-trailing-slash" },
+      "routes": [{ "pattern": "staging.openislet.org", "custom_domain": true }],
+      // The same film files as the live site (bindings are not inherited by an environment).
+      "r2_buckets": [{ "binding": "MEDIA", "bucket_name": "openislet-media" }],
+      "workers_dev": false,
+      "preview_urls": false
+    }
+  }
+}

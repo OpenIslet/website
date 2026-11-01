@@ -1,0 +1,129 @@
+---
+import Logo from './Logo.astro';
+import { release, heroPhoto, repo, startHref, social, contact } from '../data/site';
+---
+
+<footer class="footer on-dark">
+  <div class="container footer__inner">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__name">
+          <Logo size={30} tone="dark" />
+          <span>OpenIslet</span>
+        </div>
+        <p>A community project working toward a type 1 diabetes cure. This is a research design, not a medical product.</p>
+        <a class="footer__social" href={social.x.url} target="_blank" rel="noopener me">
+          <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path>
+          </svg>
+          <span>Follow {social.x.handle} on X<span class="sr-only"> (opens in a new tab)</span></span>
+        </a>
+      </div>
+      <nav aria-label="Footer" class="footer__links">
+        <a href={startHref}>Start here</a>
+        <a href="/#problem">The problem</a>
+        <a href="/blueprint">Blueprint</a>
+        <a href="/idea-graveyard">Idea Graveyard</a>
+        <a href="/roadmap">Roadmap</a>
+        <a href="/contributions">Contributions</a>
+        <a href="/about">About</a>
+        <a href={repo.url} rel="noopener">GitHub</a>
+        <a href={contact.href}>Contact</a>
+      </nav>
+    </div>
+    <div class="footer__legal">
+      <p>Open for anyone to build on or adapt. Please credit the OpenIslet community.</p>
+      <p>Questions or problems: <a href={`mailto:${contact.email}`}>{contact.email}</a></p>
+      <p>Code: Apache-2.0. Data and Idea Graveyard: CC-BY-4.0. Blueprint {release.version}.</p>
+      <p>Scores are model estimates on a 0 to 1 scale, not survival chances.</p>
+      {heroPhoto && <p>Home page photo: <a href={heroPhoto.href} rel="noopener">{heroPhoto.credit}</a></p>}
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: var(--dark-text);
+    padding: 3.5rem 0 2.5rem;
+  }
+  .footer__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .footer__top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+  .footer__brand {
+    flex: 1 1 20rem;
+    max-width: 26.25rem;
+  }
+  .footer__name {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+  .footer__brand p {
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--dark-muted);
+    text-wrap: pretty;
+  }
+  .footer__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    margin-top: 0.5rem;
+    color: var(--dark-text);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .footer__social:hover {
+    text-decoration: underline;
+  }
+  .footer__links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(7.5rem, 1fr));
+    gap: 0 3rem;
+    align-content: start;
+  }
+  /* Nine links: three even rows of three where there is room. */
+  @media (min-width: 48em) {
+    .footer__links {
+      grid-template-columns: repeat(3, minmax(7.5rem, 1fr));
+    }
+  }
+  .footer__links a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--dark-text);
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+  .footer__links a:hover {
+    text-decoration: underline;
+  }
+  .footer__legal {
+    border-top: 1px solid var(--dark-line);
+    padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--dark-muted);
+  }
+  .footer__legal a {
+    color: var(--dark-soft);
+  }
+</style>

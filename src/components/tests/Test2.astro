@@ -1,0 +1,75 @@
+---
+// Test 2: the immune system's long-term attack. Top: rejection of donor cells (2A). Bottom: the autoimmune attack (2B).
+import Cell from '../art/Cell.astro';
+import Immune from '../art/Immune.astro';
+
+const spikes = Array.from({ length: 10 }, (_, i) => {
+  const a = (i / 10) * Math.PI * 2;
+  return { x1: 420 + Math.cos(a) * 31, y1: 296 + Math.sin(a) * 31, x2: 420 + Math.cos(a) * 42, y2: 296 + Math.sin(a) * 42 };
+});
+---
+
+<svg viewBox="0 0 520 380" role="img" aria-label="Two scenes. Top, 2A: a T cell and antibodies cannot recognise a cluster of donor cells because their ID flags are removed. Bottom, 2B: debris from the graft is picked up by the patient's own immune cell, which wakes up a T cell and restarts the autoimmune attack.">
+  <defs>
+    <marker id="t2-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9 z" fill="#e6edf2"></path>
+    </marker>
+  </defs>
+  <g font-family="IBM Plex Sans, sans-serif">
+    <!-- 2A -->
+    <text x="24" y="32" fill="#e6edf2" font-size="18" font-weight="600">2A · Rejection of donor cells</text>
+
+    <g stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="3 4" stroke-opacity="0.65" fill="none" stroke-linecap="round">
+      <path d="M52 100 v-22 M52 78 h14 v8 h-14"></path>
+      <path d="M100 74 v-24 M100 50 h14 v8 h-14"></path>
+      <path d="M148 98 v-22 M148 76 h14 v8 h-14"></path>
+    </g>
+    <Cell x={88} y={112} r={26} kind="beta" />
+    <Cell x={128} y={134} r={22} kind="alpha" />
+    <Cell x={84} y={152} r={16} kind="delta" />
+    <Cell x={52} y={132} r={20} kind="beta" />
+    <text x="100" y="186" fill="#a6b6c2" font-size="15" text-anchor="middle">ID flags removed</text>
+
+    <g stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+      <path d="M268 80 v-16 M268 64 l-11 -15 M268 64 l11 -15" transform="rotate(-90 268 64)"></path>
+      <path d="M268 158 v-16 M268 142 l-11 -15 M268 142 l11 -15" transform="rotate(-90 268 142)"></path>
+    </g>
+    <path d="M214 112 H308" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 6" fill="none"></path>
+    <text x="222" y="104" fill="#f2a93b" font-size="30" font-weight="600">?</text>
+    <Immune x={400} y={112} r={30} kind="tcell" />
+    <text x="400" y="168" fill="#e6edf2" font-size="16" text-anchor="middle">T cell and antibodies</text>
+
+    <line x1="24" y1="196" x2="496" y2="196" stroke="#8ea0ff" stroke-opacity="0.3" stroke-dasharray="4 5"></line>
+
+    <!-- 2B -->
+    <text x="24" y="228" fill="#e6edf2" font-size="18" font-weight="600">2B · The autoimmune attack</text>
+
+    <Cell x={52} y={296} r={18} kind="beta" />
+    <Cell x={80} y={314} r={15} kind="alpha" />
+    <Cell x={44} y={326} r={12} kind="delta" />
+    <g fill="#e6edf2" fill-opacity="0.9">
+      <circle cx="112" cy="288" r="4.5"></circle>
+      <circle cx="130" cy="306" r="3.5"></circle>
+      <circle cx="148" cy="290" r="4"></circle>
+      <circle cx="124" cy="324" r="3.5"></circle>
+    </g>
+    <text x="110" y="364" fill="#a6b6c2" font-size="15" text-anchor="middle">Debris</text>
+
+    <path d="M172 302 H216" stroke="#e6edf2" stroke-width="2.5" fill="none" marker-end="url(#t2-arrow)"></path>
+    <Immune x={256} y={300} r={24} kind="apc" />
+    <g fill="#e6edf2">
+      <circle cx="284" cy="272" r="3.5"></circle>
+      <circle cx="296" cy="284" r="3.5"></circle>
+    </g>
+    <text x="256" y="352" fill="#e6edf2" font-size="15" text-anchor="middle">Patient’s own</text>
+    <text x="256" y="369" fill="#e6edf2" font-size="15" text-anchor="middle">immune cell</text>
+
+    <path d="M312 300 H370" stroke="#e6edf2" stroke-width="2.5" fill="none" marker-end="url(#t2-arrow)"></path>
+    <g stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round">
+      {spikes.map((s) => <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2}></line>)}
+    </g>
+    <Immune x={420} y={296} r={26} kind="tcell" />
+    <text x="420" y="352" fill="#e6edf2" font-size="15" text-anchor="middle">T cell restarts</text>
+    <text x="420" y="369" fill="#e6edf2" font-size="15" text-anchor="middle">the attack</text>
+  </g>
+</svg>

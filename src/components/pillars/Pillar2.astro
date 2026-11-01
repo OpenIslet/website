@@ -1,0 +1,29 @@
+---
+// Idea Graveyard: three gravestones, each marking an idea that is ruled out on paper or flagged as risky.
+const marks = [
+  { cx: 56, cy: 70 },
+  { cx: 120, cy: 58 },
+  { cx: 184, cy: 70 },
+];
+---
+
+<svg viewBox="0 0 240 110" role="img" aria-label="Three gravestones, each marking an idea that is ruled out on paper or flagged as risky.">
+  <path d="M12 97 H228" stroke="#8ea0ff" stroke-opacity="0.45" stroke-width="2" stroke-linecap="round" fill="none"></path>
+  <g fill="#1a3a52" stroke="#8ea0ff" stroke-width="2" stroke-linejoin="round">
+    <path d="M34 90 V62 a22 22 0 0 1 44 0 V90 Z"></path>
+    <rect x="29" y="90" width="54" height="7" rx="2"></rect>
+    <path d="M98 90 V48 a22 22 0 0 1 44 0 V90 Z"></path>
+    <rect x="93" y="90" width="54" height="7" rx="2"></rect>
+    <path d="M162 90 V62 a22 22 0 0 1 44 0 V90 Z"></path>
+    <rect x="157" y="90" width="54" height="7" rx="2"></rect>
+  </g>
+  {
+    marks.map((m) => (
+      <g fill="none" stroke-linecap="round">
+        <circle cx={m.cx} cy={m.cy - 3} r="7" stroke="#8ea0ff" stroke-width="2"></circle>
+        <path d={`M${m.cx - 3} ${m.cy + 7} h6 M${m.cx - 2} ${m.cy + 11} h4`} stroke="#8ea0ff" stroke-width="2"></path>
+        <path d={`M${m.cx - 10} ${m.cy - 12} L${m.cx + 10} ${m.cy + 10}`} stroke="#f2a93b" stroke-width="3"></path>
+      </g>
+    ))
+  }
+</svg>

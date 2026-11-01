@@ -1,0 +1,10 @@
+{
+  "fields": ["title", "authors", "journal", "factor", "comparator", "outcome", "quote", "genes", "tests", "domain"],
+  "idField": "id",
+  "searchOptions": {
+    "boost": { "title": 3, "genes": 4, "factor": 2, "outcome": 1.5, "authors": 1.5, "tests": 0.5, "domain": 0.8 },
+    "prefix": true,
+    "fuzzy": 0.15,
+    "combineWith": "AND"
+  }
+}

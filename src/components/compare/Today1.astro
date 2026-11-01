@@ -1,0 +1,31 @@
+---
+// Today: lifelong immune-suppressing drugs. The immune cells are dimmed, and the pill never stops.
+import Cell from '../art/Cell.astro';
+import Immune from '../art/Immune.astro';
+---
+
+<svg viewBox="0 0 360 150" role="img" aria-label="A cluster of islet cells beside a pill. The immune cells around them are dimmed because the drug suppresses the whole immune system, for life.">
+  <g font-family="IBM Plex Sans, sans-serif">
+    <Cell x={84} y={78} r={24} kind="beta" />
+    <Cell x={120} y={98} r={20} kind="alpha" />
+    <Cell x={76} y={112} r={14} kind="delta" />
+    <Cell x={52} y={92} r={16} kind="beta" />
+
+    <g transform="translate(176 76) rotate(-28)">
+      <rect x="-30" y="-12" width="60" height="24" rx="12" fill="#e6edf2" stroke="#0b1b26" stroke-width="2.5"></rect>
+      <path d="M0 -12 H18 a12 12 0 0 1 0 24 H0 Z" fill="#8ea0ff"></path>
+      <rect x="-30" y="-12" width="60" height="24" rx="12" fill="none" stroke="#0b1b26" stroke-width="2.5"></rect>
+      <line x1="0" y1="-12" x2="0" y2="12" stroke="#0b1b26" stroke-width="2.5"></line>
+    </g>
+
+    <g opacity="0.4">
+      <Immune x={248} y={44} r={18} kind="tcell" />
+      <Immune x={300} y={92} r={18} kind="tcell" />
+      <Immune x={246} y={118} r={17} kind="nk" />
+    </g>
+    <path d="M214 76 H232" stroke="#a6b6c2" stroke-width="2.5" stroke-dasharray="3 5" fill="none"></path>
+
+    <text x="324" y="48" font-size="40" font-weight="600" fill="#e6edf2" text-anchor="middle">∞</text>
+    <text x="324" y="68" font-size="15" fill="#a6b6c2" text-anchor="middle">for life</text>
+  </g>
+</svg>

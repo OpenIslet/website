@@ -1,0 +1,14 @@
+{
+  "ISLET-1-BLUEPRINT.md": 153817,
+  "docs/ISLET-1-CANDIDATE-BLUEPRINTS-AND-OPTIMIZER-v0.2.md": 46108,
+  "data/extracted/ring1_atomic_effects_v0.5.jsonl": 8884703,
+  "data/extracted/cross_study_discovery_graph.json": 4746915,
+  "data/graveyard/idea_graveyard_v0.5.json": 30477,
+  "schemas/extraction_schema_v0.2.json": 43282,
+  "manifest.json": 295542,
+  "data/constructs/islet1_scenario_a_constructs_v0.7.0.fasta": 17196,
+  "data/extracted/layer2_regulatory_and_perturbation_atlas.json": 651325,
+  "data/extracted/layer3_structural_verification_atlas.json": 249841,
+  "data/extracted/layer4_tissue_and_metabolic_twin_atlas.json": 691654,
+  "data/extracted/layer5_personalized_patient_and_crispr_atlas.json": 344943
+}

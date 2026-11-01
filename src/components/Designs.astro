@@ -1,0 +1,496 @@
+---
+import { indices, designScore, xAgainstA } from '../data/scenarios';
+import { release, showScenarioIndices } from '../data/site';
+import { testShort } from '../data/gates';
+import DesignScene from './designs/DesignScene.astro';
+
+const a = designScore('A');
+const b = designScore('B');
+const x = designScore('X');
+const xa = xAgainstA();
+const n = (v: number) => v.toLocaleString('en-US');
+
+// The six checks behind Design A's score, in test order, so the picture can show that they multiply to the score.
+const testOrder = ['1', '2A', '2B', '3', '4', '5'];
+const aTests = testOrder.map((id) => ({ id, name: testShort[id], value: (a.tests as Record<string, number>)[id] }));
+const lowest = Math.round(Math.min(...aTests.map((t) => t.value)) * 100);
+const highest = Math.round(Math.max(...aTests.map((t) => t.value)) * 100);
+// Only Islet-1's own designs are ranked here. Other groups' treatments have results in people, which this model cannot weigh,
+// so they are not put on its scale on this page (the Blueprint page lists them as checks on the model).
+const ours = indices.filter((i) => !i.reference);
+const designs = [
+  {
+    id: 'A',
+    name: 'Design A',
+    tag: 'Lead design',
+    edits: `${a.edits} gene edits`,
+    line: 'One design for most patients',
+    text: 'Takes away the ID flags that T cells use to spot foreign cells, and adds two signals that tell natural killer cells and macrophages to leave the cells alone.',
+    list: [
+      ['B2M', 'switch off the main ID flags, and add CD47 and HLA-E'],
+      ['CIITA', 'switch off the second set of ID flags'],
+      ['CXCL10', 'add SERPINB9 and PD-L1, switched on by inflammation'],
+      ['AAVS1', 'a safe spot in the DNA that tolerates added genes: add the safety switch there'],
+    ],
+    weakest: a.weakestTest,
+    caption: 'What the immune system sees. Dashed flags are removed, and the blue signals are added.',
+  },
+  {
+    id: 'B',
+    name: 'Design B',
+    tag: 'Comparison',
+    edits: `${b.edits} gene edits, ${b.baseEdits} base edit`,
+    line: 'Matched HLA-C hypothesis',
+    text: 'Tests whether retained matching HLA-C can engage inhibitory NK receptors. Protection and manufacturing performance are unmeasured. Design B is a family: this picture and its score are for B1, the six-edit version. B2 is a five-edit version with an optional TYK2 prime edit.',
+    list: [
+      ['HLA-A, HLA-B, CIITA', 'switch off. Keep one matched HLA-C'],
+      ['TYK2', 'a gene that passes on inflammation signals. B1 switches it off; differentiation penalties are literature-anchored priors, not measured yields of this product'],
+      ['CXCL10', 'add SERPINB9 and PD-L1'],
+      ['AAVS1', 'add the safety switch'],
+      ['INS', 'B1 INS-edit hypothesis; effects on recognition and insulin function remain unmeasured'],
+    ],
+    weakest: b.weakestTest,
+    caption: 'What the immune system sees. Dashed flags are removed, and the pale HLA-C flag is kept.',
+  },
+  {
+    id: 'X',
+    name: 'Design X',
+    tag: 'Challenger',
+    edits: `${x.edits} gene edits, ${x.baseEdits} base edit`,
+    line: 'Design A plus one small insulin-gene edit (also called Islet-X)',
+    text: 'Keeps all of Design A and adds one base edit in the insulin gene, designed to make the graft’s own insulin harder for the immune system to target. It would replace Design A only if lab tests show it is better.',
+    list: [
+      ['B2M, CIITA, CXCL10, AAVS1', 'the same four edits as Design A'],
+      ['INS', 'one base edit, which also removes a hidden start signal. Effects are unmeasured'],
+      ['A separate idea', 'redesigned “don’t attack me” signals, a protective cell line and a layered gel. Proposals only: no score, not built or tested'],
+    ],
+    note: `Two separate ideas share this name. The scored one is the insulin-gene edit: ${x.children.toFixed(4)} for children (${x.composite.toFixed(4)} overall), ranked ${x.rank} of ${release.counts.designs.toLocaleString('en-US')}, tied with another design. The other, with no score yet, is the “separate idea” above.`,
+    weakest: x.weakestTest,
+    caption: 'What the immune system sees. The same as Design A, with a dashed insulin-piece flag: fewer insulin pieces for T cells to target (insulin itself unchanged).',
+  },
+];
+
+const explainers = [
+  {
+    k: 'Why three?',
+    t: 'Nobody yet knows which approach works best',
+    d: 'Hiding cells from the immune system is new science. Design A is the simplest idea and the current lead. Design B is a more tailored idea with more risk. Design X is the challenger: Design A with one extra edit. A challenger takes the lead only if lab results show it is better, in a head-to-head test written down in advance.',
+  },
+  {
+    k: 'Personalised',
+    t: 'The plan is matched to the patient',
+    d: 'A computer program reads a patient’s DNA and immune type and picks the plan that fits: Design A for most people, and a matched version, like Design B, where their immune type calls for it. It also checks the edit instructions against that patient’s own DNA.',
+  },
+  {
+    k: 'Different',
+    t: 'No drugs and no wall',
+    d: 'Most of today’s treatments either suppress the whole immune system with drugs, or wall the cells off inside a device. Islet-1 proposes changing the cells to reduce immune attack, with oxygen support and an off-switch; the combined product remains untested.',
+  },
+];
+---
+
+<section class="section--lg designs" id="designs">
+  <div class="container">
+    <p class="eyebrow">Three designs</p>
+    <h2 class="h2 head">Three designs to compare</h2>
+    <p class="lead head__lead">Rather than bet on one idea, the blueprint carries three. Design A is the lead. Lab tests will show which one, or which parts of each, to keep.</p>
+
+    <div class="designs__cards">
+      {
+        designs.map((d) => (
+          <article class="scen">
+            <figure class="scen__fig">
+              <div class="vis"><DesignScene id={d.id as 'A' | 'B' | 'X'} /></div>
+              <figcaption>{d.caption}</figcaption>
+            </figure>
+            <div class="scen__head">
+              <h3 class="h3 scen__name">{d.name}</h3>
+              <span class={`chip${d.id === 'A' ? ' chip--ink' : ' chip--quiet'}`}>{d.tag}</span>
+            </div>
+            <p class="scen__sub">{d.line} <span class="scen__k">· {d.edits}</span></p>
+            <p class="scen__text">{d.text}</p>
+            {d.note && <p class="scen__note pretty">{d.note}</p>}
+            <ul class="scen__list">
+              {d.list.map(([gene, what]) => (
+                <li><span class="mono-chip">{gene}</span> {what}</li>
+              ))}
+            </ul>
+            <p class="scen__weak"><strong>Weakest test in the model:</strong> {testShort[d.weakest]}</p>
+            <a class="textlink" href="/blueprint#designs">See the details →</a>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="explain">
+      {
+        explainers.map((e) => (
+          <div class="explain__item">
+            <p class="explain__k">{e.k}</p>
+            <h3>{e.t}</h3>
+            <p>{e.d}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="card index">
+      <div class="index__head">
+        <h3 class="h3">How the computer model ranks the {n(release.counts.designs)} gene combinations</h3>
+        <span class="index__scale">0 to 1 · ranking score for the child profile, not a chance of working</span>
+      </div>
+      {
+        showScenarioIndices ? (
+          <>
+            <ul class="index__rows">
+              {ours.map((i) => (
+                <li class="index__row">
+                  <div class="index__name"><strong>{i.name}</strong><span>{i.sub}</span></div>
+                  <div class="bar index__bar" aria-hidden="true"><span style={`width:${(i.value * 100).toFixed(2)}%`}></span></div>
+                  <div class="mono index__val">{i.value.toFixed(4)}</div>
+                </li>
+              ))}
+            </ul>
+            <p class="index__x pretty">
+              {xa.sameTests && xa.lowerOverall
+                ? 'Design X scores the same as Design A on each test, and a little lower overall because the model charges a small manufacturing penalty for the extra base edit.'
+                : 'Design X’s test scores differ from Design A’s. The model also charges a small manufacturing penalty for the extra base edit.'}
+            </p>
+            <div class="why">
+              <div class="why__text">
+                <h4>Why is Design A only {a.children.toFixed(3)}?</h4>
+                <p class="pretty">The model gives each design a score on six checks, and a design has to pass every one, so the six scores are multiplied. Design A scores between {lowest}% and {highest}% on each check. Multiply six numbers like that and the answer is {a.children.toFixed(3)}: multiplying always shrinks the total, and even six scores of 80% would come to 0.26.</p>
+                <p class="pretty">So {a.children.toFixed(3)} is not a 10% chance of anything. What counts is the order: it compares designs inside the model, not how they would do in people.</p>
+              </div>
+              <figure class="six">
+                <figcaption>Design A’s six checks, each from 0% to 100%</figcaption>
+                <ul class="six__rows">
+                  {aTests.map((t) => (
+                    <li>
+                      <span class="six__lab">{t.name}</span>
+                      <span class="bar six__bar" aria-hidden="true"><span style={`width:${(t.value * 100).toFixed(1)}%`}></span></span>
+                      <strong class="mono six__val">{Math.round(t.value * 100)}%</strong>
+                    </li>
+                  ))}
+                </ul>
+                <p class="six__total"><span>All six multiplied together</span> <strong class="mono">{a.children.toFixed(3)}</strong></p>
+              </figure>
+            </div>
+          </>
+        ) : (
+          <p class="index__withheld">Model scores are not shown in this version.</p>
+        )
+      }
+      <div class="evidence">
+        <h4>What the scores rest on</h4>
+        <p class="pretty">The gene choices and the Idea Graveyard rules are built from the {n(release.counts.studies)} studies ({n(release.counts.findings)} findings). Those studies mostly test one or two edits at a time.</p>
+        <p class="pretty">What nobody has measured yet is how all the edits in a design behave together inside one cell. No lab tests have been run so far, so the model fills the gap with starting assumptions, and lab results will replace them.</p>
+        <p class="footnote evidence__foot">Scores compare {n(release.counts.designs)} gene combinations on the five tests. {n(release.counts.blocked)} were ruled out because they include an idea our rules block. <a href="/blueprint#odds">See how we estimate the real-world odds →</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-top: 0.75rem;
+    max-width: 51.25rem;
+  }
+  .head__lead {
+    margin-top: 1rem;
+    max-width: 45rem;
+  }
+  /* three columns on a wide screen, one per row otherwise, never two and one left over; the picture is the only panel */
+  .designs__cards {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem 2rem;
+  }
+  @media (min-width: 64em) {
+    .designs__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .scen {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .scen__fig {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+  }
+  .scen__fig figcaption {
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .vis {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .vis :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 13rem;
+    height: auto;
+  }
+  .scen__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .scen__name {
+    font-size: 1.5rem;
+  }
+  .scen__sub {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .scen__k {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .scen__text {
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .scen__note {
+    padding-left: 0.875rem;
+    border-left: 3px solid var(--accent);
+    color: var(--ink);
+    font-size: 0.9375rem;
+  }
+  .scen__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.96875rem;
+    color: var(--body);
+  }
+  .scen__weak {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .designs {
+    /* The next section has its own top padding, so this end is shorter than the page default. */
+    padding-bottom: clamp(2rem, 4vw, 3.5rem);
+  }
+  /* Three across, then one, so the row is never two and one. */
+  .explain {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 56em) {
+    .explain {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .explain__item {
+    padding: 0.25rem 0 0;
+    border-top: 3px solid var(--ink);
+  }
+  .explain__k {
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .explain__item h3 {
+    margin-top: 0.25rem;
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .explain__item p:last-child {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  .index {
+    margin-top: 2.5rem;
+  }
+  .index__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+  }
+  .index__scale {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .index__rows {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .index__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 1rem;
+  }
+  .index__name {
+    flex: 1 1 15rem;
+    font-size: 0.9375rem;
+  }
+  .index__name span {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .index__name strong {
+    font-weight: 600;
+  }
+  .index__bar {
+    flex: 3 1 16.25rem;
+  }
+  .index__bar > span {
+    /* On a true 0 to 1 scale the lowest scores are a hair wide, so keep them visible. */
+    min-width: 2px;
+  }
+  .index__val {
+    flex: 0 0 4rem;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: right;
+  }
+  .index__x {
+    margin: 1.25rem 0 0;
+    max-width: 45rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .index__withheld {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: var(--paper);
+    border: 1px dashed #a9b7c0;
+    border-radius: 0.5rem;
+    color: var(--body);
+  }
+  .evidence {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .evidence h4 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .evidence p {
+    margin: 0.375rem 0 1rem;
+    max-width: 45rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .evidence p.evidence__foot {
+    margin: 0.875rem 0 0;
+  }
+
+  /* why a design that does well on every check still scores near 0.1 */
+  .why {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem 2.5rem;
+    align-items: start;
+  }
+  @media (min-width: 56em) {
+    .why {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    }
+  }
+  .why h4 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .why p {
+    margin: 0.5rem 0 0;
+    max-width: 45rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .six {
+    margin: 0;
+  }
+  .six figcaption {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .six__rows {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .six__rows li {
+    display: grid;
+    grid-template-columns: minmax(7.5rem, 11rem) minmax(0, 1fr) 2.75rem;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--body);
+  }
+  .six__bar {
+    height: 0.625rem;
+    background: var(--neutral-bg);
+  }
+  .six__val {
+    text-align: right;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .six__total {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    margin: 0.875rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.9375rem;
+    color: var(--ink);
+  }
+  .six__total strong {
+    font-size: 1.125rem;
+  }
+  @media (max-width: 30em) {
+    .six__rows li {
+      grid-template-columns: minmax(0, 1fr) 2.75rem;
+    }
+    .six__lab {
+      grid-column: 1 / -1;
+    }
+    .six__bar {
+      grid-column: 1;
+    }
+  }
+</style>

@@ -1,0 +1,125 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Content } from '../content/about.md';
+import { startHref } from '../data/site';
+import { draft } from '../data/versions';
+import { film } from '../data/film';
+import FilmIntro from '../components/FilmIntro.astro';
+
+// Kev's launch post, word for word from src/content/about.md. It is dated the day the open draft opens.
+const dated = new Date(`${draft.opens}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+---
+
+<Layout title="About" description="Why OpenIslet started, in its founder’s own words." current="about">
+  <FilmIntro />
+  <article class="ab">
+    <div class="container ab__inner">
+      <p class="eyebrow">About</p>
+      <h1 class="h1 ab__h">Why OpenIslet exists</h1>
+      <p class="ab__by"><time datetime={draft.opens}>{dated}</time></p>
+      <a class="ab__film" href={film.large} data-film-open>
+        <span class="ab__poster">
+          <img src={film.poster} width="1280" height="720" alt="" loading="lazy" decoding="async" />
+          <span class="ab__play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="30" height="30" focusable="false"><path d="M8.5 5v14l11-7z" fill="currentColor"></path></svg>
+          </span>
+        </span>
+        <span class="ab__label">Watch the launch film ({film.minutes} min)</span>
+      </a>
+      <div class="ab__body">
+        <Content />
+        <p class="ab__sign">Kev</p>
+      </div>
+      <p class="ab__next"><a class="btn btn--primary btn--lg" href={startHref}>Start here</a></p>
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .ab {
+    padding: clamp(2.5rem, 6vw, 4.5rem) 0 clamp(3rem, 7vw, 5rem);
+  }
+  .ab__inner {
+    max-width: 44rem;
+  }
+  .ab__h {
+    margin-top: 0.5rem;
+  }
+  .ab__by {
+    margin-top: 0.75rem;
+    color: var(--muted);
+  }
+  /* The film's own poster, a play button on the middle of it, and the words underneath. */
+  .ab__film {
+    display: block;
+    margin-top: 1.75rem;
+    text-decoration: none;
+  }
+  .ab__poster {
+    position: relative;
+    display: block;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .ab__poster img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* On the cluster of cells in the poster's picture, clear of its words. */
+  .ab__play {
+    position: absolute;
+    left: 71.3%;
+    top: 49%;
+    transform: translate(-50%, -50%);
+    display: grid;
+    place-items: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 50%;
+    background: var(--dark-text);
+    color: var(--ink);
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.4);
+  }
+  .ab__film:hover .ab__play {
+    background: #fff;
+  }
+  @media (max-width: 30em) {
+    .ab__play {
+      width: 3.5rem;
+      height: 3.5rem;
+    }
+  }
+  .ab__label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-top: 0.375rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .ab__film:hover .ab__label {
+    text-decoration: underline;
+  }
+  .ab__sign {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ab__body {
+    margin-top: 2rem;
+    font-size: clamp(1.0625rem, 1.4vw, 1.1875rem);
+    line-height: 1.7;
+    color: var(--body);
+  }
+  .ab__body :global(p) {
+    margin: 0 0 1.25em;
+    text-wrap: pretty;
+  }
+  .ab__body :global(p:first-child) {
+    color: var(--ink);
+  }
+  .ab__next {
+    margin-top: 2rem;
+  }
+</style>

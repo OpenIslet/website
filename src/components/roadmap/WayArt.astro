@@ -1,0 +1,67 @@
+---
+// The ways the later stages are expected to happen: with a partner, or by anyone who takes the open blueprint.
+// A picture for each.
+interface Props {
+  id: 'partner' | 'adopt';
+}
+const { id } = Astro.props;
+---
+
+{
+  id === 'partner' ? (
+    <svg viewBox="0 0 280 140" role="img" aria-label="A blueprint page, then an arrow to a partner organisation's building, then an arrow to a clinic marked with a cross: a partner carries the blueprint into the lab and then the clinic.">
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="18" y="26" width="52" height="68" rx="7" fill="#13293a" stroke="#8ea0ff"></rect>
+        <path d="M28 46 H60 M28 58 H60 M28 70 H48" fill="none" stroke="#8ea0ff" stroke-opacity="0.7"></path>
+        <circle cx="62" cy="86" r="11" fill="#f2a93b"></circle>
+        <path d="M57 86 l4 4 l7 -8" fill="none" stroke="#0b1b26" stroke-width="2.6"></path>
+        <rect x="112" y="40" width="56" height="54" rx="4" fill="#e6edf2"></rect>
+        <path d="M112 40 L140 24 L168 40" fill="#8ea0ff"></path>
+        <rect x="122" y="52" width="10" height="10" rx="2" fill="#8ea0ff" stroke-width="1.8"></rect>
+        <rect x="148" y="52" width="10" height="10" rx="2" fill="#8ea0ff" stroke-width="1.8"></rect>
+        <rect x="122" y="70" width="10" height="10" rx="2" fill="#8ea0ff" stroke-width="1.8"></rect>
+        <rect x="148" y="70" width="10" height="10" rx="2" fill="#8ea0ff" stroke-width="1.8"></rect>
+        <rect x="134" y="78" width="12" height="16" rx="2" fill="#13293a"></rect>
+        <rect x="208" y="30" width="58" height="64" rx="12" fill="#13293a" stroke="#8ea0ff"></rect>
+        <path d="M237 44 V80 M219 62 H255" fill="none" stroke="#f2a93b" stroke-width="9" stroke-linecap="butt"></path>
+      </g>
+      <g stroke="#8ea0ff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M78 60 H100 M94 54 L100 60 L94 66"></path>
+        <path d="M176 60 H198 M192 54 L198 60 L192 66"></path>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">
+        <text x="44" y="118">Blueprint</text>
+        <text x="140" y="118">Partner</text>
+        <text x="237" y="118">Lab, then clinic</text>
+      </g>
+    </svg>
+  ) : (
+    <svg viewBox="0 0 280 140" role="img" aria-label="An open blueprint page marked CC BY, with arrows to three different organisations, drawn as a lab flask, a building and a chip: any organisation can take it and run with it.">
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="22" y="22" width="68" height="84" rx="8" fill="#13293a" stroke="#8ea0ff"></rect>
+        <path d="M34 42 H78 M34 54 H78 M34 66 H62" fill="none" stroke="#8ea0ff" stroke-opacity="0.7"></path>
+        <rect x="46" y="84" width="52" height="24" rx="12" fill="#f2a93b"></rect>
+        <rect x="190" y="14" width="76" height="30" rx="8" fill="#e6edf2"></rect>
+        <rect x="190" y="55" width="76" height="30" rx="8" fill="#e6edf2"></rect>
+        <rect x="190" y="96" width="76" height="30" rx="8" fill="#e6edf2"></rect>
+        <path d="M222 20 V28 L214 40 H232 L224 28 V20" fill="#8ea0ff" stroke-width="2"></path>
+        <rect x="206" y="62" width="14" height="16" rx="2" fill="#8ea0ff" stroke-width="2"></rect>
+        <path d="M206 62 L213 56 L220 62" fill="#8ea0ff" stroke-width="2"></path>
+        <rect x="230" y="66" width="10" height="12" rx="2" fill="#8ea0ff" stroke-width="2"></rect>
+        <rect x="214" y="102" width="20" height="18" rx="3" fill="#8ea0ff" stroke-width="2"></rect>
+        <path d="M219 102 V97 M229 102 V97 M219 120 V125 M229 120 V125 M214 108 H209 M214 114 H209 M234 108 H239 M234 114 H239" fill="none" stroke-width="2"></path>
+      </g>
+      <g stroke="#8ea0ff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M98 50 C 130 50, 150 30, 180 30 M174 25 L180 30 L174 35"></path>
+        <path d="M98 64 H180 M174 59 L180 64 L174 69"></path>
+        <path d="M98 78 C 130 78, 150 111, 180 111 M174 106 L180 111 L174 116"></path>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-weight="700" text-anchor="middle">
+        <text x="72" y="100" font-size="12" fill="#0b1b26">CC BY</text>
+      </g>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">
+        <text x="56" y="130">Open blueprint</text>
+      </g>
+    </svg>
+  )
+}

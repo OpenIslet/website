@@ -1,0 +1,33 @@
+---
+// Stage 0: the blueprint. Five layers of checks stacked like sheets, each marked as passed, with a magnifying glass on the top one.
+const slabs = [0, 1, 2, 3, 4].map((i) => ({ y: 14 + i * 21, i }));
+const tops = ['#aab7ff', '#97a8ff', '#8497ff', '#7188ff', '#5b73ff'];
+---
+
+<svg viewBox="0 0 280 176" role="img" aria-label="Five layers of checks stacked like sheets of paper, each marked with a tick, and a magnifying glass over the top layer.">
+  {
+    [...slabs].reverse().map((s) => (
+      <g stroke="#0b1b26" stroke-width="2" stroke-linejoin="round">
+        <path d={`M70 ${s.y + 18} L130 ${s.y + 36} V${s.y + 47} L70 ${s.y + 29} Z`} fill="#34459e"></path>
+        <path d={`M130 ${s.y + 36} L190 ${s.y + 18} V${s.y + 29} L130 ${s.y + 47} Z`} fill="#27357f"></path>
+        <path d={`M130 ${s.y} L190 ${s.y + 18} L130 ${s.y + 36} L70 ${s.y + 18} Z`} fill={tops[s.i]}></path>
+      </g>
+    ))
+  }
+  {
+    slabs.map((s) => (
+      <g>
+        <circle cx="130" cy={s.y + 18} r="8.5" fill="#0b1b26" fill-opacity="0.85"></circle>
+        <path d={`M125.5 ${s.y + 18} l3 3 l5.5 -6`} fill="none" stroke="#e6edf2" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path>
+      </g>
+    ))
+  }
+  <g>
+    <circle cx="218" cy="40" r="21" fill="#e6edf2" fill-opacity="0.12" stroke="#e6edf2" stroke-width="3.5"></circle>
+    <path d="M233 55 L252 74" stroke="#e6edf2" stroke-width="6" stroke-linecap="round"></path>
+    <path d="M208 40 l7 7 l12 -14" fill="none" stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+  <g font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" fill="#a6b6c2">
+    <text x="22" y="168">Studies · DNA · proteins · body · patient</text>
+  </g>
+</svg>

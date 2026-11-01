@@ -1,0 +1,10 @@
+node_modules/
+export/
+.export.staging/
+.export.incoming/
+.export.rollback_backup/
+bundle/
+.wrangler/
+dist/
+*.log
+.dev.vars

@@ -1,0 +1,47 @@
+---
+// Test 4: survival under stress. Inflammation and a killer-cell toxin meet a cell that switches on its own protection.
+import Cell from '../art/Cell.astro';
+import Immune from '../art/Immune.astro';
+---
+
+<svg viewBox="0 0 520 380" role="img" aria-label="An islet cell under inflammation. A killer T cell fires a toxin, granzyme B, at it. Inside the cell a shield called SERPINB9 blocks the toxin, and a PD-L1 signal on its surface tells the T cell to back off. Both protections switch on only when inflammation appears.">
+  <g font-family="IBM Plex Sans, sans-serif">
+    <!-- inflammation -->
+    <g stroke="#f2a93b" stroke-width="3" fill="none" stroke-linecap="round" stroke-opacity="0.85">
+      <path d="M48 66 q12 -14 24 0 t24 0 t24 0 t24 0 t24 0"></path>
+      <path d="M72 84 q12 -14 24 0 t24 0 t24 0 t24 0"></path>
+      <path d="M40 102 q12 -14 24 0 t24 0 t24 0 t24 0 t24 0"></path>
+    </g>
+    <text x="24" y="38" fill="#e6edf2" font-size="18" font-weight="600">Inflammation</text>
+
+    <!-- the cell -->
+    <Cell x={196} y={232} r={80} kind="beta" />
+    <!-- shield inside -->
+    <path d="M170 212 L196 222 V246 C196 264 184 274 170 280 C156 274 144 264 144 246 V222 Z" fill="#8ea0ff" stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round"></path>
+    <path d="M158 244 l9 9 l17 -19" stroke="#0b1b26" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+    <text x="196" y="342" fill="#ffffff" font-size="17" font-weight="600" text-anchor="middle">SERPINB9</text>
+    <text x="196" y="362" fill="#c9d3ff" font-size="15" text-anchor="middle">blocks the toxin</text>
+
+    <!-- PD-L1 -->
+    <g>
+      <polygon points="262,168 278,162 294,168 300,184 294,200 278,206 262,200 256,184" transform="translate(6 -4)" fill="#0b1b26" stroke="#8ea0ff" stroke-width="2.5"></polygon>
+      <path d="M270 180 h22" stroke="#8ea0ff" stroke-width="4" stroke-linecap="round"></path>
+    </g>
+    <text x="316" y="168" fill="#ffffff" font-size="17" font-weight="600">PD-L1</text>
+    <text x="316" y="188" fill="#c9d3ff" font-size="15">tells T cells</text>
+    <text x="316" y="206" fill="#c9d3ff" font-size="15">“back off”</text>
+
+    <!-- killer T cell and toxin -->
+    <Immune x={452} y={258} r={32} kind="tcell" />
+    <g fill="#f2a93b" stroke="#0b1b26" stroke-width="1.5" stroke-linejoin="round">
+      <polygon points="404,236 388,230 388,242"></polygon>
+      <polygon points="374,248 358,242 358,254"></polygon>
+      <polygon points="344,258 328,252 328,264"></polygon>
+    </g>
+    <path d="M326 258 L246 250" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 6" fill="none"></path>
+    <path d="M246 250 L204 246" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 6" fill="none" opacity="0.8"></path>
+    <path d="M214 232 l12 12 M226 232 l-12 12" stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round"></path>
+    <text x="410" y="318" fill="#e6edf2" font-size="16" text-anchor="middle">Killer T cell</text>
+    <text x="410" y="338" fill="#a6b6c2" font-size="15" text-anchor="middle">fires granzyme B</text>
+  </g>
+</svg>

@@ -1,0 +1,100 @@
+---
+// A block of text with a Copy button. Used for the address of the connector and for the prompts
+// people paste into their AI assistant. The text is shown in full, so people can read what they paste.
+interface Props {
+  text: string;
+  label?: string;
+  hint?: string;
+  buttonLabel?: string;
+  /** What the button copies, for screen readers (the visible label is just "Copy"). Defaults to the label. */
+  context?: string;
+  /** Limit the height of long text. It scrolls inside the box. */
+  maxHeight?: string;
+}
+const { text, label, hint, buttonLabel = 'Copy', maxHeight, context = label } = Astro.props;
+---
+
+<div class="copybox">
+  <div class="copybox__bar">
+    <div class="copybox__head">
+      {label && <span class="copybox__label">{label}</span>}
+      {hint && <span class="copybox__hint">{hint}</span>}
+    </div>
+    <button type="button" class="copybox__btn" data-copy aria-live="polite"><span data-copy-text>{buttonLabel}</span>{context && <span class="sr-only"> {context}</span>}</button>
+  </div>
+  <pre class="copybox__text" style={maxHeight ? `max-height:${maxHeight}` : undefined} tabindex={maxHeight ? 0 : undefined}>{text}</pre>
+</div>
+
+<script>
+  import { copyWithFlash } from '../scripts/group';
+
+  document.querySelectorAll<HTMLButtonElement>('.copybox button[data-copy]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const text = btn.closest('.copybox')?.querySelector('pre')?.textContent ?? '';
+      void copyWithFlash(btn, text);
+    });
+  });
+</script>
+
+<style>
+  .copybox {
+    border: 1px solid var(--line-strong);
+    border-radius: 0.625rem;
+    background: #fff;
+    overflow: hidden;
+    text-align: left;
+  }
+  .copybox__bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    padding: 0.5rem 0.5rem 0.5rem 1rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+  }
+  .copybox__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.75rem;
+    min-width: 0;
+  }
+  .copybox__label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .copybox__hint {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .copybox__btn {
+    flex: none;
+    min-width: 6.5rem;
+    min-height: 2.75rem;
+    padding: 0 1.125rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .copybox__btn:hover {
+    background: var(--accent-dk);
+  }
+  .copybox__text {
+    margin: 0;
+    padding: 1rem 1.125rem;
+    font-family: var(--mono);
+    font-size: 0.84375rem;
+    line-height: 1.65;
+    color: var(--ink);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    overflow-y: auto;
+  }
+</style>

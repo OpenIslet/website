@@ -1,0 +1,41 @@
+---
+// Stage 1: lab testing. A plate of wells, most holding healthy cells, a few failing, and a pipette adding to one.
+const cols = [0, 1, 2, 3, 4, 5];
+const rows = [0, 1, 2, 3];
+const stops = new Set(['2-0', '5-3', '0-2']);
+const lit = new Set(['0-0', '1-0', '3-1', '4-1', '2-2', '5-2', '1-3', '4-3', '3-3', '5-0']);
+---
+
+<svg viewBox="0 0 280 176" role="img" aria-label="A plate of small wells. Most hold healthy cells, a few are marked as failed. A pipette adds liquid to one well. A tick and a cross on the right stand for pass and stop.">
+  <rect x="18" y="44" width="178" height="116" rx="12" fill="#13293a" stroke="#8ea0ff" stroke-width="2.5"></rect>
+  {
+    rows.map((r) =>
+      cols.map((c) => {
+        const k = `${c}-${r}`;
+        const cx = 42 + c * 28;
+        const cy = 68 + r * 28;
+        return (
+          <g>
+            <circle cx={cx} cy={cy} r="10" fill={stops.has(k) ? '#f2a93b' : lit.has(k) ? '#5b73ff' : '#102a3b'} stroke={stops.has(k) ? '#0b1b26' : lit.has(k) ? '#0b1b26' : '#8ea0ff'} stroke-opacity={lit.has(k) || stops.has(k) ? 1 : 0.55} stroke-width="2"></circle>
+            {stops.has(k) && <path d={`M${cx - 4} ${cy - 4} L${cx + 4} ${cy + 4} M${cx + 4} ${cy - 4} L${cx - 4} ${cy + 4}`} stroke="#0b1b26" stroke-width="2.4" stroke-linecap="round"></path>}
+            {lit.has(k) && <circle cx={cx - 2} cy={cy + 1} r="3.4" fill="#0b1b26" fill-opacity="0.3"></circle>}
+          </g>
+        );
+      })
+    )
+  }
+  <g transform="translate(141 37) rotate(35)" stroke="#0b1b26" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="-9" y="-44" width="18" height="9" rx="3.5" fill="#8ea0ff"></rect>
+    <rect x="-6.5" y="-36" width="13" height="46" rx="5" fill="#e6edf2"></rect>
+    <path d="M-4 10 L4 10 L1.4 27 L-1.4 27 Z" fill="#e6edf2"></path>
+    <path d="M-6.5 -22 H6.5" stroke="#8ea0ff" stroke-width="2.4"></path>
+  </g>
+  <circle cx="126" cy="62" r="3.4" fill="#8ea0ff"></circle>
+  <g>
+    <circle cx="236" cy="70" r="19" fill="#8ea0ff" stroke="#0b1b26" stroke-width="2.5"></circle>
+    <path d="M227 70 l6 6 l11 -12" fill="none" stroke="#0b1b26" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
+    <circle cx="236" cy="124" r="19" fill="#f2a93b" stroke="#0b1b26" stroke-width="2.5"></circle>
+    <path d="M228 116 L244 132 M244 116 L228 132" stroke="#0b1b26" stroke-width="3.4" stroke-linecap="round"></path>
+    <path d="M236 92 V102" stroke="#a6b6c2" stroke-width="2" stroke-dasharray="2 4" stroke-linecap="round"></path>
+  </g>
+</svg>

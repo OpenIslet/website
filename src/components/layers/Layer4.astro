@@ -1,0 +1,29 @@
+---
+// Layer 4: the graft and the body. Two computer simulations: the oxygen level (with a thin margin), and blood sugar staying in range.
+---
+
+<svg viewBox="0 0 280 176" role="img" aria-label="Two small charts from the computer models, drawn to show the idea. Left: oxygen over 14 days, which the model suggests stays above a minimum line with only a thin margin. Right: blood sugar over 24 hours, which rises after a meal and stays inside the target range in the model.">
+  <g font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="600" fill="#e6edf2">
+    <text x="14" y="24">Oxygen</text>
+    <text x="154" y="24">Blood sugar</text>
+  </g>
+  <g fill="#a6b6c2" font-family="IBM Plex Sans, sans-serif" font-size="11">
+    <text x="14" y="164">14 days</text>
+    <text x="154" y="164">24 hours</text>
+  </g>
+
+  <g stroke="#a6b6c2" stroke-opacity="0.5" stroke-width="1.5" fill="none">
+    <path d="M14 36 V148 H126"></path>
+    <path d="M154 36 V148 H266"></path>
+  </g>
+
+  <!-- oxygen -->
+  <line x1="14" y1="112" x2="126" y2="112" stroke="#f2a93b" stroke-width="2" stroke-dasharray="4 4"></line>
+  <path d="M16 60 C34 68, 44 98, 62 90 S96 70, 124 74 V148 H16 Z" fill="#8ea0ff" fill-opacity="0.2"></path>
+  <path d="M16 60 C34 68, 44 98, 62 90 S96 70, 124 74" fill="none" stroke="#8ea0ff" stroke-width="3.5" stroke-linecap="round"></path>
+
+  <!-- blood sugar -->
+  <rect x="155" y="62" width="110" height="46" fill="#8ea0ff" fill-opacity="0.18"></rect>
+  <path d="M156 92 C170 92, 176 70, 192 72 C208 74, 212 96, 228 92 S252 88, 264 90" fill="none" stroke="#e6edf2" stroke-width="3.5" stroke-linecap="round"></path>
+  <circle cx="176" cy="76" r="4" fill="#f2a93b"></circle>
+</svg>

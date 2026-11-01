@@ -1,0 +1,227 @@
+---
+// How the blueprint was built, so far: five layers of checks, each looking at the design from a different angle.
+import Layer1 from './layers/Layer1.astro';
+import Layer2 from './layers/Layer2.astro';
+import Layer3 from './layers/Layer3.astro';
+import Layer4 from './layers/Layer4.astro';
+import Layer5 from './layers/Layer5.astro';
+import { release } from '../data/site';
+
+const n = (v: number | null | undefined) => typeof v === 'number' && Number.isFinite(v) ? v.toLocaleString('en-US') : 'unavailable';
+const c = release.counts;
+// Small numbers read better as words.
+const word = (v: number | null | undefined) =>
+  typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 10
+    ? ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][v]
+    : n(v);
+
+// `text` is the plain version. `sci` is the technical sentence for scientists, kept underneath.
+const layers = [
+  {
+    Visual: Layer1,
+    name: 'Read the evidence',
+    tag: 'The studies',
+    text: `We read ${n(c.studies)} studies and pulled out ${n(c.findings)} findings, each linked to the sentence it came from. Ideas the evidence argues against went into the Idea Graveyard, and ${n(c.designs)} designs were scored.`,
+  },
+  {
+    Visual: Layer2,
+    name: 'Check the DNA',
+    tag: 'Sequence and grammar',
+    text: `We checked the ${word(c.constructs)} donor DNA sequences letter by letter. One prediction tool, AlphaGenome, only allows its results to be used for non-commercial purposes, and everything here is free for anyone to use, so we do not publish or rely on its numbers.`,
+    sci: `${c.constructs} genomic reference constructs have sequence, translation and grammar checks. AlphaGenome variant-impact scores are neither published nor used as evidence: its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release.`,
+  },
+  {
+    Visual: Layer3,
+    name: 'Check the proteins',
+    tag: 'AlphaFold and 3D structures',
+    text: `We checked in 3D that the protective proteins can fit their targets (${word(c.proteinPairs)} pairs, using AlphaFold models and lab-measured structures). That shows it is possible, not that it works. One flexible loop can’t be settled by computer and needs a lab test.`,
+    sci: 'AlphaFold models and experimental structures support reference-geometry comparisons, not proof of engineered immune protection.',
+  },
+  {
+    Visual: Layer4,
+    name: 'Simulate the graft and the body',
+    tag: 'Computer models',
+    text: 'Models follow oxygen and chemical by-products inside the graft for 14 days, and blood sugar and hormones for 24 hours.',
+  },
+  {
+    Visual: Layer5,
+    name: 'Match it to the patient',
+    tag: 'Patient compiler',
+    text: `A program turns a person’s DNA results into a list of edits. So far it has only been run on ${n(c.virtualPatients)} made-up patients from five ancestries, and lab results will be added as they arrive.`,
+    sci: 'The compiler checks declared reference edit instructions and genotype inputs in scenarios.',
+  },
+];
+---
+
+<div class="built" id="built">
+  <p class="eyebrow">How the blueprint was built</p>
+  <h3 class="built__h">Five layers of checks, each from a different angle</h3>
+  <p class="built__lead">
+    The design was tested on paper, in software, before any lab work. If a layer finds a problem, the blueprint changes.
+  </p>
+
+  <ol class="layers">
+    {
+      layers.map((l, i) => (
+        <li class="layer">
+          <div class="layer__art">
+            <div class="layer__badge">Layer {i + 1}</div>
+            <l.Visual />
+          </div>
+          <div class="layer__text">
+            <h4>{l.name}</h4>
+            <p>{l.text}</p>
+            {l.sci && <p class="layer__sci"><strong>For scientists:</strong> {l.sci}</p>}
+            <span class="chip">{l.tag}</span>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p class="built__more"><a class="textlink" href="/blueprint#spec">Read the full specification →</a></p>
+</div>
+
+<style>
+  .built {
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+  .built__h {
+    margin-top: 0.75rem;
+    max-width: 44rem;
+    font-size: clamp(1.5rem, 2.8vw, 2.125rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .built__lead {
+    margin-top: 0.875rem;
+    max-width: 42rem;
+    font-size: 1.0625rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  .layers {
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 3rem 0;
+  }
+  /* The picture is the only panel; the words stand on the page under it. */
+  .layer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+  .layer:not(:last-child)::after {
+    content: '↓';
+    position: absolute;
+    left: 50%;
+    bottom: -2.4rem;
+    transform: translateX(-50%);
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .layer__art {
+    position: relative;
+    padding: 1rem 1rem 0.5rem;
+    background: var(--ink-2);
+    border-radius: 0.75rem;
+  }
+  .layer__art :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .layer__badge {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--accent-lt);
+  }
+  .layer__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1rem 0 0;
+    flex: 1;
+  }
+  .layer__text h4 {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .layer__text p {
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .layer__text .layer__sci {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .layer__text .chip {
+    margin-top: auto;
+    /* Let a long label wrap when the visitor makes the text bigger. */
+    white-space: normal;
+    height: auto;
+    padding-block: 0.375rem;
+    line-height: 1.2;
+  }
+
+  /* Between a phone and a wide screen the five layers are one per row, the picture beside its words, so the last row is never short. */
+  @media (min-width: 40em) and (max-width: 74.99em) {
+    .layers {
+      gap: 3rem 0;
+    }
+    .layer {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 0 2rem;
+    }
+    .layer__art {
+      flex: 0 0 min(24rem, 46%);
+    }
+    .layer__text {
+      padding-top: 0;
+    }
+    /* the arrow to the next layer sits under the middle of the picture */
+    .layer:not(:last-child)::after {
+      left: min(12rem, 23%);
+    }
+  }
+
+  @media (min-width: 75em) {
+    .layers {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 0 2.5rem;
+    }
+    .layer:not(:last-child)::after {
+      display: none;
+    }
+    /* The arrow sits at the middle of the picture, in the gap between two columns. */
+    .layer:not(:last-child) .layer__art::after {
+      content: '→';
+      position: absolute;
+      left: calc(100% + 0.375rem);
+      top: 50%;
+      width: 1.75rem;
+      transform: translateY(-50%);
+      font-size: 1.75rem;
+      line-height: 1;
+      text-align: center;
+      color: var(--accent);
+    }
+  }
+
+  .built__more {
+    margin-top: 1.5rem;
+  }
+</style>

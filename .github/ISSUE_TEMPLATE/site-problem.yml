@@ -1,0 +1,27 @@
+name: A problem with the website
+description: Something on openislet.org is broken, confusing or hard to read.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for telling us. This form is for problems with the **website or the connector**. For an idea about the blueprint itself, [send an IIP](https://openislet.org/start) instead.
+
+        Everything here is public, so please leave personal details out.
+  - type: input
+    id: page
+    attributes:
+      label: Which page?
+      description: The address, for example https://openislet.org/start
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: Your device and browser (optional)
+      description: For example, iPhone with Safari, or Windows with Firefox.

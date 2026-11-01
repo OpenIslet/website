@@ -1,0 +1,283 @@
+---
+import Step1 from './steps/Step1.astro';
+import Step2 from './steps/Step2.astro';
+import Step3 from './steps/Step3.astro';
+import Step4 from './steps/Step4.astro';
+import Step5 from './steps/Step5.astro';
+import Step6 from './steps/Step6.astro';
+import { paths, stepNames } from '../data/guide';
+import { startHref, social } from '../data/site';
+
+const visuals = [Step1, Step2, Step3, Step4, Step5, Step6];
+
+const first = paths[0].id;
+---
+
+<section class="help" id="help">
+  <div class="container">
+    <p class="eyebrow">Get involved</p>
+    <h2 class="h2 help__h">How you can help</h2>
+    <p class="lead help__lead">If you can chat with an AI assistant, you can help. You don’t need to be a scientist.</p>
+
+    <div class="grid who" role="group" aria-label="Choose who you are" style="--min: 18rem; --gap: 0.75rem">
+      {
+        paths.map((p) => (
+          <button type="button" class="whobtn" data-path={p.id} aria-pressed={String(p.id === first)}>
+            <span class="whobtn__t">{p.who}</span>
+            <span class="whobtn__h">{p.hint}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    {
+      paths.map((p) => (
+        <div class="path" data-path={p.id} hidden={p.id !== first}>
+          <div class="summary">
+            <p class="summary__k">The whole process, in one minute</p>
+            <p class="summary__text">{p.summary}</p>
+            <ol class="flow" aria-hidden="true">
+              {stepNames.map((n, i) => (
+                <li><span>{i + 1}</span>{n}</li>
+              ))}
+            </ol>
+          </div>
+
+          <ol class="steps">
+            {p.steps.map((s, i) => {
+              const Visual = visuals[i];
+              return (
+              <li class="step">
+                <div class="vis"><Visual /></div>
+                <div class="step__top">
+                  <span class="step__n">{i + 1}</span>
+                  {i === 0 && <span class="chip chip--ink">Start here</span>}
+                </div>
+                <h3>{s.title}</h3>
+                <p>{s.text}</p>
+                <a class="textlink" href={`${startHref}#step-${i + 1}`} aria-label={`Step ${i + 1}: ${s.title}. Show me how`}>Show me how →</a>
+              </li>
+              );
+            })}
+          </ol>
+        </div>
+      ))
+    }
+
+    <div class="help__cta">
+      <a class="btn btn--primary btn--lg" href={`${startHref}#step-1`}>Start with step 1</a>
+      <a class="textlink" href="/contributions">See who has contributed →</a>
+      <a class="textlink" href={social.x.url} target="_blank" rel="noopener me">Follow {social.x.handle} on X →</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { wireGroup } from '../scripts/group';
+
+  const selectPath = wireGroup({ key: 'path', buttons: 'button[data-path]', panels: 'div[data-path]' });
+
+  // Links such as /#help-lab open that path.
+  function openFromHash() {
+    const m = location.hash.match(/^#help-(.+)$/);
+    if (!m) return;
+    selectPath(m[1]);
+    document.getElementById('help')?.scrollIntoView();
+  }
+  window.addEventListener('hashchange', openFromHash);
+  openFromHash();
+</script>
+
+<style>
+  .help {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    background: var(--tint);
+    border-top: 1px solid #cfd8ff;
+  }
+  .help__h {
+    margin-top: 0.75rem;
+    max-width: 56rem;
+  }
+  .help__lead {
+    margin-top: 1.125rem;
+    max-width: 46rem;
+  }
+  .who {
+    margin-top: 2rem;
+  }
+  .whobtn {
+    min-height: 5rem;
+    padding: 0.875rem 1.25rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--ink);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+  }
+  .whobtn:hover {
+    border-color: var(--accent);
+  }
+  .whobtn[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+  .whobtn__t {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .whobtn__h {
+    font-size: 0.875rem;
+    opacity: 0.85;
+  }
+
+  /* The one-minute summary is a note with a bar beside it, not a box. */
+  .summary {
+    margin-top: 2rem;
+    padding-left: clamp(1rem, 2.4vw, 1.5rem);
+    border-left: 3px solid var(--accent);
+  }
+  .summary__k {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .summary__text {
+    margin-top: 0.5rem;
+    max-width: 62rem;
+    font-size: 1.125rem;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .flow {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0.25rem;
+  }
+  .flow li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--body);
+  }
+  .flow li + li::before {
+    content: '';
+    width: 1.5rem;
+    height: 2px;
+    margin-inline: 0.125rem 0.5rem;
+    background: var(--line-strong);
+  }
+  /* When the six stops no longer fit on one line they become a grid (three across, then two), without the short lines between them. */
+  @media (max-width: 52em) {
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem 1rem;
+    }
+    .flow li + li::before {
+      display: none;
+    }
+  }
+  @media (max-width: 30em) {
+    .flow {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .flow span {
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  /* Always three across, then two, then one, so the rows are even. */
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+  }
+  @media (max-width: 62em) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 38em) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .vis {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .vis :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 8rem;
+    height: auto;
+  }
+  .step__top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .step__n {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 1.0625rem;
+  }
+  .step h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .step p {
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .step .textlink {
+    margin-top: auto;
+  }
+
+  .help__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: 2rem;
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { social, indexable, shareImage } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: string;
+  /** Keeps one page out of search results even when the site is public (the 404 page). */
+  noindex?: boolean;
+}
+const { title, description, current, noindex = false } = Astro.props;
+const fullTitle = title === 'OpenIslet' ? 'OpenIslet' : `${title} · OpenIslet`;
+const hidden = noindex || !indexable;
+// The canonical address has no trailing slash, except for the home page.
+const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
+const canonical = new URL(path, Astro.site).href;
+const image = new URL(shareImage.src, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* Phones: do not turn numbers such as ORCID iDs and DNA positions into phone-number links, and colour the browser bar. */}
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content={description} />
+    {/* Until the site is public, keep it out of search indexes (see PUBLIC_INDEXABLE in .env.example). */}
+    {hidden && <meta name="robots" content="noindex, nofollow" />}
+    {!hidden && <link rel="canonical" href={canonical} />}
+    <meta name="generator" content={Astro.generator} />
+    <meta property="og:site_name" content="OpenIslet" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content={String(shareImage.width)} />
+    <meta property="og:image:height" content={String(shareImage.height)} />
+    <meta property="og:image:alt" content={shareImage.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={social.x.handle} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content={shareImage.alt} />
+    <link rel="me" href={social.x.url} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <title>{fullTitle}</title>
+    <!-- Movement that starts by itself stops after five seconds (WCAG 2.2.2). Visitors who ask for reduced motion never see it. -->
+    <script is:inline>setTimeout(function () { document.documentElement.classList.add('still'); }, 5000);</script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Nav current={current} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../scripts/scrollregions';
+      import '../scripts/sidescroll';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  html.still .cellfield__layer {
+    animation-play-state: paused !important;
+  }
+  .skip {
+    position: absolute;
+    left: 0.5rem;
+    top: -3.75rem;
+    z-index: 10;
+    padding: 0.75rem 1rem;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 0.5rem;
+  }
+  .skip:focus {
+    top: 0.5rem;
+  }
+</style>

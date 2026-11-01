@@ -1,0 +1,146 @@
+---
+// The launch film, full screen, in the browser's own player. With `auto` (Home only) it opens by itself on a first visit; any link
+// marked data-film-open on the page opens it at any time (Home's hero, and the poster on About).
+import { film } from '../data/film';
+
+interface Props {
+  auto?: boolean;
+}
+const { auto = false } = Astro.props;
+---
+
+<dialog class="film" id="film" aria-label="The OpenIslet launch film" data-large={film.large} data-small={film.small} data-auto={auto ? 'true' : undefined}>
+  <div class="film__stage">
+    <video class="film__video" id="film-video" playsinline preload="none" controls poster={film.poster}></video>
+  </div>
+  <button class="film__skip" id="film-skip" type="button" aria-label="Skip the film" title="Skip" autofocus>
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"></path></svg>
+  </button>
+</dialog>
+
+<script>
+  // The browser's own player (Kev, 31 October 2026), always with the sound on: the film is never started muted. A browser starts
+  // a video with sound by itself only on a site the person has used before, so on most first visits it waits on its first
+  // picture, and the player's own play button starts it, with sound. The small ✕ in the corner skips it, Esc closes it, and it closes by
+  // itself at the end. On Home it opens by itself once, because the browser remembers, but never for a link to a part of the
+  // page (such as /#problem) or in an automated browser (the site's own audits). On a device set to reduce motion or save data it
+  // waits for play. Nothing is downloaded until it opens.
+  const dialog = document.getElementById('film') as HTMLDialogElement | null;
+  const video = document.getElementById('film-video') as HTMLVideoElement | null;
+  const skip = document.getElementById('film-skip') as HTMLButtonElement | null;
+  const SEEN = 'openislet.film.seen';
+
+  if (dialog && video && skip && typeof dialog.showModal === 'function') {
+    const open = (now: boolean) => {
+      if (!video.getAttribute('src')) video.src = (Math.min(screen.width, screen.height) < 768 ? dialog.dataset.small : dialog.dataset.large) ?? '';
+      video.muted = false;
+      dialog.showModal();
+      skip.focus();
+      // A browser that wants a press first leaves its play button showing.
+      if (now) video.play().catch(() => undefined);
+    };
+
+    // Chrome on a computer starts its player only from the small play button in the corner. Until the film has started, a click
+    // anywhere on the picture starts it too, as Safari and Firefox already do themselves.
+    let started = false;
+    video.addEventListener('playing', () => (started = true));
+    video.addEventListener('click', () => {
+      if (!started && video.paused) video.play().catch(() => undefined);
+    });
+
+    // Stopped straight away, not on the dialog's "close" event: a browser can send that one late, and the music would carry on.
+    const stop = () => {
+      video.pause();
+      video.currentTime = 0;
+      started = false;
+    };
+    const shut = () => {
+      stop();
+      if (dialog.open) dialog.close();
+    };
+    skip.addEventListener('click', shut);
+    video.addEventListener('ended', shut);
+    dialog.addEventListener('cancel', stop); // Esc
+    dialog.addEventListener('close', stop);
+
+    // The link works without scripts too (it is the film's own address); here it opens the player and starts it, as a press allows.
+    for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-film-open]')) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        open(true);
+      });
+    }
+
+    // On Home only. Opens by itself only once it is sure to be remembered, or it would open on every visit.
+    if (dialog.dataset.auto === 'true') {
+      let seen = true;
+      try {
+        seen = localStorage.getItem(SEEN) === '1';
+        if (!seen) localStorage.setItem(SEEN, '1');
+      } catch {
+        seen = true;
+      }
+      const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData === true;
+      const calm = matchMedia('(prefers-reduced-motion: reduce)').matches || saveData;
+      if (!seen && !location.hash && !navigator.webdriver) open(!calm);
+    }
+  }
+</script>
+
+<style>
+  .film {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    border: 0;
+    background: var(--ink);
+    color: #fff;
+  }
+  .film[open] {
+    display: grid;
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  }
+  .film::backdrop {
+    background: var(--ink);
+  }
+  :global(html:has(.film[open])) {
+    overflow: hidden;
+  }
+  .film__stage {
+    display: grid;
+    place-items: center;
+    container-type: size;
+  }
+  /* The picture is as big as fits, with nothing under it: the player's own controls fade over it, as in any player. It keeps the
+     top-right corner clear for the ✕, leaving a margin there above it or beside it. */
+  .film__video {
+    --clear: 7rem;
+    --w: min(100cqw, 100cqh * 16 / 9, max(100cqw - var(--clear), (100cqh - var(--clear)) * 16 / 9));
+    width: var(--w);
+    height: calc(var(--w) * 9 / 16);
+    background: var(--ink);
+    cursor: pointer;
+  }
+  .film__skip {
+    position: absolute;
+    top: calc(env(safe-area-inset-top) + 0.75rem);
+    right: calc(env(safe-area-inset-right) + 0.75rem);
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    background: rgba(11, 27, 38, 0.6);
+    color: #fff;
+    cursor: pointer;
+  }
+  .film__skip:hover {
+    border-color: #fff;
+  }
+</style>

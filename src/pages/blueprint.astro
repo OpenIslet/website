@@ -1,0 +1,1822 @@
+---
+import Layout from '../layouts/Layout.astro';
+import BlueprintFigure from '../components/BlueprintFigure.astro';
+import VersionsPlan from '../components/VersionsPlan.astro';
+import ProposalArt from '../components/designs/ProposalArt.astro';
+import ChangelogArt from '../components/ChangelogArt.astro';
+import Odds from '../components/Odds.astro';
+import { scenarios, gateColumns, niche, assets, reproduce } from '../data/blueprint';
+import { pubmed, release, longDate, showScenarioIndices, startHref } from '../data/site';
+import { indices } from '../data/scenarios';
+import { testShort } from '../data/gates';
+import { fillTokens } from '../data/specTokens';
+import { draft as openDraft } from '../data/versions';
+import changelog from '../data/changelog.json';
+import ledger from '../data/contributions.json';
+import references from '../data/references.json';
+import sizes from '../data/downloads.json';
+import * as spec from '../content/blueprint-spec.md';
+
+// ---- the concise specification: Markdown text, with numbers and figures filled in ----
+const n = (v: number) => v.toLocaleString('en-US');
+const c = release.counts;
+let html = await spec.compiledContent();
+html = fillTokens(html);
+html = html
+  .replace(/<p>(<a id="[^"]+"><\/a>)<\/p>/g, '$1')
+  .replace(/<(\/?)h3/g, '<$1h4')
+  .replace(/<(\/?)h2/g, '<$1h3')
+  .replace(/<table>/g, '<div class="tablewrap"><table>')
+  .replace(/<\/table>/g, '</table></div>');
+const parts = html.split(/<!--figure:(\w+)-->/);
+
+const toc = spec.getHeadings().filter((h) => h.depth === 2);
+const cited = [...new Set([...spec.rawContent().matchAll(/#ref-(\d{5,9})/g)].map((m) => m[1]))];
+type Ref = { pmid: string; title?: string; authors?: string[]; journal?: string; year?: number; doi?: string };
+const refList = cited
+  .map((id) => (references as Record<string, Ref>)[id])
+  .filter(Boolean)
+  .sort((x, y) => (x.authors?.[0] ?? '').localeCompare(y.authors?.[0] ?? ''));
+const authorsOf = (r: Ref) => {
+  const list = r.authors ?? [];
+  return list.length > 3 ? `${list.slice(0, 3).join(', ')}, et al.` : list.join(', ');
+};
+const refLabel = (r: Ref) => {
+  const first = (r.authors?.[0] ?? '').split(' ')[0];
+  return first ? `${first}${(r.authors?.length ?? 0) > 1 ? ' et al.' : ''} ${r.year ?? ''}`.trim() : `PMID ${r.pmid}`;
+};
+
+// ---- changelog ----
+const kindLabel: Record<string, string> = { added: 'Added', changed: 'Changed', fixed: 'Fixed', removed: 'Removed' };
+
+// The colour key under each gene edit lists only the colours that edit uses.
+function keyFor(elems: { kind: string }[]) {
+  const has = (k: string) => elems.some((e) => e.kind === k);
+  const items: { sw: string; label: string }[] = [];
+  if (has('cds')) items.push({ sw: 'cds', label: 'Protein-coding' });
+  if (has('reg')) items.push({ sw: 'reg', label: 'Control region' });
+  if (has('link')) items.push({ sw: 'link', label: 'Linker' });
+  if (has('ins') || has('ko')) {
+    items.push({ sw: 'ins', label: has('ins') && has('ko') ? 'Insulator or switched off' : has('ins') ? 'Insulator' : 'Switched off' });
+  }
+  if (has('keep')) items.push({ sw: 'keep', label: 'Kept as it is' });
+  if (has('edit')) items.push({ sw: 'edit', label: 'Base edit' });
+  return items;
+}
+const handleOf = (id?: string) => (ledger as { id: string; contributor: { handle: string } }[]).find((x) => x.id === id)?.contributor.handle;
+const recent = changelog.slice(0, 3);
+const older = changelog.slice(3);
+
+// ---- downloads ----
+const sizeOf = (path: string): string => {
+  const bytes = (sizes as Record<string, number>)[path];
+  if (!bytes) return '';
+  return bytes >= 1_000_000 ? `${(bytes / 1_000_000).toFixed(1)} MB` : `${Math.max(1, Math.round(bytes / 1000))} KB`;
+};
+const groups = [
+  { id: 'read', title: 'Read the blueprint', text: 'Text you can read on any device.' },
+  { id: 'check', title: 'Check the evidence', text: 'The data behind the claims, if you want to check them yourself.' },
+  { id: 'trust', title: 'Check nothing has changed', text: 'For people who build on the data or want to verify a download.' },
+];
+
+const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' } as const;
+---
+
+<Layout
+  title="Blueprint"
+  description="The Islet-1 blueprint: three designs for a personalised type 1 diabetes cure, as a clickable drawing, a concise specification, a changelog and the data."
+  current="blueprint"
+>
+  <section class="intro">
+    <div class="container">
+      <p class="eyebrow">Blueprint</p>
+      <h1 class="h1 intro__h">The <span class="nobr">Islet-1</span> blueprint</h1>
+      <p class="lead intro__lead">
+        A plan for a personalised cure for type 1 diabetes that aims to need no anti-rejection drugs.
+      </p>
+
+      <div class="explain">
+        <div class="explain__item">
+          <p class="explain__k">What it is</p>
+          <h2>A public plan for cells designed to be left alone by the immune system</h2>
+          <p>A detailed design for gene-edited, lab-grown islet cells, with an oxygen supply and a safety switch. It is written so scientists can check each claim against its source, and so anyone with an AI assistant can help improve it.</p>
+        </div>
+        <div class="explain__item">
+          <p class="explain__k">Why three designs</p>
+          <h2>Nobody knows yet which approach works best</h2>
+          <p>Design A is the simplest idea and the lead design. Design B is a more tailored idea that carries more risk. Design X is the challenger: Design A with one more edit. The blueprint carries all three, so lab tests can decide instead of a guess.</p>
+        </div>
+        <div class="explain__item">
+          <p class="explain__k">How to read this page</p>
+          <h2>Look, select, then scroll</h2>
+          <p>Look at the drawing. Select any numbered part to read its section of the specification. Scroll for the three designs side by side, the changelog, and the data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="subnav">
+    <div class="container subnav__inner">
+      <ul class="subnav__links" data-sidescroll>
+        <li><a href="#drawing">Drawing</a></li>
+        <li><a href="#spec">Specification</a></li>
+        <li><a href="#designs">Three designs</a></li>
+        <li><a href="#odds">Chance of working</a></li>
+        <li><a href="#edits">Edit by edit</a></li>
+        <li><a href="#changelog">Changelog</a></li>
+        <li><a href="#data">Get the data</a></li>
+      </ul>
+      <div class="subnav__switch" role="group" aria-label="Choose a design">
+        <span>Showing</span>
+        <button type="button" data-scen="A" aria-pressed="true">Design A</button>
+        <button type="button" data-scen="B" aria-pressed="false">Design B</button>
+        <button type="button" data-scen="X" aria-pressed="false">Design X</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Drawing -->
+  <section class="drawing" id="drawing">
+    <div class="container">
+      <h2 class="h2">The blueprint, as a drawing</h2>
+      <p class="lead drawing__lead">Select a numbered part to open its section of the specification.</p>
+      <div class="drawing__fig"><BlueprintFigure design="A" /></div>
+    </div>
+  </section>
+
+  <!-- Specification -->
+  <section class="specsec">
+    <div class="container">
+      <details class="specwrap" id="spec">
+        <summary class="specwrap__sum">
+          <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"></path><path d="M14 3v4h4M9 12h6M9 16h6"></path></svg>
+          <span class="specwrap__t">
+            <strong>Blueprint specification</strong>
+            <span>A concise paper, about 10 minutes to read · {release.version} · with references, figures and tables</span>
+          </span>
+          <span class="specwrap__open"><span class="when-closed">Open</span><span class="when-open">Close</span></span>
+        </summary>
+
+        <div class="specdoc">
+          <nav class="toc" aria-label="Specification contents">
+            <p class="toc__k">Contents</p>
+            <ol>
+              {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+              <li><a href="#references">References</a></li>
+            </ol>
+            <div class="toc__actions">
+              <button type="button" class="btn btn--quiet" data-print>Print or save as PDF</button>
+              <a class="textlink" href="/downloads/ISLET-1-BLUEPRINT.md" download>Download the full, long version →</a>
+            </div>
+          </nav>
+
+          <article class="paper">
+            <header class="paper__head">
+              <p class="paper__k">Concise specification · {release.version} · {longDate(release.date)}</p>
+              <h2 class="paper__title">{spec.frontmatter.title}</h2>
+              <p class="paper__meta">
+                Status: design stage, not yet tested in the lab. Licence: CC BY 4.0. Cite as: OpenIslet (2026), Islet-1 blueprint {release.version}.
+                <a href="#changelog">See what changed</a>.
+              </p>
+            </header>
+
+            {
+              parts.map((p, i) => {
+                if (i % 2 === 0) return <Fragment set:html={p} />;
+                if (p === 'blueprint')
+                  return (
+                    <figure class="paperfig">
+                      <BlueprintFigure interactive={false} design="A" idp="bpp" />
+                      <figcaption><strong>Figure 1.</strong> Islet-1 as an engineering drawing. The cell with its gene edits is on the left, and a cross-section of the graft is on the right. Use the Design A, Design B and Design X buttons at the top of the page to switch.</figcaption>
+                    </figure>
+                  );
+                if (p === 'scores')
+                  return (
+                    <div class="papertable">
+                      {showScenarioIndices ? (
+                        <div class="tablewrap" data-label="Scores for each design on each test">
+                          <table>
+                            <thead>
+                              <tr><th scope="col">Design</th><th scope="col">Rank of {n(c.designs)}</th><th scope="col">Gene edits</th><th scope="col">Model score (child profile)</th><th scope="col">Weakest test</th></tr>
+                            </thead>
+                            <tbody>
+                              {indices.map((r) => (
+                                <tr>
+                                  <th scope="row">
+                                    {r.name}
+                                    {r.reference && <span class="refnote">Another group’s design, scored as a check on the model</span>}
+                                  </th>
+                                  <td>{r.rank}</td>
+                                  <td>{r.sub.replace('reference · ', '')}</td>
+                                  <td class="mono">{r.value.toFixed(4)}</td>
+                                  <td>{testShort[r.weakestTest]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      ) : (
+                        <p class="footnote">Model scores are not shown in this version.</p>
+                      )}
+                      <p class="caption"><strong>Table 3.</strong> Model scores, 0 to 1, for comparing designs with each other. They are not the chance that a treatment will work for you or your child. Reference designs are published approaches scored the same way, with the same unproven assumptions; this says nothing about how they perform in people.</p>
+                    </div>
+                  );
+                return null;
+              })
+            }
+
+            <section id="references" class="refs">
+              <h3>References</h3>
+              <ol>
+                {
+                  refList.map((r) => (
+                    <li id={`ref-${r.pmid}`}>
+                      <span class="refs__label">{refLabel(r)}</span>
+                      {authorsOf(r)}{r.year ? ` (${r.year}). ` : ' '}{r.title} <em>{r.journal}</em>.
+                      <a href={pubmed(r.pmid)} target="_blank" rel="noopener">PMID {r.pmid}</a>
+                      {r.doi && <> · <a href={`https://doi.org/${r.doi}`} target="_blank" rel="noopener">doi:{r.doi}</a></>}
+                    </li>
+                  ))
+                }
+              </ol>
+            </section>
+          </article>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Two designs side by side -->
+  <section class="designs" id="designs">
+    <div class="container">
+      <p class="eyebrow">Compare</p>
+      <h2 class="h2">The three designs, side by side</h2>
+      <p class="lead designs__lead">Each row is one edit. Each column is one of the five tests, with test 2 split in two. The dots show which tests each edit is meant to help: its intended role, not a measured result.</p>
+
+      {
+        scenarios.map((s) => (
+          <div data-scen={s.id} hidden={s.id !== 'A'}>
+            <h3 class="designs__h">{s.headline}</h3>
+
+            {
+              s.twoIdeas && (
+                <div class="twoideas">
+                  <p class="twoideas__h">{s.twoIdeas.title}</p>
+                  <div class="grid" style="--min: 18.75rem; --gap: 1rem">
+                    <div class="fact">
+                      <p class="kicker">{s.twoIdeas.scored.title}</p>
+                      <p class="pretty">{s.twoIdeas.scored.text}</p>
+                    </div>
+                    <div class="fact">
+                      <p class="kicker">{s.twoIdeas.proposal.title}</p>
+                      <p class="pretty">{s.twoIdeas.proposal.text}</p>
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+
+            <div class="card matrix">
+              <div class="matrix__scroll" data-label={`${s.name}: which edit helps which test`}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th scope="col">Edit</th>
+                      {gateColumns.map((g) => (<th scope="col"><span class="colcode">Test {g.code}</span>{g.name}</th>))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {s.rows.map((r) => (
+                      <tr>
+                        <th scope="row"><strong>{r.name}</strong><span>{r.sub}</span></th>
+                        {r.marks.split('').map((m) => (
+                          <td>
+                            <span class={`dot dot--${m}`}></span>
+                            <span class="sr-only">{markName[m as keyof typeof markName]}</span>
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div class="legend">
+                <span><i class="dot dot--p"></i> Main job</span>
+                <span><i class="dot dot--s"></i> Helps</span>
+                <span><i class="dot dot--x"></i> Trade-off</span>
+              </div>
+            </div>
+
+            <div class="grid" style="--min: 18.75rem; --gap: 1.5rem; margin-top: 1.75rem">
+              <div class="fact">
+                <p class="kicker">Best for</p>
+                <p class="pretty">{s.aim}</p>
+              </div>
+              <div class="fact fact--warn">
+                <p class="kicker kicker--warn">Main risk</p>
+                <p class="pretty">{s.risk}</p>
+                <a class="textlink" href="/idea-graveyard">See the Idea Graveyard →</a>
+              </div>
+            </div>
+
+            {
+              s.proposals && (
+                <div class="proposals">
+                  <h4 class="proposals__h">Still on paper: proposed upgrades</h4>
+                  <p class="proposals__lead pretty">None of these is built, measured or counted in the model’s scores. Each would be tested in the lab before it is used.</p>
+                  <div class="proposals__grid">
+                    {s.proposals.map((p) => (
+                      <div class="proposal">
+                        <div class="proposal__art"><ProposalArt id={p.art} /></div>
+                        <p class="kicker">Proposal</p>
+                        <h5 class="proposals__t">{p.title}</h5>
+                        <p class="pretty">{p.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )
+            }
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- Realistic chance of working -->
+  <Odds />
+
+  <!-- Edit by edit -->
+  <section class="edits" id="edits">
+    <div class="container">
+      <p class="eyebrow">Detail</p>
+      <h2 class="h2">The gene edits, one by one</h2>
+      <p class="lead designs__lead">Pick an edit to see how it is built and the papers behind it.</p>
+
+      {
+        scenarios.map((s) => (
+          <div data-scen={s.id} class="locwrap" hidden={s.id !== 'A'}>
+            <div class="row" role="group" aria-label={`Choose an edit in ${s.name}`} style="--gap: 0.5rem">
+              {s.loci.map((l, i) => (
+                <button type="button" class="choice mono" data-locus={l.id} aria-pressed={String(i === 0)}>{l.label}</button>
+              ))}
+            </div>
+
+            {s.loci.map((l, i) => (
+              <div class="card locus" data-locus={l.id} hidden={i !== 0}>
+                <div class="locus__head">
+                  <h3>{l.title}</h3>
+                  <span class="locus__gates">{l.gates}</span>
+                </div>
+                <p class="locus__action">{l.action}</p>
+
+                <div class="strip__scroll" data-label={`${l.title}: how the DNA edit is built`}>
+                  <div class="strip">
+                    {l.elems.map((e) => (
+                      <div class={`elem elem--${e.kind}`} style={`flex:${e.grow} 1 0`}>
+                        <span class="elem__l">{e.label}</span>
+                        {e.sub && <span class="elem__s">{e.sub}</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div class="key">
+                  {keyFor(l.elems).map((k) => (<span><i class={`sw sw--${k.sw}`}></i> {k.label}</span>))}
+                </div>
+
+                <div class="grid locus__cols" style="--min: 20rem; --gap: 1.75rem 3rem">
+                  <div>
+                    <p class="label">What it does</p>
+                    <ul class="notes">
+                      {l.notes.map((note) => (<li class="pretty">{note}</li>))}
+                    </ul>
+                  </div>
+                  {l.pmids.length > 0 && (
+                    <div>
+                      <p class="label">Papers</p>
+                      <div class="row" style="--gap: 0.5rem; margin-top: 0.625rem">
+                        {l.pmids.map((p) => (
+                          <a class="pmid" href={pubmed(p)} target="_blank" rel="noopener">PMID {p}</a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))
+      }
+
+      <div class="niche">
+        <h3>The environment around the cells</h3>
+        <dl class="kv">
+          {niche.map((row) => (<div><dt>{row.k}</dt><dd>{row.v}</dd></div>))}
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <!-- Changelog -->
+  <section class="changelog" id="changelog">
+    <div class="container">
+      <p class="eyebrow">Changelog</p>
+      <h2 class="h2">What has changed</h2>
+      <p class="lead designs__lead">Every change to the blueprint after the open draft opens is listed here, newest first, with what changed and who is credited.</p>
+
+      <VersionsPlan />
+
+      <div class="clwrap">
+        <div>
+          {changelog.length === 0 && (
+            <div class="cl__empty">
+              <div class="cl__emptyart"><ChangelogArt /></div>
+              <h3>Nothing has changed yet</h3>
+              <p class="pretty">The changelog starts when the open draft opens on {longDate(openDraft.opens)}. From then on, every change is listed here, newest first, with what changed and who is credited.</p>
+            </div>
+          )}
+          {
+            changelog.length > 0 && (
+          <ol class="cl">
+            {
+              recent.map((e) => (
+                <li class="cl__item">
+                  <div class="cl__head">
+                    <span class="chip chip--ink">{e.version}</span>
+                    <time datetime={e.date}>{longDate(e.date)}</time>
+                  </div>
+                  <h3>{e.title}</h3>
+                  <p>{e.summary}</p>
+                  <ul class="cl__changes">
+                    {e.changes.map((ch) => (<li><span class={`kind kind--${ch.kind}`}>{kindLabel[ch.kind]}</span><span>{ch.text}</span></li>))}
+                  </ul>
+                  {handleOf(e.contribution) && (
+                    <p class="cl__credit">Credit: <a href="/contributions#board">@{handleOf(e.contribution)}</a> · contribution <span class="mono">{e.contribution}</span></p>
+                  )}
+                </li>
+              ))
+            }
+          </ol>
+            )
+          }
+          {
+            older.length > 0 && (
+              <details class="cl__older">
+                <summary>Show {older.length} older {older.length === 1 ? 'version' : 'versions'}</summary>
+                <ol class="cl">
+                  {older.map((e) => (
+                    <li class="cl__item">
+                      <div class="cl__head">
+                        <span class="chip chip--ink">{e.version}</span>
+                        <time datetime={e.date}>{longDate(e.date)}</time>
+                      </div>
+                      <h3>{e.title}</h3>
+                      <p>{e.summary}</p>
+                      <ul class="cl__changes">
+                        {e.changes.map((ch) => (<li><span class={`kind kind--${ch.kind}`}>{kindLabel[ch.kind]}</span><span>{ch.text}</span></li>))}
+                      </ul>
+                    </li>
+                  ))}
+                </ol>
+              </details>
+            )
+          }
+        </div>
+
+        <aside class="how">
+          <h3>How the blueprint gets updated</h3>
+          <ol>
+            <li><span>1</span><div><strong>An IIP is accepted.</strong> It has been through the open review on GitHub.</div></li>
+            <li><span>2</span><div><strong>The blueprint changes.</strong> The files in the public repository are edited and re-checked.</div></li>
+            <li><span>3</span><div><strong>A version and a line are added.</strong> The version number goes up and the changelog gains an entry.</div></li>
+            <li><span>4</span><div><strong>This site updates.</strong> Every number is read from the release files, and the contributor is credited.</div></li>
+          </ol>
+          <details class="how__dev">
+            <summary>For maintainers: the commands</summary>
+            <pre data-scroll-region data-label="Commands to update the blueprint">npm run sync-data
+npm run changelog -- \
+  --version v0.8.1 \
+  --title "A short title" \
+  --summary "One plain sentence." \
+  --fixed "What changed." \
+  --contribution IIP-0002
+npm run build</pre>
+            <p class="footnote">Edit <span class="mono">src/content/blueprint-spec.md</span> to change the specification. See <span class="mono">docs/UPDATING.md</span>.</p>
+          </details>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Downloads -->
+  <section class="data" id="data">
+    <div class="container">
+      <p class="eyebrow">Get the data</p>
+      <h2 class="h2">Download the data behind the blueprint</h2>
+      <div class="insight data__note">
+        <span class="insight__k">You don’t need to download anything to help.</span>
+        <span>Your connected AI can already read all of this. Download a file only if you want to read offline, check a claim against its source, or run your own analysis.</span>
+      </div>
+
+      {
+        groups.map((g) => (
+          <div class="dlgroup">
+            <h3>{g.title}</h3>
+            <p class="dlgroup__t">{g.text}</p>
+            <ul class="assets">
+              {assets.filter((x) => x.group === g.id).map((x) => (
+                <li class="assets__row">
+                  <div class="assets__name">
+                    <strong>{x.title}</strong>
+                    <span class="assets__what">{x.what}</span>
+                    <span class="assets__meta">{x.for} · {x.format}{sizeOf(x.path) ? ` · ${sizeOf(x.path)}` : ''} · {x.license}</span>
+                  </div>
+                  <a class="btn btn--primary" href={`/downloads/${x.path}`} download>Download</a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+
+      <div class="grid dlnotes" style="--min: 22rem; --gap: 1.5rem">
+        <div class="fact">
+          <h3>Free to build on</h3>
+          <p>Take the blueprint and use it, adapt it or test it in any way you like, in a lab or on the way to patients. We only ask that you credit the OpenIslet community, for example: “Based on the OpenIslet blueprint (openislet.org), made by the OpenIslet community.”</p>
+        </div>
+        <div class="fact">
+          <h3>How to check a file hasn’t changed</h3>
+          <p>Each file has a unique fingerprint (called a SHA-256 checksum) listed in the file list. If your copy’s fingerprint matches, nothing has been altered since the release.</p>
+        </div>
+        <div class="fact">
+          <h3>About the quotes</h3>
+          <p>Short quotes from papers stay the property of their authors and publishers. The structure around them is shared under CC BY 4.0.</p>
+        </div>
+      </div>
+
+      <details class="devbox">
+        <summary>For developers: check the numbers yourself</summary>
+        <div class="code on-dark">
+          <pre data-scroll-region data-label="Commands to check the numbers">{reproduce}</pre>
+        </div>
+      </details>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { wireGroup } from '../scripts/group';
+  import { revealInRow } from '../scripts/sidescroll';
+
+  // The design switch changes every panel on the page, and the drawings.
+  const figures = Array.from(document.querySelectorAll<HTMLElement>('[data-bpfig]'));
+  wireGroup({
+    key: 'scen',
+    buttons: 'button[data-scen]',
+    panels: 'div[data-scen]',
+    onChange: (id) => figures.forEach((f) => (f.dataset.design = id)),
+  });
+  document.querySelectorAll<HTMLElement>('.locwrap').forEach((root) => {
+    wireGroup({ key: 'locus', buttons: 'button[data-locus]', panels: 'div[data-locus]', root });
+  });
+
+  // The bar of section links stays at the top. It is one row on a wide screen and two on a phone, so jumps to a section
+  // are kept clear of it by its real height (--bar, used by every scroll-margin on this page).
+  const subnav = document.querySelector<HTMLElement>('.subnav');
+  if (subnav) {
+    const setBar = () => document.documentElement.style.setProperty('--bar', `${Math.round(subnav.getBoundingClientRect().height)}px`);
+    setBar();
+    new ResizeObserver(setBar).observe(subnav);
+  }
+
+  // The section links show where you are on this long page. On a phone the row scrolls to keep that link in view.
+  const sectionLinks = [...document.querySelectorAll<HTMLAnchorElement>('.subnav__links a[href^="#"]')];
+  const sections = sectionLinks.map((a) => document.getElementById(a.hash.slice(1))).filter((s): s is HTMLElement => !!s);
+  const linkRow = document.querySelector<HTMLElement>('.subnav__links');
+  let marked = '';
+  function markSection() {
+    const line = (subnav?.getBoundingClientRect().height ?? 56) + 48;
+    let here = '';
+    for (const s of sections) if (s.getBoundingClientRect().top <= line) here = s.id;
+    if (here === marked) return;
+    marked = here;
+    sectionLinks.forEach((a) => {
+      const on = a.hash === `#${here}`;
+      if (on) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
+      if (on && linkRow) revealInRow(linkRow, a);
+    });
+  }
+  let queued = false;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        markSection();
+      });
+    },
+    { passive: true },
+  );
+  markSection();
+
+  // Numbered parts open their section of the specification.
+  const spec = document.getElementById('spec') as HTMLDetailsElement;
+  function openTo(id: string) {
+    spec.open = true;
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.scrollIntoView({ block: 'start' });
+    el.classList.add('flash');
+    window.setTimeout(() => el.classList.remove('flash'), 1600);
+  }
+  document.querySelectorAll<HTMLElement>('[data-spec]').forEach((el) => {
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      const id = el.dataset.spec ?? '';
+      history.replaceState(null, '', `#${id}`);
+      openTo(id);
+    });
+  });
+  function fromHash() {
+    const id = location.hash.slice(1);
+    if (id && document.getElementById(id)?.closest('#spec')) openTo(id);
+    else if (id === 'spec') spec.open = true;
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+
+  // Print or save as PDF: open the paper first.
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+  window.addEventListener('beforeprint', () => {
+    spec.open = true;
+  });
+</script>
+
+<style>
+  .intro {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .intro__h {
+    margin-top: 0.75rem;
+    max-width: 53.75rem;
+  }
+  .intro__lead {
+    margin-top: 1.125rem;
+    max-width: 46rem;
+  }
+  /* Three across, then one, so the row is never two and one. */
+  .explain {
+    margin-top: 2.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 56em) {
+    .explain {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .explain__item {
+    padding-top: 0.25rem;
+    border-top: 3px solid var(--ink);
+  }
+  .explain__k {
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .explain__item h2 {
+    margin-top: 0.25rem;
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .explain__item p:last-child {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  /* sticky bar */
+  .subnav {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    margin-top: 2.5rem;
+    background: rgba(255, 255, 255, 0.94);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-block: 1px solid var(--line);
+  }
+  .subnav__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+  }
+  .subnav__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .subnav__links::-webkit-scrollbar {
+    display: none;
+  }
+  .subnav__links a {
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 0.75rem;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .subnav__links a:hover {
+    color: var(--accent);
+  }
+  .subnav__links a[aria-current] {
+    color: var(--accent);
+    box-shadow: inset 0 -3px 0 var(--accent);
+  }
+  .subnav__switch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem;
+    padding-block: 0.25rem;
+  }
+  .subnav__switch span {
+    margin-right: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .subnav__switch button {
+    min-height: 2.75rem;
+    padding: 0 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  /* On a phone the three design buttons share one row, so the bar that stays at the top is two rows, not three. The group
+     keeps its name ("Choose a design") for screen readers. */
+  @media (max-width: 26em) {
+    .subnav__switch {
+      flex: 1 1 100%;
+      flex-wrap: nowrap;
+    }
+    .subnav__switch span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+    }
+    .subnav__switch button {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0 0.5rem;
+      white-space: nowrap;
+    }
+  }
+  .subnav__switch button[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+
+  /* drawing */
+  .drawing {
+    padding-block: clamp(2.5rem, 5vw, 4rem) 1.5rem;
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .drawing__lead {
+    margin-top: 0.75rem;
+  }
+  .drawing__fig {
+    margin-top: 1.5rem;
+  }
+  /* specification */
+  .specsec {
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .specwrap {
+    border: 1px solid var(--line-strong);
+    border-radius: 1rem;
+    background: #fff;
+    box-shadow: var(--shadow);
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .specwrap__sum {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-height: 4.5rem;
+    padding: 0.75rem 1.5rem;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+  }
+  .specwrap__sum::-webkit-details-marker {
+    display: none;
+  }
+  .specwrap__t {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    color: var(--ink);
+  }
+  .specwrap__t strong {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .specwrap__t span {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  @media (max-width: 40em) {
+    /* On a phone the button goes under the words, so the title is not squeezed into a narrow column. */
+    .specwrap__sum {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.5rem 1rem;
+      padding-block: 1rem;
+    }
+    .specwrap__open {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+  .specwrap__open {
+    flex: none;
+    padding: 0.5rem 1.125rem;
+    border-radius: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .when-open,
+  .specwrap[open] .when-closed {
+    display: none;
+  }
+  .specwrap[open] .when-open {
+    display: inline;
+  }
+  .specwrap[open] > .specwrap__sum {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .specdoc {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+    padding: clamp(1rem, 3vw, 2.25rem);
+  }
+  .toc {
+    position: sticky;
+    top: 4.25rem;
+    font-size: 0.9375rem;
+  }
+  .toc__k {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .toc a {
+    display: block;
+    padding: 0.3125rem 0.5rem;
+    border-radius: 0.375rem;
+    color: var(--body);
+    line-height: 1.3;
+    text-decoration: none;
+  }
+  .toc a:hover {
+    background: var(--paper);
+    color: var(--accent);
+  }
+  .toc__actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  /* The open paper is text on the specification's own white panel, not a second panel inside it. */
+  .paper {
+    min-width: 0;
+    max-width: 50rem;
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--ink);
+  }
+  .paper__k {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .paper__title {
+    margin-top: 0.5rem;
+    font-size: clamp(1.5rem, 3vw, 2.125rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .paper__meta {
+    margin-top: 0.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .paper :global(h3) {
+    margin-top: 2.25rem;
+    font-size: 1.4375rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 1rem);
+  }
+  .paper :global(h4) {
+    margin-top: 1.75rem;
+    font-size: 1.1875rem;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 1rem);
+  }
+  .paper :global(p) {
+    margin-top: 0.875rem;
+    text-wrap: pretty;
+  }
+  .paper :global(a) {
+    color: var(--accent);
+  }
+  .paper :global(ul) {
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .paper :global(blockquote) {
+    margin: 1rem 0 0;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent);
+  }
+  .paper :global(blockquote p) {
+    margin: 0;
+  }
+  .paper :global(a[id]) {
+    display: block;
+    height: 0;
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 1rem);
+  }
+  .paper :global(.tablewrap) {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+  }
+  .paper :global(table) {
+    width: 100%;
+    min-width: 36rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .paper :global(th),
+  .paper :global(td) {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--line-soft);
+    text-align: left;
+    vertical-align: top;
+  }
+  /* A table that scrolls sideways keeps its first column in place, so each row stays labelled. */
+  .paper :global(.tablewrap tr > :first-child) {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #fff;
+  }
+  .paper :global(thead th),
+  .paper :global(.tablewrap thead tr > :first-child) {
+    background: var(--paper);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .paper :global(tbody tr:last-child td),
+  .paper :global(tbody tr:last-child th) {
+    border-bottom: none;
+  }
+  .paper :global(em) {
+    font-style: italic;
+  }
+  .paper :global(.flash) {
+    animation: flash 1.6s ease-out;
+  }
+  @keyframes flash {
+    0% {
+      background: rgba(242, 169, 59, 0.45);
+    }
+    100% {
+      background: transparent;
+    }
+  }
+  .paperfig {
+    margin: 1.5rem 0 0;
+  }
+  .paperfig figcaption,
+  .caption {
+    margin-top: 0.625rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .papertable {
+    margin-top: 1rem;
+  }
+  .papertable .mono {
+    font-size: 0.875rem;
+  }
+  .papertable .refnote {
+    display: block;
+    margin-top: 0.125rem;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .refs {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    scroll-margin-top: var(--bar, 3.5rem);
+  }
+  .refs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .refs li {
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 1rem);
+    color: var(--body);
+  }
+  .refs__label {
+    display: block;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .refs li:target {
+    background: rgba(242, 169, 59, 0.25);
+  }
+
+  @media (max-width: 62em) {
+    .specdoc {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+    }
+    .toc {
+      position: static;
+    }
+    .toc ol {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+    }
+    .toc a {
+      display: flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding-inline: 0.75rem;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+  }
+
+  /* compare */
+  .designs {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: #fff;
+    border-block: 1px solid var(--line);
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .designs__lead {
+    margin-top: 0.875rem;
+    max-width: 46rem;
+  }
+  .twoideas {
+    margin-top: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .twoideas__h {
+    margin-bottom: 0.625rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .designs__h {
+    margin-top: 2rem;
+    font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .matrix {
+    margin-top: 1rem;
+    background: var(--paper);
+  }
+  .matrix__scroll {
+    position: relative;
+    overflow-x: auto;
+  }
+  .matrix table {
+    width: 100%;
+    min-width: 45rem;
+    border-collapse: collapse;
+  }
+  .matrix thead th {
+    padding: 0 0.5rem 0.625rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  .matrix thead th:first-child {
+    text-align: left;
+    font-size: 0.875rem;
+    color: var(--muted);
+    padding-left: 0;
+  }
+  .matrix tbody th {
+    width: 34%;
+    padding: 0.875rem 0.75rem 0.875rem 0;
+    text-align: left;
+    font-weight: 400;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  /* When the matrix scrolls sideways (on a phone), the edit names stay put and the test columns slide under them. */
+  .matrix thead th:first-child,
+  .matrix tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--paper);
+  }
+  @media (max-width: 40em) {
+    .matrix table {
+      min-width: 34rem;
+    }
+    .matrix tbody th {
+      width: 8.5rem;
+    }
+  }
+  .matrix tbody th strong {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .matrix tbody th span {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .matrix tbody td {
+    text-align: center;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .dot {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    vertical-align: middle;
+  }
+  .dot--p {
+    background: var(--accent);
+  }
+  .dot--s {
+    border: 2px solid var(--accent);
+    background: #fff;
+  }
+  .dot--x {
+    border: 2px solid var(--warn);
+    background: var(--warn-bg);
+  }
+  .dot--n {
+    background: var(--line);
+    transform: scale(0.4);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: var(--body);
+  }
+  .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .colcode {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .kicker {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.625rem;
+  }
+  .kicker--warn {
+    color: var(--warn);
+  }
+
+  /* edits */
+  .edits {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .locwrap {
+    margin-top: 1.75rem;
+  }
+  .locus {
+    margin-top: 1rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+  }
+  .locus__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+  }
+  .locus__head h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .locus__gates {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .locus__action {
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    color: var(--body);
+  }
+  .strip__scroll {
+    margin-top: 1.75rem;
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+  }
+  .strip {
+    display: flex;
+    align-items: stretch;
+    gap: 0.25rem;
+    min-width: 40rem;
+  }
+  .elem {
+    min-width: 0;
+    min-height: 5.5rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .elem__l {
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .elem__s {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+  }
+  .elem--cds {
+    background: var(--accent);
+    color: #fff;
+  }
+  .elem--reg {
+    background: #fff;
+    color: var(--ink);
+    border: 1px solid #a9b7c0;
+  }
+  .elem--link {
+    background: var(--line);
+    color: var(--ink);
+  }
+  .elem--ins,
+  .elem--ko {
+    background: var(--ink);
+    color: #fff;
+  }
+  .elem--keep {
+    background: var(--pass-bg);
+    color: var(--pass);
+    border: 1px solid var(--pass);
+  }
+  .elem--edit {
+    background: var(--warn-bg);
+    color: var(--warn);
+    border: 1px solid var(--warn);
+  }
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    margin-top: 0.875rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .key span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .sw {
+    display: inline-block;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 0.25rem;
+  }
+  .sw--cds {
+    background: var(--accent);
+  }
+  .sw--reg {
+    background: #fff;
+    border: 1px solid #a9b7c0;
+  }
+  .sw--link {
+    background: var(--line);
+  }
+  .sw--ins {
+    background: var(--ink);
+  }
+  .sw--keep {
+    background: var(--pass-bg);
+    border: 1px solid var(--pass);
+  }
+  .sw--edit {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn);
+  }
+  .locus__cols {
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+  .notes {
+    margin-top: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+  .niche {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .niche h3 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .niche .kv {
+    margin-top: 1rem;
+  }
+
+  /* changelog */
+  .changelog {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: #fff;
+    border-block: 1px solid var(--line);
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .clwrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+    margin-top: 2rem;
+  }
+  .cl {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  /* Each version in the changelog is an entry under a hairline, not a box. */
+  .cl__item {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .cl__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .cl__item h3 {
+    margin-top: 0.625rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .cl__item > p {
+    margin-top: 0.375rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .cl__changes {
+    list-style: none;
+    padding: 0;
+    margin: 0.875rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.96875rem;
+  }
+  .cl__changes li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+  .kind {
+    flex: none;
+    min-width: 4.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    background: var(--neutral-bg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+  }
+  .kind--added {
+    background: var(--pass-bg);
+    color: var(--pass);
+  }
+  .kind--fixed {
+    background: var(--tint);
+    color: var(--accent-dk);
+  }
+  .kind--removed {
+    background: var(--warn-bg);
+    color: var(--warn);
+  }
+  .cl__credit {
+    margin-top: 0.875rem !important;
+    font-size: 0.875rem !important;
+    color: var(--muted) !important;
+  }
+  .cl__empty {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .cl__empty h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .cl__emptyart {
+    padding: 0.75rem 1rem 0.5rem;
+    background: var(--ink-2);
+    border-radius: 0.875rem;
+  }
+  .cl__emptyart :global(svg) {
+    display: block;
+    width: 100%;
+    max-width: 22rem;
+    max-height: 8.5rem;
+    height: auto;
+    margin-inline: auto;
+  }
+  .cl__older {
+    margin-top: 1.5rem;
+  }
+  .cl__older summary {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .cl__older .cl {
+    margin-top: 1rem;
+  }
+  .how {
+    position: sticky;
+    top: 4.5rem;
+    padding-left: 1.5rem;
+    border-left: 3px solid var(--accent);
+  }
+  .how h3 {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .how ol {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .how li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 0.96875rem;
+    color: var(--ink);
+  }
+  .how li > span {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .how__dev {
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+  }
+  .how__dev summary {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--accent-dk);
+    cursor: pointer;
+  }
+  .how__dev pre {
+    margin: 0.5rem 0 0;
+    padding: 0.875rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--ink);
+    color: var(--dark-text);
+    font-family: var(--mono);
+    font-size: 0.78125rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  .how__dev p {
+    margin-top: 0.625rem;
+  }
+  @media (max-width: 62em) {
+    .clwrap {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .how {
+      position: static;
+    }
+  }
+
+  /* downloads */
+  .data {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .data .h2 {
+    margin-top: 0.75rem;
+  }
+  .data__note {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+    margin-top: 1.25rem;
+    max-width: 52rem;
+  }
+  .dlgroup {
+    margin-top: 2.25rem;
+  }
+  .dlgroup h3 {
+    font-size: 1.375rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .dlgroup__t {
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    color: var(--body);
+  }
+  /* A list of files is rows between hairlines, not a box. */
+  .assets {
+    list-style: none;
+    padding: 0;
+    margin: 0.875rem 0 0;
+    border-top: 1px solid var(--line);
+  }
+  .assets__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding: 1.125rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .assets__name {
+    flex: 1 1 24rem;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .assets__name strong {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .assets__what {
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .assets__meta {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .assets__row .btn {
+    min-width: 8rem;
+  }
+  .dlnotes {
+    margin-top: 2rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  @media (max-width: 62em) {
+    .dlnotes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .dlnotes h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  .dlnotes p {
+    margin-top: 0.375rem;
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .devbox {
+    margin-top: 1.5rem;
+  }
+  .devbox summary {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+  }
+  .code {
+    margin-top: 0.5rem;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background: var(--ink);
+    border-radius: 0.75rem;
+    color: var(--dark-text);
+  }
+  .code pre {
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* printing the specification */
+  @media print {
+    :global(header.nav),
+    :global(footer),
+    :global(.skip),
+    .intro,
+    .subnav,
+    .drawing,
+    .designs,
+    .edits,
+    .changelog,
+    .data,
+    .toc,
+    .specwrap__sum {
+      display: none !important;
+    }
+    .specwrap,
+    .paper {
+      border: none;
+      box-shadow: none;
+    }
+    .specdoc {
+      display: block;
+      padding: 0;
+      background: #fff;
+    }
+    .paper {
+      max-width: none;
+      padding: 0;
+    }
+  }
+
+  /* Design X: the upgrades that are only proposals. Three across on a wide screen, one per row otherwise. */
+  .proposals {
+    margin-top: 1.5rem;
+  }
+  .proposals__h {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .proposals__lead {
+    margin: 0.375rem 0 0;
+    max-width: 45rem;
+    font-size: 0.96875rem;
+    color: var(--body);
+  }
+  .proposals__grid {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2rem 1.5rem;
+  }
+  @media (min-width: 52em) {
+    .proposals__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .proposal__art {
+    margin-bottom: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--ink-2);
+    border-radius: 0.625rem;
+  }
+  .proposal__art :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 7.5rem;
+    height: auto;
+  }
+  .proposals__t {
+    margin: 0.25rem 0 0.5rem;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+// The Idea Graveyard's old address. The page moved to /idea-graveyard (Kev, 28 October 2026: the bare word "graveyard" can sound bad
+// to people living with type 1 diabetes, so the address uses the full name, as the pages do). Old links keep working, including a link
+// to one entry (/graveyard#gy-004): the script keeps the part after the #, which the plain refresh below cannot. The other old
+// addresses are forwarded in astro.config.mjs; this one needs its own page because of the #.
+const target = '/idea-graveyard';
+const canonical = new URL(target, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The Idea Graveyard has moved</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={canonical} />
+    <script is:inline define:vars={{ target }}>location.replace(target + location.search + location.hash);</script>
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+  </head>
+  <body>
+    <a href={target}>The Idea Graveyard is now at {target}</a>
+  </body>
+</html>

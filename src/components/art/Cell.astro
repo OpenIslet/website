@@ -1,0 +1,19 @@
+---
+// One islet cell, in the same style as the home page picture: beta (indigo), alpha (pale), delta (dark).
+interface Props {
+  x: number;
+  y: number;
+  r?: number;
+  kind?: 'beta' | 'alpha' | 'delta';
+  /** Drawn faint and dashed, for something that has been removed. */
+  ghost?: boolean;
+}
+const { x, y, r = 22, kind = 'beta', ghost = false } = Astro.props;
+const fill = { beta: '#5b73ff', alpha: '#e6edf2', delta: '#0b1b26' }[kind];
+const stroke = kind === 'delta' ? '#8ea0ff' : '#0b1b26';
+---
+
+<g opacity={ghost ? 0.4 : 1}>
+  <circle cx={x} cy={y} r={r} fill={fill} stroke={stroke} stroke-width="2.5" stroke-dasharray={ghost ? '5 4' : undefined}></circle>
+  <circle cx={x - r * 0.14} cy={y + r * 0.1} r={r * 0.36} fill="#0b1b26" fill-opacity="0.28"></circle>
+</g>

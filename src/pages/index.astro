@@ -1,0 +1,353 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CellField from '../components/CellField.astro';
+import ProblemSection from '../components/ProblemSection.astro';
+import FiveTests from '../components/FiveTests.astro';
+import BuildLayers from '../components/BuildLayers.astro';
+import Designs from '../components/Designs.astro';
+import HelpSection from '../components/HelpSection.astro';
+import GoalSection from '../components/GoalSection.astro';
+import Pillar1 from '../components/pillars/Pillar1.astro';
+import Pillar2 from '../components/pillars/Pillar2.astro';
+import Pillar3 from '../components/pillars/Pillar3.astro';
+import Pillar4 from '../components/pillars/Pillar4.astro';
+import { gates } from '../data/gates';
+import { release, heroPhoto, startHref, goal } from '../data/site';
+import { film } from '../data/film';
+import FilmIntro from '../components/FilmIntro.astro';
+
+const count = (n: number) => n.toLocaleString('en-US');
+const rings = [96, 124, 152, 180, 208];
+
+const pillarVisuals = [Pillar1, Pillar2, Pillar3, Pillar4];
+const pillars = [
+  { n: '01', k: 'Evidence', t: 'Every finding links to its source', d: 'Each finding links to its paper, and shows the exact sentence where the publisher allows it.', href: '/blueprint' },
+  {
+    n: '02',
+    k: 'Idea Graveyard',
+    t: 'Ideas ruled out',
+    d: `${release.counts.graveyardRules} ideas checked on paper and ruled out, or flagged as risky, so nobody repeats them.`,
+    href: '/idea-graveyard',
+  },
+  {
+    n: '03',
+    k: 'Design scoring',
+    t: 'Designs scored on five tests',
+    d: `${count(release.counts.designs)} designs compared, with the evidence shown.`,
+    href: '/blueprint',
+  },
+  { n: '04', k: 'Open to everyone', t: 'Anyone’s AI can help', d: 'Ideas sent in are checked in the open, and anyone who improves the blueprint is credited.', href: '/contributions' },
+];
+---
+
+<Layout
+  title="OpenIslet"
+  description={`An open, AI-assisted blueprint for a personalised type 1 diabetes cure that aims to need no anti-rejection drugs. Our goal: ${goal.short}.`}
+  current="home"
+>
+  <!-- First on the page, so after the film the keyboard carries on from the top of the page, not from the footer. -->
+  <FilmIntro auto />
+
+  <!-- Hero -->
+  <section class="hero on-dark">
+    <div class="hero__bg" aria-hidden="true">
+      {
+        heroPhoto ? (
+          <picture>
+            <source type="image/webp" srcset={heroPhoto.src.replace(/\.jpg$/, '.webp')} />
+            <img class="hero__photo" src={heroPhoto.src} alt="" width="1024" height="1024" fetchpriority="high" decoding="async" />
+          </picture>
+        ) : (
+          <CellField seed={11} count={70} />
+        )
+      }
+    </div>
+
+    <div class="container hero__inner">
+      <div class="hero__copy">
+        <p class="hero__eyebrow">Project Islet-1</p>
+        <h1>Help develop an open blueprint to accelerate a cure for type&nbsp;1 diabetes</h1>
+        <p class="hero__lead">
+          We are designing a personalised cure that aims to work without anti-rejection drugs, and we are doing it in the open.
+          <a class="hero__goal" href="#goal">Our goal: {goal.short}.</a>
+          Anyone can help, with the AI tools they already have.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn--light" href={`${startHref}#step-1`}>Start here</a>
+          <a class="textlink textlink--dark" href="/blueprint">See the blueprint →</a>
+        </div>
+        <a class="textlink textlink--dark filmlink" href={film.large} data-film-open>
+          <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9" fill="none" stroke="currentColor" stroke-width="1.5"></circle><path d="M8 6.5v7l5.5-3.5z" fill="currentColor"></path></svg>
+          Watch the launch film ({film.minutes} min)
+        </a>
+      </div>
+
+      <figure class="hero__art">
+        <svg viewBox="0 0 460 460" role="group" aria-label="An islet cell cluster at the centre of five rings, one for each test. Select a ring to jump to that test.">
+          {
+            rings.map((r, i) => (
+              <a class="ringlink" href={`#test-${i + 1}`} aria-label={`Test ${i + 1}: ${gates[i].short}`}>
+                <circle class="ring" cx="230" cy="230" r={r} fill="none" stroke="#8EA0FF" stroke-width="1.25" stroke-dasharray="3 5" stroke-opacity={0.55 - i * 0.08}></circle>
+                {/* An invisible band along the whole ring, and a box round its number, so a finger can hit it on a phone. */}
+                <circle cx="230" cy="230" r={r} fill="none" stroke="transparent" stroke-width="28"></circle>
+                <rect x="196" y={230 - r - 14} width="68" height="28" fill="transparent"></rect>
+                <g class="ringtag" font-family="IBM Plex Sans, sans-serif" font-size="12" font-weight="600" text-anchor="middle">
+                  <rect x="217" y={230 - r - 9} width="26" height="18" rx="9" fill="#0B1B26" stroke="#8EA0FF" stroke-opacity="0.5"></rect>
+                  <text x="230" y={230 - r + 4} fill="#C9D3FF">{i + 1}</text>
+                </g>
+              </a>
+            ))
+          }
+          <g aria-hidden="true">
+            <g stroke="#0B1B26" stroke-width="2.5">
+              <circle cx="206" cy="226" r="34" fill="#5B73FF"></circle>
+              <circle cx="252" cy="246" r="36" fill="#5B73FF"></circle>
+              <circle cx="240" cy="198" r="28" fill="#5B73FF"></circle>
+              <circle cx="204" cy="268" r="26" fill="#5B73FF"></circle>
+              <circle cx="268" cy="286" r="22" fill="#5B73FF"></circle>
+              <circle cx="170" cy="240" r="22" fill="#E6EDF2"></circle>
+              <circle cx="272" cy="204" r="22" fill="#E6EDF2"></circle>
+              <circle cx="226" cy="298" r="18" fill="#E6EDF2"></circle>
+              <circle cx="168" cy="196" r="12" fill="#0B1B26" stroke="#8EA0FF"></circle>
+              <circle cx="288" cy="250" r="12" fill="#0B1B26" stroke="#8EA0FF"></circle>
+            </g>
+            <g fill="#0B1B26" fill-opacity="0.28">
+              <circle cx="200" cy="222" r="9"></circle><circle cx="258" cy="242" r="10"></circle>
+              <circle cx="244" cy="194" r="8"></circle><circle cx="200" cy="270" r="7"></circle>
+              <circle cx="270" cy="288" r="6"></circle>
+            </g>
+          </g>
+        </svg>
+        <figcaption>A cluster of islet cells. Each ring is one of five tests the cells must pass. Select a ring to read about it.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <GoalSection />
+
+  <ProblemSection />
+
+  <!-- How it works -->
+  <section class="pillars">
+    <div class="container">
+      <p class="eyebrow">How it works</p>
+      <h2 class="h2 head">How OpenIslet works</h2>
+      <div class="pillar-grid">
+        {
+          pillars.map((p, i) => {
+            const Visual = pillarVisuals[i];
+            return (
+              <a class="pillar" href={p.href}>
+                <span class="pillar__vis"><Visual /></span>
+                <span class="pillar__k">{p.n} · {p.k}</span>
+                <span class="pillar__t">{p.t}</span>
+                <span class="pillar__d">{p.d}</span>
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <BuildLayers />
+    </div>
+  </section>
+
+  <FiveTests />
+  <Designs />
+  <HelpSection />
+</Layout>
+
+<style>
+  /* hero */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background-color: var(--ink);
+    color: var(--dark-text);
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(11, 27, 38, 0.94) 0%, rgba(11, 27, 38, 0.76) 42%, rgba(11, 27, 38, 0.3) 100%),
+      linear-gradient(180deg, rgba(11, 27, 38, 0) 55%, rgba(11, 27, 38, 0.92) 100%);
+  }
+  .hero__bg picture {
+    display: contents;
+  }
+  .hero__photo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 60% 50%;
+    opacity: 0.95;
+    filter: hue-rotate(-14deg) saturate(1.2) brightness(1.2);
+  }
+  .hero__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 3rem;
+    padding-block: clamp(3rem, 8vw, 6rem) clamp(3rem, 6vw, 5rem);
+  }
+  .hero__copy {
+    flex: 1 1 30rem;
+    min-width: 0;
+  }
+  .hero__eyebrow {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-lt);
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-size: clamp(2.25rem, 5.2vw, 4rem);
+    line-height: 1.04;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .hero__lead {
+    margin-top: 1.5rem;
+    max-width: 36rem;
+    font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+  .filmlink {
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .hero__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    margin-top: 2.25rem;
+  }
+  .hero__goal {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: rgba(142, 160, 255, 0.7);
+    text-underline-offset: 0.2em;
+  }
+  .hero__goal:hover {
+    text-decoration-color: #fff;
+  }
+  .hero__art {
+    flex: 1 1 21.25rem;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0;
+  }
+  .hero__art svg {
+    width: 100%;
+    max-width: 27.5rem;
+    height: auto;
+  }
+  .hero__art figcaption {
+    max-width: 23.75rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--dark-muted);
+  }
+  .ringlink {
+    cursor: pointer;
+  }
+  .ringlink:hover .ring,
+  .ringlink:focus-visible .ring {
+    stroke-opacity: 1;
+    stroke-width: 2.5;
+  }
+  .ringlink:hover .ringtag rect,
+  .ringlink:focus-visible .ringtag rect {
+    fill: #2a3fd6;
+    stroke-opacity: 1;
+  }
+  .ringlink:focus-visible {
+    outline: none;
+  }
+
+  /* shared heads */
+  .head {
+    margin-top: 0.75rem;
+    max-width: 48.75rem;
+  }
+
+  /* pillars */
+  .pillars {
+    padding-block: clamp(2rem, 5vw, 4rem) clamp(3.5rem, 8vw, 6.5rem);
+  }
+  /* Four across, then two, then one, so the rows are always even. */
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem 1.5rem;
+    margin-top: 2.5rem;
+  }
+  @media (max-width: 70em) {
+    .pillar-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 36em) {
+    .pillar-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* Each pillar is a link; the picture is its only panel, and the title shows it is clickable. */
+  .pillar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .pillar:hover .pillar__t {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .pillar__vis {
+    display: block;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .pillar__vis :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 7.5rem;
+    height: auto;
+  }
+  .pillar__k {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .pillar__t {
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+  .pillar__d {
+    font-size: 0.9375rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+</style>

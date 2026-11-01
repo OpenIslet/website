@@ -1,0 +1,62 @@
+---
+// A company's own mark beside its name on a "Pick your assistant" button. The artwork and the rules for each one are in
+// src/data/assistantMarks.ts. A mark that is not listed there ("Something else") draws nothing, and the button is just its name.
+import { marks } from '../../data/assistantMarks';
+
+interface Props {
+  id: string;
+  /** Makes a mark's gradient id unique when the same mark is drawn more than once on a page (ids must not repeat). */
+  uid?: string;
+}
+const mark = marks[Astro.props.id];
+const gradient = mark && 'gradient' in mark && mark.gradient ? { ...mark.gradient, id: `${mark.gradient.id}-${Astro.props.uid ?? Astro.props.id}` } : undefined;
+// Shapes name the gradient by its plain id; point them at this copy of it.
+const fillOf = (fill: string) => (gradient && mark && 'gradient' in mark && mark.gradient ? fill.replace(`url(#${mark.gradient.id})`, `url(#${gradient.id})`) : fill);
+---
+
+{
+  mark && 'image' in mark && <img class="amark" src={mark.image} alt="" width="20" height="20" />
+}
+{
+  mark && 'viewBox' in mark && (
+    <svg class="amark" viewBox={mark.viewBox} aria-hidden="true" focusable="false">
+      {gradient && (
+        <defs>
+          <linearGradient id={gradient.id} x1={gradient.x1} y1={gradient.y1} x2={gradient.x2} y2={gradient.y2} gradientUnits="userSpaceOnUse">
+            {gradient.stops.map((s) => (
+              <stop offset={s.offset} stop-color={s.color} />
+            ))}
+          </linearGradient>
+        </defs>
+      )}
+      <g class={mark.onDark ? 'amark__light' : undefined}>
+        {mark.onLight.map((s) => (s.rect ? <rect x={s.rect.x} y={s.rect.y} width={s.rect.width} height={s.rect.height} rx={s.rect.rx} fill={fillOf(s.fill)} /> : <path d={s.d} fill={fillOf(s.fill)} />))}
+      </g>
+      {mark.onDark && (
+        <g class="amark__dark">
+          {mark.onDark.map((s) => (s.rect ? <rect x={s.rect.x} y={s.rect.y} width={s.rect.width} height={s.rect.height} rx={s.rect.rx} fill={fillOf(s.fill)} /> : <path d={s.d} fill={fillOf(s.fill)} />))}
+        </g>
+      )}
+    </svg>
+  )
+}
+
+<style>
+  /* one size for every mark */
+  .amark {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+  }
+  /* the dark, selected button shows the company's version made for dark backgrounds, where it has one */
+  .amark__dark {
+    display: none;
+  }
+  :global(.ctab[aria-pressed='true']) .amark__light {
+    display: none;
+  }
+  :global(.ctab[aria-pressed='true']) .amark__dark {
+    display: inline;
+  }
+</style>

@@ -1,0 +1,988 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CellField from '../components/CellField.astro';
+import { submissionsOpen, connectorStatus, queueApi, issuesUrl } from '../data/site';
+
+// The web form for sending in an IIP (an Islet Improvement Proposal) without MCP. The contract with the Worker is
+// docs/connector/QUEUE-API.md. This page never posts anything by itself: the issue is opened by the OpenIslet bot after the person
+// signs in with GitHub.
+// Open submissions need the connector, so the form talks to the Worker whenever either switch is on.
+const live = connectorStatus === 'live' || submissionsOpen;
+---
+
+<Layout
+  title="Submit an IIP"
+  description="Send in an Islet Improvement Proposal (IIP) and its blind review. Paste or upload your two files, sign in with GitHub, and your IIP is published openly for review."
+  current="start"
+>
+  <header class="top on-dark">
+    <div class="top__bg" aria-hidden="true"><CellField seed={9} count={40} /></div>
+    <div class="container top__inner">
+      <p class="top__eyebrow">Submit an IIP</p>
+      <h1>Send in your IIP</h1>
+      <p class="top__lead">
+        Paste or upload your draft and its blind review, then sign in with GitHub. Your Islet Improvement Proposal (IIP) is published openly, so anyone can see how it is checked and credited.
+      </p>
+      <p class="top__sub">No draft or review yet? <a href="/start#step-3">Steps 3 and 4 of the guide</a> make them.</p>
+    </div>
+  </header>
+
+  <div class="container wrap">
+    <noscript>
+      <p class="notice notice--warn">This form needs JavaScript to check your files and to sign in. Please turn it on, or use the MCP route in the <a href="/start">guide</a>.</p>
+    </noscript>
+
+    {!submissionsOpen && <p class="notice notice--warn">Submissions are not open yet. You can check your files now and keep them for when they open.</p>}
+    <p class="notice notice--warn" id="storage-warning" role="alert" hidden></p>
+    <p class="fromlink" id="from-link" hidden></p>
+
+    <form id="submit-form" novalidate data-api={queueApi} data-open={String(submissionsOpen)} data-live={String(live)} aria-describedby="status">
+      <section class="box" aria-labelledby="h-draft">
+        <h2 id="h-draft">1. Your draft</h2>
+        <p class="hint" id="draft-hint">What your AI wrote in step 3. Paste it here (the whole reply is fine: we keep just the draft), or upload the file openislet-iip-….md.</p>
+        <label class="field" for="draft"><span class="sr-only">Your draft</span></label>
+        <textarea id="draft" name="draft" rows="10" spellcheck="false" aria-describedby="draft-hint draft-count" autocomplete="off"></textarea>
+        <div class="row2">
+          <label class="file" for="draft-file">Or upload the file <input id="draft-file" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" /></label>
+          <span class="count" id="draft-count" aria-live="polite"></span>
+        </div>
+        <p class="livenote" id="draft-note" aria-live="polite" hidden></p>
+      </section>
+
+      <section class="box" aria-labelledby="h-review">
+        <h2 id="h-review">2. Your blind review</h2>
+        <p class="hint" id="review-hint">The answer from your fresh chat in step 4. Paste it here, or upload the file openislet-review-….md. Only a review that says Supported or Partly supported can be sent.</p>
+        <label class="field" for="review"><span class="sr-only">Your blind review</span></label>
+        <textarea id="review" name="review" rows="10" spellcheck="false" aria-describedby="review-hint review-count" autocomplete="off"></textarea>
+        <div class="row2">
+          <label class="file" for="review-file">Or upload the file <input id="review-file" type="file" accept=".md,.markdown,.txt,text/markdown,text/plain" /></label>
+          <span class="count" id="review-count" aria-live="polite"></span>
+        </div>
+        <p class="livenote" id="review-note" aria-live="polite" hidden></p>
+      </section>
+
+      <section class="box" aria-labelledby="h-credit">
+        <h2 id="h-credit">3. Your credit <span class="opt">All optional</span></h2>
+        <p class="hint">Your GitHub name is always shown. Anything you add here is shown exactly as you typed it. We check only its format (an ORCID iD must pass its check digit), not that it is yours.</p>
+        <div class="grid3">
+          <div>
+            <label for="name">Display name</label>
+            <input id="name" name="name" type="text" maxlength="80" autocomplete="name" />
+          </div>
+          <div>
+            <label for="orcid">ORCID iD</label>
+            <input id="orcid" name="orcid" type="text" inputmode="text" placeholder="0000-0002-1825-0097" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" />
+          </div>
+          <div>
+            <label for="x">X handle</label>
+            <input id="x" name="x" type="text" placeholder="@yourname" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" />
+          </div>
+        </div>
+        <details class="models">
+          <summary>Name the AI models you used</summary>
+          <p class="hint">If your files already have an “AI tools used” section, you can skip this. Write “Unreleased model” if you can’t say.</p>
+          <div class="grid2">
+            <div>
+              <label for="ai-draft">Model and effort used for the draft</label>
+              <input id="ai-draft" name="ai-draft" type="text" maxlength="200" autocomplete="off" />
+            </div>
+            <div>
+              <label for="ai-review">Model and effort used for the review</label>
+              <input id="ai-review" name="ai-review" type="text" maxlength="200" autocomplete="off" />
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <section class="box" aria-labelledby="h-agree">
+        <h2 id="h-agree">4. Agree, then sign in</h2>
+        <p class="notice notice--warn" id="public-warning">
+          <strong>Everything in these boxes becomes public on GitHub, next to your GitHub name.</strong> Please don’t include medical details about you or anyone else.
+          GitHub is a public website where people share work, so if it matters to you, choose a GitHub name that doesn’t identify you or your child.
+          To take an IIP down later, <a href="/contact">contact us</a>: we log every removal publicly, with the reason.
+        </p>
+        <label class="agree" for="consent">
+          <input id="consent" name="consent" type="checkbox" />
+          <span>I agree that my IIP and its review will be published openly under CC BY 4.0, credited to the GitHub account I sign in with.</span>
+        </label>
+
+        <ul class="ready" id="ready" aria-label="Before you press the button">
+          <li data-ready="draft"><span class="ready__mark" aria-hidden="true"></span><span class="ready__text">Add your draft</span></li>
+          <li data-ready="review"><span class="ready__mark" aria-hidden="true"></span><span class="ready__text">Add your blind review</span></li>
+          <li data-ready="consent"><span class="ready__mark" aria-hidden="true"></span><span class="ready__text">Tick the box above</span></li>
+          <li data-ready="credit" hidden><span class="ready__mark" aria-hidden="true"></span><span class="ready__text"></span></li>
+        </ul>
+
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+        <div id="problems" class="problems" role="alert" tabindex="-1" hidden></div>
+        <div id="advice" class="advice" hidden></div>
+
+        <div class="actions">
+          <button type="button" id="check-btn" class="btn btn--quiet btn--lg">Check my files (optional)</button>
+          <button type="submit" id="go-btn" class="btn btn--primary btn--lg" aria-disabled={submissionsOpen ? 'false' : 'true'}>Continue with GitHub &amp; Submit</button>
+        </div>
+
+        <ol class="next">
+          <li><strong>We check your files again</strong> on our server, in case anything changed.</li>
+          <li><strong>You sign in on GitHub.</strong> OpenIslet only sees your public profile, never your password, email address or repositories. No GitHub account yet? You can create one there; it usually takes a few minutes. Keep this tab open, and if GitHub opens its app, come back here and press the button again.</li>
+          <li><strong>You come straight back here</strong> and get a link to your public IIP.</li>
+        </ol>
+        <p class="fine">
+          {live && <>“Check my files” sends your two files to our server to be checked; nothing is posted until you sign in and submit. </>}While you sign in, your draft is held on our server for up to 24 hours, and deleted if you don’t finish. Once you finish, it is public on <a href={issuesUrl} rel="noopener">GitHub</a>.
+          A person reviews each week’s IIPs together. <a href="/start#step-6">What happens next</a>.
+        </p>
+      </section>
+    </form>
+  </div>
+</Layout>
+
+<script>
+  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, type Problem } from '../scripts/submit';
+
+  const form = document.getElementById('submit-form') as HTMLFormElement;
+  const api = form.dataset.api ?? '';
+  const open = form.dataset.open === 'true';
+  const live = form.dataset.live === 'true';
+
+  const el = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+  const draft = el<HTMLTextAreaElement>('draft');
+  const review = el<HTMLTextAreaElement>('review');
+  const nameInput = el<HTMLInputElement>('name');
+  const orcid = el<HTMLInputElement>('orcid');
+  const xhandle = el<HTMLInputElement>('x');
+  const aiDraft = el<HTMLInputElement>('ai-draft');
+  const aiReview = el<HTMLInputElement>('ai-review');
+  const consent = el<HTMLInputElement>('consent');
+  const problemsBox = el<HTMLElement>('problems');
+  const status = el<HTMLElement>('status');
+  const checkBtn = el<HTMLButtonElement>('check-btn');
+  const goBtn = el<HTMLButtonElement>('go-btn');
+  const fields: Record<Exclude<Problem['field'], 'none'>, HTMLElement> = { draft, review, consent, name: nameInput, orcid, x: xhandle };
+
+  let stagedId: string | null = null;
+
+  const say = (text: string) => {
+    status.textContent = text;
+  };
+  const values = () => ({ draft: draft.value, review: review.value, consent: consent.checked, name: nameInput.value, orcid: orcid.value, x: xhandle.value });
+
+  // What the person has typed or loaded themselves. A slow download of their AI's files, or of an uploaded file, must never overwrite it.
+  const touched = new Set<HTMLElement>();
+  const edits = new Map<HTMLElement, number>();
+  for (const box of [draft, review, nameInput, orcid, xhandle, aiDraft, aiReview]) {
+    box.addEventListener('input', () => {
+      touched.add(box);
+      edits.set(box, (edits.get(box) ?? 0) + 1);
+      tidied.delete(box);
+    });
+  }
+
+  // Pasting, or loading a file: keep just the file out of the AI's reply, and put a file that landed in the wrong box where it
+  // belongs. What was done is said under the box. Typing by hand is never rewritten.
+  const tidied = new Map<HTMLElement, string>();
+  function arrange(box: HTMLTextAreaElement) {
+    const want = box === draft ? 'draft' : 'review';
+    const other = box === draft ? review : draft;
+    const is = whatIsThis(box.value);
+    if ((is === 'draft' || is === 'review') && is !== want && (!other.value.trim() || whatIsThis(other.value) === want)) {
+      const moved = tidy(box.value, is).text;
+      const back = other.value.trim() ? tidy(other.value, want).text : '';
+      other.value = moved;
+      box.value = back;
+      touched.add(other);
+      tidied.delete(box);
+      tidied.set(other, back ? 'Your two files were in each other’s boxes, so we swapped them.' : is === 'review' ? 'That was your blind review, so we put it in box 2.' : 'That was your draft, so we put it in box 1.');
+      if (back) tidied.set(box, 'Your two files were in each other’s boxes, so we swapped them.');
+      return;
+    }
+    const c = tidy(box.value, want);
+    if (c.text && c.changed) {
+      box.value = c.text;
+      tidied.set(box, c.picked || c.trimmed ? `We kept just the ${want} from what you pasted.` : 'We tidied its formatting so it can be read.');
+    } else tidied.delete(box);
+  }
+  for (const box of [draft, review]) {
+    box.addEventListener('paste', () =>
+      window.setTimeout(() => {
+        arrange(box);
+        count(draft, 'draft-count');
+        count(review, 'review-count');
+        refresh();
+      }, 0),
+    );
+  }
+
+  // One request at a time. `working` is the guard (a double press, or Enter while the button is busy, does nothing); the button is also
+  // really disabled while the sign-in is being set up, so the browser itself ignores a second click.
+  let working = false;
+  function setBusy(on: boolean) {
+    working = on;
+    goBtn.disabled = on;
+    if (on) goBtn.setAttribute('aria-busy', 'true');
+    else goBtn.removeAttribute('aria-busy');
+    goBtn.setAttribute('aria-disabled', on || !open ? 'true' : 'false');
+  }
+
+  function showProblems(problems: Problem[], lead = 'A few things to fix first:') {
+    Object.values(fields).forEach((f) => f.removeAttribute('aria-invalid'));
+    problemsBox.replaceChildren();
+    adviceBox.replaceChildren();
+    adviceBox.hidden = true;
+    if (!problems.length) {
+      problemsBox.hidden = true;
+      return;
+    }
+    const h = document.createElement('p');
+    h.className = 'problems__h';
+    h.textContent = lead;
+    const ul = document.createElement('ul');
+    for (const p of problems) {
+      const li = document.createElement('li');
+      li.textContent = p.text;
+      ul.append(li);
+      if (p.field !== 'none') fields[p.field].setAttribute('aria-invalid', 'true');
+    }
+    problemsBox.append(h, ul);
+    problemsBox.hidden = false;
+    problemsBox.focus();
+  }
+
+  // What the server's checks noticed that does not stop a submission (a quote it could not check, an Idea Graveyard rule nearby).
+  // The person who decides sees the same notes on the public issue.
+  const adviceBox = el<HTMLElement>('advice');
+  function showAdvice(data: Record<string, unknown>) {
+    const notes = (Array.isArray(data.checks) ? (data.checks as { status?: string; name?: string; detail?: string }[]) : [])
+      .filter((c) => c.status === 'amber' || c.status === 'red')
+      .map((c) => `${c.name}: ${c.detail}`);
+    adviceBox.replaceChildren();
+    adviceBox.hidden = !notes.length;
+    if (!notes.length) return;
+    const h = document.createElement('p');
+    h.className = 'advice__h';
+    h.textContent = 'Worth a look (these do not stop you; the person who reviews it sees them too):';
+    const ul = document.createElement('ul');
+    for (const n of notes) {
+      const li = document.createElement('li');
+      li.textContent = n;
+      ul.append(li);
+    }
+    adviceBox.append(h, ul);
+  }
+
+  const count = (box: HTMLTextAreaElement, id: string) => {
+    const n = box.value.length;
+    el<HTMLElement>(id).textContent = n ? `${n.toLocaleString('en-GB')} of ${MAX_TEXT.toLocaleString('en-GB')} characters` : '';
+  };
+  draft.addEventListener('input', () => count(draft, 'draft-count'));
+  review.addEventListener('input', () => count(review, 'review-count'));
+
+  // Upload: read the file in the browser. Nothing is sent until the final button.
+  function wireFile(inputId: string, box: HTMLTextAreaElement, countId: string, what: string) {
+    const input = el<HTMLInputElement>(inputId);
+    input.addEventListener('change', async (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      if (file.size > 400_000) {
+        say(`That file is too large for ${what}. Check that you chose the right one.`);
+        return;
+      }
+      const before = edits.get(box) ?? 0;
+      const text = await file.text();
+      input.value = ''; // so the same file can be chosen again
+      if ((edits.get(box) ?? 0) !== before) {
+        // They typed in the box while the file was being read: keep their words.
+        say(`You typed in the ${what} box while the file was loading, so we kept what you typed. Choose the file again if you want it to replace your text.`);
+        return;
+      }
+      box.value = text;
+      touched.add(box);
+      arrange(box);
+      count(draft, 'draft-count');
+      count(review, 'review-count');
+      refresh();
+      say(`Loaded ${file.name}.`);
+    });
+  }
+  wireFile('draft-file', draft, 'draft-count', 'draft');
+  wireFile('review-file', review, 'review-count', 'review');
+
+  // Say what we read, as people paste or type, so nothing comes as a surprise when they press the button. Nothing leaves the browser here.
+  const draftNote = el<HTMLElement>('draft-note');
+  const reviewNote = el<HTMLElement>('review-note');
+  const ready = Object.fromEntries(Array.from(document.querySelectorAll<HTMLElement>('#ready [data-ready]')).map((li) => [li.dataset.ready, li]));
+  type Mood = 'todo' | 'ok' | 'bad';
+  const setNote = (note: HTMLElement, mood: Mood, text: string) => {
+    note.hidden = mood === 'todo' || !text;
+    note.className = `livenote livenote--${mood}`;
+    note.dataset.mark = mood === 'ok' ? '✓' : mood === 'bad' ? '✕' : '';
+    if (note.textContent !== text) note.textContent = text;
+  };
+  const setReady = (key: string, mood: Mood, text: string) => {
+    const li = ready[key];
+    if (!li) return;
+    li.hidden = false;
+    li.className = `is-${mood}`;
+    (li.querySelector('.ready__mark') as HTMLElement).textContent = mood === 'ok' ? '✓' : mood === 'bad' ? '✕' : '';
+    (li.querySelector('.ready__text') as HTMLElement).textContent = text;
+  };
+  const verdictWords = (v: string) => v.charAt(0).toUpperCase() + v.slice(1);
+  function refresh() {
+    // the draft
+    if (!draft.value.trim()) {
+      setNote(draftNote, 'todo', '');
+      setReady('draft', 'todo', 'Add your draft');
+    } else {
+      const problems = draftProblems(draft.value);
+      if (problems.length) {
+        setNote(draftNote, 'bad', `${tidied.get(draft) ? `${tidied.get(draft)} ` : ''}${problems[0].text}`);
+        setReady('draft', 'bad', 'Fix your draft');
+      } else {
+        setNote(draftNote, 'ok', `Looks like a draft: “${draftTitle(draft.value) ?? 'untitled'}”.${tidied.get(draft) ? ` ${tidied.get(draft)}` : ''}`);
+        setReady('draft', 'ok', 'Your draft looks right');
+      }
+    }
+    // the review, and the verdict in it
+    if (!review.value.trim()) {
+      setNote(reviewNote, 'todo', '');
+      setReady('review', 'todo', 'Add your blind review');
+    } else {
+      const problems = reviewProblems(review.value);
+      if (problems.length) {
+        setNote(reviewNote, 'bad', `${tidied.get(review) ? `${tidied.get(review)} ` : ''}${problems[0].text}`);
+        setReady('review', 'bad', 'Fix your review');
+      } else {
+        const verdict = verdictWords(verdictOf(review.value) ?? 'supported');
+        setNote(reviewNote, 'ok', `The verdict reads “${verdict}”. That can go forward.${tidied.get(review) ? ` ${tidied.get(review)}` : ''}`);
+        setReady('review', 'ok', `Your review says ${verdict}`);
+      }
+    }
+    // the box
+    if (consent.checked) setReady('consent', 'ok', 'Box ticked: you agree to publish under CC BY 4.0');
+    else setReady('consent', 'todo', 'Tick the box above');
+    // the optional credit fields only matter if something typed there is wrong
+    const credit = quickCheck({ ...values(), consent: true }).find((p) => p.field === 'name' || p.field === 'orcid' || p.field === 'x');
+    if (credit) setReady('credit', 'bad', credit.text);
+    else if (ready.credit) ready.credit.hidden = true;
+  }
+  let later = 0;
+  const soon = () => {
+    window.clearTimeout(later);
+    later = window.setTimeout(refresh, 250);
+  };
+  for (const box of [draft, review, nameInput, orcid, xhandle]) box.addEventListener('input', soon);
+  consent.addEventListener('change', refresh);
+  refresh();
+
+  const aiTools = () => {
+    const tools: { draft?: string; review?: string } = {};
+    if (aiDraft.value.trim()) tools.draft = aiDraft.value.trim();
+    if (aiReview.value.trim()) tools.review = aiReview.value.trim();
+    // Always sent, even empty, so clearing a box that a connector link filled in really clears it (the server keeps a saved value
+    // only when the field is missing).
+    return tools;
+  };
+  const contributor = () => {
+    const c: { name?: string; orcid?: string; x?: string } = {};
+    if (nameInput.value.trim()) c.name = nameInput.value.trim();
+    if (orcid.value.trim()) c.orcid = orcidClean(orcid.value);
+    if (xhandle.value.trim()) c.x = xhandle.value.trim().replace(/^@/, '');
+    return c; // always sent, even empty: see aiTools
+  };
+  // Only the basic rules stop a submission, so only they are listed as things to fix, each in the box it is about.
+  const fromServer = (data: Record<string, unknown>): Problem[] => {
+    const door = Array.isArray(data.door) ? (data.door as { id?: string; status?: string; detail?: string; fix?: string }[]) : [];
+    const failed = door.filter((d) => d.status === 'fail');
+    if (failed.length)
+      return failed.map((d) => ({
+        field: d.id?.startsWith('review') ? ('review' as const) : d.id === 'consent' ? ('consent' as const) : d.id?.startsWith('draft') ? ('draft' as const) : ('none' as const),
+        text: `${d.detail ?? ''} ${d.fix ?? ''}`.trim(),
+      }));
+    return (Array.isArray(data.what_to_fix) ? (data.what_to_fix as unknown[]) : []).map((t) => ({ field: 'none' as const, text: String(t) }));
+  };
+
+  // Check my files: the quick check in the browser first, then the real checks on the connector when it is open.
+  checkBtn.addEventListener('click', async () => {
+    if (working) return;
+    showProblems([]);
+    const problems = quickCheck({ ...values(), consent: true });
+    if (problems.length) return showProblems(problems);
+    if (!live) {
+      say('Your files pass the basic check in your browser. The full check runs on our server once submissions open.');
+      return;
+    }
+    say('Checking your files…');
+    // This button stays enabled so keyboard focus is not lost; `working` makes a second press do nothing.
+    working = true;
+    checkBtn.setAttribute('aria-busy', 'true');
+    const result = await callApi(api, '/api/check', { draft: draft.value, review: review.value, ai_tools: aiTools(), consent: true });
+    checkBtn.removeAttribute('aria-busy');
+    working = false;
+    if (!result.ok) {
+      say('');
+      return showProblems([{ field: 'draft', text: explain(result) }], 'The check could not finish:');
+    }
+    if (result.data.ready) {
+      say(typeof result.data.summary === 'string' && result.data.summary ? result.data.summary : 'Your files meet the basic rules.');
+      showAdvice(result.data);
+      return;
+    }
+    say('');
+    showProblems(fromServer(result.data), 'A few things to fix first:');
+    showAdvice(result.data);
+  });
+
+  // A GitHub address is only followed if it really is GitHub's, or the local test one when the form talks to a local Worker.
+  const safeAuthorize = (url: unknown): string | null => {
+    if (typeof url !== 'string') return null;
+    if (url.startsWith('https://github.com/')) return url;
+    const local = /^https?:\/\/(127\.0\.0\.1|localhost)(:|\/)/;
+    return local.test(api) && local.test(url) ? url : null;
+  };
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (working) return; // a second press while the first is still being handled
+    showProblems([]);
+    if (!open) {
+      say('Submissions are not open yet. You can press “Check my files” now, and keep your files for when they open.');
+      return;
+    }
+    const problems = quickCheck(values());
+    if (problems.length) return showProblems(problems);
+    // Without this tab's own storage the sign-in cannot be finished safely, so say so now instead of on the page GitHub sends people back to.
+    if (!store.works()) return showProblems([{ field: 'none', text: STORAGE_BLOCKED }], 'We can’t start the sign-in here:');
+
+    say('Checking your files and getting ready to sign in…');
+    setBusy(true);
+    let leaving = false;
+    try {
+      const secret = newSecret();
+      const result = await callApi(api, '/api/begin', {
+        staged_id: stagedId ?? undefined,
+        draft: draft.value,
+        review: review.value,
+        ai_tools: aiTools(),
+        consent: true,
+        contributor: contributor(),
+        binding_hash: await sha256Hex(secret),
+      });
+
+      const next = result.ok ? safeAuthorize(result.data.authorize_url) : null;
+      const state = next ? stateOf(next) : null;
+      if (!next || !state) {
+        say('');
+        const fixes = result.ok ? [] : fromServer(result.data);
+        const text = result.ok ? 'The sign-in address was not what we expected, so we stopped. Please try again, and tell us if it keeps happening.' : explain(result);
+        showProblems(fixes.length ? fixes : [{ field: 'none', text }], fixes.length ? 'A few things to fix first:' : 'We could not start the sign-in:');
+        return;
+      }
+      // The secret is kept under this sign-in's own name, and read back to be sure the browser really kept it. Without it the page
+      // GitHub sends people back to could not finish, so stop here and say why.
+      store.clearBindings();
+      if (!store.set(bindingKey(state), secret)) {
+        say('');
+        showProblems([{ field: 'none', text: STORAGE_BLOCKED }], 'We can’t start the sign-in here:');
+        return;
+      }
+      if (typeof result.data.staged_id === 'string') store.set(STAGED_KEY, result.data.staged_id);
+      say('Taking you to GitHub to sign in…');
+      leaving = true; // the button stays switched off while the browser leaves this page
+      location.assign(next);
+    } finally {
+      if (!leaving) setBusy(false);
+    }
+  });
+
+  // Coming back to this page with the Back button can restore it exactly as it was left, with the button still off.
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) {
+      setBusy(false);
+      say('');
+      refresh();
+    }
+  });
+  if (!store.works()) {
+    const warning = el<HTMLElement>('storage-warning');
+    warning.textContent = STORAGE_BLOCKED;
+    warning.hidden = false;
+  }
+
+  // A link from the connector: its checked draft is already waiting on the server, so fill the form in. The id comes after a #
+  // (older links put it after ?staged=). Anyone holding it can read the files, so it leaves the address bar before anything else
+  // happens, and the retries below use the copy kept here. If a second link is opened while the first is still loading, the
+  // second one wins: whatever the first brings back later is dropped.
+  let loading = 0;
+  async function loadStaged() {
+    const wanted = new URLSearchParams(location.hash.slice(1)).get('staged') ?? new URLSearchParams(location.search).get('staged');
+    if (!wanted) return;
+    history.replaceState(null, '', location.pathname);
+    const mine = ++loading;
+    const stale = () => mine !== loading;
+    const note = el<HTMLElement>('from-link');
+    note.hidden = false;
+    if (!/^[A-Za-z0-9_-]{16,128}$/.test(wanted) || !live) {
+      note.textContent = 'This link cannot be used here. Paste your files into the boxes below.';
+      return;
+    }
+    note.textContent = 'Getting your files…';
+    let result = await callApi(api, `/api/staged/${wanted}`);
+    if (stale()) return;
+    // A brand-new link can take up to a minute to reach every Cloudflare location, so keep looking for a little over a minute
+    // before saying it has expired. A lost connection is tried again in the same way.
+    for (const wait of [2000, 4000, 8000, 12000, 16000, 20000]) {
+      if (result.ok || (result.status !== 404 && result.status !== 0)) break;
+      note.textContent = 'Still getting your files. This can take up to a minute…';
+      await new Promise((resolve) => setTimeout(resolve, wait));
+      if (stale()) return;
+      result = await callApi(api, `/api/staged/${wanted}`);
+      if (stale()) return;
+    }
+    if (!result.ok) {
+      note.textContent = result.status === 404
+        ? 'This link has expired (they last 24 hours) or is not valid. Paste your files into the boxes below.'
+        : 'We could not get your files just now. Open the link again in a minute, or paste your files into the boxes below.';
+      return;
+    }
+    // The person may have started typing, or loaded a file, while the files were on their way. Their own words always win.
+    if (touched.has(draft) || touched.has(review)) {
+      note.textContent = 'Your AI’s files arrived after you started typing here, so we left your text alone. Open the link again if you would rather have them.';
+      return;
+    }
+    const d = result.data as { draft?: string; review?: string; ai_tools?: { draft?: string; review?: string }; contributor?: { name?: string; orcid?: string; x?: string } };
+    const fill = (box: HTMLInputElement | HTMLTextAreaElement, value: string) => {
+      if (!touched.has(box)) box.value = value;
+    };
+    fill(draft, d.draft ?? '');
+    fill(review, d.review ?? '');
+    count(draft, 'draft-count');
+    count(review, 'review-count');
+    // The tick is agreement to publish these files, so it is asked for again whenever files arrive.
+    consent.checked = false;
+    refresh();
+    fill(aiDraft, d.ai_tools?.draft ?? '');
+    fill(aiReview, d.ai_tools?.review ?? '');
+    fill(nameInput, d.contributor?.name ?? '');
+    fill(orcid, d.contributor?.orcid ?? '');
+    fill(xhandle, d.contributor?.x ? `@${d.contributor.x}` : '');
+    stagedId = wanted;
+    note.textContent = 'Your AI filled this in for you. Read it through, tick the box, then press “Continue with GitHub & Submit”.';
+  }
+  void loadStaged();
+  // A link pasted into this tab while the form is already open changes only the part after the #, so the page does not reload.
+  addEventListener('hashchange', () => void loadStaged());
+</script>
+
+<style>
+  .top {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--dark-text);
+  }
+  .top__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .top__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(11, 27, 38, 0.95) 0%, rgba(11, 27, 38, 0.7) 60%, rgba(11, 27, 38, 0.45) 100%);
+  }
+  .top__inner {
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+  .top__eyebrow {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-lt);
+  }
+  .top h1 {
+    margin-top: 0.75rem;
+    font-size: clamp(2rem, 4.4vw, 3.25rem);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .top__lead {
+    margin-top: 1.125rem;
+    max-width: 42rem;
+    font-size: 1.1875rem;
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+  .top__sub {
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    color: var(--dark-soft);
+  }
+  .top__sub a {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .wrap {
+    padding-block: 2rem 4.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .wrap > * {
+    width: 100%;
+    max-width: 52rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  #go-btn:disabled {
+    cursor: progress;
+  }
+  /* Notes are a bar beside the words, not a box. */
+  .notice {
+    padding-left: 1rem;
+    border-left: 4px solid var(--threat);
+    color: var(--ink);
+    font-size: 1rem;
+    text-wrap: pretty;
+  }
+  .notice--warn {
+    color: var(--warn);
+  }
+  .fromlink {
+    padding-left: 1rem;
+    border-left: 4px solid var(--accent);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  /* The four parts of the form are told apart by a hairline, not by cards. */
+  .box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .box + .box {
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  .box h2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 0.75rem;
+    font-size: 1.3125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .opt {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+  .hint {
+    font-size: 0.96875rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  label {
+    display: block;
+    margin-bottom: 0.375rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  label.field {
+    margin: 0;
+  }
+  textarea,
+  input[type='text'] {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 1rem;
+  }
+  textarea {
+    min-height: 11rem;
+    resize: vertical;
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+  /* On a touch screen text smaller than 16px makes the iPhone zoom in on the box when it is tapped. */
+  @media (pointer: coarse) {
+    textarea {
+      font-size: 1rem;
+    }
+  }
+  textarea:focus,
+  input:focus-visible,
+  button:focus-visible,
+  summary:focus-visible {
+    outline: 3px solid var(--accent-lt);
+    outline-offset: 2px;
+  }
+  [aria-invalid='true'] {
+    border-color: var(--block);
+    box-shadow: 0 0 0 1px var(--block);
+  }
+  .row2 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+  }
+  .file {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+    margin: 0;
+    font-weight: 500;
+  }
+  .file {
+    max-width: 100%;
+    min-width: 0;
+  }
+  .file input {
+    min-height: 2.75rem;
+    font-size: 0.9375rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .file input::file-selector-button {
+    margin-right: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .file input::file-selector-button:hover {
+    background: var(--paper);
+  }
+  .count {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  /* what we read in the box above, as soon as something is pasted */
+  .livenote {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    margin: 0;
+    font-size: 0.96875rem;
+    font-weight: 600;
+    text-wrap: pretty;
+  }
+  .livenote::before {
+    content: attr(data-mark);
+    flex: none;
+    font-weight: 700;
+  }
+  .livenote--ok {
+    color: var(--pass);
+  }
+  .livenote--bad {
+    color: var(--block);
+  }
+  /* what is still to do before the button */
+  .ready {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .ready li {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 1rem;
+    color: var(--body);
+  }
+  .ready li[hidden] {
+    display: none;
+  }
+  .ready__mark {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    border: 2px solid var(--line-strong);
+    border-radius: 50%;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .ready li.is-ok {
+    color: var(--ink);
+  }
+  .ready li.is-ok .ready__mark {
+    border-color: var(--pass);
+    background: var(--pass);
+    color: #fff;
+  }
+  .ready li.is-bad {
+    color: var(--block);
+    font-weight: 600;
+  }
+  .ready li.is-bad .ready__mark {
+    border-color: var(--block);
+    background: var(--block);
+    color: #fff;
+  }
+  .grid3 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.875rem;
+  }
+  .grid2 {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.875rem;
+  }
+  @media (min-width: 40em) {
+    .grid3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .grid2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .models {
+    border-top: 1px solid var(--line);
+  }
+  .models summary {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+  }
+  .models summary::-webkit-details-marker {
+    display: none;
+  }
+  .models summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  .models[open] summary::after {
+    content: '–';
+  }
+  .models > :not(summary) {
+    margin: 0;
+    padding: 0 0 1rem;
+  }
+  .agree {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.625rem;
+    background: var(--paper);
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .agree input {
+    flex: none;
+    width: 1.375rem;
+    height: 1.375rem;
+    margin-top: 0.125rem;
+    accent-color: var(--accent);
+  }
+  .problems {
+    padding: 0.875rem 1.125rem;
+    border: 1px solid var(--block);
+    border-radius: 0.625rem;
+    background: #fff;
+    color: var(--ink);
+  }
+  /* Advice from the checks that does not stop anything: plain text, quieter than the problems. */
+  .advice {
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .advice__h {
+    margin: 0;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .advice ul {
+    margin: 0.375rem 0 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .problems:focus {
+    outline: 3px solid var(--block);
+    outline-offset: 2px;
+  }
+  .problems__h {
+    margin: 0;
+    font-weight: 600;
+    color: var(--block);
+  }
+  .problems ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+  .status {
+    min-height: 1.5rem;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .next {
+    margin: 0.5rem 0 0;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--body);
+  }
+  .next li::marker {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .fine {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+</style>

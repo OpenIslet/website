@@ -1,0 +1,345 @@
+---
+import Cell from './art/Cell.astro';
+import Immune from './art/Immune.astro';
+import Today1 from './compare/Today1.astro';
+import Today2 from './compare/Today2.astro';
+import Today3 from './compare/Today3.astro';
+import Today4 from './compare/Today4.astro';
+import Ours1 from './compare/Ours1.astro';
+import Ours2 from './compare/Ours2.astro';
+import Ours3 from './compare/Ours3.astro';
+import Ours4 from './compare/Ours4.astro';
+
+// One picture for each side of each row: what goes wrong today, and what Islet-1 does about it.
+const visuals = [
+  [Today1, Ours1],
+  [Today2, Ours2],
+  [Today3, Ours3],
+  [Today4, Ours4],
+];
+
+// What today's best treatments have achieved, what they still leave open, and what Islet-1 does about it. Each named treatment
+// is credited for what it did, from the company's or the journal's own public report, with its date. Check them again before
+// changing a word: these are other groups' work. Sources: the blueprint's reference designs and its Stage 5 plan.
+const rows: { today: string; todayText: string; example: string; source?: { href: string; label: string }; ours: string; oursText: string }[] = [
+  {
+    today: 'Lifelong immune-suppressing drugs',
+    todayText:
+      'In the best trial so far, 10 of 12 people no longer needed insulin injections after a year, but only with immune-suppressing drugs. These raise the risk of serious infection, kidney damage and cancer, so most children and young adults can’t use them.',
+    example: 'Example: zimislecel (VX-880)',
+    source: { href: 'https://doi.org/10.1056/NEJMoa2506549', label: 'NEJM, June 2025' },
+    ours: 'Cells designed to be left alone by the immune system',
+    oursText: 'Gene edits are meant to make the cells hard for the immune system to see or attack, so that no drugs should be needed.',
+  },
+  {
+    today: 'Devices that wall the cells off',
+    todayText: 'A device can protect the cells without drugs, but scar tissue can grow around it and starve the cells of oxygen. VX-264 was safe in its trial but did not make enough insulin, so Vertex stopped it.',
+    example: 'Example: VX-264',
+    source: { href: 'https://investors.vrtx.com/news-releases/news-release-details/vertex-announces-program-updates-type-1-diabetes-portfolio', label: 'Vertex, March 2025' },
+    ours: 'Built-in oxygen and blood supply',
+    oursText:
+      'No sealed wall. Small clusters, pre-built blood-vessel fragments and an oxygen-releasing material are designed to keep the cells alive while the body’s own vessels grow in.',
+  },
+  {
+    today: 'No shield against inflammation, and no off-switch',
+    todayText:
+      'The first gene-edited islets to survive in a person without immune-suppressing drugs were still working after 14 months, in one person, using donor cells at a low dose. They carry no extra protection against inflammation, and no way to switch the cells off.',
+    example: 'Example: Sana UP421',
+    source: { href: 'https://ir.sana.com/news-releases/news-release-details/sana-biotechnology-announces-follow-publication-new-england', label: 'Sana, July 2026' },
+    ours: 'Protection, and a safety switch',
+    oursText:
+      'Two of the protective genes are designed to switch on when inflammation appears, and every cell is designed to carry a switch that can remove it if anything goes wrong.',
+  },
+  {
+    today: 'One design for everyone',
+    todayText:
+      'People’s immune systems differ, so one set of edits may hide the cells better from some patients than from others.',
+    example: '',
+    ours: 'Matched to the patient',
+    oursText:
+      'The plan starts from one universal design and switches to a matched design where a patient’s immune type calls for it.',
+  },
+];
+---
+
+<section class="intro" id="problem">
+  <div class="container">
+    <p class="eyebrow">The problem</p>
+    <h2 class="h2 intro__h">Why type 1 diabetes still has no cure</h2>
+    <p class="lead intro__lead">Replacing the lost cells is possible. Getting the body to accept them is the part nobody has solved.</p>
+
+    <ol class="journey">
+      <li class="journey__item">
+        <svg viewBox="0 0 120 80" aria-hidden="true" focusable="false">
+          <Cell x={44} y={40} r={20} kind="beta" />
+          <Cell x={78} y={30} r={15} kind="alpha" />
+          <Cell x={80} y={58} r={13} kind="beta" />
+          <Cell x={30} y={64} r={9} kind="delta" />
+        </svg>
+        <h3>Lab-grown cells can replace the lost ones</h3>
+        <p>Stem cells can be turned into the insulin-making islet cells the pancreas has lost. Early treatments have already restored insulin production in some people.</p>
+      </li>
+      <li class="journey__arrow" aria-hidden="true">→</li>
+      <li class="journey__item journey__item--bad">
+        <svg viewBox="0 0 120 80" aria-hidden="true" focusable="false">
+          <Cell x={42} y={42} r={20} kind="beta" />
+          <Cell x={68} y={56} r={11} kind="alpha" />
+          <Immune x={92} y={26} r={14} kind="tcell" />
+          <path d="M80 34 L62 42" stroke="#7a4a00" stroke-width="2.5" stroke-dasharray="3 4" fill="none"></path>
+        </svg>
+        <h3>But the body rejects the new cells</h3>
+        <p>The immune system attacks them as foreign, just as it attacked the originals. Stopping that, without lifelong drugs, is the unsolved problem.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section--white aim" id="aim">
+  <div class="container">
+    <p class="eyebrow">Our approach</p>
+    <h2 class="h2 aim__h">A personalised cure that fixes what today’s approaches get wrong</h2>
+    <p class="lead aim__lead">
+      Today’s best approaches each solve one part of the problem and leave another behind. Islet-1 is designed to keep what works,
+      fix what doesn’t, and go further.
+    </p>
+
+    <div class="compare" role="list">
+      <div class="compare__head" aria-hidden="true">
+        <span>What goes wrong today</span>
+        <span></span>
+        <span>What Islet-1 does about it</span>
+      </div>
+      {
+        rows.map((r, i) => {
+          const [TodayVisual, OursVisual] = visuals[i];
+          return (
+            <div class="compare__row" role="listitem">
+              <div class="today">
+                <div class="vis"><TodayVisual /></div>
+                <div class="compare__text">
+                  <span class="chip chip--warn">Today</span>
+                  <h3>{r.today}</h3>
+                  <p>{r.todayText}</p>
+                  {r.example && (
+                    <p class="today__eg">
+                      {r.example}
+                      {r.source && (
+                        <>
+                          {' · '}
+                          <a href={r.source.href} rel="noopener">
+                            {r.source.label}
+                          </a>
+                        </>
+                      )}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div class="compare__arrow" aria-hidden="true">→</div>
+              <div class="ours">
+                <div class="vis vis--ours"><OursVisual /></div>
+                <div class="compare__text">
+                  <span class="chip">Islet-1</span>
+                  <h3>{r.ours}</h3>
+                  <p>{r.oursText}</p>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+    <p class="footnote aim__note">Islet-1 is a design, and its improvements are not yet proven. Testing them is the point of the project. The pictures on this page are drawn to show the ideas. They are not measured data.</p>
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(2.5rem, 5vw, 4rem);
+  }
+  .intro__h {
+    margin-top: 0.75rem;
+    max-width: 56rem;
+  }
+  .intro__lead {
+    margin-top: 1.125rem;
+    max-width: 46rem;
+  }
+
+  /* Two plain columns with a rule on top, amber for the problem; the arrow shows the order. */
+  .journey {
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 1.5rem 1.25rem;
+  }
+  .journey__item {
+    flex: 1 1 22rem;
+    padding-top: 1.25rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .journey__item--bad {
+    border-top-color: var(--threat);
+  }
+  .journey__item svg {
+    display: block;
+    width: 7.5rem;
+    height: 5rem;
+  }
+  .journey__item h3 {
+    margin-top: 1rem;
+    font-size: 1.3125rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .journey__item p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .journey__arrow {
+    align-self: center;
+    font-size: 1.75rem;
+    color: var(--muted);
+  }
+  @media (max-width: 52em) {
+    .journey__arrow {
+      display: none;
+    }
+  }
+
+  .aim {
+    padding-block: clamp(3rem, 6vw, 5.5rem);
+  }
+  .aim__h {
+    margin-top: 0.75rem;
+    max-width: 53rem;
+  }
+  .aim__lead {
+    margin-top: 1.125rem;
+    max-width: 46rem;
+  }
+  .aim__note {
+    margin-top: 1.25rem;
+  }
+
+  /* Each row is two columns with an arrow between them. The pictures are the only panels; rows are told apart by a hairline. */
+  .compare {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .compare__head,
+  .compare__row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr);
+    gap: 0 0.5rem;
+    align-items: stretch;
+  }
+  .compare__head {
+    margin-bottom: -1rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .compare__row {
+    grid-template-rows: auto 1fr;
+  }
+  .compare__row + .compare__row {
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+  /* The two sides are cells of the row's grid, so the arrow sits level with the pictures and not with the middle of the words. */
+  .today,
+  .ours {
+    display: contents;
+  }
+  .today .vis {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .today .compare__text {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .ours .vis {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .ours .compare__text {
+    grid-column: 3;
+    grid-row: 2;
+  }
+  .compare__text {
+    margin-top: 1.125rem;
+  }
+  .vis {
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .vis--ours {
+    box-shadow: inset 0 0 0 1px rgba(142, 160, 255, 0.45);
+  }
+  .vis :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .compare h3 {
+    margin-top: 0.75rem;
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .compare p {
+    margin-top: 0.375rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .ours p {
+    color: var(--ink);
+  }
+  .today__eg {
+    font-size: 0.875rem !important;
+    color: var(--muted) !important;
+  }
+  .compare__arrow {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--accent);
+  }
+  @media (max-width: 52em) {
+    .compare__head {
+      display: none;
+    }
+    .compare__row {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: none;
+      gap: 0.25rem;
+    }
+    .today .vis,
+    .today .compare__text,
+    .compare__arrow,
+    .ours .vis,
+    .ours .compare__text {
+      grid-column: 1;
+      grid-row: auto;
+    }
+    .compare__arrow {
+      transform: rotate(90deg);
+      height: 1.75rem;
+    }
+  }
+</style>

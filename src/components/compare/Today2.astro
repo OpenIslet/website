@@ -1,0 +1,31 @@
+---
+// Today: a device that walls the cells off. Scar tissue builds up around it, and oxygen cannot get in.
+import Cell from '../art/Cell.astro';
+---
+
+<svg viewBox="0 0 360 150" role="img" aria-label="Islet cells sealed inside a device with scar tissue building up around it. Oxygen bubbles outside cannot get in, so the cells inside can be starved of oxygen.">
+  <g font-family="IBM Plex Sans, sans-serif">
+    <rect x="20" y="16" width="192" height="118" rx="28" fill="none" stroke="#a6b6c2" stroke-width="10" stroke-dasharray="1 7" stroke-linecap="round" opacity="0.85"></rect>
+    <rect x="38" y="32" width="156" height="86" rx="18" fill="#0b1b26" fill-opacity="0.45" stroke="#e6edf2" stroke-width="3"></rect>
+    <g opacity="0.5">
+      <Cell x={96} y={74} r={18} kind="beta" />
+      <Cell x={130} y={88} r={14} kind="alpha" />
+      <Cell x={72} y={96} r={12} kind="delta" />
+    </g>
+
+    <g fill="none" stroke="#e6edf2" stroke-width="2.5">
+      <circle cx="266" cy="48" r="11"></circle>
+      <circle cx="304" cy="82" r="11"></circle>
+      <circle cx="262" cy="112" r="11"></circle>
+    </g>
+    <g stroke="#e6edf2" stroke-width="2.5" stroke-dasharray="3 5" fill="none">
+      <path d="M252 52 L232 60"></path>
+      <path d="M248 108 L232 100"></path>
+    </g>
+    <g stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round">
+      <path d="M222 54 l12 12 M234 54 l-12 12"></path>
+      <path d="M222 96 l12 12 M234 96 l-12 12"></path>
+    </g>
+    <text x="300" y="34" font-size="20" font-weight="600" fill="#e6edf2" text-anchor="middle">O₂</text>
+  </g>
+</svg>

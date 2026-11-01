@@ -1,0 +1,124 @@
+---
+// One step of the guide: heading, short lead, the step's own content, then Back, Mark as done and Next.
+interface Props {
+  n: number;
+  title: string;
+  lead?: string;
+  badge?: string;
+  /** The same heading and lead for the copy-and-paste route. The guide's route picker shows one or the other. */
+  titlePaste?: string;
+  leadPaste?: string;
+}
+const { n, title, lead, badge, titlePaste, leadPaste } = Astro.props;
+const titles = ['Give your AI the starter pack', 'Explore the blueprint', 'Save your IIP as a draft', 'Get a blind second opinion', 'Submit it', 'We check it, you get credit'];
+---
+
+<section class="gstep" id={`step-${n}`} data-step={n} aria-labelledby={`step-${n}-title`}>
+  <header class="gstep__head">
+    <span class="gstep__n" aria-hidden="true">{n}</span>
+    <div>
+      <p class="gstep__of">Step {n} of 6 {badge && <span class="chip chip--ink">{badge}</span>}</p>
+      <h2 class="gstep__title" id={`step-${n}-title`}>
+        {titlePaste ? (<><span data-route-only="mcp">{title}</span><span data-route-only="paste">{titlePaste}</span></>) : title}
+      </h2>
+    </div>
+  </header>
+  {
+    leadPaste ? (
+      <>
+        <p class="gstep__lead" data-route-only="mcp">{lead}</p>
+        <p class="gstep__lead" data-route-only="paste">{leadPaste}</p>
+      </>
+    ) : (
+      lead && <p class="gstep__lead">{lead}</p>
+    )
+  }
+  <div class="gstep__body"><slot /></div>
+  <footer class="gstep__foot">
+    <div class="gstep__nav">
+      {n > 1 && <a class="textlink" href={`#step-${n - 1}`}>← Step {n - 1}</a>}
+    </div>
+    {
+      n < 6 ? (
+        <a class="btn btn--primary" href={`#step-${n + 1}`}>Next: {titles[n]} →</a>
+      ) : (
+        <a class="btn btn--primary" href="/contributions">See the Contributions page →</a>
+      )
+    }
+  </footer>
+</section>
+
+<style>
+  /* A step is a heading and its content on the page. The "Do this" panel is the one box in it, and steps are told apart by a hairline. */
+  .gstep {
+    scroll-margin-top: 1.5rem;
+  }
+  .gstep + .gstep {
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .gstep__head {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .gstep__n {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+  .gstep__of {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .gstep__title {
+    margin-top: 0.125rem;
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .gstep__lead {
+    margin-top: 1.25rem;
+    max-width: 46rem;
+    font-size: 1.125rem;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .gstep__body {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .gstep__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem 1rem;
+    margin-top: 2rem;
+  }
+  .gstep__nav {
+    margin-right: auto;
+  }
+  /* on narrower screens the list of steps is a bar stuck to the top, so a step must stop below it */
+  @media (max-width: 64em) {
+    .gstep {
+      scroll-margin-top: 4.5rem;
+    }
+  }
+</style>

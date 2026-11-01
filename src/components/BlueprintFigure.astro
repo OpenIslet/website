@@ -1,0 +1,759 @@
+---
+// The blueprint as an engineering drawing. Each numbered part links to its section of the specification.
+// All three designs are drawn; data-design on the <figure> chooses which one shows. Design X is Design A with one more edit (INS),
+// so the two share their drawing and X adds a mark.
+//
+// What is drawn, and where it comes from:
+//   - the cell: the surface flags (HLA class I and II) that each edit removes or keeps, the proteins that are added (HLA-E, CD47, PD-L1),
+//     and what sits inside (SERPINB9, the iCasp9 safety switch, TYK2, the INS base edit);
+//   - the DNA strip: one box per edit site, built from the same elements as the "edit by edit" diagrams (src/data/blueprint.ts), so
+//     it cannot drift from them;
+//   - the graft: a cross-section to scale (350 µm thick, clusters 120 µm or less, a central oxygen layer a third of the thickness).
+// Keep the parts apart: a number sits beside the part it names, never on top of it.
+import { release } from '../data/site';
+import { scenarios, type Elem } from '../data/blueprint';
+
+interface Props {
+  design?: 'A' | 'B' | 'X';
+  /** false = a plain picture, for printing inside the specification. */
+  interactive?: boolean;
+  /** Start of the ids used inside the drawing. Give each copy on a page its own, so no two elements share an id. */
+  idp?: string;
+}
+const { design = 'A', interactive = true, idp = 'bp' } = Astro.props;
+type D = 'A' | 'B' | 'X';
+
+// `text` is the full wording (used in the list under the drawing). `lines` is the same, broken into short lines for the sheet.
+const cellA = [
+  { n: 1, id: 'spec-b2m', title: 'B2M', text: 'ID flags off. HLA-E and CD47 on', lines: ['ID flags (class I) off.', 'HLA-E and CD47 on'] },
+  { n: 2, id: 'spec-ciita', title: 'CIITA', text: 'Second set of ID flags off', lines: ['Second set of ID flags', '(class II) off'] },
+  { n: 3, id: 'spec-cxcl10', title: 'CXCL10', text: 'SERPINB9 and PD-L1 switch on with inflammation', lines: ['SERPINB9 and PD-L1', 'switch on with inflammation'] },
+  { n: 4, id: 'spec-aavs1', title: 'AAVS1', text: 'Safety switch (iCasp9)', lines: ['Safety switch (iCasp9)'] },
+];
+const cellB = [
+  { n: 1, id: 'spec-designb', title: 'HLA-A, HLA-B', text: 'ID flags off', lines: ['ID flags off'] },
+  { n: 2, id: 'spec-designb', title: 'HLA-C', text: 'One matched copy kept', lines: ['One matched copy kept'] },
+  { n: 3, id: 'spec-ciita', title: 'CIITA', text: 'Second set of ID flags off', lines: ['Second set of ID flags off'] },
+  { n: 4, id: 'spec-designb', title: 'TYK2', text: 'Switched off', lines: ['Switched off'] },
+  { n: 5, id: 'spec-cxcl10', title: 'CXCL10', text: 'SERPINB9 and PD-L1 switch on with inflammation', lines: ['SERPINB9 and PD-L1', 'switch on with inflammation'] },
+  { n: 6, id: 'spec-aavs1', title: 'AAVS1', text: 'Safety switch (iCasp9)', lines: ['Safety switch (iCasp9)'] },
+  { n: 7, id: 'spec-designb', title: 'INS', text: 'One base edit', lines: ['One base edit'] },
+];
+const cellX = [
+  ...cellA,
+  { n: 5, id: 'spec-designx', title: 'INS', text: 'One base edit: fewer insulin pieces for T cells to target. Insulin itself is unchanged; the effect is unmeasured.', lines: ['One base edit: fewer insulin', 'pieces for T cells to target.', 'Insulin itself is unchanged.'] },
+];
+const cells = { A: cellA, B: cellB, X: cellX } as const;
+// How the numbered list on the sheet is laid out, so a long list still fits: where it starts, the space between entries, and the type
+// sizes. Each entry takes the height of its own lines (see `legendY`).
+const sheet = {
+  A: { top: 142, gap: 40, small: 14, lead: 20, head: 17 },
+  B: { top: 98, gap: 27, small: 13, lead: 17, head: 15.5 },
+  X: { top: 122, gap: 34, small: 13.5, lead: 19, head: 16.5 },
+} as const;
+function legendY(d: D) {
+  const { top, gap, small, lead } = sheet[d];
+  let y = top;
+  return cells[d].map((it) => {
+    const at = y;
+    y += lead + (it.lines.length - 1) * (small + 3) + gap;
+    return at;
+  });
+}
+const legendTops = { A: legendY('A'), B: legendY('B'), X: legendY('X') };
+const graft = [
+  { n: 'a', id: 'spec-environment', title: 'Clusters', text: '120 µm or less across: beta, alpha and delta cells' },
+  { n: 'b', id: 'spec-environment', title: 'Blood vessels', text: 'Pre-built fragments between the clusters' },
+  { n: 'c', id: 'spec-environment', title: 'Oxygen layer', text: 'Calcium peroxide and catalase: oxygen for 3 days' },
+];
+
+const date = new Date(`${release.date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+const A = release.designs.find((d) => d.id === 'A')!;
+const B = release.designs.find((d) => d.id === 'B')!;
+const X = release.designs.find((d) => d.id === 'X')!;
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// The cell
+// ---------------------------------------------------------------------------------------------------------------------------------
+const C = { x: 262, y: 300 }; // centre of the cell
+const R = 138; // the membrane
+const NUC = 60; // the nucleus
+const rad = (deg: number) => (deg * Math.PI) / 180;
+/** A point on the circle of radius r round the cell's centre, deg clockwise from three o'clock. */
+const pt = (deg: number, r: number): [number, number] => [Math.round((C.x + r * Math.cos(rad(deg))) * 10) / 10, Math.round((C.y + r * Math.sin(rad(deg))) * 10) / 10];
+const num = (v: number) => Math.round(v * 10) / 10;
+
+const STALK = 20;
+/** A tag on a stalk: the stalk runs out from the membrane and the tag's near edge meets its end, whichever way it points. */
+function tag(deg: number, w: number, h: number) {
+  const reach = (w / 2) * Math.abs(Math.cos(rad(deg))) + (h / 2) * Math.abs(Math.sin(rad(deg)));
+  return { from: pt(deg, R), to: pt(deg, R + STALK), at: pt(deg, R + STALK + reach), w, h };
+}
+
+// ID flags on the surface. Each is a proper tag with the name of the protein written in it. Dashed = switched off, solid green = kept.
+const flags: { deg: number; text: string; kept?: boolean; on: D[] }[] = [
+  { deg: -128, text: 'A', on: ['A', 'B', 'X'] },
+  { deg: -112, text: 'B', on: ['A', 'B', 'X'] },
+  { deg: -96, text: 'C', on: ['A', 'X'] },
+  { deg: -96, text: 'C', kept: true, on: ['B'] },
+  { deg: 160, text: 'DR', on: ['A', 'B', 'X'] },
+  { deg: 176, text: 'DP', on: ['A', 'B', 'X'] },
+  { deg: 192, text: 'DQ', on: ['A', 'B', 'X'] },
+].map((f) => ({ ...f, ...tag(f.deg, f.text.length > 1 ? 26 : 20, 16) }));
+// The proteins that are added (Designs A and X): two lollipops on stalks.
+const balls = [
+  { deg: -62, fill: '#7f93ff', text: 'HLA-E' },
+  { deg: -40, fill: '#ffffff', text: 'CD47' },
+].map((b) => ({ ...b, from: pt(b.deg, R), to: pt(b.deg, R + STALK), at: pt(b.deg, R + STALK + 9) }));
+// PD-L1, on the surface, in all three designs.
+const hexDeg = 14;
+const hex = { from: pt(hexDeg, R), to: pt(hexDeg, R + 16), at: pt(hexDeg, R + 16 + 11) };
+const hexPoints = (cx: number, cy: number, r: number) =>
+  Array.from({ length: 6 }, (_, i) => `${num(cx + r * Math.cos(rad(60 * i + 30)))},${num(cy + r * Math.sin(rad(60 * i + 30)))}`).join(' ');
+
+// Inside the cell.
+const shield = pt(-12, 96); // SERPINB9
+const capsule = pt(-165, 96); // iCasp9, the safety switch
+const tyk2 = pt(160, 96); // Design B only: TYK2, switched off
+const insMark: [number, number] = [C.x + 32, C.y - 30]; // Designs B and X: the INS base edit, inside the nucleus
+const mito = [
+  { x: 276, y: 206, rx: 21, ry: 8, rot: -8 },
+  { x: 262, y: 410, rx: 22, ry: 8, rot: 0 },
+];
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// The numbered parts on the cell. `at` is where the number sits, beside its part. `leads` are short lines from the number to the part.
+// ---------------------------------------------------------------------------------------------------------------------------------
+const head = (deg: number, text: string): [number, number] => tag(deg, text.length > 1 ? 26 : 20, 16).at;
+const ball = (deg: number): [number, number] => pt(deg, R + STALK + 9);
+const hexPin: [number, number] = [hex.at[0], hex.at[1] + 32];
+const capsulePin: [number, number] = [178, 238];
+const insPin: [number, number] = [330, 236];
+const pins: Record<D, { n: number; at: [number, number]; leads?: [number, number][] }[]> = {
+  A: [
+    { n: 1, at: [390, 142], leads: [ball(-62), ball(-40)] },
+    { n: 2, at: [50, 312] },
+    { n: 3, at: hexPin },
+    { n: 4, at: capsulePin },
+  ],
+  B: [
+    { n: 1, at: [158, 118], leads: [head(-128, 'A'), head(-112, 'B')] },
+    { n: 2, at: [254, 94], leads: [head(-96, 'C')] },
+    { n: 3, at: [50, 312] },
+    { n: 4, at: [176, 366] },
+    { n: 5, at: hexPin },
+    { n: 6, at: capsulePin },
+    { n: 7, at: insPin, leads: [insMark] },
+  ],
+  X: [
+    { n: 1, at: [390, 142], leads: [ball(-62), ball(-40)] },
+    { n: 2, at: [50, 312] },
+    { n: 3, at: hexPin },
+    { n: 4, at: capsulePin },
+    { n: 5, at: insPin, leads: [insMark] },
+  ],
+};
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// The DNA strip: one box per edit site, made of the real elements of that edit
+// ---------------------------------------------------------------------------------------------------------------------------------
+const locus = (d: D, id: string) => {
+  const found = scenarios.find((s) => s.id === d)?.loci.find((l) => l.id === id);
+  if (!found) throw new Error(`BlueprintFigure: Design ${d} has no locus "${id}" in src/data/blueprint.ts`);
+  return found;
+};
+interface Site {
+  n: number;
+  label: string;
+  note?: string;
+  elems: Elem[];
+}
+const sites: Record<D, Site[]> = {
+  A: [
+    { n: 1, label: 'B2M', note: 'HLA-E + CD47 in', elems: locus('A', 'b2m').elems },
+    { n: 2, label: 'CIITA', note: 'both copies off', elems: locus('A', 'ciita').elems },
+    { n: 3, label: 'CXCL10', note: 'SERPINB9, PD-L1', elems: locus('A', 'cxcl10').elems },
+    { n: 4, label: 'AAVS1', note: 'iCasp9 in', elems: locus('A', 'aavs1').elems },
+  ],
+  B: [
+    { n: 1, label: 'HLA-A, B', elems: locus('B', 'hla').elems.slice(0, 2) },
+    { n: 2, label: 'HLA-C', elems: locus('B', 'hla').elems.slice(2) },
+    { n: 3, label: 'CIITA', elems: locus('B', 'ciita').elems },
+    { n: 4, label: 'TYK2', elems: locus('B', 'tyk2').elems },
+    { n: 5, label: 'CXCL10', elems: locus('B', 'cxcl10').elems },
+    { n: 6, label: 'AAVS1', elems: locus('B', 'aavs1').elems },
+    { n: 7, label: 'INS', elems: locus('B', 'ins').elems },
+  ],
+  X: [
+    { n: 1, label: 'B2M', note: 'HLA-E + CD47 in', elems: locus('X', 'b2m').elems },
+    { n: 2, label: 'CIITA', note: 'both copies off', elems: locus('X', 'ciita').elems },
+    { n: 3, label: 'CXCL10', note: 'SERPINB9, PD-L1', elems: locus('X', 'cxcl10').elems },
+    { n: 4, label: 'AAVS1', note: 'iCasp9 in', elems: locus('X', 'aavs1').elems },
+    { n: 5, label: 'INS', note: 'base edit', elems: locus('X', 'ins').elems },
+  ],
+};
+const SX0 = 60;
+const SX1 = 620;
+const SY = 500; // top of the strip
+const SH = 32; // height of the strip
+/** The boxes of one site, laid out across its share of the strip. Widths follow the elements' `grow`, with a small gap between boxes. */
+function boxes(site: Site, count: number, i: number) {
+  const pitch = (SX1 - SX0) / count;
+  const cx = SX0 + pitch * (i + 0.5);
+  const width = Math.min(pitch - 14, 118);
+  const gap = 2.5;
+  // One letter changed is one change, however many words the edit-by-edit diagram uses for what it does.
+  const parts = site.elems.reduce<{ kind: Elem['kind']; grow: number }[]>((all, e) => {
+    const last = all[all.length - 1];
+    if (last && last.kind === 'edit' && e.kind === 'edit') last.grow += e.grow;
+    else all.push({ kind: e.kind, grow: e.grow });
+    return all;
+  }, []);
+  const total = parts.reduce((s, e) => s + e.grow, 0);
+  const free = width - gap * (parts.length - 1);
+  let x = cx - width / 2;
+  const out = parts.map((e) => {
+    const w = Math.max(7, (free * e.grow) / total);
+    const box = { x: num(x), w: num(w), kind: e.kind };
+    x += w + gap;
+    return box;
+  });
+  return { cx: num(cx), pitch, boxes: out };
+}
+// The key under the strip only lists the kinds of part that this design uses.
+const kindName: Record<string, string> = {
+  cds: 'Protein-coding',
+  reg: 'Control region',
+  link: 'Linker',
+  ins: 'Insulator',
+  ko: 'Switched off',
+  keep: 'Kept as it is',
+  edit: 'Base edit',
+};
+const kindOrder = ['cds', 'reg', 'link', 'ins', 'ko', 'keep', 'edit'];
+function keyFor(d: D) {
+  const used = new Set(sites[d].flatMap((s) => s.elems.map((e) => e.kind)));
+  let x = SX0;
+  let row = 0;
+  return kindOrder
+    .filter((k) => used.has(k as Elem['kind']))
+    .map((k) => {
+      const width = 28 + kindName[k].length * 6.1 + 18;
+      if (x + width > 690) {
+        x = SX0;
+        row += 1;
+      }
+      const item = { kind: k, name: kindName[k], x: num(x), y: 616 + row * 16 };
+      x += width;
+      return item;
+    });
+}
+
+// ---------------------------------------------------------------------------------------------------------------------------------
+// The graft, to scale: 350 µm thick, so 1 µm is about 0.57 of a drawing unit. The central layer is about a third of the thickness
+// (the model's own proportion), which leaves each band just room for a cluster of 120 µm or less.
+// ---------------------------------------------------------------------------------------------------------------------------------
+const slab = { x: 756, y: 190, w: 370, h: 200 };
+const layer = { y: 256, h: 68 }; // the central oxygen layer
+const bandMid = [slab.y + (layer.y - slab.y) / 2, layer.y + layer.h + (slab.y + slab.h - layer.y - layer.h) / 2];
+const clusterR = 31;
+const clusterX = [805, 897, 989, 1081];
+const vesselX = [851, 943, 1035];
+// One cluster is a handful of cells: about six in ten beta, three alpha and one delta.
+const clusterCells: [number, number, 'b' | 'a' | 'd'][] = [
+  [0, 0, 'b'],
+  [17, 0, 'b'],
+  [8.5, 14.7, 'a'],
+  [-8.5, 14.7, 'b'],
+  [-17, 0, 'a'],
+  [-8.5, -14.7, 'b'],
+  [8.5, -14.7, 'd'],
+];
+const cellFill = { b: '#9fb0ff', a: '#ffffff', d: '#7be0b8' } as const;
+---
+
+<figure class="bpfig" data-bpfig data-design={design}>
+  <svg class="bp" viewBox="0 0 1200 680" role="group" aria-label="Engineering drawing of the Islet-1 design: a cell with its gene edits on the left, and a cross-section of the graft on the right. Numbered parts link to the specification.">
+    <defs>
+      <pattern id={`${idp}-minor`} width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#fff" stroke-opacity="0.07"></path></pattern>
+      <pattern id={`${idp}-major`} width="100" height="100" patternUnits="userSpaceOnUse"><path d="M100 0H0V100" fill="none" stroke="#fff" stroke-opacity="0.15"></path></pattern>
+      <pattern id={`${idp}-hatch`} width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#e9eeff" stroke-opacity="0.75" stroke-width="2.5"></line></pattern>
+      <pattern id={`${idp}-hatch-fine`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#e9eeff" stroke-opacity="0.8" stroke-width="1.6"></line></pattern>
+      <radialGradient id={`${idp}-paper`} cx="50%" cy="45%" r="75%"><stop offset="0%" stop-color="#2236b8"></stop><stop offset="100%" stop-color="#131f78"></stop></radialGradient>
+      <marker id={`${idp}-arrow`} viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 z" fill="#e9eeff"></path></marker>
+    </defs>
+
+    <rect width="1200" height="680" fill={`url(#${idp}-paper)`}></rect>
+    <rect width="1200" height="680" fill={`url(#${idp}-minor)`}></rect>
+    <rect width="1200" height="680" fill={`url(#${idp}-major)`}></rect>
+    <rect x="20" y="20" width="1160" height="640" fill="none" stroke="#e9eeff" stroke-opacity="0.85" stroke-width="2"></rect>
+    <rect x="30" y="30" width="1140" height="620" fill="none" stroke="#e9eeff" stroke-opacity="0.3"></rect>
+
+    <g font-family="IBM Plex Mono, monospace" font-size="15" fill="#c9d3ff" letter-spacing="1.5">
+      <text x="60" y="72">CELL (CUT-AWAY)</text>
+      <text x="724" y="72">GRAFT (CROSS-SECTION)</text>
+    </g>
+    <line x1="704" y1="50" x2="704" y2="610" stroke="#e9eeff" stroke-opacity="0.35" stroke-dasharray="6 8"></line>
+
+    <!-- ============================== THE CELL ============================== -->
+    <g fill="none" stroke="#e9eeff" stroke-width="2.5">
+      <circle cx={C.x} cy={C.y} r={R} fill="#ffffff" fill-opacity="0.04"></circle>
+      <circle cx={C.x} cy={C.y} r={R - 8} stroke-opacity="0.5" stroke-width="1.5"></circle>
+      {mito.map((m) => <ellipse cx={m.x} cy={m.y} rx={m.rx} ry={m.ry} transform={`rotate(${m.rot} ${m.x} ${m.y})`} stroke-opacity="0.55"></ellipse>)}
+      <circle cx={C.x} cy={C.y} r={NUC} fill="#ffffff" fill-opacity="0.08"></circle>
+      <path d={`M${C.x - 28} ${C.y} C${C.x - 18} ${C.y - 16}, ${C.x - 8} ${C.y - 16}, ${C.x} ${C.y} S${C.x + 18} ${C.y + 16}, ${C.x + 28} ${C.y}`} stroke="#ffbf47" stroke-width="3" stroke-linecap="round"></path>
+      <path d={`M${C.x - 28} ${C.y} C${C.x - 18} ${C.y + 16}, ${C.x - 8} ${C.y + 16}, ${C.x} ${C.y} S${C.x + 18} ${C.y - 16}, ${C.x + 28} ${C.y}`} stroke="#e9eeff" stroke-width="3" stroke-linecap="round"></path>
+    </g>
+
+    <!-- zoom lines from the nucleus to the DNA strip -->
+    <g stroke="#e9eeff" stroke-opacity="0.5" stroke-dasharray="5 6" fill="none">
+      <path d={`M${C.x - 30} ${C.y + 52} L${SX0 + 2} ${SY - 3}`}></path>
+      <path d={`M${C.x + 30} ${C.y + 52} L${SX1 - 2} ${SY - 3}`}></path>
+    </g>
+
+    <!-- ID flags on the surface (class I: A, B, C. Class II: DR, DP, DQ) -->
+    <g stroke-linecap="round" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" text-anchor="middle">
+      {
+        flags.map((f) => (
+          <g class={f.on.length === 3 ? undefined : f.on.map((d) => `only-${d}`).join(' ')}>
+            <path d={`M${f.from[0]} ${f.from[1]} L${f.to[0]} ${f.to[1]}`} fill="none" stroke={f.kept ? '#8fe3b8' : '#9fb0ff'} stroke-width="2.5" stroke-dasharray={f.kept ? undefined : '3 4'}></path>
+            <rect
+              x={num(f.at[0] - f.w / 2)}
+              y={num(f.at[1] - f.h / 2)}
+              width={f.w}
+              height={f.h}
+              rx="3"
+              fill={f.kept ? '#8fe3b8' : '#131f78'}
+              stroke={f.kept ? '#e9eeff' : '#9fb0ff'}
+              stroke-width="2"
+              stroke-dasharray={f.kept ? undefined : '3 3'}
+            ></rect>
+            <text x={f.at[0]} y={num(f.at[1] + 4)} fill={f.kept ? '#0f1a5c' : '#c9d3ff'} stroke="none">{f.text}</text>
+          </g>
+        ))
+      }
+    </g>
+
+    <!-- HLA-E and CD47 (Designs A and X) -->
+    <g class="only-A only-X" font-family="IBM Plex Mono, monospace" font-size="11" fill="#c9d3ff">
+      {
+        balls.map((b) => (
+          <g>
+            <path d={`M${b.from[0]} ${b.from[1]} L${b.to[0]} ${b.to[1]}`} stroke="#e9eeff" stroke-width="3" fill="none" stroke-linecap="round"></path>
+            <circle cx={b.at[0]} cy={b.at[1]} r="9" fill={b.fill} stroke="#e9eeff" stroke-width="2"></circle>
+          </g>
+        ))
+      }
+      <text class="bp-tag" x={ball(-62)[0]} y={num(ball(-62)[1] - 15)} text-anchor="middle">HLA-E</text>
+      <text class="bp-tag" x={num(ball(-40)[0] + 15)} y={num(ball(-40)[1] + 4)}>CD47</text>
+    </g>
+
+    <!-- PD-L1, on the surface -->
+    <g>
+      <path d={`M${hex.from[0]} ${hex.from[1]} L${hex.to[0]} ${hex.to[1]}`} stroke="#e9eeff" stroke-width="3" fill="none" stroke-linecap="round"></path>
+      <polygon points={hexPoints(hex.at[0], hex.at[1], 11)} fill="#131f78" stroke="#e9eeff" stroke-width="2.5" stroke-linejoin="round"></polygon>
+      <text class="bp-tag" x={num(hex.at[0] + 18)} y={num(hex.at[1] + 4)} font-family="IBM Plex Mono, monospace" font-size="11" fill="#c9d3ff">PD-L1</text>
+    </g>
+
+    <!-- SERPINB9, inside the cell -->
+    <g>
+      <path
+        d="M0 -14 L13 -9 V3 C13 11 7 16 0 19 C-7 16 -13 11 -13 3 V-9 Z"
+        transform={`translate(${shield[0]} ${shield[1]})`}
+        fill="#9fb0ff"
+        fill-opacity="0.35"
+        stroke="#e9eeff"
+        stroke-width="2.5"
+        stroke-linejoin="round"
+      ></path>
+      <text class="bp-tag" x={shield[0]} y={num(shield[1] + 36)} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#c9d3ff">SERPINB9</text>
+    </g>
+
+    <!-- iCasp9, the safety switch -->
+    <g>
+      <rect x={num(capsule[0] - 25)} y={num(capsule[1] - 11)} width="50" height="22" rx="11" fill="#e9eeff" fill-opacity="0.15" stroke="#e9eeff" stroke-width="2.5"></rect>
+      <text x={capsule[0]} y={num(capsule[1] + 4)} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="#e9eeff">iCasp9</text>
+    </g>
+
+    <!-- Design B: TYK2, switched off -->
+    <g class="only-B">
+      <rect x={num(tyk2[0] - 25)} y={num(tyk2[1] - 11)} width="50" height="22" rx="11" fill="#131f78" stroke="#9fb0ff" stroke-width="2.2" stroke-dasharray="3 3"></rect>
+      <path d={`M${tyk2[0] - 18} ${tyk2[1] - 3.5} l7 7 M${tyk2[0] - 11} ${tyk2[1] - 3.5} l-7 7`} stroke="#9fb0ff" stroke-width="2" stroke-linecap="round" fill="none"></path>
+      <text x={num(tyk2[0] - 5)} y={num(tyk2[1] + 4)} font-family="IBM Plex Mono, monospace" font-size="11" font-weight="700" fill="#9fb0ff">TYK2</text>
+    </g>
+
+    <!-- Designs B and X: the INS base edit, inside the nucleus -->
+    <g class="only-B only-X">
+      <circle cx={insMark[0]} cy={insMark[1]} r="15" fill="none" stroke="#ffbf47" stroke-width="2" stroke-dasharray="3 4"></circle>
+      <rect x={insMark[0] - 6} y={insMark[1] - 6} width="12" height="12" rx="3" fill="#ffbf47" stroke="#131f78" stroke-width="2"></rect>
+    </g>
+
+    <!-- numbered parts on the cell -->
+    {
+      (['A', 'B', 'X'] as const).map((d) => {
+        const items = cells[d];
+        return (
+          <g class={`only-${d}`}>
+            {items.map((it, i) => {
+              const p = pins[d].find((q) => q.n === it.n)!;
+              const site = boxes(sites[d][i], sites[d].length, i);
+              const label = `${it.title}. ${it.text}`;
+              // a short amber line from the number to the part it names, stopping at the edge of the number
+              const leads = (p.leads ?? []).map(([tx, ty]) => {
+                const dx = tx - p.at[0];
+                const dy = ty - p.at[1];
+                const len = Math.hypot(dx, dy) || 1;
+                const stop = 11;
+                return `M${num(p.at[0] + (dx / len) * 14)} ${num(p.at[1] + (dy / len) * 14)} L${num(tx - (dx / len) * stop)} ${num(ty - (dy / len) * stop)}`;
+              });
+              const inner = (
+                <>
+                  {leads.map((dd) => <path d={dd} stroke="#ffbf47" stroke-width="2" fill="none" stroke-linecap="round"></path>)}
+                  <circle class="bp-halo" cx={p.at[0]} cy={p.at[1]} r="17"></circle>
+                  <circle class="bp-dot" cx={p.at[0]} cy={p.at[1]} r="13"></circle>
+                  <text x={p.at[0]} y={num(p.at[1] + 5)} text-anchor="middle">{it.n}</text>
+                  <line x1={site.cx} y1={SY + SH} x2={site.cx} y2={SY + SH + 8} stroke="#ffbf47" stroke-width="2.5"></line>
+                  <circle class="bp-dot" cx={site.cx} cy={SY + SH + 21} r="13"></circle>
+                </>
+              );
+              // The same number again under the strip. It sits outside the link so the link's visible text is one number,
+              // and it is drawn after the link so it still shows on top of the dot.
+              const stripNumber = <text class="bp-pin-num" x={site.cx} y={SY + SH + 26} text-anchor="middle" aria-hidden="true">{it.n}</text>;
+              return interactive ? (
+                <>
+                  <a class="bp-pin" href={`#${it.id}`} data-spec={it.id} aria-label={`${it.n}. Open the specification: ${label}`}>{inner}</a>
+                  {stripNumber}
+                </>
+              ) : (
+                <>
+                  <g class="bp-pin bp-pin--static">{inner}</g>
+                  {stripNumber}
+                </>
+              );
+            })}
+          </g>
+        );
+      })
+    }
+
+    <!-- ============================== THE DNA STRIP ============================== -->
+    <text class="bp-fine" x="330" y={SY - 18} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#c9d3ff" letter-spacing="1">DNA: EDIT SITES (ZOOMED IN)</text>
+    <rect x={SX0} y={SY} width={SX1 - SX0} height={SH} rx="16" fill="#e9eeff" fill-opacity="0.1" stroke="#e9eeff" stroke-width="2"></rect>
+    {
+      (['A', 'B', 'X'] as const).map((d) => (
+        <g class={`only-${d}`}>
+          {sites[d].map((site, i) => {
+            const b = boxes(site, sites[d].length, i);
+            return (
+              <g>
+                {b.boxes.map((box) => (
+                  <>
+                    <rect class={`bp-el bp-el--${box.kind === 'edit' ? 'reg' : box.kind}`} x={box.x} y={SY + 5} width={box.w} height={SH - 10} rx="3" fill={box.kind === 'ins' ? `url(#${idp}-hatch-fine)` : undefined}></rect>
+                    {box.kind === 'ko' && box.w >= 16 && <path d={`M${num(box.x + box.w / 2 - 4)} ${SY + SH / 2 - 4} l8 8 M${num(box.x + box.w / 2 + 4)} ${SY + SH / 2 - 4} l-8 8`} stroke="#9fb0ff" stroke-width="1.8" stroke-linecap="round" fill="none"></path>}
+                    {box.kind === 'edit' && <rect class="bp-el bp-el--edit" x={num(box.x + box.w / 2 - 5)} y={SY + SH / 2 - 5} width="10" height="10" rx="2"></rect>}
+                  </>
+                ))}
+                <text class="bp-fine" x={b.cx} y={SY + SH + 56} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#e9eeff">{site.label}</text>
+                {site.note && b.pitch >= 100 && <text class="bp-fine" x={b.cx} y={SY + SH + 71} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#c9d3ff">{site.note}</text>}
+              </g>
+            );
+          })}
+          {keyFor(d).map((k) => (
+            <g class="bp-fine" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="#c9d3ff">
+              <rect class={`bp-el bp-el--${k.kind === 'edit' ? 'reg' : k.kind}`} x={k.x} y={k.y} width="22" height="11" rx="2.5" fill={k.kind === 'ins' ? `url(#${idp}-hatch-fine)` : undefined}></rect>
+              {k.kind === 'edit' && <rect class="bp-el bp-el--edit" x={k.x + 8} y={k.y + 2.5} width="6" height="6" rx="1.5"></rect>}
+              <text x={num(k.x + 28)} y={k.y + 9.5}>{k.name}</text>
+            </g>
+          ))}
+        </g>
+      ))
+    }
+
+    <!-- legend for the cell, drawn on the sheet on wide screens -->
+    {
+      (['A', 'B', 'X'] as const).map((d) => (
+        <g class={`only-${d} bp-legend`} font-family="IBM Plex Sans, sans-serif" fill="#e9eeff">
+          {cells[d].map((it, i) => {
+            const { small, lead, head: headSize } = sheet[d];
+            const y = legendTops[d][i];
+            return (
+              <g>
+                <text x="492" y={y} font-size={headSize} font-weight="600"><tspan fill="#ffbf47">{it.n}</tspan>  {it.title}</text>
+                {it.lines.map((line, k) => <text x="492" y={y + lead + k * (small + 3)} font-size={small} fill="#c9d3ff">{line}</text>)}
+              </g>
+            );
+          })}
+        </g>
+      ))
+    }
+
+    <!-- ============================== THE GRAFT ============================== -->
+    <rect x={slab.x} y={slab.y} width={slab.w} height={slab.h} rx="14" fill="#ffffff" fill-opacity="0.05" stroke="#e9eeff" stroke-width="2.5"></rect>
+    <rect x={slab.x + 8} y={layer.y} width={slab.w - 16} height={layer.h} rx="4" fill={`url(#${idp}-hatch)`} stroke="#e9eeff" stroke-width="1.8"></rect>
+
+    <!-- clusters: a handful of cells each (beta, alpha, delta) -->
+    {
+      bandMid.map((cy) =>
+        clusterX.map((cx) => (
+          <g>
+            <circle cx={cx} cy={cy} r={clusterR} fill="#9fb0ff" fill-opacity="0.16" stroke="#e9eeff" stroke-width="2.5"></circle>
+            {clusterCells.map(([dx, dy, kind]) => <circle cx={num(cx + dx)} cy={num(cy + dy)} r="7.6" fill={cellFill[kind]} fill-opacity={kind === 'a' ? 0.9 : 0.95} stroke="#131f78" stroke-width="1.4"></circle>)}
+          </g>
+        )),
+      )
+    }
+
+    <!-- blood vessels: small tubes, shown end-on -->
+    {
+      bandMid.map((cy) =>
+        vesselX.map((x) => (
+          <g>
+            <circle cx={x} cy={cy} r="9.5" fill="#c9d3ff" fill-opacity="0.9" stroke="#e9eeff" stroke-width="2.2"></circle>
+            <circle cx={x} cy={cy} r="4.2" fill="#131f78"></circle>
+          </g>
+        )),
+      )
+    }
+
+    <!-- oxygen leaving the layer, towards the clusters -->
+    <g stroke="#e9eeff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-opacity="0.95">
+      {vesselX.map((x) => <path d={`M${x} ${layer.y - 3} V${layer.y - 15} M${x - 4} ${layer.y - 11} L${x} ${layer.y - 15} L${x + 4} ${layer.y - 11}`}></path>)}
+      {vesselX.map((x) => <path d={`M${x} ${layer.y + layer.h + 3} V${layer.y + layer.h + 15} M${x - 4} ${layer.y + layer.h + 11} L${x} ${layer.y + layer.h + 15} L${x + 4} ${layer.y + layer.h + 11}`}></path>)}
+    </g>
+    <g class="bp-fine">
+      <rect x={slab.x + slab.w / 2 - 118} y={layer.y + layer.h / 2 - 12} width="236" height="24" rx="5" fill="#131f78" fill-opacity="0.92" stroke="#e9eeff" stroke-width="1.5"></rect>
+      <text x={slab.x + slab.w / 2} y={num(layer.y + layer.h / 2 + 4.5)} text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="13" fill="#ffffff">CaO₂ + catalase → O₂</text>
+    </g>
+
+    <!-- dimensions, to scale -->
+    <g stroke="#e9eeff" stroke-width="1.8" fill="none">
+      <path d={`M${clusterX[0] - clusterR} 156 H${clusterX[0] - clusterR + 68}`} marker-start={`url(#${idp}-arrow)`} marker-end={`url(#${idp}-arrow)`}></path>
+      <path d={`M${clusterX[0] - clusterR} 146 V166 M${clusterX[0] - clusterR + 68} 146 V166`}></path>
+      <path d={`M742 ${slab.y} V${slab.y + slab.h}`} marker-start={`url(#${idp}-arrow)`} marker-end={`url(#${idp}-arrow)`}></path>
+      <path d={`M732 ${slab.y} H752 M732 ${slab.y + slab.h} H752`}></path>
+    </g>
+    <g font-family="IBM Plex Mono, monospace" font-size="14" fill="#e9eeff" text-anchor="middle">
+      <text x={clusterX[0] - clusterR + 34} y="138">120 µm or less</text>
+      <text x="0" y="0" transform={`translate(728 ${slab.y + slab.h / 2}) rotate(-90)`}>about 350 µm</text>
+    </g>
+
+    <!-- numbered parts on the graft -->
+    {
+      graft.map((it, i) => {
+        const pos = [
+          [clusterX[3], 160],
+          [vesselX[1], 160],
+          [slab.x + slab.w + 24, layer.y + layer.h / 2],
+        ][i];
+        const lead = [
+          `M${pos[0]} 173 V${bandMid[0] - clusterR + 1}`,
+          `M${pos[0]} 173 V${bandMid[0] - 10}`,
+          `M${pos[0] - 13} ${pos[1]} H${slab.x + slab.w - 6}`,
+        ][i];
+        const inner = (
+          <>
+            <path d={lead} stroke="#ffbf47" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+            <circle class="bp-halo" cx={pos[0]} cy={pos[1]} r="17"></circle>
+            <circle class="bp-dot" cx={pos[0]} cy={pos[1]} r="13"></circle>
+            <text x={pos[0]} y={pos[1] + 5} text-anchor="middle">{it.n}</text>
+          </>
+        );
+        return interactive ? (
+          <a class="bp-pin" href={`#${it.id}`} data-spec={it.id} aria-label={`${it.n}. Open the specification: ${it.title}. ${it.text}`}>{inner}</a>
+        ) : (
+          <g class="bp-pin bp-pin--static">{inner}</g>
+        );
+      })
+    }
+
+    <g class="bp-legend" font-family="IBM Plex Sans, sans-serif" fill="#e9eeff">
+      {
+        graft.map((it, i) => (
+          <g>
+            <text x="724" y={430 + i * 42} font-size="17" font-weight="600"><tspan fill="#ffbf47">{it.n}</tspan>  {it.title}</text>
+            {i === 0 && (
+              <g font-size="12.5" fill="#c9d3ff" font-family="IBM Plex Sans, sans-serif">
+                <circle cx="850" cy="425" r="6" fill={cellFill.b} stroke="#131f78" stroke-width="1.4"></circle>
+                <text x="861" y="429.5">beta</text>
+                <circle cx="905" cy="425" r="6" fill={cellFill.a} stroke="#131f78" stroke-width="1.4"></circle>
+                <text x="916" y="429.5">alpha</text>
+                <circle cx="965" cy="425" r="6" fill={cellFill.d} stroke="#131f78" stroke-width="1.4"></circle>
+                <text x="976" y="429.5">delta</text>
+              </g>
+            )}
+            <text x="724" y={430 + i * 42 + 19} font-size="14" fill="#c9d3ff">{it.text}</text>
+          </g>
+        ))
+      }
+    </g>
+
+    <!-- title block -->
+    <g font-family="IBM Plex Mono, monospace" fill="#e9eeff">
+      <rect x="760" y="552" width="400" height="90" fill="#131f78" fill-opacity="0.7" stroke="#e9eeff" stroke-width="2"></rect>
+      <line x1="760" y1="580" x2="1160" y2="580" stroke="#e9eeff" stroke-opacity="0.6"></line>
+      <g class="only-A">
+        <text x="774" y="572" font-size="17" font-weight="600">ISLET-1 · DESIGN A</text>
+        <text x="774" y="600" font-size="13.5">Universal design · {A.edits} gene edits</text>
+      </g>
+      <g class="only-B">
+        <text x="774" y="572" font-size="17" font-weight="600">ISLET-1 · DESIGN B</text>
+        <text x="774" y="600" font-size="13.5">Matched design · {B.edits} gene edits, {B.baseEdits} base edit</text>
+      </g>
+      <g class="only-X">
+        <text x="774" y="572" font-size="17" font-weight="600">ISLET-1 · DESIGN X</text>
+        <text x="774" y="600" font-size="13.5">Challenger · {X.edits} gene edits, {X.baseEdits} base edit</text>
+      </g>
+      <text x="774" y="617" font-size="13.5">Blueprint {release.version} · {date}</text>
+      <text x="774" y="633" font-size="12.5" fill="#ffbf47">Design stage. Not tested in the lab.</text>
+    </g>
+  </svg>
+
+  <ol class="bp-list" aria-label="Parts of the drawing">
+    {
+      (['A', 'B', 'X'] as const).map((d) => (
+        <>
+          {cells[d].map((it) => (
+            <li class={`only-${d}`}>
+              {interactive ? <a href={`#${it.id}`} data-spec={it.id}><span class="bp-list__n">{it.n}</span><span><strong>{it.title}</strong> {it.text}</span></a> : <span><span class="bp-list__n">{it.n}</span><span><strong>{it.title}</strong> {it.text}</span></span>}
+            </li>
+          ))}
+        </>
+      ))
+    }
+    {graft.map((it) => (
+      <li>
+        {interactive ? <a href={`#${it.id}`} data-spec={it.id}><span class="bp-list__n">{it.n}</span><span><strong>{it.title}</strong> {it.text}</span></a> : <span><span class="bp-list__n">{it.n}</span><span><strong>{it.title}</strong> {it.text}</span></span>}
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .bpfig {
+    margin: 0;
+  }
+  .bp {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.875rem;
+    box-shadow: var(--shadow);
+  }
+  /* A part marked for two designs (only-A only-X) shows for both and hides for the third. */
+  .bpfig[data-design='A'] :is(.only-B, .only-X):not(.only-A),
+  .bpfig[data-design='B'] :is(.only-A, .only-X):not(.only-B),
+  .bpfig[data-design='X'] :is(.only-A, .only-B):not(.only-X) {
+    display: none;
+  }
+
+  .bp-dot {
+    fill: #ffbf47;
+    stroke: #131f78;
+    stroke-width: 2.5;
+  }
+  .bp-halo {
+    fill: none;
+    stroke: #ffbf47;
+    stroke-opacity: 0.35;
+    stroke-width: 3;
+  }
+  .bp text {
+    pointer-events: none;
+  }
+  .bp-pin text,
+  .bp-pin-num {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    fill: #131f78;
+  }
+  a.bp-pin {
+    cursor: pointer;
+  }
+  a.bp-pin:hover .bp-dot,
+  a.bp-pin:focus-visible .bp-dot {
+    fill: #ffffff;
+  }
+  a.bp-pin:hover .bp-halo,
+  a.bp-pin:focus-visible .bp-halo {
+    stroke-opacity: 1;
+  }
+  a.bp-pin:focus-visible {
+    outline: none;
+  }
+
+  /* The boxes on the DNA strip, one style for each kind of part (the same kinds as the edit-by-edit diagrams). */
+  .bp-el {
+    stroke: #e9eeff;
+    stroke-width: 1.6;
+  }
+  .bp-el--cds {
+    fill: #9fb0ff;
+  }
+  .bp-el--reg {
+    fill: #131f78;
+  }
+  .bp-el--link {
+    fill: #c9d3ff;
+    fill-opacity: 0.55;
+    stroke-width: 1.2;
+  }
+  .bp-el--ko {
+    fill: #131f78;
+    stroke: #9fb0ff;
+    stroke-width: 1.8;
+    stroke-dasharray: 3 3;
+  }
+  .bp-el--keep {
+    fill: #8fe3b8;
+  }
+  .bp-el--edit {
+    fill: #ffbf47;
+    stroke: #131f78;
+  }
+
+  /* On small screens the drawing text is too small to read, so the list below takes over. */
+  .bp-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .bp-list a,
+  .bp-list li > span:first-child {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 0.625rem;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.96875rem;
+    text-decoration: none;
+  }
+  .bp-list__n {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--threat);
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+  @media (max-width: 52em) {
+    .bp .bp-legend,
+    .bp .bp-tag,
+    .bp .bp-fine {
+      display: none;
+    }
+    .bp-list {
+      display: flex;
+    }
+  }
+</style>

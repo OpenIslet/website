@@ -1,0 +1,102 @@
+---
+// One small picture for each of the four hurdles on the Blueprint page's "chance of working" section.
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+{
+  id === 'people' ? (
+    <svg viewBox="0 0 280 140" role="img" aria-label="A person with a small cluster of cells in the middle of their body, and a blood-sugar line that stays inside the healthy band: lab-grown islet cells have steadied blood sugar in people.">
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="64" cy="36" r="14" fill="#e6edf2"></circle>
+        <path d="M36 112 V80 Q36 56 58 56 H70 Q92 56 92 80 V112 Z" fill="#e6edf2"></path>
+        <circle cx="58" cy="84" r="7" fill="#5b73ff"></circle>
+        <circle cx="71" cy="84" r="7" fill="#5b73ff"></circle>
+        <circle cx="64.5" cy="95" r="7" fill="#5b73ff"></circle>
+        <rect x="124" y="24" width="140" height="88" rx="8" fill="#13293a" stroke="#8ea0ff" stroke-width="2"></rect>
+      </g>
+      <rect x="125" y="52" width="138" height="34" fill="#8ea0ff" fill-opacity="0.22"></rect>
+      <path d="M132 76 C 146 58, 156 82, 170 66 S 192 60, 204 72 S 226 82, 240 64 S 254 66, 258 68" fill="none" stroke="#f2a93b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">
+        <text x="64" y="130">Islet cells</text>
+        <text x="194" y="130">Blood sugar in range</text>
+      </g>
+    </svg>
+  ) : id === 'cloak' ? (
+    <svg viewBox="0 0 280 140" role="img" aria-label="A beta cell inside a dashed cloak, with two immune cells approaching from the left and stopping at the cloak, and a crossed-out pill on the right: a cloak meant to keep the immune system away without anti-rejection drugs.">
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="156" cy="66" r="24" fill="#5b73ff"></circle>
+        <circle cx="156" cy="66" r="8" fill="#13293a"></circle>
+        <circle cx="42" cy="38" r="13" fill="#f2a93b"></circle>
+        <circle cx="42" cy="94" r="13" fill="#f2a93b"></circle>
+      </g>
+      <circle cx="156" cy="66" r="38" fill="none" stroke="#8ea0ff" stroke-width="3" stroke-dasharray="7 6"></circle>
+      <g stroke="#8ea0ff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M60 44 H92 M86 39 L92 44 L86 49"></path>
+        <path d="M60 88 H92 M86 83 L92 88 L86 93"></path>
+        <path d="M100 34 V54 M100 78 V98" stroke="#f2a93b"></path>
+      </g>
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round">
+        <rect x="216" y="52" width="46" height="22" rx="11" transform="rotate(-35 239 63)" fill="#e6edf2"></rect>
+      </g>
+      <path d="M214 90 L266 36" stroke="#f2a93b" stroke-width="5" stroke-linecap="round"></path>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">
+        <text x="66" y="130">Immune cells</text>
+        <text x="156" y="130">Cloaked cell</text>
+        <text x="240" y="130">No drugs</text>
+      </g>
+    </svg>
+  ) : id === 'attack' ? (
+    <svg viewBox="0 0 280 140" role="img" aria-label="An immune cell with a circular arrow, meaning it remembers, reaching toward a cluster of beta cells that sit behind a shield: the old autoimmune attack still has to be held off.">
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+        <circle cx="62" cy="62" r="22" fill="#f2a93b"></circle>
+        <circle cx="62" cy="62" r="7" fill="#13293a"></circle>
+        <circle cx="198" cy="50" r="15" fill="#5b73ff"></circle>
+        <circle cx="222" cy="72" r="15" fill="#5b73ff"></circle>
+        <circle cx="196" cy="88" r="15" fill="#5b73ff"></circle>
+      </g>
+      <path d="M40 32 C 46 20, 62 16, 76 22 M72 14 L77 22 L69 27" fill="none" stroke="#e6edf2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M92 62 H132 L124 52 M132 62 L124 72" fill="none" stroke="#f2a93b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+      <path d="M156 26 Q 176 38 176 62 Q 176 90 156 102 Q 144 90 144 62 Q 144 38 156 26 Z" fill="#13293a" stroke="#8ea0ff" stroke-width="3" stroke-linejoin="round"></path>
+      <path d="M160 48 L151 66 H160 L154 82" fill="none" stroke="#f2a93b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">
+        <text x="62" y="130">Remembers</text>
+        <text x="156" y="130">Shield</text>
+        <text x="210" y="130">Beta cells</text>
+      </g>
+    </svg>
+  ) : (
+    <svg viewBox="0 0 280 140" role="img" aria-label="A cross-section of a thin graft with clusters of cells above and below a central layer marked O2 that releases oxygen toward them, and a new blood vessel growing in from the left: oxygen from the layer until the vessels arrive.">
+      <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="64" y="22" width="180" height="96" rx="10" fill="#13293a" stroke="#8ea0ff"></rect>
+        <rect x="64" y="58" width="180" height="24" fill="#8ea0ff"></rect>
+        <circle cx="90" cy="40" r="8" fill="#5b73ff"></circle>
+        <circle cx="122" cy="40" r="8" fill="#5b73ff"></circle>
+        <circle cx="154" cy="40" r="8" fill="#5b73ff"></circle>
+        <circle cx="186" cy="40" r="8" fill="#5b73ff"></circle>
+        <circle cx="218" cy="40" r="8" fill="#5b73ff"></circle>
+        <circle cx="90" cy="100" r="8" fill="#5b73ff"></circle>
+        <circle cx="122" cy="100" r="8" fill="#5b73ff"></circle>
+        <circle cx="154" cy="100" r="8" fill="#5b73ff"></circle>
+        <circle cx="186" cy="100" r="8" fill="#5b73ff"></circle>
+        <circle cx="218" cy="100" r="8" fill="#5b73ff"></circle>
+      </g>
+      <g stroke="#e6edf2" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M106 56 V50 M104 53 L106 50 L108 53"></path>
+        <path d="M170 56 V50 M168 53 L170 50 L172 53"></path>
+        <path d="M202 56 V50 M200 53 L202 50 L204 53"></path>
+        <path d="M138 84 V90 M136 87 L138 90 L140 87"></path>
+        <path d="M186 84 V90 M184 87 L186 90 L188 87"></path>
+      </g>
+      <text x="140" y="75" font-family="IBM Plex Sans, sans-serif" font-size="13" font-weight="700" fill="#0b1b26" text-anchor="middle">O₂</text>
+      <path d="M8 70 H56" fill="none" stroke="#f2a93b" stroke-width="9" stroke-linecap="round"></path>
+      <path d="M60 70 H64" fill="none" stroke="#f2a93b" stroke-width="5" stroke-dasharray="3 5" stroke-linecap="round"></path>
+      <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">
+        <text x="30" y="92">Vessel</text>
+        <text x="154" y="136">Oxygen layer in the middle of the graft</text>
+      </g>
+    </svg>
+  )
+}

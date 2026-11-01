@@ -1,0 +1,119 @@
+---
+// A word with its longer explanation tucked behind it, so a sentence reads cleanly and the detail is there for whoever wants it.
+// The explanation opens on hover, on keyboard focus and on tap or click. Escape closes it, and the pointer can move onto it.
+interface Props {
+  term: string;
+  /** Must be unique on the page. */
+  id: string;
+}
+const { term, id } = Astro.props;
+---
+
+<span class="define"><button type="button" class="define__term" aria-describedby={id}>{term}</button><span class="define__tip" id={id} role="tooltip"><span class="define__box"><slot /></span></span></span>
+
+<script>
+  const wraps = document.querySelectorAll<HTMLElement>('.define');
+
+  // Keep the box inside the screen: it opens under the word, and slides left if it would run off the right edge.
+  // It is not laid out while closed (display: none), so it can never make the page scroll sideways.
+  const place = (wrap: HTMLElement) => {
+    const tip = wrap.querySelector<HTMLElement>('.define__tip');
+    const term = wrap.querySelector<HTMLElement>('.define__term');
+    if (!tip || !term) return;
+    const screen = document.documentElement.clientWidth;
+    const width = Math.min(23 * parseFloat(getComputedStyle(document.documentElement).fontSize), screen - 32);
+    const over = term.getBoundingClientRect().left + width - (screen - 16);
+    tip.style.maxWidth = `${width}px`;
+    tip.style.setProperty('--shift', over > 0 ? `${-over}px` : '0px');
+  };
+
+  wraps.forEach((wrap) => {
+    wrap.addEventListener('pointerenter', () => place(wrap));
+    wrap.addEventListener('focusin', () => place(wrap));
+    wrap.addEventListener('click', (e) => {
+      if (!(e.target as Element).closest('.define__term')) return;
+      place(wrap);
+      wrap.toggleAttribute('data-open');
+    });
+    wrap.addEventListener('pointerleave', (e) => {
+      if (e.pointerType === 'mouse') wrap.removeAttribute('data-open');
+      wrap.removeAttribute('data-dismissed');
+    });
+    wrap.addEventListener('focusout', () => wrap.removeAttribute('data-dismissed'));
+  });
+
+  document.addEventListener('click', (e) => {
+    wraps.forEach((wrap) => {
+      if (!wrap.contains(e.target as Node)) wrap.removeAttribute('data-open');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    wraps.forEach((wrap) => {
+      wrap.removeAttribute('data-open');
+      wrap.setAttribute('data-dismissed', '');
+    });
+  });
+  window.addEventListener('resize', () => wraps.forEach((wrap) => wrap.hasAttribute('data-open') && place(wrap)));
+</script>
+
+<style>
+  .define {
+    position: relative;
+  }
+  .define__term {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    cursor: help;
+    text-decoration: underline dotted var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25em;
+  }
+  .define__term:hover {
+    text-decoration-style: solid;
+  }
+  /* The empty strip above the box lets the pointer cross from the word to the box without it closing. */
+  .define__tip {
+    position: absolute;
+    z-index: 30;
+    top: 100%;
+    left: 0;
+    width: max-content;
+    max-width: min(23rem, calc(100vw - 2rem));
+    padding-top: 0.5rem;
+    transform: translateX(var(--shift, 0px));
+    display: none;
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-align: left;
+    white-space: normal;
+    text-wrap: pretty;
+  }
+  .define__box {
+    display: block;
+    padding: 0.875rem 1rem;
+    border-radius: 0.625rem;
+    background: var(--ink);
+    color: var(--dark-text);
+    box-shadow: var(--shadow);
+  }
+  .define[data-open] .define__tip,
+  .define__term:focus-visible + .define__tip {
+    display: block;
+  }
+  @media (hover: hover) {
+    .define:hover .define__tip {
+      display: block;
+    }
+  }
+  .define[data-dismissed] .define__tip {
+    display: none;
+  }
+</style>

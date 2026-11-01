@@ -1,0 +1,44 @@
+{
+  "name": "openislet-connector",
+  "version": "0.8.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "The OpenIslet MCP connector: read tools over a versioned public data bundle, and the IIP submission queue.",
+  "repository": { "type": "git", "url": "git+https://github.com/openislet/website.git", "directory": "connector" },
+  "homepage": "https://openislet.org",
+  "bugs": { "url": "https://github.com/openislet/website/issues" },
+  "scripts": {
+    "export": "bash scripts/export-public.sh",
+    "bundle": "node scripts/build-bundle.mjs",
+    "golden": "python3 scripts/golden-graveyard.py",
+    "seed": "node scripts/seed-local-r2.mjs",
+    "seed:remote": "node scripts/seed-remote-r2.mjs",
+    "mock-github": "node scripts/mock-github.mjs",
+    "dev": "wrangler dev --port 8787 --persist-to .wrangler/state",
+    "smoke": "node scripts/smoke-http.mjs",
+    "test": "npm run bundle --silent && vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@cloudflare/workers-oauth-provider": "^1.2.4",
+    "@modelcontextprotocol/server": "2.3.1",
+    "agents": "^0.30.1",
+    "minisearch": "^7.2.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261024.1",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@types/node": "^26.6.5",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5",
+    "wrangler": "^4.152.0"
+  },
+  "engines": {
+    "node": "^22.20.0 || >=24.12.0"
+  }
+}

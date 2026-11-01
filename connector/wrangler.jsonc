@@ -1,0 +1,107 @@
+{
+  // The OpenIslet connector (an MCP server). Nothing here deploys until you run `wrangler deploy` with your account.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "openislet-connector",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-10-01",
+  // global_fetch_strictly_public: lets AI apps that publish a metadata document (instead of registering) sign in safely.
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+  // The versioned data bundle (built by `npm run bundle`, loaded with `npm run seed` or `wrangler r2 object put`).
+  "r2_buckets": [{ "binding": "BUNDLE", "bucket_name": "openislet-bundle" }],
+
+  // The submission queue's two stores (connector/DEPLOY.md, step 6).
+  // These are OpenIslet's own live stores. A fork creates its own with `wrangler kv namespace create QUEUE_KV` and `... OAUTH_KV`
+  // and pastes each id over these.
+  "kv_namespaces": [
+    { "binding": "QUEUE_KV", "id": "e402b55b1e164858929ffff8eed031a9" },
+    { "binding": "OAUTH_KV", "id": "9b76659df32648b38bfa8cfbe35ec01a" }
+  ],
+
+  // The exact posting limits (src/queue-limits.ts): one small Durable Object, created by the first deploy (the migration below).
+  "durable_objects": { "bindings": [{ "name": "QUEUE_LIMITS", "class_name": "QueueLimits" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["QueueLimits"] }],
+
+  "vars": {
+    // Which bundle answers by default.
+    "ACTIVE_BUNDLE": "islet-1-draft",
+    // Submissions stay closed until you switch them on (connector/DEPLOY.md, step 10).
+    "SUBMISSIONS_OPEN": "false",
+    // Scenario scores appear only inside the designs section, with their caveat. The freeze was lifted on 24 Oct 2026.
+    "UNFREEZE_SCENARIO_SCORES": "true",
+    // The patient layer's simulated "5-year survival" percentages read like clinical figures, so they always come under the
+    // layer's scope note. Shown by the project owner's decision on 24 Oct 2026. Set to "false" to hold them back.
+    "SHOW_SIMULATED_SURVIVAL": "true",
+
+    // ---- The submission queue (docs/connector/QUEUE-API.md, "Configuration") ----
+    // Which web pages may call /api/* from a browser, where the form lives, which repository gets the issues, and the daily limit.
+    "ALLOWED_ORIGINS": "https://openislet.org",
+    // The addresses this connector answers on (plus this machine). Hostnames only. A fork sets its own.
+    "PUBLIC_HOSTNAMES": "mcp.openislet.org",
+    "SITE_ORIGIN": "https://openislet.org",
+    "QUEUE_REPO": "openislet/openislet",
+    "DAILY_LIMIT_PER_ACCOUNT": "5",
+    // Posts per clock hour from everyone together: a ceiling on a flood from many accounts.
+    "HOURLY_LIMIT_EVERYONE": "30",
+    // The "OpenIslet Submissions" GitHub App, installed on the OpenIslet organisation. None of these is secret. Use your own (connector/DEPLOY.md).
+    "GITHUB_CLIENT_ID": "Iv23liIUifspySzPZfr3",
+    "GITHUB_APP_ID": "5518205",
+    "GITHUB_APP_INSTALLATION_ID": "176351972"
+    // Secrets are not kept here. Set them with `wrangler secret put` (connector/DEPLOY.md, step 8):
+    //   GITHUB_CLIENT_SECRET, GITHUB_APP_PRIVATE_KEY, STATE_SIGNING_KEY
+  },
+
+  // Cloudflare's automatic request log line carries the whole address, and the sign-in code and a staged draft's id are in
+  // addresses. So it is switched off, and query strings are cut from anything still logged. The connector's own log events
+  // (names and counts only, see src/queue-http.ts) stay on. Check the effective settings after every deploy (DEPLOY.md, step 9).
+  "observability": {
+    "enabled": true,
+    "redact_query_string": true,
+    "logs": { "enabled": true, "invocation_logs": false }
+  },
+  // Answer only on openislet.org addresses. Cloudflare's own *.workers.dev address would show the account's subdomain.
+  "workers_dev": false,
+  "preview_urls": false,
+
+  // The live address. A fork changes it to its own hostname.
+  "routes": [{ "pattern": "mcp.openislet.org", "custom_domain": true }],
+
+  // The private dress rehearsal before launch: `wrangler deploy --env staging`.
+  // Its own stores, the staging site, a private test repository, and the queue switched on. The GitHub App is the same one.
+  // Settings under "vars" are not inherited, so all of them are repeated here.
+  "env": {
+    "staging": {
+      "name": "openislet-connector-staging",
+      "routes": [{ "pattern": "mcp-staging.openislet.org", "custom_domain": true }],
+      "workers_dev": false,
+      "preview_urls": false,
+      "r2_buckets": [{ "binding": "BUNDLE", "bucket_name": "openislet-bundle" }],
+      "kv_namespaces": [
+        { "binding": "QUEUE_KV", "id": "37a35703514042788200a43b1b2129f4" },
+        { "binding": "OAUTH_KV", "id": "df9e1c8b36e649b79d1205a57e847f3c" }
+      ],
+      "durable_objects": { "bindings": [{ "name": "QUEUE_LIMITS", "class_name": "QueueLimits" }] },
+      "migrations": [{ "tag": "v1", "new_sqlite_classes": ["QueueLimits"] }],
+      "vars": {
+        "ACTIVE_BUNDLE": "islet-1-draft",
+        "SUBMISSIONS_OPEN": "true",
+        "UNFREEZE_SCENARIO_SCORES": "true",
+        "SHOW_SIMULATED_SURVIVAL": "true",
+        "ALLOWED_ORIGINS": "https://staging.openislet.org",
+        "PUBLIC_HOSTNAMES": "mcp-staging.openislet.org",
+        "SITE_ORIGIN": "https://staging.openislet.org",
+        "QUEUE_REPO": "openislet/staging-queue",
+        "DAILY_LIMIT_PER_ACCOUNT": "20",
+        "HOURLY_LIMIT_EVERYONE": "30",
+        "GITHUB_CLIENT_ID": "Iv23liIUifspySzPZfr3",
+        "GITHUB_APP_ID": "5518205",
+        "GITHUB_APP_INSTALLATION_ID": "176351972"
+      },
+      "observability": {
+        "enabled": true,
+        "redact_query_string": true,
+        "logs": { "enabled": true, "invocation_logs": false }
+      }
+    }
+  }
+}

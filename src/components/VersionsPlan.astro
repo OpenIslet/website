@@ -1,0 +1,166 @@
+---
+// The version plan in one picture and four cards: an open draft from its opening date, and a locked version every three months.
+// The dates come from src/data/versions.ts, which the connector reads too.
+import { draft, planned, explainer, family, cadence } from '../data/versions';
+import { longDate } from '../data/site';
+
+const day = (iso: string) => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
+const start = day(draft.opens);
+const end = day(planned[planned.length - 1].lock) + 20 * 86400000;
+const x = (iso: string) => 40 + ((day(iso) - start) / (end - start)) * 820;
+const shortDate = (iso: string) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+const year = (iso: string) => iso.slice(0, 4);
+const firstFreeze = planned[0].freezeFrom;
+---
+
+<div class="vp" id="versions">
+  <p class="eyebrow">Versions</p>
+  <h3 class="vp__h">{family} opens on {longDate(draft.opens)} and is locked every three months</h3>
+  <p class="vp__lead">{explainer.family} {explainer.draft}</p>
+  <p class="vp__why"><strong>Why every three months?</strong> {cadence.long}</p>
+
+  <svg class="vp__line" viewBox="0 0 900 96" role="img" aria-label={`A timeline from ${longDate(draft.opens)}: the open draft, then a locked version on ${planned.map((p) => longDate(p.lock)).join(', ')}.`}>
+    <line x1="40" y1="34" x2="860" y2="34" stroke="var(--line-strong)" stroke-width="2" stroke-linecap="round" />
+    <line x1={x(draft.opens)} y1="34" x2={x(firstFreeze)} y2="34" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" />
+    {
+      planned.map((p) => (
+        <>
+          <line x1={x(p.freezeFrom)} y1="34" x2={x(p.lock)} y2="34" stroke="var(--threat)" stroke-width="6" stroke-linecap="round" />
+          <circle cx={x(p.lock)} cy="34" r="9" fill="var(--ink)" stroke="#fff" stroke-width="3" />
+          <text x={x(p.lock)} y="64" text-anchor="middle" font-size="15" font-weight="600" fill="var(--ink)">{p.name}</text>
+          <text x={x(p.lock)} y="83" text-anchor="middle" font-size="13" fill="var(--muted)">{shortDate(p.lock)} {year(p.lock)}</text>
+        </>
+      ))
+    }
+    <circle cx={x(draft.opens)} cy="34" r="9" fill="var(--accent)" stroke="#fff" stroke-width="3" />
+    <text x={x(draft.opens)} y="64" text-anchor="middle" font-size="15" font-weight="600" fill="var(--ink)">Open draft</text>
+    <text x={x(draft.opens)} y="83" text-anchor="middle" font-size="13" fill="var(--muted)">{shortDate(draft.opens)} {year(draft.opens)}</text>
+  </svg>
+  <p class="vp__key" aria-hidden="true">
+    <span><i class="vp__sw vp__sw--open"></i> Open draft: changes all the time</span>
+    <span><i class="vp__sw vp__sw--freeze"></i> About two weeks of fixes only</span>
+    <span><i class="vp__sw vp__sw--lock"></i> Locked: frozen and citable</span>
+  </p>
+
+  <ul class="vp__cards">
+    {
+      planned.map((p) => (
+        <li class="vp__card">
+          <p class="vp__name">{p.name}</p>
+          <p class="vp__when">Locks {longDate(p.lock)}</p>
+          <p class="vp__sub">Only fixes and corrections from {longDate(p.freezeFrom)}.</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="vp__text">{explainer.lock} {explainer.patch} {explainer.next}</p>
+</div>
+
+<style>
+  /* The plan stands on the page: a heading, the line, and four dates under rules. No panel around it, none inside it. */
+  .vp {
+    margin-top: 2.5rem;
+  }
+  .vp__h {
+    margin-top: 0.25rem;
+    font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    max-width: 40rem;
+  }
+  .vp__lead {
+    margin-top: 0.5rem;
+    max-width: 44rem;
+    color: var(--body);
+  }
+  .vp__why {
+    margin-top: 0.875rem;
+    max-width: 44rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent);
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .vp__line {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-top: 1.5rem;
+  }
+  .vp__key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .vp__sw {
+    display: inline-block;
+    width: 1.5rem;
+    height: 0.375rem;
+    margin-right: 0.375rem;
+    vertical-align: middle;
+    border-radius: 0.25rem;
+  }
+  .vp__sw--open {
+    background: var(--accent);
+  }
+  .vp__sw--freeze {
+    background: var(--threat);
+  }
+  .vp__sw--lock {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+  .vp__cards {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .vp__card {
+    padding-top: 0.875rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .vp__name {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .vp__when {
+    margin-top: 0.25rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .vp__sub {
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .vp__text {
+    margin-top: 1.5rem;
+    max-width: 50rem;
+    color: var(--body);
+  }
+  @media (max-width: 62rem) {
+    .vp__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 40rem) {
+    .vp__cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .vp__line,
+    .vp__key {
+      display: none;
+    }
+  }
+</style>

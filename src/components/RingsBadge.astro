@@ -1,0 +1,35 @@
+---
+// The five rings from the home page picture, as a small badge. The active ring is the test being shown.
+interface Props {
+  active?: number;
+  size?: number;
+  label?: string;
+}
+const { active = 0, size = 56, label } = Astro.props;
+const radii = [7, 12.5, 18, 23.5, 29];
+---
+
+<svg
+  viewBox="0 0 64 64"
+  style={`width:${size / 16}rem;height:${size / 16}rem;flex:none`}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+>
+  {
+    radii.map((r, i) => (
+      <circle
+        cx="32"
+        cy="32"
+        r={r}
+        fill="none"
+        stroke="#8ea0ff"
+        stroke-width={i + 1 === active ? 3 : 1.25}
+        stroke-dasharray={i + 1 === active ? undefined : '2 3'}
+        opacity={i + 1 === active ? 1 : 0.4}
+      ></circle>
+    ))
+  }
+  <circle cx="32" cy="32" r="3.5" fill="#5b73ff"></circle>
+</svg>

@@ -1,0 +1,295 @@
+---
+import Define from './Define.astro';
+import GoalRoute from './goal/GoalRoute.astro';
+import How1 from './goal/How1.astro';
+import How2 from './goal/How2.astro';
+import How3 from './goal/How3.astro';
+import IconOpen from './goal/IconOpen.astro';
+import IconSafe from './goal/IconSafe.astro';
+import IconLiving from './goal/IconLiving.astro';
+import { goal } from '../data/site';
+import { cadence } from '../data/versions';
+
+// How the goal gets reached. These describe the plan, not results: nothing here claims a lab result.
+const how = [
+  {
+    Visual: How1,
+    k: 'AI',
+    t: 'AI reads, designs and checks',
+    d: 'AI reads the research, compares designs and links every finding to its source, far faster than any one team could.',
+  },
+  {
+    Visual: How2,
+    k: 'Robotics',
+    t: 'Robotic labs can run the tests',
+    d: 'Robotic labs can run tests day and night. Questions get answered sooner, and the next question can be asked sooner.',
+  },
+  {
+    Visual: How3,
+    k: 'Everyone',
+    t: 'Everyone brings what they know',
+    d: 'People who live with type 1 diabetes, scientists, doctors, engineers and AI labs all add what they know. Every contribution is checked in the open and credited by name.',
+  },
+];
+
+// Three commitments that go with the goal. The roadmap shows Stage 0 in full and the later stages as an outline for partners or open-source adopters.
+const pledges = [
+  {
+    Icon: IconOpen,
+    k: 'Open to everyone',
+    t: 'Take it, build on it, adapt it',
+    d: 'OpenIslet is an open project. Anyone can take the blueprint and build on it or adapt it in any way: to test it in a lab, or to carry it through every stage towards a cure, as fast as they safely can and with their regulators’ approval. We only ask that you credit the OpenIslet community.',
+  },
+  {
+    Icon: IconSafe,
+    k: 'Safety comes with the speed',
+    t: 'Faster, but never at the cost of safety',
+    d: 'Going faster must not mean cutting corners. We work to make the treatment safer and more effective at the same time, and the first treatment in a person needs a regulator’s approval.',
+  },
+  // The wording is written once, in src/data/versions.ts, and shared with the Blueprint, Roadmap and Start pages and the connector.
+  { Icon: IconLiving, k: cadence.kicker, t: cadence.title, d: cadence.short, href: '/blueprint#versions', link: 'See the version plan →' },
+];
+---
+
+<section class="goal" id="goal">
+  <div class="container goal__top">
+    <div class="goal__copy">
+      <p class="eyebrow">Our goal</p>
+      <h2 class="goal__h">Cure the first person with type&nbsp;1 diabetes by <span>{goal.year}</span></h2>
+      <p class="lead goal__lead">
+        Getting from a good idea to a <Define id="define-cure" term="cure">By “cure” we mean no insulin injections and no anti-rejection drugs, with healthy blood sugar that lasts. OpenIslet builds the open blueprint. The lab, animal and human stages need partner organisations, and none is named yet.</Define> usually takes many years. We want to do it much faster, by putting AI and robotics to work
+        alongside a coordinated, worldwide effort that combines the wisdom and intelligence of anyone who wants to help.
+      </p>
+      <div class="goal__links">
+        <a class="textlink" href="/roadmap">See the roadmap →</a>
+        <a class="textlink" href="#help">See how you can help →</a>
+      </div>
+    </div>
+
+    <figure class="goal__route">
+      <GoalRoute />
+      <figcaption>
+        The six stages on the roadmap. The first person is treated at stage 4. Tailoring the treatment to everyone else comes after.
+      </figcaption>
+    </figure>
+  </div>
+
+  <div class="container">
+    <ul class="how">
+      {
+        how.map(({ Visual, k, t, d }) => (
+          <li class="how__item">
+            <div class="vis"><Visual /></div>
+            <span class="chip chip--ink">{k}</span>
+            <h3>{t}</h3>
+            <p>{d}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <ul class="pledges">
+      {
+        pledges.map(({ Icon, k, t, d, href, link }) => (
+          <li class="pledge">
+            <div class="pledge__icon"><Icon /></div>
+            <div>
+              <p class="pledge__k">{k}</p>
+              <h3>{t}</h3>
+              <p class="pledge__d">{d}</p>
+              {href && <a class="pledge__link" href={href}>{link}</a>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .goal {
+    background: var(--tint);
+    border-bottom: 1px solid #cfd8ff;
+    padding-block: clamp(3rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem);
+  }
+  .goal__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2.5rem 4rem;
+  }
+  .goal__copy {
+    flex: 1 1 30rem;
+    min-width: 0;
+  }
+  .goal__h {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+    font-size: clamp(2rem, 4.2vw, 3.25rem);
+    line-height: 1.08;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  .goal__h span {
+    color: var(--accent);
+  }
+  .goal__lead {
+    margin-top: 1.25rem;
+    max-width: 40rem;
+  }
+  .goal__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .goal__route {
+    container-type: inline-size;
+    flex: 1 1 26rem;
+    min-width: 0;
+    margin: 0;
+    padding: 1.25rem 1.25rem 1rem;
+    background: var(--ink-2);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+  }
+  .goal__route figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.9375rem;
+    color: var(--dark-muted);
+    text-wrap: pretty;
+  }
+
+  /* Three across, then one, so the row is never uneven. The picture is the only panel; the words stand on the page. */
+  .how {
+    list-style: none;
+    padding: 0;
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
+  }
+  @media (max-width: 56em) {
+    .how {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .how__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .how__item .chip {
+    align-self: flex-start;
+  }
+  .vis {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .vis :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 8rem;
+    height: auto;
+  }
+  .how h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+  }
+  .how p {
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  /* The three commitments: one dark band with three columns and fine dividers, so the section is not a pile of boxes. */
+  .pledges {
+    list-style: none;
+    padding: 0;
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    background: var(--ink);
+    border-radius: 0.75rem;
+  }
+  .pledge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.75rem;
+  }
+  .pledge + .pledge {
+    border-left: 1px solid var(--dark-line);
+  }
+  @media (max-width: 60em) {
+    .pledges {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .pledge {
+      flex-direction: row;
+      gap: 1.25rem;
+      padding: 1.5rem;
+    }
+    .pledge + .pledge {
+      border-left: none;
+      border-top: 1px solid var(--dark-line);
+    }
+  }
+  @media (max-width: 30em) {
+    .pledge {
+      flex-direction: column;
+    }
+  }
+  .pledge__icon {
+    flex: none;
+    width: 4.5rem;
+    height: 4.5rem;
+    padding: 0.625rem;
+    border-radius: 0.75rem;
+    background: var(--ink-2);
+  }
+  .pledge__icon :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  .pledge__k {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent-lt);
+  }
+  .pledge h3 {
+    margin-top: 0.25rem;
+    font-size: 1.375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+  .pledge__d {
+    margin-top: 0.625rem;
+    font-size: 1rem;
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+  .pledge__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-top: 0.25rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent-lt);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .pledge__link:hover {
+    color: #fff;
+  }
+</style>

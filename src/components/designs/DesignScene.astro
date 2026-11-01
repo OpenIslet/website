@@ -1,0 +1,191 @@
+---
+// What the immune system sees: the edited cell's surface "ID flags" and the immune cells around it.
+// Dashed flags have been removed, blue flags are added, and the pale flag is kept.
+// Design A removes every HLA flag (HLA-A, B and C through B2M, and class II through CIITA), then adds two calming signals.
+// Design B removes HLA-A, HLA-B and class II, and keeps one matched HLA-C.
+// Design X is Design A with one more edit, in the insulin gene: a dashed "INS piece" flag shows fewer insulin pieces for T cells to target.
+import Cell from '../art/Cell.astro';
+import Immune from '../art/Immune.astro';
+
+interface Props {
+  id: 'A' | 'B' | 'X';
+}
+const { id } = Astro.props;
+
+const C = { x: 180, y: 104, r: 42 };
+const rad = (d: number) => (d * Math.PI) / 180;
+const at = (deg: number, d: number) => ({ x: C.x + (C.r + d) * Math.cos(rad(deg)), y: C.y + (C.r + d) * Math.sin(rad(deg)) });
+
+type Side = 'left' | 'above' | 'below';
+interface Flag {
+  deg: number;
+  kind: 'gone' | 'added' | 'kept';
+  name: string;
+  side: Side;
+}
+
+const flagsA: Flag[] = [
+  { deg: 230, kind: 'gone', name: 'Class II', side: 'left' },
+  { deg: 200, kind: 'gone', name: 'HLA-A', side: 'left' },
+  { deg: 170, kind: 'gone', name: 'HLA-B', side: 'left' },
+  { deg: 140, kind: 'gone', name: 'HLA-C', side: 'left' },
+  { deg: -38, kind: 'added', name: 'HLA-E', side: 'above' },
+  { deg: 38, kind: 'added', name: 'CD47', side: 'below' },
+];
+const flags: Flag[] =
+  id === 'A'
+    ? flagsA
+    : id === 'X'
+      ? [...flagsA, { deg: 100, kind: 'gone', name: 'INS piece', side: 'below' }]
+      : [
+        { deg: 230, kind: 'gone', name: 'Class II', side: 'left' },
+        { deg: 200, kind: 'gone', name: 'HLA-A', side: 'left' },
+        { deg: 170, kind: 'gone', name: 'HLA-B', side: 'left' },
+        { deg: -30, kind: 'kept', name: 'HLA-C', side: 'above' },
+      ];
+
+const shapes = flags.map((f) => {
+  const start = at(f.deg, 0);
+  const end = at(f.deg, 12);
+  const head = at(f.deg, 19);
+  const label =
+    f.side === 'left'
+      ? { x: head.x - 11, y: head.y + 4, anchor: 'end' }
+      : f.side === 'above'
+        ? { x: head.x, y: head.y - 12, anchor: 'middle' }
+        : { x: head.x, y: head.y + 21, anchor: 'middle' };
+  return { ...f, start, end, head, label };
+});
+const headOf = (name: string) => shapes.find((s) => s.name === name)!.head;
+
+interface ImmuneCell {
+  kind: 'tcell' | 'nk' | 'macrophage';
+  x: number;
+  y: number;
+  r: number;
+  /** How far the link line stays clear of the cell. */
+  gap: number;
+  lines: string[];
+  /** Baseline of the first label line. */
+  ly: number;
+}
+const cells: ImmuneCell[] =
+  id === 'A' || id === 'X'
+    ? [
+        { kind: 'tcell', x: 40, y: 104, r: 19, gap: 22, lines: ['T cell'], ly: 140 },
+        { kind: 'nk', x: 304, y: 34, r: 17, gap: 20, lines: ['Natural', 'killer cell'], ly: 62 },
+        { kind: 'macrophage', x: 312, y: 154, r: 18, gap: 25, lines: ['Macrophage'], ly: 192 },
+      ]
+    : [
+        { kind: 'tcell', x: 40, y: 104, r: 19, gap: 22, lines: ['T cell'], ly: 140 },
+        { kind: 'nk', x: 306, y: 84, r: 17, gap: 20, lines: ['Natural', 'killer cell'], ly: 40 },
+      ];
+
+// A line from an immune cell to the flag that settles it: a stop tick when it is calmed, a tick mark when it sees its own.
+function link(a: { x: number; y: number }, gapA: number, b: { x: number; y: number }, gapB: number) {
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+  const len = Math.hypot(dx, dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const p1 = { x: a.x + ux * gapA, y: a.y + uy * gapA };
+  const p2 = { x: b.x - ux * gapB, y: b.y - uy * gapB };
+  const m = { x: p2.x - ux * 10, y: p2.y - uy * 10 };
+  const mid = { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+  return { p1, p2, mid, stop: { x1: m.x - uy * 6, y1: m.y + ux * 6, x2: m.x + uy * 6, y2: m.y - ux * 6 } };
+}
+const links =
+  id === 'A' || id === 'X'
+    ? [
+        { from: cells[1], to: headOf('HLA-E'), kind: 'calm' },
+        { from: cells[2], to: headOf('CD47'), kind: 'calm' },
+      ]
+    : [{ from: cells[1], to: headOf('HLA-C'), kind: 'own' }];
+const lines = links.map((l) => ({ kind: l.kind, ...link(l.from, l.from.gap, l.to, 10) }));
+---
+
+<svg
+  viewBox="0 0 360 200"
+  role="img"
+  aria-label={
+    id === 'A'
+      ? 'Design A schematic. Classical HLA signals are intended to be reduced, shown dashed, and HLA-E and CD47 are proposed shields. Direct, indirect and innate immune protection are not established.'
+      : id === 'X'
+        ? 'Design X schematic. The same as Design A, with one more edit: an insulin (INS) fragment flag is shown dashed, because the edit is designed to leave fewer insulin pieces for T cells to target (insulin itself is unchanged). Immune protection is not established.'
+        : 'Design B schematic. HLA-A, HLA-B and class II disruption is proposed, shown dashed. Retained matching HLA-C is a hypothesis for engaging inhibitory NK receptors; immune protection remains unmeasured.'
+  }
+>
+  {
+    lines.map((l) => (
+      <g>
+        <line x1={l.p1.x} y1={l.p1.y} x2={l.p2.x} y2={l.p2.y} stroke="#8ea0ff" stroke-width="2" stroke-dasharray="3 4" stroke-linecap="round"></line>
+        {l.kind === 'calm' && (
+          <line x1={l.stop.x1} y1={l.stop.y1} x2={l.stop.x2} y2={l.stop.y2} stroke="#8ea0ff" stroke-width="3" stroke-linecap="round"></line>
+        )}
+        {l.kind === 'own' && (
+          <g transform={`translate(${l.mid.x} ${l.mid.y})`}>
+            <circle r="9" fill="#0b1b26" stroke="#8ea0ff" stroke-width="1.5"></circle>
+            <path d="M-4 0.5 L-1 3.5 L4.5 -3" fill="none" stroke="#8ea0ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </g>
+        )}
+      </g>
+    ))
+  }
+
+  <Cell x={C.x} y={C.y} r={C.r} kind="beta" />
+
+  {
+    shapes.map((f) => (
+      <g>
+        <line
+          x1={f.start.x}
+          y1={f.start.y}
+          x2={f.end.x}
+          y2={f.end.y}
+          stroke={f.kind === 'kept' ? '#e6edf2' : '#8ea0ff'}
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-opacity={f.kind === 'gone' ? 0.5 : 1}
+          stroke-dasharray={f.kind === 'gone' ? '2 3' : undefined}
+        ></line>
+        <circle
+          cx={f.head.x}
+          cy={f.head.y}
+          r="7"
+          fill={f.kind === 'gone' ? 'none' : f.kind === 'kept' ? '#e6edf2' : '#8ea0ff'}
+          stroke={f.kind === 'gone' ? '#8ea0ff' : '#0b1b26'}
+          stroke-width={f.kind === 'gone' ? 1.5 : 2.5}
+          stroke-opacity={f.kind === 'gone' ? 0.6 : 1}
+          stroke-dasharray={f.kind === 'gone' ? '2.5 2.5' : undefined}
+        ></circle>
+        <text
+          x={f.label.x}
+          y={f.label.y}
+          text-anchor={f.label.anchor}
+          font-size="12"
+          font-weight={f.kind === 'gone' ? 400 : 600}
+          fill={f.kind === 'gone' ? '#8fa3b1' : '#fff'}
+          style={`font-family: var(--mono);${f.kind === 'gone' ? ' text-decoration: line-through;' : ''}`}
+        >
+          {f.name}
+        </text>
+      </g>
+    ))
+  }
+
+  {
+    cells.map((c) => (
+      <g>
+        <Immune x={c.x} y={c.y} r={c.r} kind={c.kind} />
+        <text text-anchor="middle" font-size="13" fill="#a6b6c2">
+          {c.lines.map((l, i) => (
+            <tspan x={c.x} y={c.ly + i * 14}>{l}</tspan>
+          ))}
+        </text>
+      </g>
+    ))
+  }
+
+  <circle cx="40" cy="62" r="10" fill="#0b1b26" stroke="#8ea0ff" stroke-width="1.5"></circle>
+  <text x="40" y="67" text-anchor="middle" font-size="14" font-weight="700" fill="#c9d3ff">?</text>
+</svg>

@@ -1,0 +1,62 @@
+---
+// Test 3: the first hours. Natural killer cells, macrophages and blood clotting meet cells carrying "don't attack me" signals.
+import Cell from '../art/Cell.astro';
+import Immune from '../art/Immune.astro';
+
+const platelets = [
+  [92, 292, -20],
+  [120, 280, 15],
+  [146, 300, -8],
+  [104, 316, 25],
+  [136, 326, 0],
+];
+---
+
+<svg viewBox="0 0 520 380" role="img" aria-label="A cluster of islet cells inside a protective ring. A natural killer cell and a macrophage approach but are stopped, because the cells carry two signals: HLA-E, which calms natural killer cells, and CD47, which tells macrophages not to eat them. Blood clotting happens nearby.">
+  <g font-family="IBM Plex Sans, sans-serif">
+    <circle cx="232" cy="196" r="92" fill="#8ea0ff" fill-opacity="0.07" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="3 7" stroke-opacity="0.85"></circle>
+
+    <Cell x={214} y={184} r={29} kind="beta" />
+    <Cell x={256} y={214} r={26} kind="alpha" />
+    <Cell x={242} y={158} r={20} kind="delta" />
+    <Cell x={198} y={224} r={22} kind="beta" />
+    <Cell x={274} y={174} r={18} kind="beta" />
+
+    <!-- natural killer cell -->
+    <Immune x={76} y={88} r={26} kind="nk" />
+    <path d="M102 100 L172 130" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 6" fill="none"></path>
+    <path d="M172 118 l16 16 M188 118 l-16 16" stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round"></path>
+    <text x="76" y="140" fill="#e6edf2" font-size="16" text-anchor="middle">Natural killer cell</text>
+
+    <!-- macrophage -->
+    <Immune x={410} y={92} r={28} kind="macrophage" />
+    <path d="M384 108 L322 146" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 6" fill="none"></path>
+    <path d="M308 138 l16 16 M324 138 l-16 16" stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round"></path>
+    <text x="410" y="148" fill="#e6edf2" font-size="16" text-anchor="middle">Macrophage</text>
+
+    <!-- clotting -->
+    <g fill="#f7c875" stroke="#0b1b26" stroke-width="2">
+      {platelets.map(([x, y, r]) => <ellipse cx={x} cy={y} rx="14" ry="7" transform={`rotate(${r} ${x} ${y})`}></ellipse>)}
+    </g>
+    <g stroke="#f7c875" stroke-width="1.5" stroke-opacity="0.8" fill="none">
+      <path d="M92 292 L120 280 L146 300 L136 326 L104 316 Z"></path>
+    </g>
+    <text x="120" y="360" fill="#e6edf2" font-size="16" text-anchor="middle">Blood clotting and inflammation</text>
+
+    <!-- protective signals -->
+    <g>
+      <path d="M342 222 L300 214" stroke="#8ea0ff" stroke-width="2" fill="none"></path>
+      <circle cx="342" cy="222" r="4" fill="#8ea0ff"></circle>
+      <rect x="346" y="196" width="160" height="56" rx="10" fill="#8ea0ff" fill-opacity="0.16" stroke="#8ea0ff" stroke-width="1.5"></rect>
+      <text x="360" y="220" fill="#ffffff" font-size="18" font-weight="600">HLA-E</text>
+      <text x="360" y="241" fill="#c9d3ff" font-size="15">calms killer cells</text>
+    </g>
+    <g>
+      <path d="M342 296 L286 236" stroke="#8ea0ff" stroke-width="2" fill="none"></path>
+      <circle cx="342" cy="296" r="4" fill="#8ea0ff"></circle>
+      <rect x="346" y="270" width="160" height="56" rx="10" fill="#8ea0ff" fill-opacity="0.16" stroke="#8ea0ff" stroke-width="1.5"></rect>
+      <text x="360" y="294" fill="#ffffff" font-size="18" font-weight="600">CD47</text>
+      <text x="360" y="315" fill="#c9d3ff" font-size="15">“don’t eat me”</text>
+    </g>
+  </g>
+</svg>

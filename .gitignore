@@ -1,0 +1,10 @@
+node_modules/
+dist/
+dist-staging/
+.astro/
+.wrangler/
+.env
+.env.*
+!.env.example
+.DS_Store
+scripts/audit/out/

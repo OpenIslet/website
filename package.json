@@ -1,0 +1,30 @@
+{
+  "name": "openislet-website",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "The OpenIslet website (openislet.org) and the connector that lets AI assistants read the blueprint.",
+  "license": "Apache-2.0",
+  "repository": { "type": "git", "url": "git+https://github.com/openislet/website.git" },
+  "homepage": "https://openislet.org",
+  "bugs": { "url": "https://github.com/openislet/website/issues" },
+  "engines": { "node": "^22.20.0 || >=24.12.0" },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "node --test tests/*.test.mjs",
+    "sync-data": "node scripts/sync-data.mjs",
+    "changelog": "node scripts/add-changelog-entry.mjs",
+    "predev": "node scripts/sync-data.mjs --soft",
+    "prebuild": "node scripts/sync-data.mjs --soft"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.2.0",
+    "@fontsource/ibm-plex-sans": "^5.2.0",
+    "astro": "~5.18.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

@@ -1,0 +1,77 @@
+---
+// Immune cells that threaten the graft, always drawn in amber so they are easy to tell apart from the islet cells.
+interface Props {
+  x: number;
+  y: number;
+  r?: number;
+  kind: 'tcell' | 'nk' | 'macrophage' | 'apc';
+}
+const { x, y, r = 24, kind } = Astro.props;
+const amber = '#f2a93b';
+const amberLight = '#f7c875';
+const ink = '#0b1b26';
+
+const bumps = Array.from({ length: 9 }, (_, i) => {
+  const a = (i / 9) * Math.PI * 2 + 0.2;
+  return { cx: x + Math.cos(a) * r * 0.9, cy: y + Math.sin(a) * r * 0.9, r: r * (0.3 + (i % 3) * 0.05) };
+});
+const arms = Array.from({ length: 7 }, (_, i) => {
+  const a = (i / 7) * Math.PI * 2 + 0.3;
+  return {
+    x1: x + Math.cos(a) * r * 0.8,
+    y1: y + Math.sin(a) * r * 0.8,
+    x2: x + Math.cos(a) * r * 1.55,
+    y2: y + Math.sin(a) * r * 1.55,
+  };
+});
+const granules = [
+  [-0.32, -0.28],
+  [0.12, -0.4],
+  [0.38, -0.05],
+  [-0.4, 0.2],
+  [0.02, 0.1],
+  [0.22, 0.4],
+  [-0.12, 0.45],
+];
+---
+
+{
+  kind === 'tcell' && (
+    <g>
+      <circle cx={x} cy={y} r={r} fill={amber} stroke={ink} stroke-width="2.5"></circle>
+      <circle cx={x + r * 0.05} cy={y} r={r * 0.62} fill={ink} fill-opacity="0.5"></circle>
+    </g>
+  )
+}
+{
+  kind === 'nk' && (
+    <g>
+      <circle cx={x} cy={y} r={r} fill={amber} stroke={ink} stroke-width="2.5"></circle>
+      {granules.map(([dx, dy]) => (
+        <circle cx={x + dx * r} cy={y + dy * r} r={r * 0.1} fill={ink} fill-opacity="0.7"></circle>
+      ))}
+    </g>
+  )
+}
+{
+  kind === 'macrophage' && (
+    <g>
+      {bumps.map((b) => (
+        <circle cx={b.cx} cy={b.cy} r={b.r} fill={amberLight} stroke={ink} stroke-width="2"></circle>
+      ))}
+      <circle cx={x} cy={y} r={r * 0.95} fill={amberLight}></circle>
+      <ellipse cx={x + r * 0.1} cy={y} rx={r * 0.5} ry={r * 0.36} fill={ink} fill-opacity="0.45"></ellipse>
+    </g>
+  )
+}
+{
+  kind === 'apc' && (
+    <g>
+      {arms.map((a) => (
+        <line x1={a.x1} y1={a.y1} x2={a.x2} y2={a.y2} stroke={amber} stroke-width="5" stroke-linecap="round"></line>
+      ))}
+      <circle cx={x} cy={y} r={r} fill={amber} stroke={ink} stroke-width="2.5"></circle>
+      <circle cx={x - r * 0.1} cy={y + r * 0.05} r={r * 0.45} fill={ink} fill-opacity="0.45"></circle>
+    </g>
+  )
+}

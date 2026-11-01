@@ -1,0 +1,223 @@
+---
+// The route from today to the goal: the roadmap's six stages, with the flag at the first human trial.
+// A drawing when the panel is wide, and a plain list when it is narrow, so the words stay readable on a phone.
+// (The panel's width decides which one shows, using a container query set in GoalSection.)
+import { goal } from '../../data/site';
+
+const y = 190;
+const nodes = [
+  { x: 52, n: '0', lines: ['Blueprint'] },
+  { x: 143, n: '1', lines: ['Lab', 'testing'] },
+  { x: 235, n: '2', lines: ['Blood supply', 'and oxygen'] },
+  { x: 326, n: '3', lines: ['Animals', 'and safety'] },
+  { x: 417, n: '4', lines: ['First human', 'trial'] },
+  { x: 508, n: '5', lines: ['Tailored', 'treatment'] },
+];
+const flagX = nodes[4].x;
+const label = `The route to the goal. We are at stage 0, the blueprint. Then lab testing, blood supply and oxygen, animal studies and safety, and the first human trial, where the goal is to cure the first person by ${goal.year}. Tailored treatment for each patient comes after.`;
+---
+
+<div class="route">
+  <svg class="route__svg" viewBox="0 0 560 262" role="img" aria-label={label}>
+    <text x="24" y="44" font-size="16" font-weight="600" fill="#8ea0ff">The route to the first cure</text>
+
+    <path d={`M${nodes[0].x} ${y} H${flagX}`} stroke="#8ea0ff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"></path>
+    <path d={`M${flagX} ${y} H${nodes[5].x}`} stroke="#8ea0ff" stroke-opacity="0.28" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"></path>
+
+    <path d={`M${flagX} ${y - 16} V30`} stroke="#e6edf2" stroke-width="3" stroke-linecap="round" fill="none"></path>
+    <path d={`M${flagX} 30 H526 L510 54 L526 78 H${flagX} Z`} fill="#f2a93b"></path>
+    <text x={flagX + 14} y="64" font-size="30" font-weight="700" fill="#0b1b26">{goal.year}</text>
+    <text text-anchor="end" font-size="16" font-weight="600" fill="#fff">
+      <tspan x={flagX - 14} y="50">First person</tspan>
+      <tspan x={flagX - 14} y="69">cured</tspan>
+    </text>
+
+    <rect x="8" y="118" width="88" height="26" rx="13" fill="#f2a93b"></rect>
+    <text x="52" y="136" text-anchor="middle" font-size="13" font-weight="600" fill="#0b1b26">We are here</text>
+    <path d="M44 144 L52 154 L60 144 Z" fill="#f2a93b"></path>
+
+    {
+      nodes.map((n, i) => (
+        <g>
+          {i === 0 && <circle class="pulse" cx={n.x} cy={y} r="15" fill="none" stroke="#8ea0ff" stroke-width="2"></circle>}
+          <circle
+            cx={n.x}
+            cy={y}
+            r="15"
+            fill={i === 0 ? '#8ea0ff' : '#102a3b'}
+            stroke={i === 4 ? '#f2a93b' : '#8ea0ff'}
+            stroke-width="2"
+            stroke-opacity={i === 5 ? 0.45 : 1}
+          ></circle>
+          <text
+            x={n.x}
+            y={y + 5.5}
+            text-anchor="middle"
+            font-size="15"
+            font-weight="600"
+            fill={i === 0 ? '#0b1b26' : i === 4 ? '#f2a93b' : '#c9d3ff'}
+            fill-opacity={i === 5 ? 0.6 : 1}
+          >
+            {n.n}
+          </text>
+          <text text-anchor="middle" font-size="13.5" fill={i === 5 ? '#8fa3b1' : '#d5dee5'}>
+            {n.lines.map((l, j) => (
+              <tspan x={n.x} y={y + 37 + j * 17}>{l}</tspan>
+            ))}
+          </text>
+        </g>
+      ))
+    }
+  </svg>
+
+  <div class="route__list">
+    <p class="route__k">The route to the first cure</p>
+    <ol class="stops">
+      {
+        nodes.map((n, i) => (
+          <li class:list={['stop', { 'stop--now': i === 0, 'stop--goal': i === 4, 'stop--after': i === 5 }]}>
+            <span class="stop__n">{n.n}</span>
+            <span class="stop__t">{n.lines.join(' ')}</span>
+            {i === 0 && <span class="stop__tag">We are here</span>}
+            {i === 4 && (
+              <span class="stop__flag">
+                <b>{goal.year}</b> First person cured
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</div>
+
+<style>
+  .route__svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .route__list {
+    display: none;
+  }
+  @container (max-width: 30rem) {
+    .route__svg {
+      display: none;
+    }
+    .route__list {
+      display: block;
+    }
+  }
+
+  .route__k {
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent-lt);
+  }
+  .stops {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .stop {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    min-height: 3.75rem;
+    padding-left: 3rem;
+  }
+  .stop:last-child {
+    min-height: 0;
+  }
+  .stop::before {
+    content: '';
+    position: absolute;
+    left: calc(1.0625rem - 1px);
+    top: 2.375rem;
+    bottom: 0.25rem;
+    border-left: 2px dotted rgba(142, 160, 255, 0.6);
+  }
+  .stop:last-child::before {
+    display: none;
+  }
+  .stop__n {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    border: 2px solid var(--accent-lt);
+    border-radius: 50%;
+    background: var(--ink-2);
+    color: #c9d3ff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  .stop--now .stop__n {
+    background: var(--accent-lt);
+    color: var(--ink);
+  }
+  .stop--goal .stop__n {
+    border-color: var(--threat);
+    color: var(--threat);
+  }
+  .stop__t {
+    display: flex;
+    align-items: center;
+    min-height: 2.125rem;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    color: #fff;
+  }
+  .stop--goal {
+    padding-bottom: 1rem;
+  }
+  .stop--after {
+    opacity: 0.6;
+  }
+  .stop__tag,
+  .stop__flag {
+    padding: 0.1875rem 0.75rem;
+    border-radius: 999px;
+    background: var(--threat);
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .stop__flag {
+    border-radius: 0.375rem;
+  }
+  .stop__flag b {
+    margin-right: 0.375rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pulse 2.4s ease-out 2; /* two beats, under five seconds: nothing moves for long */
+  }
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    to {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse {
+      animation: none;
+      opacity: 0;
+    }
+  }
+</style>

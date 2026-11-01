@@ -1,0 +1,772 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { cadence } from '../data/versions';
+import { stages, canine, afterBlueprint } from '../data/roadmap';
+import { startHref, goal, contact } from '../data/site';
+import StageIcon from '../components/roadmap/StageIcon.astro';
+import StageArt0 from '../components/roadmap/StageArt0.astro';
+import StageArt1 from '../components/roadmap/StageArt1.astro';
+import StageArt2 from '../components/roadmap/StageArt2.astro';
+import StageArt4 from '../components/roadmap/StageArt4.astro';
+import StageArt5 from '../components/roadmap/StageArt5.astro';
+import WayArt from '../components/roadmap/WayArt.astro';
+import Terrier from '../components/roadmap/Terrier.astro';
+
+// The small picture on each card. Stage 3 has the big terrier picture instead.
+const art: Record<string, any> = { '0': StageArt0, '1': StageArt1, '2': StageArt2, '4': StageArt4, '5': StageArt5 };
+const stateLabel = (s: { state: string }) => (s.state === 'Now' ? 'We are here' : 'Later');
+
+// Stage 0 is shown in full. Stages 1 to 5 are an outline only.
+const [blueprint, ...later] = stages;
+---
+
+<Layout
+  title="Roadmap"
+  description={`The six stages from blueprint to patients. OpenIslet works in the open on Stage 0, the blueprint. Stages 1 to 5 are an outline, meant for partner organisations or for anyone who takes the open blueprint. Our goal: ${goal.short}.`}
+  current="roadmap"
+>
+  <section class="intro">
+    <div class="container">
+      <p class="eyebrow">Roadmap</p>
+      <h1 class="h1 intro__h">The path to patients</h1>
+      <p class="lead intro__lead">
+        Six stages, from the blueprint to patients. We are at Stage 0, the blueprint, which OpenIslet builds in the open and which you can help with today.
+        Stages 1 to 5 are an outline: we expect partner organisations, or anyone who takes the open blueprint, to carry them out.
+      </p>
+
+      <div class="goalbar">
+        <span class="goalbar__year mono">{goal.year}</span>
+        <p class="pretty">
+          <strong>Our goal: {goal.short}.</strong> Fast, but never at the cost of safety. If a stage’s test fails, we stop, learn and change the plan, in the open.
+        </p>
+      </div>
+
+      <div class="intro__living">
+        <p class="pretty">{cadence.roadmap}</p>
+        <a class="textlink" href="/blueprint#versions">See the version plan →</a>
+      </div>
+
+      <nav aria-label="The six stages">
+        <ol class="path">
+          {
+            stages.map((s) => (
+              <li class={`path__item path__item--${s.state.toLowerCase()}`}>
+                <a class="step" href={`#stage-${s.id}`} aria-current={s.state === 'Now' ? 'step' : undefined}>
+                  <span class="step__top">
+                    <span class="step__n">{s.id}</span>
+                    <span class={`step__s step__s--${s.state.toLowerCase()}`}>{stateLabel(s)}</span>
+                  </span>
+                  <span class="step__icon"><StageIcon id={s.id} /></span>
+                  <span class="step__t">{s.short}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <section class="stages" aria-label="The stages in detail">
+    <div class="container">
+      <article class="card stage stage--now" id="stage-0" aria-labelledby="stage-0-h">
+        <div class="stage__art">
+          <p class="stage__badge">Stage 0</p>
+          <StageArt0 />
+        </div>
+
+        <div class="stage__main">
+          <header class="stage__head">
+            <p class="stage__k">Stage 0 · <span class="stage__state stage__state--now">{stateLabel(blueprint)}</span></p>
+            <h2 class="stage__h" id="stage-0-h">{blueprint.name}</h2>
+            <p class="stage__sum">{blueprint.summary}</p>
+            {blueprint.timing && <p class="stage__when"><span class="label">When</span> {blueprint.timing}</p>}
+          </header>
+
+          <p class="stage__why pretty"><strong>Why this stage?</strong> {blueprint.why}</p>
+
+          <h3 class="stage__sub">What happens</h3>
+          <ol class="stage__steps">
+            {blueprint.points?.map((p) => (<li class="pretty">{p}</li>))}
+          </ol>
+
+          <div class="trio">
+            <section class="mini mini--pass">
+              <h3>
+                <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9" fill="currentColor"></circle><path d="M6 10.2l2.8 2.8L14 7.4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                A pass looks like
+              </h3>
+              <p class="pretty">{blueprint.pass}</p>
+            </section>
+            <section class="mini mini--stop">
+              <h3>
+                <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><rect x="1" y="1" width="18" height="18" rx="4" fill="currentColor"></rect><path d="M6.5 6.5l7 7M13.5 6.5l-7 7" stroke="#fff" stroke-width="2" stroke-linecap="round"></path></svg>
+                We stop or change the plan if
+              </h3>
+              <p class="pretty">{blueprint.stop}</p>
+            </section>
+            <section class="mini mini--unknown">
+              <h3>
+                <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="10" cy="10" r="9" fill="currentColor"></circle><path d="M7.6 8c0-1.5 1.2-2.4 2.5-2.4s2.4.9 2.4 2.2c0 1.8-2.4 1.8-2.4 3.6" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"></path><circle cx="10.1" cy="14.4" r="1.1" fill="#fff"></circle></svg>
+                Not known yet
+              </h3>
+              <p class="pretty">{blueprint.unknown}</p>
+            </section>
+          </div>
+
+          <div class="gate">
+            <p class="label">Where it stands</p>
+            <p class="pretty">{blueprint.gate}</p>
+          </div>
+
+          <details class="sci">
+            <summary>For scientists</summary>
+            <ul>
+              {blueprint.science?.map((t) => (<li class="pretty">{t}</li>))}
+            </ul>
+          </details>
+        </div>
+      </article>
+
+      <section class="after" id="after-blueprint" aria-labelledby="after-h">
+        <p class="eyebrow">After the blueprint</p>
+        <h2 class="h2 after__h" id="after-h">{afterBlueprint.heading}</h2>
+        <p class="lead after__lead">{afterBlueprint.lead}</p>
+        <div class="after__ways">
+          {
+            afterBlueprint.ways.map((w) => (
+              <article class="way">
+                <div class="way__art"><WayArt id={w.id as 'partner' | 'adopt'} /></div>
+                <h3 class="way__h">{w.title}</h3>
+                <p class="pretty">{w.text}</p>
+                {w.id === 'partner' && <a class="textlink" href={contact.href}>Get in touch →</a>}
+                {w.id === 'adopt' && <a class="textlink" href="/blueprint#data">Get the blueprint →</a>}
+              </article>
+            ))
+          }
+        </div>
+        <p class="after__note pretty">{afterBlueprint.note}</p>
+      </section>
+
+      <h2 class="outline__h">The later stages: an outline</h2>
+      {
+        later.map((s) => {
+          const Art = art[s.id];
+          const feature = s.id === '3';
+          return (
+            <article class:list={['stage', 'stage--outline', { 'stage--feature': feature }]} id={`stage-${s.id}`} aria-labelledby={`stage-${s.id}-h`}>
+              {Art && (
+                <div class="stage__art">
+                  <p class="stage__badge">Stage {s.id}</p>
+                  <Art />
+                </div>
+              )}
+
+              <div class="stage__main">
+                <header class="stage__head">
+                  <p class="stage__k">
+                    Stage {s.id} · <span class="stage__state">{stateLabel(s)}</span>
+                  </p>
+                  <h2 class="stage__h" id={`stage-${s.id}-h`}>{s.name}</h2>
+                  <p class="stage__sum">{s.summary}</p>
+                  {s.timing && <p class="stage__when"><span class="label">When</span> {s.timing}</p>}
+                </header>
+
+                <p class="stage__why pretty"><strong>Why this stage?</strong> {s.why}</p>
+
+                {
+                  feature && (
+                    <>
+                      <div class="dogviz">
+                        <figure class="dogviz__panel" data-wag>
+                          <Terrier />
+                          <figcaption>An illustration of the idea, not a result. The numbers match the list below.</figcaption>
+                        </figure>
+                        <aside class="dogviz__aim" aria-label="The aim of the dog study">
+                          <p class="label">The aim</p>
+                          <p class="dogviz__big">{canine.aim}</p>
+                          <dl class="facts">
+                            <div><dt>Patient</dt><dd>An {canine.breed} with insulin-dependent diabetes</dd></div>
+                            <div><dt>Treatment</dt><dd>Canine Islet-1: islet cells made from dog stem cells, with a safety switch</dd></div>
+                            <div><dt>Instead of</dt><dd>Testing in primates</dd></div>
+                          </dl>
+                        </aside>
+                      </div>
+                      <ol class="legend" aria-label="What the numbers in the picture stand for">
+                        {canine.legend.map((l) => (
+                          <li><span class="pin" aria-hidden="true">{l.n}</span><span>{l.text}</span></li>
+                        ))}
+                      </ol>
+                    </>
+                  )
+                }
+
+                <p class="stage__who pretty"><span class="label">Carried out by</span> A partner organisation, or any organisation that takes the open blueprint.</p>
+              </div>
+            </article>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="fit">
+    <div class="container fit__inner">
+      <div>
+        <p class="eyebrow">Where you fit in</p>
+        <h2 class="h2 fit__h">Right now, the most useful work is improving the blueprint</h2>
+        <p class="lead fit__lead">
+          Every weak spot found at Stage 0 saves time and effort later. If you have an AI assistant, you can help look for them.
+          If you run a research institute, an AI lab or a biotech company and would like to carry the blueprint further, we would like to hear from you.
+        </p>
+      </div>
+      <div class="fit__cta">
+        <a class="btn btn--primary btn--lg" href={`${startHref}#step-1`}>Start here</a>
+        <a class="textlink" href="/contributions">See who has contributed →</a>
+        <a class="textlink" href={contact.href}>Organisations: get in touch →</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // The terrier's tail wags for about two seconds when the picture first scrolls into view (and not at all if motion is reduced).
+  const panel = document.querySelector<HTMLElement>('[data-wag]');
+  if (panel && 'IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const watcher = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        panel.classList.add('is-wagging');
+        window.setTimeout(() => panel.classList.remove('is-wagging'), 2600);
+        watcher.disconnect();
+      },
+      { threshold: 0.5 }
+    );
+    watcher.observe(panel);
+  }
+</script>
+
+<style>
+  .intro {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+    padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .intro__h {
+    margin-top: 0.75rem;
+    max-width: 56.25rem;
+  }
+  .intro__lead {
+    margin-top: 1.125rem;
+    max-width: 46.25rem;
+  }
+  .goalbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    max-width: 46.25rem;
+    margin-top: 1.75rem;
+    padding-left: 1.25rem;
+    border-left: 4px solid var(--threat);
+  }
+  .goalbar__year {
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .goalbar p {
+    flex: 1 1 18rem;
+    font-size: 1.0625rem;
+    color: var(--body);
+  }
+  .goalbar strong {
+    color: var(--ink);
+  }
+  .intro__living {
+    max-width: 46.25rem;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+  }
+  .intro__living p {
+    font-size: 1rem;
+    color: var(--body);
+  }
+  /* the route: six links, one per stage, as plain columns under a rule (amber for the stage we are at) */
+  .path {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+  }
+  .path__item {
+    position: relative;
+  }
+  .step {
+    width: 100%;
+    height: 100%;
+    padding-top: 0.875rem;
+    border-top: 3px solid var(--line-strong);
+    color: var(--ink);
+    text-align: left;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .path__item--now .step {
+    border-top-color: var(--threat);
+  }
+  .step:hover {
+    border-top-color: var(--accent);
+  }
+  .step:hover .step__t {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .step__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .step__n {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--neutral-bg);
+    color: var(--ink);
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .path__item--now .step__n {
+    background: var(--threat);
+    box-shadow: 0 0 0 4px rgba(242, 169, 59, 0.3);
+  }
+  .step__icon {
+    color: var(--accent);
+    line-height: 0;
+  }
+  .step__t {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .step__s {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .step__s--now {
+    color: var(--warn);
+  }
+  @media (max-width: 62em) {
+    .path {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 36em) {
+    .path {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* one card per stage */
+  .stages {
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .stage {
+    margin-top: 1.5rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    scroll-margin-top: 1.5rem;
+  }
+  .stage--now {
+    border-color: var(--threat);
+    box-shadow: 0 0 0 3px rgba(242, 169, 59, 0.22);
+  }
+  /* The later stages are plain rows under a hairline; only the stage we are at has a panel. */
+  .stage--outline {
+    margin-top: 2rem;
+    padding: 2rem 0 0;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 62em) {
+    .stage {
+      grid-template-columns: 17.5rem minmax(0, 1fr);
+      gap: 2rem 2.5rem;
+    }
+    .stage--feature {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    /* beside the text, the picture stays in view while the card is read */
+    .stage__art {
+      position: sticky;
+      top: 1.25rem;
+    }
+  }
+  .stage__art {
+    align-self: start;
+    padding: 0.875rem 1rem 0.75rem;
+    background: var(--ink-2);
+    border-radius: 0.875rem;
+  }
+  .stage__art :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .stage__badge {
+    margin: 0 0 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--accent-lt);
+  }
+  .stage__main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    container-type: inline-size;
+  }
+  .stage__k {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .stage__state--now {
+    color: var(--warn);
+  }
+  .stage__h {
+    margin-top: 0.375rem;
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+  .stage__sum {
+    margin-top: 0.75rem;
+    max-width: 46rem;
+    font-size: 1.0625rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .stage__when {
+    margin-top: 0.625rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .stage__why {
+    max-width: 46rem;
+    font-size: 1rem;
+    color: var(--body);
+  }
+  .stage__why strong {
+    color: var(--ink);
+  }
+  .stage__sub {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .stage__steps {
+    margin: -0.5rem 0 0;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+    color: var(--body);
+  }
+  .stage__steps li::marker {
+    font-weight: 600;
+    color: var(--accent);
+  }
+  /* pass, stop, not known: three plain columns in a row, each under a rule in its own colour */
+  .trio {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+  @container (min-width: 40rem) {
+    .trio {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .mini {
+    padding-top: 0.875rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .mini--pass {
+    border-top-color: var(--pass);
+  }
+  .mini--stop {
+    border-top-color: var(--block);
+  }
+  .mini h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .mini h3 svg {
+    flex: none;
+  }
+  .mini--pass h3 {
+    color: var(--pass);
+  }
+  .mini--stop h3 {
+    color: var(--block);
+  }
+  .mini--unknown h3 {
+    color: var(--muted);
+  }
+  .mini p {
+    margin-top: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+
+  .gate {
+    padding-left: 1rem;
+    border-left: 3px solid var(--line-strong);
+  }
+  .gate .label + p {
+    margin-top: 2px;
+    font-size: 0.9375rem;
+  }
+
+  .sci {
+    border-block: 1px solid var(--line);
+  }
+  .sci summary {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  .sci summary::-webkit-details-marker {
+    display: none;
+  }
+  .sci summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .sci[open] summary::after {
+    content: '–';
+  }
+  .sci ul {
+    margin: 0;
+    padding: 0 0 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+
+  /* stage 3: the terrier */
+  .dogviz {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+  @media (min-width: 62em) {
+    .dogviz {
+      grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+    }
+  }
+  .dogviz__panel {
+    container: figure-dog / inline-size;
+    margin: 0;
+    padding: 0.75rem;
+    background: var(--ink-2);
+    border-radius: 0.875rem;
+  }
+  .dogviz__panel figcaption {
+    margin-top: 0.5rem;
+    padding-inline: 0.25rem;
+    font-size: 0.8125rem;
+    color: var(--dark-muted);
+  }
+  .dogviz__aim {
+    align-self: start;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--accent);
+    color: var(--ink);
+  }
+  .dogviz__aim .label {
+    color: var(--accent-dk);
+  }
+  .dogviz__big {
+    margin-top: 0.375rem;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .facts {
+    margin: 1rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+  .facts div {
+    padding-top: 0.625rem;
+    border-top: 1px solid rgba(42, 63, 214, 0.2);
+  }
+  .facts dt {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--accent-dk);
+  }
+  .facts dd {
+    margin: 0.125rem 0 0;
+    font-size: 0.9375rem;
+  }
+  .legend {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-width: 52rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.625rem 1rem;
+  }
+  @media (min-width: 36em) {
+    .legend {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .stage__who {
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .outline__h {
+    margin: 2rem 0 0;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  /* what comes after the blueprint: two cards, each led by a small picture */
+  .after {
+    margin-top: 2rem;
+    padding-block: clamp(1.5rem, 3vw, 2.25rem);
+    scroll-margin-top: 1.5rem;
+  }
+  .after__h {
+    margin-top: 0.75rem;
+    max-width: 44rem;
+  }
+  .after__lead {
+    margin-top: 0.875rem;
+    max-width: 42rem;
+  }
+  /* two across, then one: the rows stay even */
+  .after__ways {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 1.75rem;
+  }
+  @media (max-width: 48em) {
+    .after__ways {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .way {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .way__art {
+    padding: 0.75rem 1rem 0.5rem;
+    background: var(--ink-2);
+    border-radius: 0.875rem;
+  }
+  .way__art :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 9rem;
+    height: auto;
+  }
+  .way__h {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .way .textlink {
+    margin-top: auto;
+  }
+  .after__note {
+    margin-top: 1.25rem;
+    max-width: 46rem;
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .fit {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    background: #fff;
+    border-top: 1px solid var(--line);
+  }
+  .fit__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.75rem 3rem;
+  }
+  .fit__inner > div:first-child {
+    flex: 1 1 32rem;
+  }
+  .fit__h {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+  }
+  .fit__lead {
+    margin-top: 0.875rem;
+    max-width: 38rem;
+  }
+  .fit__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+  }
+</style>

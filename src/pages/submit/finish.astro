@@ -1,0 +1,185 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { queueApi, issuesUrl } from '../../data/site';
+
+// Where GitHub sends the browser back after sign-in (contract: docs/connector/QUEUE-API.md). The page reads ?code and ?state,
+// posts them with the secret this tab kept to the Worker, and shows the link to the new public IIP. It is a page of its own so that a
+// person who cancels, or whose link has expired, always lands somewhere that says what happened and what to do next.
+---
+
+<Layout title="Finishing your submission" description="Finishing your OpenIslet submission after you sign in with GitHub." current="start" noindex>
+  <section class="fin">
+    <div class="container fin__inner">
+      <p class="eyebrow">Submit an IIP</p>
+      <div id="result" data-api={queueApi} data-issues={issuesUrl} aria-live="polite">
+        <h1 class="h2">Finishing your submission…</h1>
+        <p class="lead">One moment while we finish signing you in and post your IIP.</p>
+      </div>
+      <noscript><p class="lead">This page needs JavaScript to finish your submission. Please turn it on and try again from the <a href="/submit">form</a>.</p></noscript>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { callApi, explain, store, bindingKey, STORAGE_BLOCKED, STAGED_KEY } from '../../scripts/submit';
+
+  const box = document.getElementById('result') as HTMLElement;
+  const api = box.dataset.api ?? '';
+  const issues = box.dataset.issues ?? '';
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  const state = params.get('state');
+  const refused = params.get('error');
+  // Take the one-time values out of the address bar so a refresh cannot try to use them twice.
+  history.replaceState(null, '', location.pathname);
+
+  const stagedId = store.get(STAGED_KEY);
+  const backHref = stagedId ? `/submit#staged=${encodeURIComponent(stagedId)}` : '/submit';
+
+  function show(heading: string, paragraphs: string[], links: { text: string; href: string; primary?: boolean }[] = [], action?: { text: string; run: () => void }) {
+    const h = document.createElement('h1');
+    h.className = 'h2';
+    h.textContent = heading;
+    const nodes: Node[] = [h];
+    for (const text of paragraphs) {
+      const p = document.createElement('p');
+      p.className = 'lead';
+      p.textContent = text;
+      nodes.push(p);
+    }
+    if (links.length || action) {
+      const row = document.createElement('p');
+      row.className = 'links';
+      if (action) {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'btn btn--primary btn--lg';
+        b.textContent = action.text;
+        b.addEventListener('click', action.run, { once: true });
+        row.append(b);
+      }
+      for (const l of links) {
+        const a = document.createElement('a');
+        a.href = l.href;
+        a.textContent = l.text;
+        a.className = l.primary ? 'btn btn--primary btn--lg' : 'textlink';
+        row.append(a);
+      }
+      nodes.push(row);
+    }
+    box.replaceChildren(...nodes);
+  }
+
+  async function finish() {
+    if (refused) {
+      show('You chose not to sign in', ['Nothing was posted. Your files are still held for up to 24 hours, so you can go back and try again whenever you like.'], [{ text: 'Back to the form', href: backHref, primary: true }]);
+      return;
+    }
+    if (!code || !state) {
+      show('There is nothing to finish here', ['This page is where GitHub sends you after you sign in. Start from the submission form.'], [{ text: 'Open the form', href: '/submit', primary: true }]);
+      return;
+    }
+    const binding = store.get(bindingKey(state));
+    if (!binding) {
+      // A browser that blocks storage cannot have kept the secret, and says nothing about it: tell the person, not just "wrong tab".
+      if (!store.works()) {
+        show('Your browser is blocking storage', [STORAGE_BLOCKED], [{ text: 'Back to the form', href: backHref, primary: true }]);
+        return;
+      }
+      show(
+        'We can’t finish this in a different browser or tab',
+        ['To keep your submission safe, the sign-in has to be finished in the same browser tab where you started it. Please go back to the form and start again.'],
+        [{ text: 'Back to the form', href: backHref, primary: true }],
+      );
+      return;
+    }
+
+    show('Finishing your submission…', ['One moment while we finish signing you in and post your IIP.']);
+    const result = await callApi(api, '/api/complete', { code, state, binding });
+    // No answer, or one cut off or unreadable: the post may or may not have happened. Keep this tab's secret, so trying again
+    // finishes this same sign-in (the server answers a repeat with the first result and never opens a second issue).
+    // An error on the server's side is treated the same way: it may have come after the issue was opened.
+    const serverError = result.data.error === 'internal_error';
+    if (result.status === 0 || result.data.error === 'bad_response' || serverError) {
+      const why = result.status === 0 || serverError ? explain(result) : 'The answer from the OpenIslet server was cut off, so we can’t tell yet whether your IIP was posted.';
+      show(serverError ? 'We’re not sure your IIP was posted' : 'We lost the connection', [why, 'Try again finishes this same sign-in. It never posts your IIP twice.'], issues ? [{ text: 'Look at the public queue', href: issues }] : [], {
+        text: 'Try again',
+        run: () => void finish(),
+      });
+      return;
+    }
+    store.remove(bindingKey(state));
+
+    const issue = result.data.issue as { number?: number; url?: string } | undefined;
+    // The link goes to GitHub. (When the form talks to a local Worker and a pretend GitHub, the pretend one is allowed too.)
+    const local = /^https?:\/\/(127\.0\.0\.1|localhost)(:|\/)/;
+    const isGitHub = (url: unknown): url is string => typeof url === 'string' && (/^https:\/\/github\.com\//.test(url) || (local.test(api) && local.test(url)));
+    if (result.ok && result.data.submitted === true && isGitHub(issue?.url)) {
+      store.remove(STAGED_KEY);
+      const id = typeof result.data.record_id === 'string' ? result.data.record_id : `#${issue.number ?? ''}`;
+      show(
+        'Thank you. Your IIP is public.',
+        [
+          `It is now on GitHub as ${id}, with your GitHub name on it. Software has checked the basics, and the result is posted there.`,
+          'A person reviews each week’s IIPs together, and the decisions are published in one update, with reasons.',
+        ],
+        [
+          { text: `See your IIP (${id})`, href: issue.url, primary: true },
+          { text: 'What happens next', href: '/start#step-6' },
+          { text: 'See the Contributions page', href: '/contributions' },
+        ],
+      );
+      return;
+    }
+
+    const retry = [{ text: 'Back to the form', href: backHref, primary: true }];
+    // GitHub did not answer after the request to post was sent, so the IIP may be public already. Send the person to look before they try again.
+    if (result.data.outcome_unknown === true) {
+      const queue = isGitHub(result.data.queue_url) ? result.data.queue_url : issues;
+      show('We’re not sure your IIP was posted', [explain(result)], [
+        ...(queue ? [{ text: 'Look at the public queue', href: queue, primary: true }] : []),
+        { text: 'Back to the form', href: backHref },
+      ]);
+      return;
+    }
+    switch (result.data.error) {
+      case 'state_unknown':
+        show('This sign-in has expired or was already used', ['Sign-in links last 15 minutes and work once. Go back to the form and press the button again.'], retry);
+        return;
+      case 'binding_mismatch':
+        show('We can’t finish this in a different browser or tab', ['The sign-in has to be finished in the same browser tab where you started it. Please start again from the form.'], retry);
+        return;
+      case 'github_refused':
+        show('GitHub did not accept the sign-in', ['This can happen if the page was open for a long time. Please try again.'], retry);
+        return;
+      default:
+        show('We could not post your IIP', [explain(result)], retry);
+    }
+  }
+  void finish();
+</script>
+
+<style>
+  .fin {
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+  .fin__inner {
+    max-width: 44rem;
+  }
+  #result {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  #result :global(.lead) {
+    max-width: 40rem;
+  }
+  #result :global(.links) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    margin: 0.5rem 0 0;
+  }
+</style>

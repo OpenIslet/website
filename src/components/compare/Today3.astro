@@ -1,0 +1,29 @@
+---
+// Today: no shield against inflammation and no off-switch. Toxin darts land, and there is no switch to throw.
+import Cell from '../art/Cell.astro';
+import Immune from '../art/Immune.astro';
+---
+
+<svg viewBox="0 0 360 150" role="img" aria-label="An islet cell under inflammation is hit by toxin darts from a killer T cell, with nothing to stop them. A dashed outline of a switch is crossed out: there is no off-switch.">
+  <g font-family="IBM Plex Sans, sans-serif">
+    <g stroke="#f2a93b" stroke-width="3" fill="none" stroke-linecap="round" stroke-opacity="0.85">
+      <path d="M26 24 q8 -9 16 0 t16 0 t16 0 t16 0"></path>
+      <path d="M44 40 q8 -9 16 0 t16 0 t16 0"></path>
+    </g>
+    <Cell x={112} y={86} r={40} kind="beta" />
+
+    <g fill="#f2a93b" stroke="#0b1b26" stroke-width="1.5" stroke-linejoin="round">
+      <polygon points="160,68 178,62 178,74"></polygon>
+      <polygon points="184,90 202,84 202,96"></polygon>
+      <polygon points="160,108 178,102 178,114"></polygon>
+    </g>
+    <g stroke="#f2a93b" stroke-width="3" stroke-linecap="round">
+      <path d="M152 58 l-8 -8 M156 76 l-10 -2 M152 112 l-8 8"></path>
+    </g>
+    <Immune x={282} y={78} r={26} kind="tcell" />
+    <path d="M254 82 L206 90" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 6" fill="none"></path>
+
+    <rect x="266" y="116" width="66" height="26" rx="13" fill="none" stroke="#a6b6c2" stroke-width="2.5" stroke-dasharray="4 4"></rect>
+    <path d="M292 122 l14 14 M306 122 l-14 14" stroke="#f2a93b" stroke-width="3.5" stroke-linecap="round"></path>
+  </g>
+</svg>

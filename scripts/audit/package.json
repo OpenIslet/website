@@ -1,0 +1,12 @@
+{
+  "name": "openislet-audit",
+  "private": true,
+  "type": "module",
+  "description": "Repeatable accessibility, cross-browser and performance checks for the OpenIslet website. See README.md in this folder.",
+  "dependencies": {
+    "axe-core": "^4.14.0",
+    "lighthouse": "^13.5.0",
+    "pngjs": "^7.0.0",
+    "puppeteer-core": "^25.16.0"
+  }
+}

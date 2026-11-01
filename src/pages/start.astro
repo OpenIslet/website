@@ -1,0 +1,2150 @@
+---
+import Layout from '../layouts/Layout.astro';
+import CellField from '../components/CellField.astro';
+import CopyBox from '../components/CopyBox.astro';
+import Mock from '../components/guide/Mock.astro';
+import StepShell from '../components/guide/StepShell.astro';
+import McpMark from '../components/guide/McpMark.astro';
+import AssistantMark from '../components/guide/AssistantMark.astro';
+import { stepNames } from '../data/guide';
+import { cadence } from '../data/versions';
+import { mcpEndpoint, submissionsOpen, issuesUrl, release, longDate } from '../data/site';
+import { gates } from '../data/gates';
+import { clients, checkedOn } from '../data/connect';
+import { checkPrompt, checkPromptPaste, explorePrompts, draftPrompt, reviewPrompt, submitPrompt, draftPreview } from '../data/prompts';
+
+const count = (n: number) => n.toLocaleString('en-US');
+
+// The guide always opens on the copy-and-paste route, which works in any AI chat. /start?route=mcp opens the MCP route.
+// Where to read about MCP.
+const mcpSite = 'https://modelcontextprotocol.io/docs/2026-07-28/getting-started/intro';
+// Where to open a new chat. These are plain links the person chooses to follow.
+const aiChats = [
+  { name: 'ChatGPT', href: 'https://chatgpt.com/', mark: 'chatgpt' },
+  { name: 'Claude', href: 'https://claude.ai/new', mark: 'claude' },
+  { name: 'Gemini', href: 'https://gemini.google.com/app', mark: 'gemini' },
+  { name: 'Grok', href: 'https://grok.com/', mark: 'grok-build' },
+  { name: 'Muse', href: 'https://muse.ai/', mark: 'muse-code' },
+];
+// Step 2: one prompt that makes the AI lead. The six specific prompts stay underneath it.
+const leadAsk =
+  'I would like to help improve the OpenIslet blueprint. Please lead me through it, one question at a time, and explain things in plain English. Help me find one weak spot or one improvement, check it against the evidence and the Idea Graveyard, give me the PubMed ID and the exact sentence for every claim, and tell me when we have one clear idea that is worth writing up.';
+const leadPromptPaste = `Using the OpenIslet starter pack I pasted at the start of this chat: ${leadAsk}`;
+const leadPrompt = `Using the OpenIslet MCP tools: ${leadAsk}`;
+// One name per test: the same ones the starter pack and the specification use.
+const fiveTestNames = gates.map((g) => `${g.n}. ${g.short}`).join(', ');
+
+// The copy-and-paste route: the starter pack is built by src/pages/openislet-starter-pack.md.ts.
+const packHref = '/openislet-starter-pack.md';
+
+const verdicts = [
+  { chip: 'chip chip--pass', label: 'Supported', lead: 'Submit it.', text: 'It held up.' },
+  { chip: 'chip chip--warn', label: 'Partly supported', lead: 'Submit it.', text: 'Say which part held up.' },
+  { chip: 'chip chip--block', label: 'Not supported', lead: 'Don’t submit it.', text: 'Read the reviewer’s reasons, revise your IIP, then get another blind review.' },
+  { chip: 'chip chip--quiet', label: 'Cannot tell', lead: 'Don’t submit yet.', text: 'Add evidence or narrow the idea, then run the review again.' },
+];
+
+// Step 6 describes the weekly review: no automatic AI bot runs on an IIP. Software checks it at once, and a
+// person reviews each week's IIPs together, with AI models helping, then publishes all the decisions in one update.
+const pipeline: { t: string; d: string; more?: string; who: string }[] = [
+  { t: 'Posted publicly', d: 'Your IIP appears on GitHub straight away, with your GitHub name on it. Only a submission that breaks the basic rules is refused first.', who: 'Automatic' },
+  {
+    t: 'Instant software checks',
+    d: 'Software checks the basics at once and posts the results on your IIP.',
+    more: 'It checks that the files follow the templates, the review supports the IIP, the quotes match the OpenIslet record, the idea is not already in the Idea Graveyard or a copy of an earlier IIP, and nothing looks like a password or a personal detail. These checks do not look papers up on PubMed or judge the science: that happens in the weekend review.',
+    who: 'Software',
+  },
+  {
+    t: 'The weekend review',
+    d: 'Once a week, a maintainer reviews all of the week’s IIPs together, with AI models helping.',
+    more: 'A fast AI model first flags likely spam, duplicates and questions already answered, and the maintainer checks each flag and posts the reason in public. A stronger AI model then tests the science that is left against the project’s own software tests.',
+    who: 'Weekly batch',
+  },
+  { t: 'A person decides', d: 'The AI only helps. The maintainer reads what it found and decides, with reasons. If your IIP improves the blueprint, it is merged and you are credited.', who: 'Maintainer' },
+  { t: 'One weekly update', d: 'The decisions are posted together, on each IIP on GitHub and on the Contributions page. Where something changed, the Idea Graveyard and the blueprint (Design A, B and X) are updated too.', who: 'Published weekly' },
+];
+
+const tools: [string, string, string][] = [
+  ['get_blueprint_overview', 'The blueprint in plain English: the five tests, the three designs, the roadmap, the versions and how to help.', 'No'],
+  ['list_versions', 'The open draft, the locked versions and the planned dates.', 'No'],
+  ['search_studies', `Search the ${count(release.counts.studies)} studies and ${count(release.counts.findings)} findings by keyword, gene, test or year.`, 'No'],
+  ['get_study', 'One study’s full record, with exact quotes where the publisher allows them.', 'No'],
+  ['get_conflicting_evidence', 'Findings for and against a gene, side by side.', 'No'],
+  ['check_against_graveyard', 'Check a design against the Idea Graveyard, or find the rules nearest to an idea.', 'No'],
+  ['get_open_questions', 'The known weak spots, so effort is not duplicated.', 'No'],
+  ['get_layer_atlas', 'The DNA, protein, tissue and patient layers: construct maps, 3D structures and simulations.', 'No'],
+  ['get_contributions', 'Who has contributed, and what each IIP changed.', 'No'],
+  ['get_submission_status', 'Where a submission is in the review. Submissions are public, so no sign-in.', 'No'],
+  ['check_draft', 'A dry run of the checks on a draft and its blind review. It posts nothing.', 'No'],
+  [
+    'submit_proposal',
+    submissionsOpen
+      ? 'Submit an IIP (a draft and its blind review) to the public queue. Signed in, it posts straight away. Not signed in, it returns a one-click link to the pre-filled web form.'
+      : 'Planned public submission tool. The queue is closed; use check_draft to run the checks.',
+    'Optional',
+  ],
+];
+
+---
+
+<Layout
+  title="Start here"
+  description="A step-by-step guide to helping: give your AI the blueprint, explore it, save your idea as an Islet Improvement Proposal (IIP), get a blind second opinion, submit it and get credit."
+  current="start"
+>
+  <header class="top on-dark">
+    <div class="top__bg" aria-hidden="true"><CellField seed={5} count={44} /></div>
+    <div class="container top__inner">
+      <p class="top__eyebrow">Start here</p>
+      <h1 tabindex="-1">Help in six steps</h1>
+      <p class="top__lead">Your AI does the thinking and leads you through it. Each step shows exactly what to copy and paste, and you can stop after any step and come back later.</p>
+      <p class="resume" id="resume" hidden><span class="resume__k" id="resume-k">Your place</span> <a id="resume-link" href="#step-1">Continue with step 1</a> <button type="button" class="resume__reset" id="resume-reset">Start again</button></p>
+      <ul class="needs" aria-label="What you need">
+        <li>Any AI chat: ChatGPT, Claude, Gemini, Grok, Muse and others</li>
+        <li>A free GitHub account, only for the last step (you can make one there)</li>
+      </ul>
+
+      <div class="pickers">
+        <div class="pathpick" role="group" aria-label="How will your AI read OpenIslet?">
+          <button type="button" data-guideroute="paste" aria-pressed="true">Copy and paste</button>
+          <button type="button" data-guideroute="mcp" aria-pressed="false" title="MCP, the Model Context Protocol, lets your AI read OpenIslet directly. Not sure? Use copy and paste."><McpMark /> Connect with MCP</button>
+        </div>
+        <div class="pathpick pathpick--quiet" role="group" aria-label="Who are you?">
+          <button type="button" data-guidepath="ai" aria-pressed="true">I’m using an AI assistant</button>
+          <button type="button" data-guidepath="lab" aria-pressed="false">I work at an AI lab</button>
+        </div>
+      </div>
+      <noscript>
+        <style is:inline>
+          body .guide[data-route][data-route] [data-route-only][data-route-only] { display: revert !important; }
+          body .guide span[data-route-only="paste"][data-route-only]::before { content: " / "; }
+          .pickers { display: none !important; }
+        </style>
+      </noscript>
+      <p class="routenote">
+        <strong>Not sure?</strong> Use copy and paste. It works in any AI chat, including plans that cannot add outside tools.
+        <strong>MCP</strong>, the Model Context Protocol, is an open standard that lets your AI read the studies itself, with no pasting.
+        <a href={mcpSite} rel="noopener">What is MCP?</a>
+      </p>
+    </div>
+  </header>
+
+  <div class="container guide" data-path="ai" data-route="paste">
+    <nav class="rail" aria-label="The six steps">
+      <ol data-sidescroll>
+        {
+          [
+            'Connect with MCP',
+            'Explore the blueprint',
+            'Save a draft',
+            'Blind second opinion',
+            'Submit it',
+            'We check it, you get credit',
+          ].map((t, i) => (
+            <li>
+              <a href={`#step-${i + 1}`} data-rail={i + 1}>
+                <span class="rail__n">{i + 1}</span>
+                <span class="rail__t">
+                  {i === 0 ? (<><span data-route-only="mcp">{t}</span><span data-route-only="paste">Give your AI the starter pack</span></>) : t}
+                </span>
+                <span class="sr-only" data-donetext hidden>, done</span>
+                <span class="rail__tick" aria-hidden="true">✓</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+      <a class="rail__ref" href="#reference">For developers and AI labs</a>
+    </nav>
+
+    <div class="guide__main">
+      <!-- STEP 1 -->
+      <StepShell
+        n={1}
+        title="Connect your AI to OpenIslet with MCP"
+        titlePaste="Give your AI the starter pack"
+        badge="Start here"
+        lead="This connects your AI assistant to OpenIslet over MCP, so it can read the blueprint and the studies behind it itself. You only do it once."
+        leadPaste="The starter pack is one file with the whole blueprint. Your AI reads it, then leads you through helping, so you don’t need any science."
+      >
+        <div class="routeblock" data-route-only="mcp">
+        <aside class="whatsmcp" id="what-is-mcp" aria-labelledby="what-is-mcp-h">
+          <a class="whatsmcp__logo" href={mcpSite} rel="noopener"><img src="/mcp-logo.svg" alt="Model Context Protocol" width="220" height="32" loading="lazy" /></a>
+          <h3 class="sub" id="what-is-mcp-h">What is MCP?</h3>
+          <p>MCP, the Model Context Protocol, is an open standard that lets an AI assistant connect to outside sources of information. Think of it as a universal plug for AI: you add OpenIslet to your assistant once, and from then on it can read the blueprint and the studies behind it whenever it needs them, instead of you pasting them in.</p>
+          <p><a class="textlink" href={mcpSite} rel="noopener">Learn more at modelcontextprotocol.io →</a></p>
+        </aside>
+        <p class="labnote" data-only="lab"><strong>AI labs:</strong> use the same address from your own agent or test setup. Any MCP client that speaks Streamable HTTP and OAuth 2.1 works. You never share keys or access to your model.</p>
+        <div class="do">
+          <p class="do__tag">Do this</p>
+          <ol class="do__list">
+            <li>
+              <span class="do__n">1</span>
+              <div class="do__body">
+                <p class="do__t">Copy the OpenIslet address</p>
+                <CopyBox label="The OpenIslet address" hint="You will paste it in a moment" text={mcpEndpoint} />
+                <p class="do__fine">You don’t need an account just to read.</p>
+              </div>
+            </li>
+            <li>
+              <span class="do__n">2</span>
+              <div class="do__body">
+                <p class="do__t">Add it to your AI assistant</p>
+                <p class="do__fine">Pick yours below. Some assistants call this a connector. Steps last checked <time datetime={checkedOn}>{longDate(checkedOn)}</time>. Product names and logos belong to their owners.</p>
+        <div>
+          <div class="row ctabs" role="group" aria-label="Choose your AI assistant" style="--gap: 0.5rem; margin-top: 0.75rem">
+            {clients.map((c, i) => <button type="button" class="ctab" data-client={c.id} aria-pressed={String(i === 0)}><AssistantMark id={c.id} uid={`pick-${c.id}`} />{c.label}</button>)}
+          </div>
+
+          {
+            clients.map((c, i) => (
+              <div class="cpanel" data-client={c.id} hidden={i !== 0}>
+                <p class="cpanel__blurb">{c.blurb}</p>
+                {c.caution && <p class="warn cpanel__caution">{c.caution}</p>}
+                <div class="cpanel__cols">
+                  <div class="cpanel__text">
+                    <ol class="pinlist">
+                      {c.steps.map((s, k) => (
+                        <li><span class="pin">{k + 1}</span><span>{s}</span></li>
+                      ))}
+                    </ol>
+
+                    {c.oneClick && (
+                      <div class="oneclick">
+                        <a class="btn btn--primary btn--lg" href={c.oneClick.href}>{c.oneClick.label}</a>
+                      </div>
+                    )}
+                    {c.snippets && (
+                      <div class="snippets">
+                        {c.snippets.map((s) => <CopyBox label={s.label} hint={s.hint} text={s.text} />)}
+                      </div>
+                    )}
+                    {c.note && <p class="note">{c.note}</p>}
+                    {c.guide && <a class="textlink" href={c.guide.href} rel="noopener" target="_blank">{c.guide.label} →</a>}
+                    {c.alt && (
+                      <details class="help-details cpanel__alt">
+                        <summary>{c.alt.title}</summary>
+                        <div class="cpanel__altbody">
+                          <ol class="pinlist">
+                            {c.alt.steps.map((s, k) => (
+                              <li><span class="pin">{k + 1}</span><span>{s}</span></li>
+                            ))}
+                          </ol>
+                          {c.alt.snippets && (
+                            <div class="snippets">
+                              {c.alt.snippets.map((x) => <CopyBox label={x.label} hint={x.hint} text={x.text} />)}
+                            </div>
+                          )}
+                          {c.id === 'chatgpt' && (
+                            <figure class="cpanel__art">
+                              <Mock title="chatgpt.com/plugins">
+                                <div class="m-top"><span class="m-h">Plugins</span> <span class="m-plus">+</span> <span class="pin">2</span></div>
+                                <div class="m-menu"><span>Add custom MCP server</span> <span class="pin">2</span></div>
+                              </Mock>
+                              <Mock title="Add custom MCP server">
+                                <p class="m-label">Name</p>
+                                <div class="m-input"><span>OpenIslet</span> <span class="pin">3</span></div>
+                                <p class="m-label">Connection · Public endpoint</p>
+                                <div class="m-input"><span>{mcpEndpoint}</span> <span class="pin">4</span></div>
+                                <p class="m-label">Authentication</p>
+                                <div class="m-input"><span>OAuth</span> <span class="pin">5</span></div>
+                                <div class="m-actions"><span class="m-btn m-btn--solid">Create as a plugin <span class="pin">6</span></span></div>
+                              </Mock>
+                              <figcaption>A simplified picture of the browser steps. Your screen may look slightly different.</figcaption>
+                            </figure>
+                          )}
+                          {c.alt.note && <p class="note">{c.alt.note}</p>}
+                          {c.alt.guide && <a class="textlink" href={c.alt.guide.href} rel="noopener" target="_blank">{c.alt.guide.label} →</a>}
+                        </div>
+                      </details>
+                    )}
+                  </div>
+
+                  {c.id === 'claude-code' && (
+                    <figure class="cpanel__art">
+                      <Mock title="Claude · Settings › Connectors">
+                        <div class="m-split">
+                          <ul class="m-side">
+                            <li class="m-group">Customize</li>
+                            <li>Skills</li>
+                            <li class="on">Connectors <span class="pin">1</span></li>
+                            <li>Plugins</li>
+                          </ul>
+                          <div>
+                            <div class="m-top"><span class="m-h">Connectors</span> <span class="m-btn m-btn--dark">+ Add <span class="pin">2</span></span></div>
+                            <div class="m-menu"><span>Add custom connector</span> <span class="pin">2</span></div>
+                          </div>
+                        </div>
+                      </Mock>
+                      <Mock title="Add custom connector">
+                        <p class="m-label">Name</p>
+                        <div class="m-input"><span>OpenIslet</span> <span class="pin">3</span></div>
+                        <p class="m-label">MCP server URL</p>
+                        <div class="m-input"><span>{mcpEndpoint}</span> <span class="pin">3</span></div>
+                        <div class="m-actions"><span class="m-btn">Cancel</span><span class="m-btn m-btn--solid">Continue <span class="pin">3</span></span></div>
+                      </Mock>
+                      <Mock title="Add custom connector">
+                        <p class="m-label">How to sign in</p>
+                        <p class="m-opt">Sign in now</p>
+                        <p class="m-opt on">Sign in when needed <span class="pin">4</span></p>
+                        <p class="m-opt">No sign-in</p>
+                        <p class="m-label">OAuth client</p>
+                        <p class="m-opt on">Use Claude’s published identity <span class="pin">4</span></p>
+                        <p class="m-opt">Register automatically</p>
+                        <p class="m-opt">Use your own OAuth client</p>
+                      </Mock>
+                      <figcaption>A simplified picture of the Claude app. Your screen may look slightly different.</figcaption>
+                    </figure>
+                  )}
+                  {c.id === 'chatgpt' && (
+                    <figure class="cpanel__art">
+                      <Mock title="ChatGPT · Settings › Plugins">
+                        <div class="m-split">
+                          <ul class="m-side">
+                            <li class="m-group">Integrations</li>
+                            <li class="on">Plugins <span class="pin">1</span></li>
+                            <li>Passwords</li>
+                            <li>Computer use</li>
+                          </ul>
+                          <div>
+                            <div class="m-top"><span class="m-h">Plugins</span> <span class="m-btn m-btn--dark">Add ▾ <span class="pin">2</span></span></div>
+                            <div class="m-tabs"><span>Plugins</span><span>Apps</span><span class="on">MCPs <span class="pin">2</span></span></div>
+                            <div class="m-menu"><span>Add MCP server</span> <span class="pin">2</span></div>
+                          </div>
+                        </div>
+                      </Mock>
+                      <Mock title="Connect to a custom MCP">
+                        <p class="m-label">Name</p>
+                        <div class="m-input"><span>OpenIslet</span> <span class="pin">3</span></div>
+                        <p class="m-label">Type</p>
+                        <p class="m-opt">STDIO</p>
+                        <p class="m-opt on">Streamable HTTP <span class="pin">3</span></p>
+                        <p class="m-label">URL</p>
+                        <div class="m-input"><span>{mcpEndpoint}</span> <span class="pin">4</span></div>
+                        <div class="m-actions"><span class="m-btn m-btn--solid">Save <span class="pin">4</span></span></div>
+                      </Mock>
+                      <figcaption>A simplified picture of the ChatGPT desktop app. Your screen may look slightly different.</figcaption>
+                    </figure>
+                  )}
+                  {c.id === 'antigravity' && (
+                    <figure class="cpanel__art">
+                      <Mock title=".gemini/config/mcp_config.json">
+                        <div class="m-code"><span>{`{
+  "mcpServers": {
+    "openislet": {
+      "serverUrl": "${mcpEndpoint}"
+    }
+  }
+}`}</span> <span class="pin">2</span></div>
+                      </Mock>
+                      <Mock title="Antigravity · Customizations">
+                        <div class="m-split m-split--wide">
+                          <ul class="m-side">
+                            <li>Automations</li>
+                            <li class="on">Customizations <span class="pin">4</span></li>
+                          </ul>
+                          <div>
+                            <div class="m-top"><span class="m-h">Installed MCP Servers</span> <span class="m-btn">Refresh <span class="pin">4</span></span></div>
+                            <div class="m-toggle m-server"><span>openislet</span> <span class="m-switch"></span></div>
+                          </div>
+                        </div>
+                      </Mock>
+                      <figcaption>A simplified picture of the settings file and the Antigravity app. Your screen may look slightly different.</figcaption>
+                    </figure>
+                  )}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+              </div>
+            </li>
+            <li>
+              <span class="do__n">3</span>
+              <div class="do__body">
+                <p class="do__t">Open a new chat in your assistant, and paste this</p>
+                <p class="do__fine">Start a fresh one after adding OpenIslet. If your assistant lets you switch tools on and off for each chat, check OpenIslet is on.</p>
+                <CopyBox label="Test prompt" text={checkPrompt} />
+              </div>
+            </li>
+          </ol>
+        </div>
+        <p class="expect"><span class="expect__tick" aria-hidden="true">✓</span><span><strong>You should see</strong> your AI describe OpenIslet and list its five tests: {fiveTestNames}. That means you are ready for step 2.</span></p>
+        <details class="help-details">
+          <summary>It didn’t work</summary>
+          <ul>
+            <li><strong>OpenIslet isn’t on in this chat.</strong> Start a new chat after adding it, and check it is switched on. In Claude Code, ask which connectors it has, or type /mcp on the command line. In the ChatGPT desktop app, type /mcp. In ChatGPT in a browser, type @ and choose OpenIslet.</li>
+            <li><strong>I can’t find where to add it.</strong> Your plan or workspace may not allow custom connectors or servers. Try another assistant from the list above, or ask your admin.</li>
+            <li><strong>It says it can’t reach the server.</strong> Copy the address again, exactly, including https:// and /mcp.</li>
+            <li><strong>It asks me to sign in.</strong> That’s fine. Choose GitHub. You only need to sign in to submit, so you can also skip it for now.</li>
+            <li><strong>Still stuck?</strong> Ask your AI assistant: “How do I add a custom MCP connector?” It can talk you through your own screen.</li>
+          </ul>
+        </details>
+        </div>
+
+        <div class="routeblock" data-route-only="paste">
+          <p class="labnote" data-only="lab"><strong>AI labs:</strong> paste the pack into your own agent or test setup, or load it as a file. Your model, prompts and keys stay on your side.</p>
+          <div class="do">
+            <p class="do__tag">Do this</p>
+            <ol class="do__list">
+              <li>
+                <span class="do__n">1</span>
+                <div class="do__body">
+                  <p class="do__t">Copy the starter pack</p>
+                  <div class="do__acts">
+                    <button type="button" class="btn btn--primary btn--lg" data-copy-pack data-href={packHref}>Copy the starter pack</button>
+                    <a class="btn btn--quiet btn--lg" href={packHref} download="openislet-starter-pack.md">Download it as a file</a>
+                  </div>
+                  <p class="pack__status" role="status" aria-live="polite" data-pack-status></p>
+                  <p class="do__fine">About 6,000 words: the blueprint, the Idea Graveyard and the open questions. It leaves out the {count(release.counts.studies)} studies behind them, so an AI that can search the web can look papers up, and the others will say so.</p>
+                </div>
+              </li>
+              <li>
+                <span class="do__n">2</span>
+                <div class="do__body">
+                  <p class="do__t">Open a new chat in your AI</p>
+                  <div class="do__acts do__acts--chats">
+                    {aiChats.map((a) => <a class="btn btn--quiet chatlink" href={a.href} target="_blank" rel="noopener"><AssistantMark id={a.mark} uid={`s1-${a.mark}`} /><span>{a.name} <span aria-hidden="true">↗</span></span><span class="sr-only"> (opens in a new tab)</span></a>)}
+                  </div>
+                  <p class="do__fine">Any AI chat that lets you paste a long message works, including free plans.</p>
+                </div>
+              </li>
+              <li>
+                <span class="do__n">3</span>
+                <div class="do__body">
+                  <p class="do__t">Paste it and send</p>
+                  <p class="do__fine">Ctrl+V on Windows, Cmd+V on a Mac. Then wait for the reply.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <p class="expect"><span class="expect__tick" aria-hidden="true">✓</span><span><strong>You should see</strong> your AI say “I have read the OpenIslet starter pack” and ask what you would like to do. That means you are ready for step 2.</span></p>
+          <details class="help-details">
+            <summary>It didn’t work</summary>
+            <ul>
+              <li><strong>The chat says my message is too long.</strong> Download the pack and attach it as a file instead, or try another AI.</li>
+              <li><strong>The copy button says “Copy failed”.</strong> Some browsers block it. Use “Download it as a file” and attach the file to your chat.</li>
+              <li><strong>Your AI doesn’t say it has read the pack, or its answers don’t sound like the blueprint.</strong> Make sure the pack was the first thing in the chat. You can also paste the check below.</li>
+              <li><strong>Still stuck?</strong> Ask your AI to help with your own screen, or <a href="/contact">write to us</a>.</li>
+            </ul>
+            <CopyBox label="Check what your AI read" hint="Paste it after the pack, in the same chat" text={checkPromptPaste} />
+          </details>
+        </div>
+      </StepShell>
+
+      <!-- STEP 2 -->
+      <StepShell
+        n={2}
+        title="Explore the blueprint"
+        lead="Tell your AI you want to help. It leads: it looks for a weak spot or an improvement with you, one question at a time. You don’t need any science."
+      >
+        <div class="do">
+          <p class="do__tag">Do this</p>
+          <ol class="do__list">
+            <li>
+              <span class="do__n">1</span>
+              <div class="do__body">
+                <p class="do__t">Copy this, and paste it in the chat where your AI has the blueprint</p>
+                <div class="do__box" data-route-only="paste"><CopyBox label="Let my AI lead" hint="Paste it in the same chat" text={leadPromptPaste} maxHeight="12rem" /></div>
+                <div class="do__box" data-route-only="mcp"><CopyBox label="Let my AI lead" hint="Paste it in a chat where OpenIslet is on" text={leadPrompt} maxHeight="12rem" /></div>
+                <p class="do__fine" data-route-only="paste">Starting a new chat later? Paste the starter pack first.</p>
+              </div>
+            </li>
+            <li>
+              <span class="do__n">2</span>
+              <div class="do__body">
+                <p class="do__t">Answer your AI’s questions</p>
+                <p class="do__fine">Keep going until you have one clear idea. If it doesn’t give a source, ask: “Give me the PubMed ID and the exact sentence.” Then open the paper and check the sentence yourself.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <p class="expect"><span class="expect__tick" aria-hidden="true">✓</span><span><strong>You should end up with</strong> one clear idea: a problem with the blueprint, a way to improve it, or a paper we missed. Written up, that is an Islet Improvement Proposal (IIP). Step 3 does the writing up.</span></p>
+        <details class="help-details">
+          <summary>Or start with a specific job (six ready-made prompts)</summary>
+          <div class="grid prompts" style="--min: 24rem; --gap: 1rem" data-route-only="mcp">
+            {
+              explorePrompts.map((p) => (
+                <div class="pcard">
+                  <h3>{p.title}</h3>
+                  <p>{p.why}</p>
+                  <CopyBox label="Prompt" context={`Prompt: ${p.title}`} hint="Copy and paste into your AI" text={p.text} maxHeight="9rem" />
+                </div>
+              ))
+            }
+          </div>
+          <div class="grid prompts" style="--min: 24rem; --gap: 1rem" data-route-only="paste">
+            {
+              explorePrompts.map((p) => (
+                <div class="pcard">
+                  <h3>{p.title}</h3>
+                  <p>{p.why}</p>
+                  <CopyBox label="Prompt" context={`Prompt: ${p.title}`} hint="Paste it after the starter pack, in the same chat" text={p.pasteText} maxHeight="9rem" />
+                </div>
+              ))
+            }
+          </div>
+        </details>
+        <p class="labnote" data-only="lab"><strong>AI labs:</strong> run your strongest model at its highest effort setting. Deep checks are welcome: the maths, the DNA constructs and the simulations, not only the biology. Your model and prompts stay on your side.</p>
+      </StepShell>
+
+      <!-- STEP 3 -->
+      <StepShell
+        n={3}
+        title="Save your IIP as a draft"
+        lead="When you have one clear idea, paste this prompt into the same chat. Your AI writes it up as an Islet Improvement Proposal (IIP) in a standard format, and prepares the prompt for step 4."
+      >
+        <div class="do">
+          <p class="do__tag">Do this</p>
+          <ol class="do__list">
+            <li>
+              <span class="do__n">1</span>
+              <div class="do__body">
+                <p class="do__t">Copy the draft prompt, and paste it in the same chat</p>
+                <CopyBox label="Draft prompt" hint="Paste it in the chat where you found the idea" text={draftPrompt} maxHeight="10rem" />
+              </div>
+            </li>
+            <li>
+              <span class="do__n">2</span>
+              <div class="do__body">
+                <p class="do__t">Read the draft before you go on</p>
+                <p class="do__fine"><strong>AI can get quotes and PubMed IDs wrong.</strong> Never submit a quote you have not seen in the paper itself. If you cannot check a quote, write “quote not checked” next to it in the draft.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <h3 class="sub">You should get two things back</h3>
+          <div class="two">
+            <div class="two__item">
+              <span class="chip chip--ink">1</span>
+              <h4>Your draft</h4>
+              <p>A file called <span class="mono-chip">openislet-iip-…md</span>. Download it, or copy it from the code block.</p>
+              <div class="doc" aria-hidden="true">
+                {
+                  draftPreview.map((l) => (
+                    <p class={`doc__${l.k}`}>{l.k === 'h1' ? '# ' : l.k === 'h2' ? '## ' : l.k === 'li' ? '- ' : ''}{l.t}</p>
+                  ))
+                }
+              </div>
+            </div>
+            <div class="two__item">
+              <span class="chip chip--ink">2</span>
+              <h4>A prompt for a fresh chat</h4>
+              <p>A code block titled <span class="mono-chip">FRESH-CHAT PROMPT</span>. Press Copy on it and keep it ready for step 4.</p>
+              <p class="note">It contains your claim and the review instructions, but not your reasoning. That is what makes the second opinion blind.</p>
+            </div>
+          </div>
+        </div>
+      </StepShell>
+
+      <!-- STEP 4 -->
+      <StepShell
+        n={4}
+        title="Get a blind second opinion"
+        lead="A fresh chat hasn’t seen your reasoning, so it can’t just agree with you. It tries to prove your IIP wrong, and says so if it can’t."
+      >
+        <div class="do">
+          <p class="do__tag">Do this</p>
+          <ol class="do__list">
+            <li>
+              <span class="do__n">1</span>
+              <div class="do__body">
+                <p class="do__t">Open a brand-new chat</p>
+                <div class="do__acts do__acts--chats" data-route-only="paste">
+                  {aiChats.map((a) => <a class="btn btn--quiet chatlink" href={a.href} target="_blank" rel="noopener"><AssistantMark id={a.mark} uid={`s4-${a.mark}`} /><span>{a.name} <span aria-hidden="true">↗</span></span><span class="sr-only"> (opens in a new tab)</span></a>)}
+                </div>
+                <p class="do__fine">Not the old one. Use the strongest AI model you have.</p>
+              </div>
+            </li>
+            <li data-route-only="paste">
+              <span class="do__n">2</span>
+              <div class="do__body">
+                <p class="do__t">Paste the starter pack first, and wait for the reply</p>
+                <div class="do__acts">
+                  <button type="button" class="btn btn--primary" data-copy-pack data-href={packHref} data-after="Copied. Now paste it in the new chat and wait for the reply.">Copy the starter pack again</button>
+                </div>
+                <p class="pack__status" role="status" aria-live="polite" data-pack-status></p>
+              </div>
+            </li>
+            <li data-route-only="mcp">
+              <span class="do__n">2</span>
+              <div class="do__body">
+                <p class="do__t">Check OpenIslet is on for this chat</p>
+                <p class="do__fine">A new session has it already in most coding assistants. In Claude Code, ask which connectors it has. In the ChatGPT desktop app, type /mcp. In ChatGPT in a browser, type @.</p>
+              </div>
+            </li>
+            <li>
+              <span class="do__n">3</span>
+              <div class="do__body">
+                <p class="do__t">Paste the FRESH-CHAT PROMPT from step 3</p>
+                <p class="do__fine">It is the second code block your AI gave you. Don’t have one? Use the public reviewer prompt below.</p>
+              </div>
+            </li>
+            <li>
+              <span class="do__n">4</span>
+              <div class="do__body">
+                <p class="do__t">Save the review</p>
+                <p class="do__fine">You get a file called <span class="mono-chip">openislet-review-…md</span> and a code block to copy.</p>
+              </div>
+            </li>
+            <li>
+              <span class="do__n">5</span>
+              <div class="do__body">
+                <p class="do__t">Read the verdict</p>
+                <p class="do__fine"><strong>Only submit an IIP whose verdict is Supported or Partly supported.</strong> The review ends by telling you.</p>
+                <ul class="verdicts">
+                  {verdicts.map((v) => (<li><span class={v.chip}>{v.label}</span><span><strong>{v.lead}</strong> {v.text}</span></li>))}
+                </ul>
+                <p class="do__fine">An AI verdict can be wrong, so check the reviewer’s reasons against the sources. If you run more than one review, say in your draft how many you ran before this one.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <details class="help-details">
+          <summary>What the reviewer checks</summary>
+          <ul>
+            <li>Does it conflict with the blueprint?</li>
+            <li>Has it already been ruled out or flagged as risky (the Idea Graveyard)?</li>
+            <li>Do the papers exist, and do the quotes say what you need?</li>
+            <li>What evidence is there against it?</li>
+            <li>What is the cheapest test that would settle it?</li>
+          </ul>
+        </details>
+        <details class="help-details">
+          <summary>No fresh-chat prompt, or the form says “does not look like the template”? Use the public reviewer prompt</summary>
+          <p>Replace <span class="mono-chip">[CLAIM]</span> with your claim in one sentence, your evidence, and what you propose changing. Leave out your reasoning.</p>
+          <CopyBox label="Reviewer prompt [OPENISLET-REVIEW-v1]" text={reviewPrompt} maxHeight="18rem" />
+        </details>
+      </StepShell>
+
+      <!-- STEP 5 -->
+      <StepShell
+        n={5}
+        title="Submit it"
+        lead="Send the draft and the review to OpenIslet through MCP: your AI does it for you. You sign in with GitHub, so your IIP is credited to the right person."
+        leadPaste="Send the draft and the review to OpenIslet through the form on this website. You sign in with GitHub, so your IIP is credited to the right person."
+      >
+        <div class="routeblock" data-route-only="mcp">
+          <div class="do">
+            <p class="do__tag">Do this</p>
+            <ol class="do__list">
+              <li>
+                <span class="do__n">1</span>
+                <div class="do__body">
+                  <p class="do__t">Go back to your first chat, or open any chat where OpenIslet is on</p>
+                </div>
+              </li>
+              <li>
+                <span class="do__n">2</span>
+                <div class="do__body">
+                  <p class="do__t">Paste this, with your draft and your review</p>
+                  <CopyBox label="Submit prompt" hint="Fill in the [brackets] and attach or paste your two files" text={submitPrompt} maxHeight="12rem" />
+                </div>
+              </li>
+              <li>
+                <span class="do__n">3</span>
+                <div class="do__body">
+                  <p class="do__t">Allow OpenIslet when your AI asks</p>
+                </div>
+              </li>
+              <li>
+                <span class="do__n">4</span>
+                <div class="do__body">
+                  <p class="do__t">Sign in with GitHub</p>
+                  <p class="do__fine"><strong>A sign-in window opens:</strong> choose <strong>Continue with GitHub</strong> and approve, and your AI posts it for you. <strong>Or your AI gives you a link:</strong> open it, check that your files are filled in, and press <strong>Continue with GitHub &amp; Submit</strong>. No GitHub account yet? You can create one on its sign-in screen.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <p class="expect"><span class="expect__tick" aria-hidden="true">✓</span><span><strong>You should get</strong> a link to your public IIP.</span></p>
+        </div>
+
+        <div class="routeblock" data-route-only="paste">
+          <div class="do">
+            <p class="do__tag">Do this</p>
+            <ol class="do__list">
+              <li>
+                <span class="do__n">1</span>
+                <div class="do__body">
+                  <p class="do__t">Open the submission form</p>
+                  <div class="do__acts">
+                    <a class="btn btn--primary btn--lg" href="/submit" target="_blank" rel="noopener">Open the form <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+                  </div>
+                  <p class="do__fine">It opens in a new tab. Keep this page open: step 6 explains what happens next.</p>
+                </div>
+              </li>
+              <li>
+                <span class="do__n">2</span>
+                <div class="do__body">
+                  <p class="do__t">Paste your draft and your review</p>
+                  <p class="do__fine">Paste what your AI gave you (the whole reply is fine), or upload the two files. The form tells you straight away if something is missing or doesn’t look right.</p>
+                </div>
+              </li>
+              <li>
+                <span class="do__n">3</span>
+                <div class="do__body">
+                  <p class="do__t">Tick the box, then press “Continue with GitHub &amp; Submit”</p>
+                  <p class="do__fine">GitHub sign-in is free. No account yet? You can create one on its sign-in screen. A display name, ORCID iD and X handle are optional.</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+          <p class="expect"><span class="expect__tick" aria-hidden="true">✓</span><span><strong>You should come straight back</strong> to a page with the link to your public IIP.</span></p>
+        </div>
+
+        <div class="need">
+          <h3>What becomes public</h3>
+          <ul>
+            <li><strong>Public:</strong> your IIP, your review, your GitHub name, a display name, ORCID iD or X handle if you typed one, and the model names you give.</li>
+            <li><strong>Never shared:</strong> your chat, your email address, your password, your keys.</li>
+          </ul>
+          <p class="note">By submitting you agree it is published openly under CC BY 4.0. Until you finish signing in, your draft is held on our server for up to 24 hours and then deleted.</p>
+        </div>
+        <details class="help-details">
+          <summary>About signing in with GitHub</summary>
+          <p><strong>GitHub</strong> proves you control a GitHub account. Your IIP is posted under that account’s name, so anyone can see it is really yours.</p>
+          <p><strong>No GitHub account yet?</strong> You can create one on the sign-in screen. It usually takes a few minutes, because GitHub asks you to confirm your email address, and you can sign up with your Google or Apple account. If you use the form, keep its tab open while you do it, and if GitHub opens its app, come back to that tab and press the button again.</p>
+          <p><strong>ORCID iD and X handle</strong> are optional. If you type them in, they are shown on your credit exactly as you typed them. We don’t check them. The AI model names are what you tell us, labelled as self-reported, never as verified.</p>
+        </details>
+        <p class="labnote" data-only="lab"><strong>AI labs:</strong> sign in with the GitHub account you want credited, such as a lab or team account that is yours to use. Name the model, or write “Unreleased model”. Only the IIP is shared, never the model, its prompts or its keys.</p>
+      </StepShell>
+
+      <!-- STEP 6 -->
+      <StepShell
+        n={6}
+        title="We check it, you get credit"
+        lead="Everything happens in the open, so anyone can see that nothing is hidden or censored. Software checks your IIP at once. Once a week, a person reviews the week’s IIPs together, with AI models helping, and publishes the decisions."
+      >
+        <ol class="pipeline">
+          {
+            pipeline.map((p, i) => (
+              <li>
+                <span class="pipeline__n">{i + 1}</span>
+                <h3>{p.t}</h3>
+                <p>{p.d}</p>
+                {p.more && (
+                  <details class="help-details">
+                    <summary>What exactly happens</summary>
+                    <p>{p.more}</p>
+                  </details>
+                )}
+                <span class="chip chip--quiet">{p.who}</span>
+              </li>
+            ))
+          }
+        </ol>
+
+        <div class="two">
+          <div class="two__item">
+            <h4>What you get</h4>
+            <ul>
+              <li>A public page for your IIP, on GitHub.</li>
+              <li>A decision in the weekly update, with the reasons.</li>
+              <li>A place on the Contributions page, saying in words what your IIP changed.</li>
+              <li>If it improves the blueprint, {cadence.contributors}, and the changelog credits you by name.</li>
+            </ul>
+            <p class="links"><a class="textlink" href="/contributions#credit">How credit works →</a> <a class="textlink" href={issuesUrl} rel="noopener">Follow open IIPs on GitHub →</a></p>
+          </div>
+        </div>
+
+        <details class="help-details">
+          <summary>Open by design: nothing is deleted for being wrong or declined</summary>
+          <ul>
+            <li>Declined IIPs stay public, with the reasons. We remove only what is illegal, shows someone’s private information, or is harmful, and every removal is logged publicly with its reason. To report something, <a href="/contact">write to us</a>.</li>
+            <li>Every decision is posted with its reason, including when an IIP is set aside as spam, a duplicate or already answered.</li>
+            <li>A submission is refused before posting only if it breaks the basic rules, such as no review, or a review that does not support it. You are told why, and the number refused is published.</li>
+            <li>The instructions given to the AI models that help review IIPs are public.</li>
+            <li>A person makes the final call, in public.</li>
+          </ul>
+        </details>
+      </StepShell>
+
+      <!-- REFERENCE -->
+      <section class="ref" id="reference">
+        <details>
+          <summary>For developers and AI labs: MCP reference</summary>
+          <div class="ref__body">
+            <dl class="kv">
+              <div><dt>Address</dt><dd class="mono">{mcpEndpoint}</dd></div>
+              <div><dt>Transport</dt><dd>Streamable HTTP</dd></div>
+              <div><dt>Reading</dt><dd>No account needed.</dd></div>
+              <div><dt>Submitting</dt><dd>OAuth 2.1 sign-in with GitHub, asked for when you submit. Signed in, <span class="mono">submit_proposal</span> posts straight away. Not signed in, it returns a one-click link to the pre-filled web form. The token travels only in the Authorization header, never in the tool arguments.{!submissionsOpen && ' Submitting opens when the public queue opens.'}</dd></div>
+              <div><dt>Without MCP</dt><dd>The starter pack at <span class="mono">/openislet-starter-pack.md</span> and the web form at <span class="mono">/submit</span> do the same job with no MCP connection. ORCID iD and X handle are optional text fields, shown as typed and not verified.</dd></div>
+              <div><dt>Versions</dt><dd>Every read tool takes <span class="mono">version</span>: <span class="mono">draft</span> (the default), <span class="mono">latest</span> or a locked name such as <span class="mono">islet-1.0</span>. Answers say which version they came from.</dd></div>
+              <div><dt>Safety</dt><dd>Text from papers and from other people’s submissions is treated as data, never as instructions.</dd></div>
+              <div><dt>Review prompt</dt><dd>Public: <span class="mono">[OPENISLET-REVIEW-v1]</span>, shown in full above.</dd></div>
+            </dl>
+            <div class="tablewrap">
+              <table>
+                <thead><tr><th scope="col">Tool</th><th scope="col">What it does</th><th scope="col">Sign-in</th></tr></thead>
+                <tbody>
+                  {tools.map(([name, what, auth]) => (
+                    <tr><td class="mono">{name}</td><td>{what}</td><td>{auth}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+      </section>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { wireGroup, copyWithFlash } from '../scripts/group';
+  import { revealInRow } from '../scripts/sidescroll';
+
+  wireGroup({ key: 'client', buttons: 'button[data-client]', panels: 'div[data-client]' });
+
+  const guide = document.querySelector<HTMLElement>('.guide');
+
+  // "I'm using an AI assistant" or "I work at an AI lab". /start?path=lab opens the lab version.
+  const pathButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('button[data-guidepath]'));
+  function setPath(id: string) {
+    if (guide) guide.dataset.path = id;
+    pathButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.guidepath === id)));
+  }
+  pathButtons.forEach((b) => b.addEventListener('click', () => setPath(b.dataset.guidepath ?? 'ai')));
+  const wanted = new URLSearchParams(location.search).get('path');
+  if (wanted === 'lab' || wanted === 'ai') setPath(wanted);
+
+  // "Copy and paste" (the default) or "Connect with MCP". /start?route=mcp opens the MCP route. The page always opens on copy and paste.
+  const routeButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('button[data-guideroute]'));
+  function setRoute(id: string) {
+    if (id !== 'mcp' && id !== 'paste') return;
+    if (guide) guide.dataset.route = id;
+    routeButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.guideroute === id)));
+  }
+  routeButtons.forEach((b) => b.addEventListener('click', () => setRoute(b.dataset.guideroute ?? 'paste')));
+  const wantedRoute = new URLSearchParams(location.search).get('route');
+  if (wantedRoute === 'paste' || wantedRoute === 'mcp') setRoute(wantedRoute);
+
+  // The Copy button for the starter pack fetches the file, so the page itself stays small. The file is fetched ahead of the click
+  // (when the copy-and-paste route is showing, or the button is approached), so the copy happens inside the click itself.
+  // Safari only lets a page copy to the clipboard straight from a click, not after waiting for a download.
+  const packButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('button[data-copy-pack]'));
+  let packText: string | null = null;
+  let packLoading: Promise<void> | null = null;
+  function loadPack(): Promise<void> {
+    if (packText) return Promise.resolve();
+    packLoading ??= fetch(packButtons[0]?.dataset.href ?? '/openislet-starter-pack.md')
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.text();
+      })
+      .then((text) => {
+        packText = text;
+      })
+      .catch(() => {
+        packLoading = null;
+      });
+    return packLoading;
+  }
+  // Each copy button has its own status line, in the same action.
+  const say = (button: HTMLElement, text: string) => {
+    const status = (button.closest('.do__body') ?? document).querySelector<HTMLElement>('[data-pack-status]');
+    if (status) status.textContent = text;
+  };
+  const report = (button: HTMLElement, copied: boolean) =>
+    say(
+      button,
+      copied
+        ? (button.dataset.after ?? 'Copied. Now open a new chat and paste it there (Ctrl+V on Windows, Cmd+V on a Mac).')
+        : 'Your browser blocked the copy. Use “Download it as a file” and attach the file to your chat.',
+    );
+  if (guide?.dataset.route === 'paste') void loadPack();
+  routeButtons.forEach((b) => b.addEventListener('click', () => b.dataset.guideroute === 'paste' && void loadPack()));
+  packButtons.forEach((button) => {
+    button.addEventListener('pointerenter', () => void loadPack());
+    button.addEventListener('focus', () => void loadPack());
+    button.addEventListener('click', async () => {
+      if (packText) return report(button, await copyWithFlash(button, packText));
+      say(button, 'Getting the starter pack…');
+      await loadPack();
+      if (!packText) return say(button, 'Could not get the starter pack. Use “Download it as a file” instead, or try again in a moment.');
+      report(button, await copyWithFlash(button, packText));
+    });
+  });
+
+  // Which steps someone has finished (pressing "Next" finishes a step). Kept only in this browser, and the guide works without it.
+  const KEY = 'openislet.guide.done';
+  function load(): number[] {
+    try {
+      const list = JSON.parse(localStorage.getItem(KEY) ?? '[]');
+      return Array.isArray(list) ? list.filter((n) => Number.isInteger(n)) : [];
+    } catch {
+      return [];
+    }
+  }
+  function save(list: number[]) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(list));
+    } catch {
+      /* private browsing: the guide still works */
+    }
+  }
+  function paint() {
+    const done = new Set(load());
+    document.querySelectorAll<HTMLElement>('[data-rail]').forEach((a) => {
+      const on = done.has(Number(a.dataset.rail));
+      a.classList.toggle('is-done', on);
+      const word = a.querySelector<HTMLElement>('[data-donetext]');
+      if (word) word.hidden = !on;
+    });
+    paintResume(done);
+  }
+  // Someone who has finished a step and comes back (the page promises they can) gets a link to the first step still to do,
+  // and a way to start again.
+  const resume = document.getElementById('resume');
+  const resumeKey = document.getElementById('resume-k');
+  const resumeLink = document.getElementById('resume-link') as HTMLAnchorElement | null;
+  function paintResume(done: Set<number>) {
+    if (!resume || !resumeKey || !resumeLink) return;
+    if (!done.size) {
+      resume.hidden = true;
+      return;
+    }
+    const next = [1, 2, 3, 4, 5, 6].find((n) => !done.has(n));
+    resumeKey.textContent = next ? 'Your place' : 'All six steps done';
+    resumeLink.hidden = !next;
+    if (next) {
+      const name = document.querySelector<HTMLElement>(`[data-rail="${next}"] .rail__t`)?.innerText.trim();
+      resumeLink.href = `#step-${next}`;
+      resumeLink.textContent = `Continue with step ${next}${name ? `: ${name}` : ''} →`;
+    }
+    resume.hidden = false;
+  }
+  document.getElementById('resume-reset')?.addEventListener('click', () => {
+    save([]);
+    paint();
+    // the button has just gone, so put the keyboard back at the top of the page
+    document.querySelector<HTMLElement>('h1')?.focus();
+  });
+  paint();
+  // The first step has a different name on each route, so the link to it is painted again when the route changes.
+  routeButtons.forEach((b) => b.addEventListener('click', () => paint()));
+
+  // Pressing the big button at the bottom of a step means the step is finished, so tick it without making the person do it.
+  document.querySelectorAll<HTMLAnchorElement>('.gstep__foot a.btn--primary').forEach((a) => {
+    a.addEventListener('click', () => {
+      const n = Number(a.closest<HTMLElement>('section[data-step]')?.dataset.step);
+      if (!n) return;
+      const done = new Set(load());
+      done.add(n);
+      save([...done]);
+      paint();
+    });
+  });
+
+  // Highlight the current step in the list. On a phone the list is a bar that scrolls sideways, so it follows along.
+  const rail = Array.from(document.querySelectorAll<HTMLElement>('[data-rail]'));
+  const railBox = document.querySelector<HTMLElement>('.rail ol');
+  const seen = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const n = (e.target as HTMLElement).dataset.step;
+        rail.forEach((a) => {
+          const here = a.dataset.rail === n;
+          a.classList.toggle('is-current', here);
+          if (here) a.setAttribute('aria-current', 'step');
+          else a.removeAttribute('aria-current');
+          if (here && railBox) revealInRow(railBox, a);
+        });
+      });
+    },
+    { rootMargin: '-25% 0px -65% 0px' },
+  );
+  document.querySelectorAll('section[data-step]').forEach((s) => seen.observe(s));
+
+  // Open the reference when a link points at it.
+  function openReference() {
+    if (location.hash === '#reference') document.querySelector('#reference details')?.setAttribute('open', '');
+  }
+  window.addEventListener('hashchange', openReference);
+  openReference();
+</script>
+
+<style>
+  .top {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--dark-text);
+  }
+  .top__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .top__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(11, 27, 38, 0.95) 0%, rgba(11, 27, 38, 0.7) 60%, rgba(11, 27, 38, 0.45) 100%);
+  }
+  .top__inner {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  }
+  .top__eyebrow {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-lt);
+  }
+  .top h1 {
+    margin-top: 0.75rem;
+    font-size: clamp(2.125rem, 4.6vw, 3.5rem);
+    line-height: 1.05;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    color: #fff;
+  }
+  .top__lead {
+    margin-top: 1.125rem;
+    max-width: 40rem;
+    font-size: 1.1875rem;
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+  .resume {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.75rem;
+    margin-top: 1.25rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--dark-line);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 1.0625rem;
+  }
+  .resume[hidden] {
+    display: none;
+  }
+  .resume__k {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-lt);
+  }
+  .resume a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .resume__reset {
+    padding: 0;
+    border: none;
+    background: none;
+    font: inherit;
+    font-size: 0.9375rem;
+    color: var(--dark-soft);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .resume__reset:hover {
+    color: #fff;
+  }
+  .top h1:focus {
+    outline: none;
+  }
+  .pathpick {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 1.75rem;
+    padding: 0.25rem;
+    border: 1px solid var(--dark-line);
+    border-radius: 0.75rem;
+    background: rgba(11, 27, 38, 0.6);
+  }
+  .pathpick button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1.125rem;
+    border: none;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: var(--dark-text);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .pathpick button[aria-pressed='true'] {
+    background: var(--dark-text);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  /* layout */
+  .guide {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 2.5rem;
+    align-items: start;
+    padding-block: 2.5rem 5rem;
+  }
+  .guide__main {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    min-width: 0;
+  }
+  .rail {
+    position: sticky;
+    top: 1.25rem;
+    align-self: start;
+  }
+  .rail ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .rail a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding: 0.375rem 0.625rem;
+    border-radius: 0.625rem;
+    color: var(--body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+  .rail a:hover {
+    background: #fff;
+    color: var(--ink);
+  }
+  .rail a.is-current {
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+  .rail__n {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--neutral-bg);
+    color: var(--ink);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+  .rail a.is-current .rail__n {
+    background: var(--accent);
+    color: #fff;
+  }
+  .rail a.is-done .rail__n {
+    background: var(--pass);
+    color: #fff;
+  }
+  .rail__t {
+    flex: 1;
+  }
+  .rail__tick {
+    display: none;
+    color: var(--pass);
+    font-weight: 700;
+  }
+  .rail a.is-done .rail__tick {
+    display: inline;
+  }
+  .rail__ref {
+    margin-top: 0.75rem;
+    padding-left: 0.625rem !important;
+    font-size: 0.875rem !important;
+    color: var(--accent) !important;
+  }
+
+  @media (max-width: 64em) {
+    .guide {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
+      padding-top: 0;
+    }
+    /* The bar stays put with its background; the list inside it scrolls sideways and fades at its edges. */
+    .rail {
+      top: 0;
+      z-index: 5;
+      margin-inline: calc(var(--gutter) * -1);
+      padding-block: 0.5rem;
+      background: var(--paper);
+      border-bottom: 1px solid var(--line);
+    }
+    .rail ol {
+      flex-direction: row;
+      gap: 0.25rem;
+      padding-inline: var(--gutter);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .rail ol::-webkit-scrollbar {
+      display: none;
+    }
+    .rail a {
+      padding: 0.25rem 0.75rem 0.25rem 0.375rem;
+      white-space: nowrap;
+    }
+    .rail__tick,
+    .rail__ref {
+      display: none !important;
+    }
+  }
+
+  /* route switch: the connector, or copy and paste. The attribute is read on the guide, and applies inside the step shells too. */
+  .guide[data-route='mcp'] :global([data-route-only='paste']),
+  .guide[data-route='paste'] :global([data-route-only='mcp']) {
+    display: none !important;
+  }
+  .routeblock {
+    display: contents;
+  }
+  .pickers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    margin-top: 1.75rem;
+  }
+  .pickers .pathpick {
+    margin-top: 0;
+  }
+  /* "I'm using an AI assistant / I work at an AI lab" is a small switch: most people never touch it */
+  .pathpick--quiet {
+    align-self: center;
+    padding: 0;
+    border: none;
+    background: none;
+    gap: 0.25rem 1.25rem;
+  }
+  .pathpick--quiet button {
+    min-height: 2.75rem;
+    padding: 0 0.125rem;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--dark-soft);
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+  .pathpick--quiet button[aria-pressed='true'] {
+    background: none;
+    border-bottom-color: var(--accent-lt);
+    color: #fff;
+    font-weight: 600;
+  }
+  .routenote {
+    max-width: 40rem;
+    margin-top: 1rem;
+    font-size: 0.96875rem;
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+  .routenote strong {
+    color: #fff;
+  }
+  .routenote a {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .whatsmcp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1.25rem;
+    border-left: 3px solid var(--line-strong);
+  }
+  .whatsmcp__logo {
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  .whatsmcp__logo img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: 1.75rem;
+  }
+  .whatsmcp h3,
+  .whatsmcp p {
+    margin: 0;
+  }
+  /* The "do this" panel: the actions to take in a step, big and numbered, so the way through is obvious. */
+  .do {
+    padding: 1.25rem 1.375rem 1.5rem;
+    border: 2px solid var(--accent);
+    border-radius: 0.875rem;
+    background: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(42, 63, 214, 0.08);
+  }
+  .do__tag {
+    display: inline-block;
+    margin-bottom: 1rem;
+    padding: 0.1875rem 0.75rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .do__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.375rem;
+  }
+  .do__list > li {
+    display: grid;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.25rem 0.875rem;
+    align-items: start;
+  }
+  .do__n {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .do__body,
+  .do__box {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+  .do__t {
+    padding-top: 0.125rem;
+    font-size: 1.1875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    text-wrap: balance;
+  }
+  .do__acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+  .do__fine {
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  /* what you should see once the actions are done */
+  .expect {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    color: var(--ink);
+    font-size: 1.03125rem;
+    text-wrap: pretty;
+  }
+  .expect__tick {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--pass);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+  .needs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .needs li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.96875rem;
+    color: var(--dark-text);
+  }
+  .needs li::before {
+    content: '✓';
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: rgba(142, 160, 255, 0.22);
+    color: var(--accent-lt);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .pack__status:empty {
+    min-height: 0;
+    margin-block: -0.3125rem;
+  }
+  .pack__status {
+    min-height: 1.5rem;
+    font-weight: 600;
+    color: var(--pass) !important;
+  }
+
+  /* path switch */
+  .guide[data-path='ai'] [data-only='lab'] {
+    display: none;
+  }
+  .labnote {
+    padding-left: 1rem;
+    border-left: 3px solid var(--accent);
+    font-size: 0.96875rem;
+    text-wrap: pretty;
+  }
+
+  /* shared bits */
+  h3.sub {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .need {
+    padding-top: 0.875rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .need h3 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .need ul,
+  .two__item ul,
+  .help-details ul {
+    margin: 0.5rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .note {
+    font-size: 0.9375rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .need .note {
+    margin-top: 0.625rem;
+  }
+  .warn {
+    padding-left: 1rem;
+    border-left: 3px solid var(--threat);
+    color: var(--warn);
+    font-size: 1rem;
+    text-wrap: pretty;
+  }
+
+  /* assistant tabs */
+  .chatlink {
+    gap: 0.5rem;
+  }
+  /* On a phone the chat apps and the assistants are one tidy list each, rather than ragged rows of one and two. */
+  @media (max-width: 30em) {
+    .ctabs {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.375rem;
+    }
+    .do__acts--chats {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+    }
+    .do__acts--chats .chatlink {
+      justify-content: flex-start;
+    }
+  }
+  .ctab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1.125rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .ctab:hover {
+    border-color: var(--accent);
+  }
+  .ctab[aria-pressed='true'] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+  .cpanel {
+    margin-top: 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .cpanel__blurb {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .cpanel__cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+    align-items: start;
+  }
+  .cpanel__text {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+  }
+  .cpanel__altbody {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .cpanel__art {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .cpanel__art figcaption {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .oneclick {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .snippets {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .cpanel__caution {
+    margin-top: 0.75rem;
+  }
+  .pinlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pinlist li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    font-size: 1rem;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .pinlist li > .pin {
+    margin-top: 0.125rem;
+  }
+
+  /* pictures of screens */
+  .m-split {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.875rem;
+  }
+  .m-side {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .m-side li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.375rem;
+    padding: 0.375rem 0.5rem;
+    border-radius: 0.375rem;
+  }
+  .m-side li.on {
+    background: var(--tint);
+    color: var(--accent-dk);
+    font-weight: 600;
+  }
+  .m-h {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .m-row {
+    height: 1.375rem;
+    margin-bottom: 0.375rem;
+    border-radius: 0.375rem;
+    background: var(--neutral-bg);
+  }
+  .m-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.375rem;
+    background: #fff;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .m-btn--solid {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .m-label {
+    margin: 0.5rem 0 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .m-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.375rem 0.5rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.375rem;
+    background: #fff;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+  }
+  .m-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .m-pop {
+    max-width: 14rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+  .m-pop p {
+    margin: 0;
+    padding: 0.25rem 0;
+  }
+  .m-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .m-switch {
+    width: 1.75rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    background: var(--accent);
+    position: relative;
+  }
+  .m-switch::after {
+    content: '';
+    position: absolute;
+    top: 0.125rem;
+    right: 0.125rem;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .m-top {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .m-plus {
+    display: inline-grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-left: auto;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 700;
+  }
+  .m-split > div {
+    min-width: 0;
+  }
+  .m-top:has(.m-btn) {
+    flex-wrap: wrap;
+  }
+  .m-top .m-h {
+    margin: 0;
+  }
+  .m-top .m-btn {
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .m-btn--dark {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+  }
+  .m-side li.m-group {
+    padding-bottom: 0;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .m-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.1875rem 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 0.375rem;
+  }
+  .m-opt::before {
+    content: '';
+    flex: none;
+    width: 0.625rem;
+    height: 0.625rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+  }
+  .m-opt.on {
+    border-color: var(--accent);
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .m-opt.on::before {
+    border: 3px solid var(--accent);
+  }
+  .m-opt .pin {
+    margin-left: auto;
+  }
+  .m-code {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.375rem;
+    background: var(--paper);
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    color: var(--ink);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .m-split--wide {
+    grid-template-columns: 9rem 1fr;
+  }
+  .m-server {
+    margin-top: 0.625rem;
+    padding: 0.375rem 0.5rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.375rem;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    color: var(--ink);
+  }
+  .m-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+  }
+  .m-tabs span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.1875rem 0.5rem;
+    border-radius: 0.375rem;
+    color: var(--muted);
+  }
+  .m-tabs span.on {
+    background: var(--tint);
+    color: var(--accent-dk);
+    font-weight: 600;
+  }
+  /* On a phone the settings menu sits above the page as a row, so the right-hand part keeps its width. */
+  @media (max-width: 30em) {
+    .m-split {
+      grid-template-columns: 1fr;
+      gap: 0.5rem;
+    }
+    .m-side {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .m-side li.m-group {
+      flex-basis: 100%;
+    }
+  }
+  .m-menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin: 0.5rem 0 0 auto;
+    max-width: 14rem;
+    padding: 0.5rem 0.625rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* chat example */
+  .help-details {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--line);
+  }
+  .help-details summary {
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+  }
+  .help-details summary::-webkit-details-marker {
+    display: none;
+  }
+  .help-details summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  .help-details[open] summary::after {
+    content: '–';
+  }
+  .help-details > :not(summary) {
+    margin: 0;
+    padding: 0 0 1rem;
+  }
+  .help-details > p {
+    font-size: 1rem;
+    color: var(--body);
+  }
+  .help-details > ul,
+  .help-details > ol {
+    padding-left: 1.25rem;
+  }
+
+  /* prompts */
+  .pcard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .pcard h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .pcard > p {
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  /* two-up boxes */
+  .two {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+    gap: 1.5rem;
+  }
+  .two__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-top: 0.875rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .two__item h3,
+  .two__item h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .two__item p {
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .two__item .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+  .verdicts {
+    list-style: none;
+    margin: 0.25rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .verdicts li {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: 0.25rem 0.875rem;
+    align-items: baseline;
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .verdicts li > .chip {
+    justify-self: start;
+  }
+  @media (max-width: 36em) {
+    .verdicts li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .doc {
+    align-self: stretch;
+    margin-top: 0.5rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+  .doc p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .doc .doc__h1 {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 0.8125rem;
+  }
+  .doc .doc__h2 {
+    margin-top: 0.375rem;
+    font-weight: 600;
+    color: var(--accent-dk);
+  }
+
+  /* pipeline */
+  .pipeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .pipeline li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr) 8.75rem;
+    gap: 0 1rem;
+    align-items: start;
+    padding-bottom: 1.5rem;
+  }
+  .pipeline li:last-child {
+    padding-bottom: 0;
+  }
+  .pipeline li:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 1.25rem;
+    top: 2.5rem;
+    bottom: 0;
+    width: 2px;
+    transform: translateX(-50%);
+    background: var(--line-strong);
+  }
+  .pipeline__n {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+  .pipeline h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+    padding-top: 0.375rem;
+  }
+  .pipeline p {
+    grid-column: 2;
+    margin-top: 0.25rem;
+    font-size: 1rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .pipeline .help-details {
+    grid-column: 2;
+    margin-top: 0.5rem;
+  }
+  .pipeline .chip {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    margin-top: 0.5rem;
+  }
+  @media (max-width: 40em) {
+    .pipeline li {
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+    }
+    .pipeline .chip {
+      grid-column: 2;
+      grid-row: auto;
+      justify-self: start;
+      margin-top: 0.5rem;
+    }
+  }
+
+  /* reference */
+  /* The developer reference is a folded row like the other help rows, with a plus at the end. */
+  .ref details {
+    border-block: 1px solid var(--line);
+  }
+  @media (max-width: 64em) {
+    .ref {
+      scroll-margin-top: 4.5rem;
+    }
+  }
+  .ref summary {
+    min-height: 3.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+  }
+  .ref summary::-webkit-details-marker {
+    display: none;
+  }
+  .ref summary::after {
+    content: '+';
+    margin-left: auto;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  .ref details[open] summary::after {
+    content: '–';
+  }
+  .ref__body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 0 1.5rem;
+  }
+  /* Eight entries: two columns, or one, so the last row is never short. */
+  .ref__body .kv {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 48em) {
+    .ref__body .kv {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .tablewrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+  }
+  table {
+    width: 100%;
+    min-width: 40rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  thead th {
+    padding: 0.625rem 1rem;
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  tbody td {
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid var(--line-soft);
+    vertical-align: top;
+  }
+  /* When the table scrolls sideways (on a phone), the tool names stay put. */
+  tbody td:first-child,
+  thead th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--paper);
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  tbody td.mono {
+    font-size: 0.8125rem;
+    overflow-wrap: anywhere;
+  }
+</style>

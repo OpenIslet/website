@@ -1,0 +1,41 @@
+# Settings for trying the submission queue on this machine. `npm run dev` (wrangler dev) reads the copy called .dev.vars.
+#
+# Quick start, from the connector folder, in two terminals:
+#   1. npm run mock-github   A stand-in for GitHub. The first time, it copies this file to .dev.vars and fills in the three
+#                            GENERATE_ lines below with fresh throwaway secrets. It listens on http://127.0.0.1:8788.
+#   2. npm run dev           The Worker, at http://localhost:8787. (Run `npm run seed` once beforehand to load the data bundle.)
+# Then start the website (`npm run dev` in the website folder, port 4321) and try /submit, or drive the Worker with curl:
+# the commands are in README.md, under "Queue".
+#
+# .dev.vars stays on this machine (it is not committed). Nothing in it is real. Never put real keys in it.
+# To make fresh throwaway values, delete .dev.vars and run `npm run mock-github` again.
+
+# Switch the queue on. In production this stays "false" until you decide to open submissions.
+SUBMISSIONS_OPEN="true"
+
+# The website. After GitHub, the browser is sent back to <SITE_ORIGIN>/submit/finish.
+SITE_ORIGIN="http://localhost:4321"
+
+# Browser addresses allowed to call /api/* from a web page (comma-separated). Production allows only https://openislet.org.
+ALLOWED_ORIGINS="http://localhost:4321,http://localhost:4400,http://127.0.0.1:4321"
+
+# Where issues are opened. The mock accepts any name.
+QUEUE_REPO="openislet/openislet"
+
+# The mock stands in for both github.com (sign-in) and api.github.com (the bot).
+GITHUB_WEB_BASE="http://127.0.0.1:8788"
+GITHUB_API_BASE="http://127.0.0.1:8788"
+
+# The mock GitHub App. Real values come from your GitHub App's page: see connector/DEPLOY.md.
+GITHUB_CLIENT_ID="Iv1.mockclient0000001"
+GITHUB_APP_ID="123456"
+GITHUB_APP_INSTALLATION_ID="7654321"
+GITHUB_CLIENT_SECRET="GENERATE_CLIENT_SECRET"
+GITHUB_APP_PRIVATE_KEY="GENERATE_PRIVATE_KEY"
+
+# Signs the hidden marker in each issue and scrambles addresses for the rate limits. At least 32 characters.
+STATE_SIGNING_KEY="GENERATE_SIGNING_KEY"
+
+# Looser limits, so one afternoon of testing does not use up the day. Leave both out when deployed.
+DAILY_LIMIT_PER_ACCOUNT="1000"
+IP_LIMIT_MULTIPLIER="100"

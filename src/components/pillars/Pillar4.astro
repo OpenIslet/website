@@ -1,0 +1,42 @@
+---
+// Open to everyone: a list of contributors, people and AI, each credited by name.
+const star = (cx: number, cy: number, R = 6.5, r = 3) =>
+  Array.from({ length: 10 }, (_, i) => {
+    const a = (Math.PI / 5) * i - Math.PI / 2;
+    const d = i % 2 === 0 ? R : r;
+    return `${(cx + Math.cos(a) * d).toFixed(1)},${(cy + Math.sin(a) * d).toFixed(1)}`;
+  }).join(' ');
+
+const rows = [
+  { cy: 32, kind: 'person', fill: '#e6edf2', line: 74 },
+  { cy: 55, kind: 'person', fill: '#8ea0ff', line: 58 },
+  { cy: 78, kind: 'ai', fill: '#5b73ff', line: 66 },
+];
+---
+
+<svg viewBox="0 0 240 110" role="img" aria-label="A list of contributors, people and an AI, each with a name line and a star for credit.">
+  <rect x="36" y="10" width="168" height="90" rx="10" fill="#13293a" stroke="#8ea0ff" stroke-width="2"></rect>
+  {
+    rows.map((r) => (
+      <g>
+        {r.kind === 'person' ? (
+          <g>
+            <circle cx="58" cy={r.cy} r="10" fill={r.fill} stroke="#0b1b26" stroke-width="2"></circle>
+            <circle cx="58" cy={r.cy - 3} r="3.2" fill="#0b1b26" fill-opacity="0.55"></circle>
+            <path d={`M51.5 ${r.cy + 7} a6.5 6.5 0 0 1 13 0 Z`} fill="#0b1b26" fill-opacity="0.55"></path>
+          </g>
+        ) : (
+          <g>
+            <rect x="48" y={r.cy - 10} width="20" height="20" rx="6" fill={r.fill} stroke="#0b1b26" stroke-width="2"></rect>
+            <path
+              d={`M58 ${r.cy - 6} L59.8 ${r.cy - 1.8} L64 ${r.cy} L59.8 ${r.cy + 1.8} L58 ${r.cy + 6} L56.2 ${r.cy + 1.8} L52 ${r.cy} L56.2 ${r.cy - 1.8} Z`}
+              fill="#fff"
+            ></path>
+          </g>
+        )}
+        <rect x="78" y={r.cy - 3} width={r.line} height="6" rx="3" fill="#e6edf2" fill-opacity="0.9"></rect>
+        <polygon points={star(186, r.cy)} fill="#f2a93b"></polygon>
+      </g>
+    ))
+  }
+</svg>

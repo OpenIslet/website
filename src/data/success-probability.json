@@ -1,0 +1,53 @@
+{
+  "lastUpdated": "2026-11-01",
+  "gates": [
+    {
+      "id": "people",
+      "title": "Do lab-grown islet cells work as a treatment in people?",
+      "singleArmPct": 88,
+      "threeArmPct": 88,
+      "badge": "Shown in people",
+      "badgeKind": "shown",
+      "plain": "Yes, once they survive. In Vertex’s trial, all 12 people given the full dose reached their blood-sugar targets, and 10 of the 12 no longer needed insulin injections after a year. The catch is that they all take anti-rejection drugs, which is the problem Islet-1 is designed to remove.",
+      "evidence": "Vertex VX-880 (zimislecel). Reichman and colleagues, New England Journal of Medicine, 2025.",
+      "pmid": "40544428",
+      "next": ""
+    },
+    {
+      "id": "cloak",
+      "title": "Does the genetic cloak stop rejection without anti-rejection drugs?",
+      "singleArmPct": 78,
+      "threeArmPct": 82,
+      "badge": "Seen in one person",
+      "badgeKind": "partial",
+      "plain": "It has worked once. In one person, donor islet cells edited to hide from the immune system were left alone for more than a year, with no anti-rejection drugs. That was a small safety study with a different set of edits, so it shows the idea can work, not that Islet-1’s cloak will.",
+      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025, with longer follow-up reported since.",
+      "pmid": "40757665",
+      "next": "Next: show it holds for stem-cell islets with Islet-1’s edits (Stage 1, lab testing)."
+    },
+    {
+      "id": "attack",
+      "title": "Can the cells survive the autoimmune attack that caused the diabetes?",
+      "singleArmPct": 50,
+      "threeArmPct": 72,
+      "badge": "Biggest unknown",
+      "badgeKind": "unknown",
+      "plain": "This is the hardest question, and it is only partly answered. People with type 1 diabetes already carry immune cells that remember how to attack beta cells. The one person given edited donor cells (hurdle 2) has type 1 diabetes, and the cells were left alone for more than a year, which is encouraging, but it was a small graft in a muscle, not a treatment. Design A adds a shield that switches on only when inflammation appears. Designs B and X keep that shield and change other parts of the design.",
+      "evidence": "The one human result so far (Sana UP421, above) used donor islets in a small dose. Nothing yet shows this for stem-cell islets at treatment size.",
+      "pmid": "",
+      "next": "Next: the first lab tests (Stage 1, lab testing)."
+    },
+    {
+      "id": "oxygen",
+      "title": "Does the oxygen layer keep the graft alive until blood vessels grow in?",
+      "singleArmPct": 60,
+      "threeArmPct": 72,
+      "badge": "Computer model only",
+      "badgeKind": "unknown",
+      "plain": "A new graft has no blood vessels at first, so the design brings its own oxygen: a layer that releases it for the first three days while pre-built vessels link up. The blueprint’s computer model of the first 14 days suggests this can work, but with only a thin margin if our assumptions are pessimistic.",
+      "evidence": "From the blueprint’s own tissue model. None of its oxygen values has been measured in the lab.",
+      "pmid": "",
+      "next": "Next: blood supply and oxygen tests (Stage 2)."
+    }
+  ]
+}

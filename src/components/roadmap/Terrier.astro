@@ -1,0 +1,250 @@
+---
+// Stage 3: the picture of the canine Islet-1 idea. An Australian terrier with a glucose sensor and an implant of cells under the skin.
+// The six numbered labels match the six-item list under the picture on the roadmap page (`canine.legend` in src/data/roadmap.ts),
+// so keep that list at six and in this order. It is an illustration of an idea, not a plan or a result, and the aria-label says so.
+const label =
+  'An Australian terrier in a collar, with a glucose sensor on its back and an implant of insulin-making cells under its skin. ' +
+  'Six numbered labels, matching the list below the picture: dog islet cells, mouse tests, the cell implant, the sensor, the safety switch, and no more insulin injections. ' +
+  'A small chart shows blood sugar swinging up and down before the implant and staying steady after it. This is an illustration of the idea, not a result.';
+---
+
+<svg class="terrier" viewBox="0 0 640 438" role="img" aria-label={label} font-family="IBM Plex Sans, sans-serif">
+  <defs>
+    <radialGradient id="tr-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#5b73ff" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#5b73ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tr-coat" gradientUnits="userSpaceOnUse" x1="0" y1="34" x2="0" y2="192">
+      <stop offset="0" stop-color="#9ab1dc"/>
+      <stop offset="1" stop-color="#587199"/>
+    </linearGradient>
+    <linearGradient id="tr-tan" gradientUnits="userSpaceOnUse" x1="0" y1="56" x2="0" y2="270">
+      <stop offset="0" stop-color="#f3c47e"/>
+      <stop offset="1" stop-color="#cc9046"/>
+    </linearGradient>
+    <g id="tr-torso">
+      <path id="tr-torso-path" d="M66 124 C62 104 84 92 112 92 L262 92 C286 92 306 82 320 68 C330 58 332 46 342 40 C352 32 372 30 388 36 C398 40 404 46 410 52 C420 54 438 58 450 62 C462 66 464 80 454 86 C446 92 436 96 424 98 C410 100 396 100 386 98 Q385 111 372 112 Q374 124 362 126 Q364 138 352 140 Q355 150 346 152 C346 172 328 190 300 190 C254 194 206 182 166 176 C140 172 112 186 90 176 C70 166 60 146 66 124 Z"/>
+    </g>
+    <clipPath id="tr-clip"><use href="#tr-torso-path"/></clipPath>
+    <marker id="tr-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M1 1 L9 5 L1 9 z" fill="#8ea0ff"/>
+    </marker>
+  </defs>
+
+  <ellipse cx="380" cy="290" rx="250" ry="165" fill="url(#tr-glow)"/>
+  <path d="M24 384 H616" stroke="#8ea0ff" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="2 8" stroke-linecap="round"/>
+
+  <!-- ===== the dog ===== -->
+  <g id="tr-dog" transform="translate(140 108)" stroke-linejoin="round" stroke-linecap="round">
+    <ellipse cx="220" cy="276" rx="176" ry="9" fill="#0b1b26" opacity="0.55"/>
+
+    <!-- legs: far ones darker; each paw points forwards, the way the dog faces -->
+    <path d="M328 170 C328 200 332 232 334 258 L350 258 C350 232 352 200 350 170 Z" fill="#a9712f" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M330 256 L352 256 Q368 258 368 266 Q368 272 360 272 L332 272 Q326 272 326 266 Z" fill="#a9712f" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M150 164 C154 190 146 222 146 258 L162 258 C164 226 172 192 174 164 Z" fill="#a9712f" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M148 256 L170 256 Q186 258 186 266 Q186 272 178 272 L150 272 Q144 272 144 266 Z" fill="#a9712f" stroke="#0b1b26" stroke-width="5"/>
+
+    <!-- near legs -->
+    <path d="M296 166 C298 196 300 232 302 258 L322 258 C322 232 324 196 326 166 Z" fill="url(#tr-tan)" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M298 256 L324 256 Q342 258 342 266 Q342 272 334 272 L300 272 Q294 272 294 266 Z" fill="#cc9046" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M100 156 C112 184 108 214 104 242 L104 258 L124 258 L124 242 C126 214 134 184 142 158 Z" fill="url(#tr-tan)" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M102 256 L128 256 Q146 258 146 266 Q146 272 138 272 L104 272 Q98 272 98 266 Z" fill="#cc9046" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M324 262 v6 M332 262 v6 M126 262 v6 M134 262 v6" stroke="#8a5a22" stroke-width="2.2" fill="none"/>
+
+    <g transform="translate(0 14)">
+    <!-- far ear, near ear and the topknot sit behind the head, so the head's outline covers their roots -->
+    <path d="M372 42 L392 -2 L414 50 Z" fill="#46608e" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M334 58 L346 2 L382 46 Z" fill="#5a75a6" stroke="#0b1b26" stroke-width="5"/>
+    <path d="M347 46 L350 20 L370 44 Z" fill="#f3c47e" stroke="none"/>
+    <path d="M362 56 C354 42 358 28 368 20 C370 30 374 34 378 36 C376 24 382 12 392 6 C392 20 398 28 404 32 C410 26 414 22 420 22 C420 38 414 52 402 60 Z" fill="#f3e8d0" stroke="#0b1b26" stroke-width="3.5"/>
+    <path d="M374 50 C376 40 382 32 390 26 M396 50 C398 42 404 38 412 36" fill="none" stroke="#d9c7a0" stroke-width="2.2"/>
+
+    <!-- tail, narrowing to the tip; it wags from its base -->
+    <g class="tr-tail">
+      <path d="M78 138 C38 134 18 100 32 58 C34 50 46 50 48 58 C44 90 62 110 90 112 Z" fill="#7d97c6" stroke="#0b1b26" stroke-width="5"/>
+    </g>
+
+    <!-- body, neck and head as one shape: outline first, then the fill on top -->
+    <use href="#tr-torso" fill="#0b1b26" stroke="#0b1b26" stroke-width="10"/>
+    <use href="#tr-torso" fill="url(#tr-coat)"/>
+
+    <!-- markings, kept inside the shape so nothing can hang off it -->
+    <g clip-path="url(#tr-clip)">
+      <path d="M392 52 C414 50 440 56 458 62 C472 68 470 92 452 98 C432 108 404 108 386 102 C378 84 382 62 392 52 Z" fill="url(#tr-tan)"/>
+      <path d="M350 124 C362 146 354 176 332 196 C312 192 306 160 322 134 C330 124 340 120 350 124 Z" fill="url(#tr-tan)"/>
+      <path d="M82 112 C86 104 96 99 112 99 L262 99 C286 99 304 89 318 77" fill="none" stroke="#d6e1f6" stroke-opacity="0.45" stroke-width="3"/>
+      <g stroke="#4a6392" stroke-width="3" fill="none" stroke-opacity="0.8">
+        <path d="M150 108 l6 8 M172 106 l6 8 M194 108 l6 8 M214 106 l6 8 M236 108 l6 8"/>
+        <path d="M84 126 l8 6 M92 146 l8 6 M100 114 l8 6"/>
+      </g>
+    </g>
+
+    <!-- face -->
+    <ellipse cx="452" cy="74" rx="12.5" ry="10.5" fill="#0b1b26"/>
+    <circle cx="448" cy="70" r="3.3" fill="#e6edf2" opacity="0.85"/>
+    <circle cx="392" cy="58" r="6.5" fill="#0b1b26"/>
+    <circle cx="394.4" cy="55.4" r="2.2" fill="#fff"/>
+    <ellipse cx="390" cy="45" rx="6.5" ry="3.4" fill="#f3c47e"/>
+    <path d="M448 90 C436 98 416 100 398 95" fill="none" stroke="#0b1b26" stroke-width="3.5"/>
+    <path d="M418 99 C417 114 421 121 428 121 C436 121 438 112 436 97 Z" fill="#f08a9d" stroke="#0b1b26" stroke-width="3"/>
+    <path d="M427 101 V112" fill="none" stroke="#c95f78" stroke-width="2"/>
+
+    <!-- collar and tag: the band stops at the edge of the neck -->
+    <g clip-path="url(#tr-clip)">
+      <path d="M316 84 Q340 108 374 112" fill="none" stroke="#0b1b26" stroke-width="18"/>
+      <path d="M316 84 Q340 108 374 112" fill="none" stroke="#f2a93b" stroke-width="10"/>
+    </g>
+    <circle cx="358" cy="128" r="8" fill="#f2a93b" stroke="#0b1b26" stroke-width="3.5"/>
+
+    <!-- the implant under the skin -->
+    <g>
+      <rect x="150" y="104" width="80" height="50" rx="20" fill="#8ea0ff" fill-opacity="0.3" stroke="#e6edf2" stroke-width="2.5" stroke-dasharray="6 4"/>
+      <g stroke="#0b1b26" stroke-width="1.6" fill="#5b73ff">
+        <circle cx="172" cy="122" r="6"/><circle cx="186" cy="116" r="6"/><circle cx="200" cy="124" r="6"/>
+        <circle cx="178" cy="136" r="6"/><circle cx="194" cy="138" r="6"/><circle cx="210" cy="136" r="5"/>
+      </g>
+      <path d="M160 130 C172 112 188 146 204 118 S218 134 224 126" fill="none" stroke="#ff8fa3" stroke-width="1.8"/>
+    </g>
+
+    <!-- the glucose sensor, fully on the coat -->
+    <g>
+      <circle cx="262" cy="114" r="11" fill="#e6edf2" stroke="#0b1b26" stroke-width="3"/>
+      <circle cx="262" cy="114" r="5" fill="#8ea0ff" stroke="none"/>
+      <path d="M278 104 q9 7 5 18 M288 98 q15 11 9 30" fill="none" stroke="#8ea0ff" stroke-width="2.5"/>
+    </g>
+    </g>
+  </g>
+
+  <!-- ===== steps 1 and 2: the cells, then the mice ===== -->
+  <g id="tr-dish">
+    <circle cx="76" cy="70" r="36" fill="#102a3b" stroke="#8ea0ff" stroke-width="3"/>
+    <circle cx="76" cy="70" r="27" fill="#8ea0ff" fill-opacity="0.14" stroke="#8ea0ff" stroke-opacity="0.5" stroke-width="1.5"/>
+    <g stroke="#0b1b26" stroke-width="2" fill="#5b73ff">
+      <circle cx="66" cy="64" r="8"/><circle cx="82" cy="60" r="8"/><circle cx="88" cy="76" r="8"/><circle cx="70" cy="80" r="8"/>
+      <circle cx="77" cy="70" r="9" fill="#e6edf2"/>
+    </g>
+  </g>
+  <path d="M120 70 H166" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round" marker-end="url(#tr-arrow)"/>
+  <g id="tr-mouse" stroke="#0b1b26" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M178 88 C168 92 160 84 164 76" fill="none" stroke="#e6edf2" stroke-width="3"/>
+    <ellipse cx="206" cy="80" rx="28" ry="19" fill="#e6edf2"/>
+    <circle cx="232" cy="72" r="13" fill="#e6edf2"/>
+    <circle cx="226" cy="58" r="7.5" fill="#e6edf2"/><circle cx="226" cy="58" r="3.6" fill="#f08a9d" stroke="none"/>
+    <circle cx="243" cy="76" r="3" fill="#0b1b26"/><circle cx="237" cy="69" r="2.2" fill="#0b1b26" stroke="none"/>
+    <path d="M196 64 q8 -6 16 0" fill="none" stroke="#c4cdd6" stroke-width="2"/>
+  </g>
+  <path d="M256 148 C 260 153, 266 157, 274 160" fill="none" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round" marker-end="url(#tr-arrow)"/>
+
+  <!-- ===== step 4: the chart ===== -->
+  <g id="tr-chart">
+    <rect x="426" y="14" width="196" height="92" rx="12" fill="#102a3b" stroke="#8ea0ff" stroke-opacity="0.45" stroke-width="2"/>
+    <text class="tr-chart__t" x="438" y="34" font-size="14" font-weight="600" fill="#e6edf2">Blood sugar</text>
+    <rect x="436" y="50" width="176" height="28" fill="#8ea0ff" fill-opacity="0.18"/>
+    <path d="M436 64 L452 42 L466 76 L480 46 L494 78 L504 50" fill="none" stroke="#f2a93b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M504 44 V90" stroke="#e6edf2" stroke-opacity="0.5" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <path d="M510 66 C530 60 546 70 566 64 S596 66 610 64" fill="none" stroke="#e6edf2" stroke-width="3.5" stroke-linecap="round"/>
+    <text class="tr-chart__t" x="438" y="98" font-size="12.5" fill="#a6b6c2">before</text>
+    <text class="tr-chart__t" x="574" y="98" font-size="12.5" fill="#a6b6c2">after</text>
+  </g>
+
+  <!-- ===== step 5: the safety switch ===== -->
+  <g id="tr-switch">
+    <circle cx="548" cy="330" r="30" fill="#102a3b" stroke="#f2a93b" stroke-width="3" stroke-dasharray="5 5"/>
+    <circle cx="548" cy="330" r="21" fill="#f2a93b" stroke="#0b1b26" stroke-width="3"/>
+    <path d="M548 318 V330" stroke="#0b1b26" stroke-width="4" stroke-linecap="round"/>
+    <path d="M539.5 322.5 A12 12 0 1 0 556.5 322.5" fill="none" stroke="#0b1b26" stroke-width="4" stroke-linecap="round"/>
+  </g>
+
+  <!-- ===== step 6: no injections ===== -->
+  <g id="tr-noinject">
+    <circle cx="76" cy="330" r="32" fill="#102a3b" stroke="#ff6b5e" stroke-width="5"/>
+    <g transform="translate(76 330) rotate(-38)" stroke="#0b1b26" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round">
+      <rect x="-20" y="-6" width="30" height="12" rx="3" fill="#e6edf2"/>
+      <rect x="-26" y="-10" width="6" height="20" rx="2" fill="#8ea0ff"/>
+      <path d="M-26 0 H-34" stroke="#e6edf2" stroke-width="4"/>
+      <path d="M10 0 H26" stroke="#e6edf2" stroke-width="2.6"/>
+      <rect x="-12" y="-3" width="16" height="6" rx="1.5" fill="#f2a93b" stroke="none"/>
+    </g>
+    <path d="M53 353 L99 307" stroke="#ff6b5e" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- leader lines to the implant and the sensor -->
+  <g stroke="#e6edf2" stroke-opacity="0.75" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M330 194 V228"/><path d="M402 160 V224"/>
+  </g>
+  <g fill="#e6edf2"><circle cx="330" cy="228" r="3.5"/><circle cx="402" cy="224" r="3.5"/></g>
+
+  <!-- ===== numbered labels ===== -->
+  <g font-size="15.5" font-weight="600" fill="#0b1b26">
+    <g class="tr-pill tr-pill--1"><rect class="tr-pill__bg" x="20" y="124" width="162" height="30" rx="15" fill="#f2a93b"/><g class="tr-badge"><circle cx="36" cy="139" r="11" fill="#0b1b26"/><text x="36" y="144.5" font-size="14" font-weight="700" text-anchor="middle" fill="#f2a93b">1</text></g><text class="tr-pill__t" x="54" y="144.5">Dog islet cells</text></g>
+    <g class="tr-pill tr-pill--2"><rect class="tr-pill__bg" x="192" y="116" width="136" height="30" rx="15" fill="#f2a93b"/><g class="tr-badge"><circle cx="208" cy="131" r="11" fill="#0b1b26"/><text x="208" y="136.5" font-size="14" font-weight="700" text-anchor="middle" fill="#f2a93b">2</text></g><text class="tr-pill__t" x="226" y="136.5">Mouse tests</text></g>
+    <g class="tr-pill tr-pill--3"><rect class="tr-pill__bg" x="254" y="164" width="140" height="30" rx="15" fill="#f2a93b"/><g class="tr-badge"><circle cx="270" cy="179" r="11" fill="#0b1b26"/><text x="270" y="184.5" font-size="14" font-weight="700" text-anchor="middle" fill="#f2a93b">3</text></g><text class="tr-pill__t" x="288" y="184.5">Cell implant</text></g>
+    <g class="tr-pill tr-pill--4"><rect class="tr-pill__bg" x="372" y="130" width="96" height="30" rx="15" fill="#f2a93b"/><g class="tr-badge"><circle cx="388" cy="145" r="11" fill="#0b1b26"/><text x="388" y="150.5" font-size="14" font-weight="700" text-anchor="middle" fill="#f2a93b">4</text></g><text class="tr-pill__t" x="406" y="150.5">Sensor</text></g>
+    <g class="tr-pill tr-pill--5"><rect class="tr-pill__bg" x="472" y="396" width="152" height="30" rx="15" fill="#f2a93b"/><g class="tr-badge"><circle cx="488" cy="411" r="11" fill="#0b1b26"/><text x="488" y="416.5" font-size="14" font-weight="700" text-anchor="middle" fill="#f2a93b">5</text></g><text class="tr-pill__t" x="506" y="416.5">Safety switch</text></g>
+    <g class="tr-pill tr-pill--6"><rect class="tr-pill__bg" x="20" y="396" width="152" height="30" rx="15" fill="#f2a93b"/><g class="tr-badge"><circle cx="36" cy="411" r="11" fill="#0b1b26"/><text x="36" y="416.5" font-size="14" font-weight="700" text-anchor="middle" fill="#f2a93b">6</text></g><text class="tr-pill__t" x="54" y="416.5">No injections</text></g>
+  </g>
+</svg>
+
+<style>
+  .terrier {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  /* The tail wags a few times when the picture scrolls into view (a script adds is-wagging), for about two seconds. */
+  .tr-tail {
+    transform-box: fill-box;
+    transform-origin: 100% 100%;
+  }
+  :global(.is-wagging) .tr-tail {
+    animation: tr-wag 0.5s ease-in-out 4;
+  }
+  @keyframes tr-wag {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    30% {
+      transform: rotate(-9deg);
+    }
+    70% {
+      transform: rotate(11deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    :global(.is-wagging) .tr-tail {
+      animation: none;
+    }
+  }
+
+  /* On a narrow screen the words are too small to read, so the stickers shrink to bold numbers; the list below the picture carries the words.
+     The page wraps this picture in a box named figure-dog. */
+  @container figure-dog (max-width: 30rem) {
+    .tr-pill__bg,
+    .tr-pill__t,
+    .tr-chart__t {
+      display: none;
+    }
+    .tr-badge {
+      transform-box: fill-box;
+      transform-origin: center;
+      transform: scale(2.1);
+    }
+    /* with the words gone, each number moves to sit beside the thing it points at */
+    .tr-pill--1 .tr-badge {
+      translate: 40px 0;
+    }
+    .tr-pill--3 .tr-badge {
+      translate: 60px 0;
+    }
+    .tr-pill--4 .tr-badge {
+      translate: 14px 0;
+    }
+    .tr-pill--5 .tr-badge {
+      translate: 60px 0;
+    }
+    .tr-pill--6 .tr-badge {
+      translate: 40px 0;
+    }
+  }
+</style>

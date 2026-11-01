@@ -1,0 +1,285 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { contact, social, issuesUrl } from '../data/site';
+
+const mail = (subject: string) => `mailto:${contact.email}?subject=${encodeURIComponent(subject)}`;
+
+// Three ways to reach us, in the order we would like people to use them.
+const routes = [
+  {
+    id: 'email',
+    name: 'By email',
+    handle: contact.email,
+    href: mail('Hello OpenIslet'),
+    text: 'For anything private, and for anything else. We use your address only to reply.',
+  },
+  {
+    id: 'x',
+    name: 'On X',
+    handle: social.x.handle,
+    href: social.x.url,
+    text: 'For news, and for questions that anyone can see the answer to. Please do not send private details here.',
+  },
+  {
+    id: 'github',
+    name: 'On GitHub',
+    handle: 'Open an issue',
+    href: issuesUrl,
+    text: 'For mistakes, questions and ideas that anyone can read and reply to. Please do not post private details.',
+  },
+];
+
+// Four kinds of message, so the rows of cards are even (four, two or one).
+const topics = [
+  {
+    title: 'Something looks wrong',
+    text: 'A mistake in the blueprint, a wrong number, a broken page or a link that goes nowhere. Tell us the page and what you saw.',
+    subject: 'Something looks wrong on OpenIslet',
+    cta: 'Tell us what you saw',
+  },
+  {
+    title: 'A safety concern',
+    text: 'You think something here could put someone at risk, or could be read in a harmful way.',
+    subject: 'A safety concern about OpenIslet',
+    cta: 'Tell us your concern',
+  },
+  {
+    title: 'Please remove something',
+    text: 'Private information, content that is illegal or harmful, or a publisher or author who wants an excerpt changed or taken down. We log every removal publicly, with the reason.',
+    subject: 'Please remove something from OpenIslet',
+    cta: 'Tell us what and where',
+  },
+  {
+    title: 'Work with us',
+    text: 'You are a researcher, a lab or an AI lab and want to build on the blueprint, test part of it, or write about it.',
+    subject: 'Working with OpenIslet',
+    cta: 'Say hello',
+  },
+];
+---
+
+<Layout
+  title="Contact"
+  description="How to reach a person at OpenIslet: email, X and GitHub, what to write to us about, and how we use your details."
+>
+  <section class="ct">
+    <div class="container">
+      <p class="eyebrow">Contact</p>
+      <h1 class="h1 ct__h">Reach a person</h1>
+      <p class="lead ct__lead">Write to us. Your message goes to a person. Pick the route that fits.</p>
+
+      <ul class="routes">
+        {
+          routes.map((r) => (
+            <li>
+              <a class="route" href={r.href} rel={r.id === 'email' ? undefined : 'noopener'} target={r.id === 'email' ? undefined : '_blank'}>
+                <span class="route__icon" aria-hidden="true">
+                  {r.id === 'email' && (
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                      <rect x="3" y="5" width="18" height="14" rx="2.5"></rect>
+                      <path d="m4 7.5 8 6 8-6"></path>
+                    </svg>
+                  )}
+                  {r.id === 'x' && (
+                    <svg viewBox="0 0 24 24" width="20" height="20" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
+                      ></path>
+                    </svg>
+                  )}
+                  {r.id === 'github' && (
+                    <svg viewBox="0 0 16 16" width="22" height="22" focusable="false">
+                      <path
+                        fill="currentColor"
+                        d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                      ></path>
+                    </svg>
+                  )}
+                </span>
+                <span class="route__name">{r.name}</span>
+                <span class="route__handle mono">{r.handle}</span>
+                <span class="route__text">{r.text}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2 class="h2 ct__sub" id="topics">What to write to us about</h2>
+      <ul class="topics">
+        {
+          topics.map((t) => (
+            <li class="topic">
+              <h3>{t.title}</h3>
+              <p>{t.text}</p>
+              <a class="textlink" href={mail(t.subject)}>{t.cta} →</a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="ct__two">
+        <section class="note">
+          <h2>What we can’t do</h2>
+          <p>
+            We can’t give medical advice or comment on anyone’s treatment. OpenIslet is a research design, not a medical product. If you have questions about your own diabetes, please talk to your care team.
+          </p>
+          <p>We can’t promise how quickly we will reply, but we do read what we are sent.</p>
+        </section>
+
+        <section class="note" id="privacy">
+          <h2>Your privacy</h2>
+          <ul>
+            <li>The Start here guide remembers which steps you have finished, in your own browser only. If you choose to submit an IIP, the form sends it to the OpenIslet connector (mcp.openislet.org) and then takes you to GitHub to sign in.</li>
+            <li>If you write to us, we use your email address only to reply. We don’t share it, and we don’t publish your message or your name without asking you first.</li>
+            <li>When IIPs can be submitted, signing in with GitHub shows us only your public profile: we ask for no email address and no access to your repositories. A name, ORCID iD or X handle is added only if you type one in, and we show it as you typed it, without checking it. Everything you submit is published openly, with your consent, under CC BY 4.0. While you sign in, your draft is held on our server for up to 24 hours so the sign-in can finish. If you do not finish, it is deleted. The optional “Check my files” button also sends your two files to our server to be checked; it posts nothing.</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .ct {
+    padding-block: clamp(3rem, 7vw, 5.5rem);
+  }
+  .ct__h {
+    max-width: 40rem;
+  }
+  .ct__lead {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+  }
+  .ct__sub {
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  /* Three routes: three across, then one. Never two and one. */
+  .routes {
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+  }
+  /* Each route is a link: plain words under a rule, which turns blue when the pointer is on it. */
+  .route {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    height: 100%;
+    padding-top: 1.25rem;
+    border-top: 3px solid var(--line-strong);
+    color: var(--ink);
+    text-decoration: none;
+    transition: border-color 0.15s ease;
+  }
+  .route:hover,
+  .route:focus-visible {
+    border-top-color: var(--accent);
+  }
+  .route:hover .route__name {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .route__icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.375rem;
+    border-radius: 50%;
+    background: var(--tint);
+    color: var(--accent-dk);
+  }
+  .route__name {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .route__handle {
+    color: var(--accent-dk);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+  .route__text {
+    margin-top: 0.25rem;
+    color: var(--body);
+  }
+
+  /* Four kinds of message: four across, then two, then one. */
+  .topics {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem 1.5rem;
+  }
+  .topic {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 1rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .topic h3 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .topic p {
+    flex: 1;
+    color: var(--body);
+    font-size: 0.96875rem;
+  }
+
+  .ct__two {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 3rem;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .note {
+    padding-top: 1.25rem;
+    border-top: 3px solid var(--line-strong);
+  }
+  .note h2 {
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .note p,
+  .note ul {
+    margin-top: 0.75rem;
+    color: var(--ink);
+  }
+  .note ul {
+    padding-left: 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 70rem) {
+    .topics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 48rem) {
+    .routes,
+    .ct__two {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 36rem) {
+    .topics {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

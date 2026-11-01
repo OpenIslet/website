@@ -1,0 +1,337 @@
+{
+  "source_manifest_sha256": "9257f9a9366521cf6fc1c2baed600afc21c52b7875acb13100078ef20605e5b3",
+  "source_ranking_sha256": "9766b41644100f685353fe7c27871c267ead2bab7cd296dc43032c2507c59c43",
+  "champion_challenger_portfolio": {
+    "slots": {
+      "A": {
+        "slot_id": "A",
+        "architecture_id": "ISLET1_CHASSIS_A_UNIVERSAL_LEAN_4LOCUS",
+        "role": "Lean Universal Off-the-Shelf Champion (K=4, B=0)",
+        "matched_combinatorial_search_id": "ALLO_B2M_HLAE_CD47_SWAP_CIITA_KO__AUTO_NONE__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+        "global_rank": 1,
+        "K": 4,
+        "B": 0,
+        "composite_series_system_utility": 0.1085,
+        "stage0_product_variant_ids": [
+          "ISLET1_A4_ARM1B",
+          "ISLET1_A_STAR_4LOCUS",
+          "ISLET1_A4_ARM1A"
+        ]
+      },
+      "B": {
+        "slot_id": "B",
+        "architecture_id": "ISLET1_CHASSIS_B_HLA_C_RETAINED_6LOCUS_HYPOTHESIS",
+        "role": "HLA-C-Retained KIR-Matched Superdonor Comparator (Scored Grid #25: K=6, B=1 ISLET1_B1_6LOCUS_TYK2_KO_INS [0.0673] + K=5, B=1 ISLET1_B2_5LOCUS_TYK2_PE counterfactual [0.0782 complexity-discount sensitivity with gate logits held fixed; 0.0724 dropping +0.25 Gate-2B INS credit; 0.0569 full AUTO_NONE with TYK2-KO Gate-1 penalty or 0.0629 with TYK2 P1104A WT-yield]; Promoted Unscored Stage-0 Molecular Plan B'-SCT: K=4, B=0 ISLET1_B_SCT_C1_CIITA / ISLET1_B_SCT_C2_CIITA / ISLET1_B_SCT_C1C2_CIITA [counterfactual 0.1085])",
+        "matched_combinatorial_search_id": "ALLO_HLA_C_RETAINED_SUPERDONOR_PLUS_TYK2_KO__AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+        "global_rank": 25,
+        "K": 6,
+        "B": 1,
+        "composite_series_system_utility": 0.0673,
+        "stage0_product_variant_ids": [
+          "ISLET1_B1_6LOCUS_TYK2_KO_INS",
+          "ISLET1_B2_5LOCUS_TYK2_PE",
+          "ISLET1_B_SCT_C1_CIITA",
+          "ISLET1_B_SCT_C2_CIITA",
+          "ISLET1_B_SCT_C1C2_CIITA",
+          "ISLET1_B_SCT_C1_CIITA_TYK2_PE",
+          "ISLET1_B_SCT_C2_CIITA_TYK2_PE",
+          "ISLET1_B_SCT_C1C2_CIITA_TYK2_PE"
+        ]
+      },
+      "X": {
+        "slot_id": "X",
+        "architecture_id": "ISLET1_CHASSIS_X_EMERGENT_CHALLENGER",
+        "grid_alias": "X-grid (ISLET1_CHASSIS_X_CONSERVATIVE_BASE_EDIT_CHALLENGER)",
+        "role": "Highest-ranked feasible non-A/non-B grid challenger (K=4, B=1 conservative prime/base-edit challenger; exact utility tie at #2/#3 between #2 AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT + ER_NONE [K=4, B=1, discount = 0.9650] and #3 AUTO_NONE + ER_IAPP_PRAMLINTIDE_RNLS_WT [K=4, B=1, discount = 0.9650] at 0.10467791551016123 exact unrounded composite utility [0.10467792 8-dec; 0.1047 direct 4-dec; 0.1046 displayed via IEEE-754 binary64 cohort-rounded average round((0.1032 + 0.1061)/2, 4) = round(0.10464999999999999, 4) = 0.1046 (coinciding with exact-decimal half-even 0.10465 -> 0.1046, whereas literal binary64 round(0.10465, 4) = 0.1047)], resolved to #2 under reverse=True sort by the Gate-2B T1D autoantigen stealth priority tie-breaker for AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT while #3 ER_IAPP_PRAMLINTIDE_RNLS_WT serves as the Gate-4 ER/amyloid Pareto watchlist challenger, whereas K=5, B=0 AUTO_NONE + ER_RNLS_KO [discount = exp(-0.15) = 0.860708] ranks #9 at 0.08192907 [0.0819]); strictly distinct from off-grid Stage-0 molecular/biophysical Design X (K=4, B=0: ISLET1_A4_X_MOL_RNLS_WT, ISLET1_A4_DXS_ARM1C_L4CD47, ISLET1_A4_L3_BFB_BASALFLOOR, ISLET1_COMP_R4_X_BFB_DXB_LOWLOAD1500; L1B-F1 & L1B-F2)",
+        "evaluation_scope": "COMBINATORIAL_GRID_ONLY",
+        "molecular_proposal_included_in_score": false,
+        "matched_combinatorial_search_id": "ALLO_B2M_HLAE_CD47_SWAP_CIITA_KO__AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+        "global_rank": 2,
+        "K": 4,
+        "B": 1,
+        "composite_series_system_utility": 0.1046,
+        "modules": {
+          "allo_cloak": "B2M-ISRE::[EEF1A1-core+intron]-HLA-E*01:03(VMAPRTLVL)-GSG-P2A-CD47-IgV-GPI-WPREmut6 (or 2A-Free Bidirectional Arm 1B) + CIITA-/-",
+          "autoantigen_stealth": "Base-Edit of INS Signal Peptide (PPI) + Silent INS-DRiP AUG Removal",
+          "cytokine_and_granzyme_shield": "CXCL10::SERPINB9-GSG-tPT2A-PD-L1 (or CXCL10::PD-L1-P2A-SERPINB9 Endogenous CXCL10 KO + Inflammation-Inducible Swap-In)",
+          "er_stress_and_amyloid_shield": "No Intrinsic ER/Amyloid Gene Edit (Relies on Stage 7 Metabolic Maturation)",
+          "vascular_and_oxygen_niche": "Stage 7 Tri-Hormonal (60/30/10, <=120 um) + iEC Microvessels + 14d Pre-Vasc Pouch + 72h PDMS-CaO2/Catalase",
+          "safety_switch": "Biallelic AAVS1-[455bp HNRNPA2B1-proximal candidate (legacy CBX3-A2UCOE)]-EEF1A1-core-iCasp9 (or AAVS1-CAG-iCasp9 / GAPDH-P2A-iCasp9) Pan-Lineage Safe-Harbor Switch (1 locus)"
+        },
+        "triggered_graveyard_rules": [
+          {
+            "graveyard_id": "GRAVEYARD_009_RESTING_B2M_PROMOTER_HOUR0_INNATE_DENSITY_DEFICIT",
+            "severity_level": "WARN",
+            "evaluator_logit_delta": -0.2,
+            "evaluator_target_gate": "Gate3_Innate_NK_Macrophage_and_IBMIR_Shield",
+            "evaluator_disposition_rule": "Applies -0.20 logit discount in Gate 3 + requires Decision Experiment #1 QuantiBRITE gate",
+            "reason": "Requires QuantiBRITE Hour-0 verification that resting endogenous B2M promoter achieves inhibitory HLA-E and CD47 surface density on Stage 7 beta-cells and iECs (Han 2019 PMID:31040209; Hu 2023 PMID:37156915; Xu 2024 PMID:38508139; Lin 2023 PMID:37264229)."
+          },
+          {
+            "graveyard_id": "GRAVEYARD_010_MHC_NULL_INDIRECT_APC_BYSTANDER_BLINDSPOT",
+            "severity_level": "WARN",
+            "evaluator_logit_delta": -0.25,
+            "evaluator_target_gate": "Gate2B_Autoimmune_T1D_Memory_and_Indirect_APC_Stealth",
+            "evaluator_disposition_rule": "Applies -0.25 logit discount in Gate 2B + requires Decision Experiment #2 indirect APC / SA-FasL gate",
+            "reason": "Donor MHC loss does not block host APC presentation of shed autoantigens and alloantigens. An INS leader/DRiP edit does not remove other epitopes or establish indirect immune protection; the warning remains until exact-product assays qualify the residual hazard (PMID:28263308, PMID:36055241, PMID:35559682)."
+          }
+        ],
+        "stage0_molecular_product_variant_ids": [
+          "ISLET1_A4_X_MOL_RNLS_WT",
+          "ISLET1_A4_DXS_ARM1C_L4CD47",
+          "ISLET1_A4_L3_BFB_BASALFLOOR",
+          "ISLET1_COMP_R4_X_BFB_DXB_LOWLOAD1500"
+        ]
+      }
+    },
+    "blueprint_x_stage0_molecular_challenger_spec": {
+      "hypothesis_id": "ISLET1_X_STAGE0_MOLECULAR_HYPOTHESIS_K4_B0",
+      "distinct_from_grid_challenger": true,
+      "status": "UNMATERIALIZED_UNMEASURED_HYPOTHESIS",
+      "execution_supported": false,
+      "K": 4,
+      "B": 0,
+      "engineering_complexity_discount": 1,
+      "physical_manufacturing_yield": null,
+      "exact_donor_length_bp": null,
+      "packaged_length_bp": null,
+      "candidate_arithmetic_donor_length_derivation_bp": 4056,
+      "candidate_arithmetic_packaged_length_with_itrs_bp": 4346,
+      "fully_loaded_arm1x_donor_length_with_spa_maz4_and_20aa_l1_bp": 4225,
+      "fully_loaded_arm1x_packaged_length_with_itrs_bp": 4515,
+      "fully_loaded_arm1x_aav6_headroom_bp": 185,
+      "arm1x_part_sum_reconciliation": "Reconciles the two Arm 1X length figures across the architecture: (a) 4,056 bp donor (4,346 bp with 2x145 bp ITRs) is the promoter-swap-only core (3,974 bp Arm 1B - 148 bp Syn_5xISRE_minP + 230 bp Syn_3xISRE_CpGminP_230bp_sense); (b) 4,225 bp donor (4,515 bp packaged, +185 bp AAV6 headroom below 4,700 bp) is the fully loaded Arm 1X assembly incorporating the 154-bp non-palindromic SPA+spacer+MAZ4 sense terminator (+154 bp), 20-aa (G4S)4 L1 linker (+15 bp), and 4-nt S3 PAM+seed shield (+0 bp). In the 8-run (24-clone) 2^3 factorial, SPA+MAZ4 (+154 bp), 20-aa L1 (+15 bp), and 4-nt S3 shield are held fixed as common platform background across all 8 cells so W_P, W_D, and W_C remain orthogonal (AUDIT-REF & Q2-X1).",
+      "external_de_novo_test_candidate_status": "UNMATERIALIZED_STAGE0_PROPOSAL_AWAITING_DE_NOVO_SYNTHESIS (arithmetic donor derivation: 3,974 bp Arm 1B - 148 bp Syn_5xISRE_minP + 230 bp sense Syn_3xISRE_CpGminP_230bp_sense [or 230 bp EEF1A1_core comparator] = 4,056 bp promoter-only core / 4,225 bp fully loaded with 154-bp SPA+MAZ4 + 15-bp 20-aa L1; exact_donor_length_bp remains None until nucleotide sequence is materialized on disk)",
+      "resting_hlae_surface_density_molecules_per_cell": null,
+      "resting_cd47_surface_density_molecules_per_cell": null,
+      "composite_series_system_utility": null,
+      "off_grid_molecular_design_x_locus1_and_lamina_counterfactual_projection": {
+        "computation_mode": "LIVE_EVALUATOR_DERIVED",
+        "grid_champion_a_gate3_pediatric": 0.6364,
+        "grid_champion_a_composite_utility": 0.1085,
+        "off_grid_design_x_constitutive_hlae_gate3_pediatric_projection": 0.6813,
+        "off_grid_design_x_constitutive_hlae_composite_utility_projection": 0.1162,
+        "off_grid_design_x_constitutive_hlae_composite_utility_projection_exact_unrounded_inputs": 0.1161,
+        "unconditional_composite_utility_if_graveyard_009_retained": 0.1085,
+        "off_grid_projection_conditionality_status": "CONDITIONAL_ON_HOUR0_HLAE_15000_MOLECULES_PER_CELL_GATE_REMOVING_GRAVEYARD_009_MINUS_0P20_LOGIT",
+        "relative_composite_gain_over_champion_a_pct": 7.06,
+        "legacy_rounded_relative_composite_gain_pct_reference": 7.07,
+        "relative_composite_gain_over_champion_a_exact_unrounded_inputs_pct": 7.06,
+        "relative_composite_gain_from_4dec_gate3_ratio_pct": 7.06,
+        "derivation_note": "While the 2,160-stack grid evaluates fixed locus indicators (where X-grid = ISLET1_CHASSIS_X_CONSERVATIVE_BASE_EDIT_CHALLENGER has K=4, B=1, utility = 0.1046 [0.10467791551016123 exact unrounded / 0.10467792 8-dec / 0.1047 direct 4-dec; displayed as 0.1046 via IEEE-754 binary64 cohort-rounded average round((0.1032 + 0.1061)/2, 4) = round(0.10464999999999999, 4) = 0.1046 (coinciding with exact-decimal half-even 0.10465 -> 0.1046, whereas literal binary64 round(0.10465, 4) = 0.1047)]), off-grid molecular Design X (K=4, B=0, discount = 1.0000) replaces Arm 1B's resting-attenuated Syn_5xISRE_minP promoter (10,890 molecules/cell at Hour 0 [< 15,000 NKG2A threshold; 0.6050x WT 18,000], incurring the -0.20 resting NK vulnerability penalty on Gate 3) with constitutive HLA-E expression (Arm 1C promoter-trapped B2M::HLA-E SCT in DX-S or Arm 1A-lite EEF1A1_core) plus AAVS1::iCasp9-GSG-P2A-CD47-IgV-GPI and the 100 um PDMS-CaO2 lamina (eps = 0.42, <=100 um clusters). Removing the -0.20 Hour-0 resting HLA-E discount (GRAVEYARD_009; sigma(0.5598637 + 0.20) = 0.681324 vs 0.636421 while GRAVEYARD_010's -0.25 stays) increases Gate 3 pediatric survival from 0.6364 to 0.6813 (+4.49 pp) and lifts projected off-grid K=4, B=0 composite utility from 0.1085 (0.10847452 unrounded) to 0.1162 (0.1085 * 0.6813 / 0.6364 = 0.116155 from displayed 4-decimal inputs; 0.1161 [0.11612802] from exact unrounded evaluator inputs; exact relative gain is +7.06% [7.0556% unrounded / 7.0553% from 0.6813/0.6364; legacy +7.07% retained in legacy_rounded_relative_composite_gain_pct_reference]; strictly conditional on passing Decision Experiment #1 Hour-0 HLA-E >= 15,000 molecules/cell; unconditional baseline equals 0.1085; AUDIT-REF, D1-02, Q2-X4, AUDIT-REF, AUDIT-REF, AUDIT-REF, AUDIT-REF, AUDIT-REF, AUDIT-REF & L1B-F2)."
+      },
+      "genomic_budget": "Proposed K=4, B=0; utility discount 1 is not measured manufacturing yield",
+      "locus1_arm_1x_challenger": "Proposed bidirectional synthetic-promoter HLA-E/CD47 cassette with WT alpha3 Asp227/Thr228 conditional default (W_D = -1 in the 8-run 2^3 Stage-0 factorial) vs optional HLA-E mature-heavy-chain D227K/T228A CD8-null satellite coupon (W_D = +1; activated only if Gate 0A-NK SPR CD8 K_D > 1,000 uM, CD94/NKG2A K_D <= 2.5 uM, 0/6 CMV+ UL40 CTL donors > 5.0% lysis, and >= 80% CD8+ Treg suppression retention all pass) and CD47 mature-IgV C15G substitution. No exact Arm 1X donor ledger, structural qualification or expression measurement is available. CD8-null and improved surface-density function remain hypotheses.",
+      "seed_line_and_perigraft_shield": "Proposed genotype-selected seed line and spatial SA-THBD/SA-FHL-1 plus conditional SA-FasL/CXCL12 microgels. INS rs3842752 identity, allele direction and functional transfer require independent qualification; seed selection is not an editing event, but does not establish ER-stress or DRiP reduction.",
+      "gate5_annular_lamina_topology": "Layout B is a conditional Layer 4 geometry scenario. Its simulated oxygen values do not validate this molecular product or change the grid score; use the regenerated Layer 4 artifact for scenario parameters and numerical outputs.",
+      "pending_assay_gates": [
+        "Exact nucleotide and edited-allele ledger",
+        "Lineage-specific expression and HLA-E receptor function",
+        "INS allele/function qualification",
+        "Spatial immune and complement assays",
+        "Matched physical oxygen and viability qualification"
+      ],
+      "stage0_arm1x_2cubed_deconfounding_subdesign": {
+        "design_id": "STAGE0_ARM1X_2CUBED_COMPONENT_DECONFOUNDING_FACTORIAL",
+        "runs": 8,
+        "clones_per_run": 3,
+        "total_clonal_evaluations": 24,
+        "external_unmodified_3974bp_arm1b_reference_control_clones": 3,
+        "fixed_platform_background_across_all_8_cells": "154-bp SPA+spacer+MAZ4 sense pause/terminator + 20-aa (G4S)4 L1 linker + 4-nt S3 PAM+seed silent shield (anchored against 3 parallel clones of unmodified 3,974 bp canonical Arm 1B so the +169 bp platform shift is directly measured; AUDIT-REF)",
+        "factors_coded_minus1_plus1": {
+          "W_P": "-1 = Syn_5xISRE_minP_148bp (Arm 1B / Embodiment A* baseline, 4,143 bp donor background; represented in the product registry by materialized ISLET1_A4_X_MOL_RNLS_WT) vs +1 = Syn_3xISRE_CpGminP_230bp_sense (unmaterialized Arm 1X hybrid constitutive-floor sense promoter challenger, 4,056 bp promoter-only core / 4,225 bp fully loaded donor; optional constitutive EEF1A1_core_230 sense comparator)",
+          "W_D": "-1 = HLA-E WT alpha3 D227/T228 vs +1 = HLA-E alpha3 D227K/T228A CD8-null substitution",
+          "W_C": "-1 = CD47 WT Cys15 vs +1 = CD47 C15G (C33G precursor) free-thiol substitution"
+        },
+        "orthogonal_variance_multiplier_in_plus_minus_1_coding": 0.125,
+        "full_contrast_2beta_variance_multiplier": 0.5,
+        "main_effect_and_interaction_se_pp_at_sigma_run_4p6188": 1.633,
+        "main_effect_and_interaction_mde_80pct_power_two_sided_alpha05_df13_pp": 4.95,
+        "full_biological_contrast_2beta_se_pp_at_sigma_run_4p6188": 3.266,
+        "full_biological_contrast_2beta_mde_80pct_power_two_sided_alpha05_df13_pp": 9.9,
+        "two_batch_hip_core_matched_sigma_run_pp": 5.4314,
+        "main_effect_and_interaction_se_pp_at_two_batch_sigma_run_5p4314": 1.9203,
+        "main_effect_and_interaction_mde_80pct_power_two_sided_alpha05_df16_at_5p4314_pp": 5.82,
+        "main_effect_mde_exact_df16_noncentral_t_at_5p4314_pp": 5.7312,
+        "full_biological_contrast_2beta_se_pp_at_two_batch_sigma_run_5p4314": 3.8406,
+        "full_biological_contrast_2beta_mde_80pct_power_two_sided_alpha05_df16_at_5p4314_pp": 11.64,
+        "full_biological_contrast_2beta_mde_exact_df16_noncentral_t_at_5p4314_pp": 11.4624,
+        "standalone_two_sided_power_for_5pp_full_contrast_at_n8_two_batch": 0.2558,
+        "standalone_two_sided_power_exact_df16_noncentral_t_for_5pp_full_contrast": 0.2318,
+        "standalone_two_sided_power_approximation_note": {
+          "exact_df16_noncentral_t_power": 0.2318,
+          "normal_approx_power_unrounded_sigma_run_sqrt_177_over_6_5p431390": 0.2558,
+          "normal_approx_power_3dec_z_rounded_minus0p658": 0.2558,
+          "normal_approx_power_rounded_sigma_run_5p43_exact": 0.2559,
+          "normal_approx_power_rounded_sigma_run_5p43": 0.2559,
+          "noncentrality_parameter_delta_5pp_over_3p840573": 1.301889,
+          "clone_only_sigma_eps_zero_sigma_run_sqrt_64_over_3_pp": 4.6188,
+          "single_batch_with_assay_residual_sigma_run_sqrt_113_over_3_pp": 6.1373,
+          "note": "Reconciles the power and variance-component figures: 0.2318 is the exact df = 16 two-sided noncentral-t power at alpha = 0.05 (t_crit = 2.119905, delta = 5.0 / sqrt(177/12) = 1.301889), 0.2558 (0.255779 unrounded; 0.255815 at 3-decimal z-rounding 1.302 - 1.960 = -0.658) is the standard normal approximation at unrounded sigma_run = sqrt(177/6) = 5.431390 pp, 0.2559 (0.255905) is the exact normal approximation at 2-decimal rounded sigma_run = 5.43 pp, and sigma_run = 4.6188 pp (sqrt(64/3)) is the clone-only (sigma_eps = 0) lower-bound reference whereas a single batch with sigma_eps = 7.0 pp has sigma_run = sqrt(113/3) = 6.1373 pp (half-effect SE = 2.1699 pp, full-contrast SE = 4.3397 pp; AUDIT-REF, AUDIT-REF & AUDIT-REF)."
+        },
+        "clones_per_cell_required_for_standalone_80pct_power_on_5pp_full_contrast": 15,
+        "clones_per_cell_if_batch_and_assay_residual_omitted": 9,
+        "clones_per_cell_exact_power_at_r9_under_two_batch_variance_model": 0.603,
+        "clones_per_cell_required_for_exact_80pct_power_under_two_batch_variance": 15,
+        "clones_per_cell_exact_power_at_r15_df112_under_two_batch_variance_model": 0.8228,
+        "arm1x_tier_endpoint_role_distinction": {
+          "tier1_r3_molecular_screen_24_clones": "r = 3 clones/cell (24 factorial clones + 3 unmodified 3,974-bp Arm 1B controls + 3 mandatory 15-aa L1 controls = 30 clones) serves as the Stage-0 molecular-endpoint screen for high-SNR biochemical readouts (W_P: QuantiBRITE Hour-0 HLA-E >= 15,000 molecules/cell; W_D: recombinant CD8alpha/beta SPR K_D > 1,000 uM; W_C: DTNB/maleimide-PEG2-biotin free-thiol elimination & SIRPa avidity).",
+          "tier2_r15_functional_lysis_confirmation": "r = 15 clones/cell (df = 112, 82.28% exact noncentral-t power at two-batch sigma_run = 5.4314 pp) is required only for standalone 5.0-pp functional immune-evasion / lysis contrast confirmation on surviving parsimonious sub-combinations (AUDIT-REF).",
+          "external_control_pairwise_two_sample_se_note": "Note on contrast topology (AUDIT-REF & AUDIT-REF): because sigma_run(r)^2 = (64 + 49/2)/r = 88.5 / r already divides by the within-cell clone count r, SE(2*beta_j) = sqrt(88.5 / (2*r)) = 3.8406 pp at r = 3 (df = 16, 23.18% power) or 1.7176 pp at r = 15 (df = 112, 82.28% power) applies to each orthogonal 4-cell vs 4-cell main/interaction contrast within the 2^3 factorial, whereas pairwise two-sample comparisons between a single factorial cell (r_cell clones) and an external reference arm (r_ctrl clones of unmodified 3,974-bp Arm 1B or canonical 15-aa L1) have SE_pairwise = sqrt(sigma_run(r_cell)^2 + sigma_run(r_ctrl)^2) = sqrt(88.5 * (1/r_cell + 1/r_ctrl)): at r_cell = r_ctrl = 3, SE_pairwise = sqrt(88.5 * 2/3) = 7.6811 pp (two-sample t df = 4, power = 8.04% for 5.0 pp); at r_cell = 15 with r_ctrl = 3, SE_pairwise = sqrt(88.5 * (1/15 + 1/3)) = 5.9498 pp (df = 16, power = 12.41%); and if the external reference arm is co-expanded to r_ctrl = 15 alongside r_cell = 15, SE_pairwise = sqrt(88.5 * 2/15) = 3.4351 pp (df = 28, exact noncentral-t power = 29.01% [0.290119; 29.07% is an earlier approximation]; AUDIT-REF)."
+        },
+        "matched_l1_linker_15aa_vs_20aa_satellite_contrast": "MANDATORY Stage-0 satellite arm (3 clones of 4,128-bp Arm 1B + SPA+MAZ4 + S3 with canonical 15-aa L1=(G4S)3 vs 3 clones of 4,143-bp L1-Run 1 with 20-aa L1=(G4S)4, plus 3 clones on the promoted W_P/W_D/W_C background at 4,210 bp vs 4,225 bp) to deconfound the +15-bp 20-aa L1=(G4S)4 linker extension from the +154-bp SPA+MAZ4 terminator shield and adopt L1=(G4S)4 as the default platform linker across A*, B-prime, and X unless 15-aa achieves >= 20-aa Hour-0 HLA-E density and NKG2A+ protection (AUDIT-REF & AUDIT-REF).",
+        "mandatory_satellite_status": "MANDATORY_STAGE0_LINKER_DECONFOUNDING_CONTROL",
+        "estimand_scale_reconciliation_note": "In {-1, +1} coding, beta_j = (mu_{+1} - mu_{-1}) / 2 is the regression half-effect (Var(beta_j) = sigma_run^2 / 8 = 0.125 * sigma_run^2, SE = 1.6330 pp single-batch / 1.9203 pp two-batch, MDE_80%(beta_j) = 4.95 pp [df=13] / 5.7312 pp exact df=16 noncentral-t [5.82 pp conservative df=13 multiplier]), whereas the full biological level difference Delta_j = mu_{+1} - mu_{-1} = 2 * beta_j has Var(2*beta_j) = sigma_run^2 / 2 = 0.500 * sigma_run^2, SE(2*beta_j) = 3.2660 pp single-batch / 3.8406 pp two-batch, and MDE_80%(2*beta_j) = 9.90 pp (df=13) / 11.4624 pp exact df=16 noncentral-t (11.64 pp conservative df=13 multiplier). A +5.0 pp full contrast corresponds to beta_j = +2.50 pp (23.18% exact df=16 noncentral-t / 25.58% normal-approx standalone two-sided power at r=3 clones/cell [N=8 runs, delta = 5.0 / 3.840573 = 1.301889]; under sigma_run^2(r) = 64/r + 49/(2r) with df = 8(r-1), r = 9 clones/cell yields SE(2*beta_j) = 2.2174 pp and 60.30% power, while r = 15 clones/cell [SE(2*beta_j) = 1.7176 pp, df = 112] achieves 82.28% >= 80% standalone power; AUDIT-REF, AUDIT-REF, & AUDIT-REF).",
+        "hierarchical_parsimony_promotion_rule": "Promote the full 3-change Arm 1X (+1, +1, +1) only if each positive factor improves its target readout (W_P: resting Hour-0 HLA-E >= 15,000 molecules/cell; W_D: CD8alpha/beta SPR KD > 1,000 uM without ER export loss; W_C: free-thiol elimination and SIRPa avidity) without degrading any co-primary gate; otherwise promote the highest-scoring parsimonious sub-combination (closing AUDIT-REF, AUDIT-REF, & AUDIT-REF).",
+        "locus3_w_bf_basal_floor_2arm_satellite": {
+          "satellite_id": "STAGE0_LOCUS3_W_BF_BASAL_FLOOR_2ARM_SATELLITE",
+          "n_arms": 2,
+          "clones_per_arm": 3,
+          "total_clones": 6,
+          "arms": {
+            "W_BF_minus1_pure_inducible_dxl3_3799bp": "ISLET1_A4_L3_SCARFREE_3799 (3,799-bp scar-free dual-promoter CXCL10::SERPINB9 + Syn_5xISRE_minP->PD-L1)",
+            "W_BF_plus1_basal_floor_l3_bfb_4078bp": "ISLET1_A4_L3_BFB_BASALFLOOR (4,078-bp donor / 4,368-bp packaged: 49-bp SPA + 230-bp basal-floor promoter -> scar-free SERPINB9 + 82-bp pause + Syn_5xISRE_minP -> PD-L1)"
+          },
+          "decision_experiment_3_split": {
+            "DECISION_EXP_3A_2A_STUB_PROTEIN_QUALITY": "Compares canonical 4,090-bp SERPINB9-GSG-P2A-PD-L1 against scar-free 3,799-bp DX-L3 for SERPINB9 half-life (t1/2 >= 6 h) and Granzyme B k_ass (>= 5.0e5 M^-1 s^-1).",
+            "DECISION_EXP_3B_HOUR0_KINETIC_RACE_AND_BASAL_FLOOR": "Compares pure-inducible DX-L3 (3,799 bp) against basal-floor L3-BF-B (4,078 bp) in a 4-h unstimulated Hour-0 perforin/Granzyme B race (requiring [SERPINB9]_0 >= 0.30 uM, 4-h Annexin-V+ <= 15%, and 24-h IFN-g [SERPINB9]_24 >= 0.80 uM; Gate 0C-kinetic & Rule S1)."
+          }
+        }
+      }
+    }
+  },
+  "version": "v0.8.0",
+  "date": "2026-11-01",
+  "counts": {
+    "studies": 563,
+    "arms": 592,
+    "findings": 3093,
+    "designs": 2160,
+    "feasible": 480,
+    "blocked": 1680,
+    "graveyardRules": 10,
+    "pinnedFiles": 1351,
+    "constructs": 4,
+    "dnaChanges": null,
+    "experimentalStructures": 10,
+    "predictedStructures": 2,
+    "proteinPairs": 4,
+    "guides": 5,
+    "virtualPatients": 10000
+  },
+  "designs": [
+    {
+      "id": "A",
+      "rank": 1,
+      "edits": 4,
+      "baseEdits": 0,
+      "composite": 0.1085,
+      "children": 0.107,
+      "adults": 0.11,
+      "weakestTest": "3",
+      "tests": {
+        "1": 0.7011,
+        "3": 0.6364,
+        "4": 0.698,
+        "5": 0.7269,
+        "2A": 0.6646,
+        "2B": 0.7108
+      }
+    },
+    {
+      "id": "X",
+      "rank": 2,
+      "edits": 4,
+      "baseEdits": 1,
+      "composite": 0.1046,
+      "children": 0.1032,
+      "adults": 0.1061,
+      "weakestTest": "3",
+      "tests": {
+        "1": 0.7011,
+        "3": 0.6364,
+        "4": 0.698,
+        "5": 0.7269,
+        "2A": 0.6646,
+        "2B": 0.7108
+      }
+    },
+    {
+      "id": "B",
+      "rank": 25,
+      "edits": 6,
+      "baseEdits": 1,
+      "composite": 0.0673,
+      "children": 0.0664,
+      "adults": 0.0683,
+      "weakestTest": "2A",
+      "tests": {
+        "1": 0.6369,
+        "3": 0.642,
+        "4": 0.698,
+        "5": 0.7269,
+        "2A": 0.6354,
+        "2B": 0.7043
+      }
+    },
+    {
+      "id": "UP421",
+      "rank": 246,
+      "edits": 3,
+      "baseEdits": 0,
+      "composite": 0.0173,
+      "children": 0.0158,
+      "adults": 0.0188,
+      "weakestTest": "5",
+      "tests": {
+        "1": 0.5921,
+        "3": 0.6228,
+        "4": 0.3659,
+        "5": 0.2994,
+        "2A": 0.6237,
+        "2B": 0.6271
+      }
+    },
+    {
+      "id": "VCTX210",
+      "rank": 378,
+      "edits": 3,
+      "baseEdits": 0,
+      "composite": 0.0078,
+      "children": 0.0071,
+      "adults": 0.0086,
+      "weakestTest": "5",
+      "tests": {
+        "1": 0.4875,
+        "3": 0.3659,
+        "4": 0.5671,
+        "5": 0.2227,
+        "2A": 0.505,
+        "2B": 0.6271
+      }
+    },
+    {
+      "id": "VX264",
+      "rank": 460,
+      "edits": 0,
+      "baseEdits": 0,
+      "composite": 0.0023,
+      "children": 0.0021,
+      "adults": 0.0026,
+      "weakestTest": "5",
+      "tests": {
+        "1": 0.4875,
+        "3": 0.4875,
+        "4": 0.3659,
+        "5": 0.2227,
+        "2A": 0.3775,
+        "2B": 0.2891
+      }
+    }
+  ],
+  "variance": {
+    "assumptions": 97.16,
+    "overlap": 2.7,
+    "findings": 0.14
+  }
+}

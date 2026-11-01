@@ -1,0 +1,279 @@
+---
+// "Realistic chance of working": four hurdles, our estimate for each, and the two combined figures. All the numbers and the
+// per-hurdle wording live in src/data/success-probability.json, so an update there changes the whole section.
+import { oddsGates, oddsSingle, oddsThree, oddsLastUpdated, wholePercent } from '../data/successProbability';
+import { longDate, pubmed } from '../data/site';
+import OddsArt from './odds/OddsArt.astro';
+
+const formula = (key: 'singleArmPct' | 'threeArmPct') => oddsGates.map((g) => `${g[key]}%`).join(' × ');
+const results = [
+  { id: 'one', label: 'One design on its own, first try', sub: 'Design A', formula: formula('singleArmPct'), value: wholePercent(oddsSingle) },
+  { id: 'three', label: 'Three designs tested side by side', sub: 'Designs A, B and X', formula: formula('threeArmPct'), value: wholePercent(oddsThree) },
+];
+const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip chip--warn' } as const;
+---
+
+<section class="odds" id="odds">
+  <div class="container">
+    <p class="eyebrow">Odds</p>
+    <h2 class="h2">Realistic chance of working: how we estimate the odds</h2>
+    <p class="lead odds__lead">Nobody can know yet, so we show our working instead of one confident number. We split the question into four hurdles a design has to clear, give our best estimate for each, and multiply them together.</p>
+
+    <div class="odds__cards">
+      {
+        oddsGates.map((g) => (
+          <article class="odd">
+            <div class="odd__vis"><OddsArt id={g.id} /></div>
+            <div class="odd__head">
+              <p class="odd__n">Hurdle {g.number}</p>
+              <span class={chipClass[g.badgeKind]}>{g.badge}</span>
+            </div>
+            <h3 class="odd__t">{g.title}</h3>
+            <ul class="odd__est">
+              <li>
+                <span class="odd__lab">One design</span>
+                <strong class="mono odd__pct">{g.singleArmPct}%</strong>
+                <span class="bar odd__bar" aria-hidden="true"><span style={`width:${g.singleArmPct}%`}></span></span>
+              </li>
+              <li>
+                <span class="odd__lab">Three side by side</span>
+                <strong class="mono odd__pct">{g.threeArmPct}%</strong>
+                <span class="bar odd__bar odd__bar--three" aria-hidden="true"><span style={`width:${g.threeArmPct}%`}></span></span>
+              </li>
+            </ul>
+            <p class="odd__plain pretty">{g.plain}</p>
+            <p class="odd__ev footnote">
+              {g.evidence}
+              {g.pmid && <> <a href={pubmed(g.pmid)} target="_blank" rel="noopener">PMID {g.pmid}</a></>}
+              {g.next && <span class="odd__next">{g.next}</span>}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="card odds__sum">
+      <h3 class="h3">Putting the four hurdles together</h3>
+      <div class="odds__results">
+        {
+          results.map((r) => (
+            <div class="res">
+              <p class="res__k"><strong>{r.label}</strong> <span>{r.sub}</span></p>
+              <p class="res__big mono"><span class="res__about">about</span> {r.value}%</p>
+              <span class="bar res__bar" aria-hidden="true"><span style={`width:${r.value}%`}></span></span>
+              <p class="res__formula mono">{r.formula}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="odds__rule">Chance of getting past every hurdle = hurdle 1 × hurdle 2 × hurdle 3 × hurdle 4.</p>
+
+      <div class="notes">
+        <p><strong>What these numbers are.</strong> Our own estimates, made by the blueprint team and informed by the published trial results. They are not lab results, and they do not say whether any one person would be cured.</p>
+        <p><strong>Why three designs.</strong> The side-by-side figure is for advancing three distinct designs in parallel.</p>
+        <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank designs against each other. They are not percentages, and they are not these odds.</p>
+        <p><strong>Updated as results arrive.</strong> We change these estimates as new human trial data and OpenIslet lab results come in. Last updated {longDate(oddsLastUpdated)}.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .odds {
+    /* The next section (the gene edits) has its own top padding on the same background, so this end is left open. */
+    padding-block: clamp(3rem, 6vw, 5rem) 0;
+    scroll-margin-top: calc(var(--bar, 3.5rem) + 0.75rem);
+  }
+  .odds__lead {
+    margin-top: 0.875rem;
+    max-width: 46rem;
+  }
+  /* four columns on a wide screen, two on a medium one, one on a phone: never an uneven last row. The picture is the only panel. */
+  .odds__cards {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem 1.75rem;
+  }
+  @media (min-width: 40em) {
+    .odds__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 75em) {
+    .odds__cards {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .odd {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .odd__vis {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .odd__vis :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 10.5rem;
+    height: auto;
+  }
+  .odd__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.375rem 0.75rem;
+  }
+  .odd__n {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .odd__t {
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .odd__est {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .odd__est li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.125rem 0.75rem;
+  }
+  .odd__lab {
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .odd__pct {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    text-align: right;
+  }
+  .odd__bar {
+    grid-column: 1 / -1;
+    height: 0.625rem;
+  }
+  .odd__bar--three > span {
+    background: #6b7c88;
+  }
+  .odd__plain {
+    font-size: 0.96875rem;
+    color: var(--body);
+  }
+  .odd__ev {
+    margin-top: 0.25rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line-soft);
+  }
+  .odd__next {
+    display: block;
+    margin-top: 0.375rem;
+    color: var(--body);
+    font-weight: 600;
+  }
+
+  .odds__sum {
+    margin-top: 2.5rem;
+  }
+  /* The two results are plain columns with a hairline between them, not boxes inside the panel. */
+  .odds__results {
+    margin-top: 1.25rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  @media (min-width: 48em) {
+    .odds__results {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .res + .res {
+      padding-left: 1.5rem;
+      border-left: 1px solid var(--line);
+    }
+  }
+  @media (max-width: 47.99em) {
+    .res + .res {
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+  }
+  .res__k {
+    font-size: 1rem;
+  }
+  .res__k span {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .res__big {
+    margin-top: 0.5rem;
+    font-size: clamp(2.125rem, 4.4vw, 2.875rem);
+    line-height: 1.05;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .res__about {
+    font-size: 1rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+  .res__bar {
+    display: block;
+    margin-top: 0.75rem;
+  }
+  .res__formula {
+    margin-top: 0.625rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+    overflow-wrap: anywhere;
+  }
+  .odds__rule {
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .notes {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.875rem 2rem;
+  }
+  @media (min-width: 48em) {
+    .notes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .notes p {
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .notes strong {
+    color: var(--ink);
+  }
+
+  /* printing the specification leaves the page's other sections out */
+  @media print {
+    .odds {
+      display: none !important;
+    }
+  }
+</style>

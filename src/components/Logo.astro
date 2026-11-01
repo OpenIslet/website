@@ -1,0 +1,23 @@
+---
+// Three circles sized 60 : 30 : 10 by area, the engineered beta : alpha : delta mix.
+interface Props {
+  size?: number;
+  tone?: 'light' | 'dark';
+}
+const { size = 32, tone = 'light' } = Astro.props;
+const c =
+  tone === 'light'
+    ? { big: '#0B1B26', mid: '#2A3FD6', ring: '#0B1B26', edge: '#FFFFFF' }
+    : { big: '#E6EDF2', mid: '#8EA0FF', ring: '#E6EDF2', edge: '#0B1B26' };
+---
+
+<svg
+  viewBox="0 0 34 34"
+  aria-hidden="true"
+  focusable="false"
+  style={`width:${size / 16}rem;height:${size / 16}rem;flex:none`}
+>
+  <circle cx="14" cy="19" r="11" fill={c.big}></circle>
+  <circle cx="25.5" cy="10" r="7.8" fill={c.mid} stroke={c.edge} stroke-width="1.5"></circle>
+  <circle cx="26" cy="26" r="4.5" fill={c.edge} stroke={c.ring} stroke-width="2"></circle>
+</svg>

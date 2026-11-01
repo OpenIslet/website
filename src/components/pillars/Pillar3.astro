@@ -1,0 +1,60 @@
+---
+// Design scoring: most designs are ruled out by the Idea Graveyard, and the rest are scored on the five tests.
+// The share that survives comes from the release numbers. The scores themselves are not drawn here.
+import { release } from '../../data/site';
+
+const cols = 10;
+const rows = 4;
+const size = 16;
+const gap = 6;
+const x0 = 13;
+const y0 = 14;
+const total = cols * rows;
+const surviving = Math.max(3, Math.round(total * ((release.counts.designs - release.counts.blocked) / release.counts.designs)));
+
+// A fixed scatter of the tiles that survive, so the picture is the same on every build.
+let seed = 7;
+const rand = () => {
+  seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+  return seed / 4294967296;
+};
+const alive: number[] = [];
+while (alive.length < surviving) {
+  const i = Math.floor(rand() * total);
+  if (!alive.includes(i)) alive.push(i);
+}
+
+const tiles = Array.from({ length: total }, (_, i) => ({
+  x: x0 + (i % cols) * (size + gap),
+  y: y0 + Math.floor(i / cols) * (size + gap),
+  alive: alive.includes(i),
+  lead: i === alive[0],
+  second: i === alive[1],
+}));
+---
+
+<svg viewBox="0 0 240 110" role="img" aria-label="A grid of designs. Most are crossed out because they include an idea our rules block. A few remain to be scored on the five tests.">
+  {
+    tiles.map((t) =>
+      t.alive ? (
+        <g>
+          <rect x={t.x} y={t.y} width={size} height={size} rx="4" fill="#5b73ff" stroke="#0b1b26" stroke-width="2"></rect>
+          {t.lead && <rect x={t.x - 3} y={t.y - 3} width={size + 6} height={size + 6} rx="6" fill="none" stroke="#f2a93b" stroke-width="2.5"></rect>}
+          {t.second && <rect x={t.x - 3} y={t.y - 3} width={size + 6} height={size + 6} rx="6" fill="none" stroke="#e6edf2" stroke-width="2"></rect>}
+        </g>
+      ) : (
+        <g>
+          <rect x={t.x} y={t.y} width={size} height={size} rx="4" fill="#13293a" stroke="#8ea0ff" stroke-opacity="0.3" stroke-width="1.5"></rect>
+          <path
+            d={`M${t.x + 4.5} ${t.y + 4.5} L${t.x + size - 4.5} ${t.y + size - 4.5} M${t.x + size - 4.5} ${t.y + 4.5} L${t.x + 4.5} ${t.y + size - 4.5}`}
+            stroke="#8ea0ff"
+            stroke-opacity="0.4"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            fill="none"
+          ></path>
+        </g>
+      ),
+    )
+  }
+</svg>
