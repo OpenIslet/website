@@ -6,7 +6,7 @@
 import type { APIRoute } from 'astro';
 import * as spec from '../content/blueprint-spec.md';
 import { fillTokens } from '../data/specTokens';
-import { release, longDate, pubmed } from '../data/site';
+import { release, longDate, pubmed, repo, repoFile, fullBlueprintUrl, technicalSources } from '../data/site';
 import { rules } from '../data/graveyard';
 import { draft, cadence } from '../data/versions';
 import references from '../data/references.json';
@@ -52,7 +52,12 @@ const graveyard = rules
 // ---- the open questions ----
 const openQuestions = (questions as { id: string; title: string; plain: string; settle: string; tests: string[]; designs: string[]; status: string }[])
   .filter((q) => q.status === 'open')
-  .map((q) => `- **${q.id}. ${q.title}** ${q.plain} To settle it: ${q.settle} (Tests: ${q.tests.join(', ')}. Designs: ${q.designs.join(', ')}.)`)
+  .map((q) => `- **${q.id}. ${q.title}** ${q.plain} To settle it: ${q.settle} (Tests: ${q.tests.join(', ')}. Designs: ${q.designs.join(', ')}.${q.source ? ` Where it comes from: ${q.source}.` : ''})`)
+  .join('\n');
+
+// ---- the technical files, so nothing the pack names has to be hunted for ----
+const sources = technicalSources
+  .map((s) => `- ${s.part} (full blueprint section ${s.section}): [data file](${repoFile(s.data)}), [code](${repoFile(s.code)})`)
   .join('\n');
 
 const pack = `# OpenIslet starter pack
@@ -76,6 +81,13 @@ When you have read the pack, say "I have read the OpenIslet starter pack" and as
 
 If they want to help, or to submit an Islet Improvement Proposal (IIP), which is an idea to improve the blueprint written up in a standard draft and checked by a blind review, you lead the conversation. Do not wait for them to know the steps. Find out where they are (nothing yet, an idea, a draft, a draft and a review), say in a sentence or two what comes next, and ask one question at a time. The steps are on https://openislet.org/start: explore the blueprint with you; save a draft (the person pastes the draft prompt from step 3 into this chat); get a blind review in a fresh chat (they paste this pack there, then the review prompt); then send both through the form at https://openislet.org/submit, where they sign in with GitHub (they can create a free GitHub account on its sign-in screen). You cannot send it for them. Only a review whose verdict is Supported or Partly supported goes forward. Before they press the final button, tell them plainly what becomes public: the draft, the review, their GitHub name, and any optional name or handle they add.
 
+## Technical sources
+
+Everything in this pack comes from the open repository, ${repo.url}. If you can open web pages, read the file for the part you are checking. If you cannot, ask the person to open the link, download the file (the download button on its page) and attach it to the chat.
+
+- The full blueprint, every method and number: [ISLET-1-BLUEPRINT.md](${fullBlueprintUrl})
+${sources}
+
 ---
 
 # Part 1. The concise specification
@@ -98,7 +110,7 @@ ${graveyard}
 
 # Part 3. Open questions
 
-The known weak spots, so effort is not duplicated.
+The known weak spots, so effort is not duplicated. Each one says which section of the specification above it comes from. The files for that part are under Technical sources.
 
 ${openQuestions}
 `;

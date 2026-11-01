@@ -36,6 +36,22 @@ export const repo = {
 };
 export const issuesUrl = `${repo.url}/issues`;
 
+/** A file in the repository, as a direct link (the latest version on the main branch). */
+export const repoFile = (path: string): string => `${repo.url}/blob/main/${path}`;
+export const fullBlueprintUrl = repoFile('ISLET-1-BLUEPRINT.md');
+
+/**
+ * The technical files behind each part of the blueprint: the data file, the code that makes it, and the section of the full
+ * blueprint that explains it. The starter pack and the Start here guide both list these, so an AI that cannot search for a
+ * file, or a person who has to hand it over, is never left guessing the name or where it lives.
+ */
+export const technicalSources = [
+  { part: 'The DNA edits', section: '9.1', data: 'data/extracted/layer2_regulatory_and_perturbation_atlas.json', code: 'scripts/run_layer2_perturbation_and_regulatory_plane.py' },
+  { part: 'The proteins', section: '9.2', data: 'data/extracted/layer3_structural_verification_atlas.json', code: 'scripts/run_layer3_structural_binder_plane.py' },
+  { part: 'Oxygen and tissue', section: '9.3', data: 'data/extracted/layer4_tissue_and_metabolic_twin_atlas.json', code: 'scripts/run_layer4_tissue_and_metabolic_twin.py' },
+  { part: 'The simulated patients', section: '9.4', data: 'data/extracted/layer5_personalized_patient_and_crispr_atlas.json', code: 'scripts/run_layer5_personalized_patient_compiler.py' },
+] as const;
+
 /** How to reach a person. The address forwards to the project owner. The Contact page, footer and 404 page use it. */
 export const contact = {
   email: 'hello@openislet.org',

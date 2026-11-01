@@ -8,7 +8,7 @@ import McpMark from '../components/guide/McpMark.astro';
 import AssistantMark from '../components/guide/AssistantMark.astro';
 import { stepNames } from '../data/guide';
 import { cadence } from '../data/versions';
-import { mcpEndpoint, submissionsOpen, issuesUrl, release, longDate } from '../data/site';
+import { mcpEndpoint, submissionsOpen, issuesUrl, release, longDate, repo, fullBlueprintUrl } from '../data/site';
 import { gates } from '../data/gates';
 import { clients, checkedOn } from '../data/connect';
 import { checkPrompt, checkPromptPaste, explorePrompts, draftPrompt, reviewPrompt, submitPrompt, draftPreview } from '../data/prompts';
@@ -396,7 +396,8 @@ const tools: [string, string, string][] = [
                     <a class="btn btn--quiet btn--lg" href={packHref} download="openislet-starter-pack.md">Download it as a file</a>
                   </div>
                   <p class="pack__status" role="status" aria-live="polite" data-pack-status></p>
-                  <p class="do__fine">About 6,000 words: the blueprint, the Idea Graveyard and the open questions. It leaves out the {count(release.counts.studies)} studies behind them, so an AI that can search the web can look papers up, and the others will say so.</p>
+                  <p class="do__fine">About 7,000 words: the blueprint, the Idea Graveyard and the open questions. It leaves out the {count(release.counts.studies)} studies behind them, so an AI that can search the web can look papers up, and the others will say so.</p>
+                  <p class="do__fine">The files behind it are open on GitHub: <a href={repo.url} rel="noopener">the repository</a> and <a href={fullBlueprintUrl} rel="noopener">the full blueprint</a>. The pack lists the file for each part.</p>
                 </div>
               </li>
               <li>
@@ -425,6 +426,7 @@ const tools: [string, string, string][] = [
               <li><strong>The chat says my message is too long.</strong> Download the pack and attach it as a file instead, or try another AI.</li>
               <li><strong>The copy button says “Copy failed”.</strong> Some browsers block it. Use “Download it as a file” and attach the file to your chat.</li>
               <li><strong>Your AI doesn’t say it has read the pack, or its answers don’t sound like the blueprint.</strong> Make sure the pack was the first thing in the chat. You can also paste the check below.</li>
+              <li><strong>Your AI can’t open the website or GitHub.</strong> Open the link yourself, download the file (the download button on its page) and attach it to your chat. <a href={fullBlueprintUrl} rel="noopener">The full blueprint</a> has everything, and the pack lists the file for each part.</li>
               <li><strong>Still stuck?</strong> Ask your AI to help with your own screen, or <a href="/contact">write to us</a>.</li>
             </ul>
             <CopyBox label="Check what your AI read" hint="Paste it after the pack, in the same chat" text={checkPromptPaste} />
