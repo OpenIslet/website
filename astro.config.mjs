@@ -9,6 +9,9 @@ export default defineConfig({
   site: 'https://openislet.org',
   server: { port: 4321, host: false },
   devToolbar: { enabled: false },
+  // Astro 7 squeezes the HTML by default and drops the space between a sentence and a link or tag
+  // that starts on the next line ("in the open.Our goal"). Keeping the HTML as written keeps every space.
+  compressHTML: false,
   // After each build, writes the security headers (a strict Content-Security-Policy and friends) next to the pages.
   integrations: [securityHeaders()],
   // The connector, the X pack and the source assets are not part of the site. Keeping them out of the dev
