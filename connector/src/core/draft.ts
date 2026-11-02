@@ -196,7 +196,8 @@ export interface DraftReport {
 
 const optionMatch = (value: string | undefined, options: string[] | null | undefined): string | null => {
   if (!value || !options) return null;
-  const v = normalise(value);
+  // An AI often writes the choice in bold or italics (**Improvement**). The marks are not part of the choice, and the form already ignores them.
+  const v = normalise(value.replace(/[*_]/g, ''));
   return options.find((o) => v === normalise(o) || v.startsWith(`${normalise(o)} `) || v.startsWith(`${normalise(o)},`) || v.startsWith(`${normalise(o)}.`)) ?? null;
 };
 

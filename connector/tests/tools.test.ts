@@ -381,11 +381,13 @@ describe('open questions, layers and contributions', () => {
 
   it('lists contributions without links while the queue is closed', async () => {
     const r = await s.call('get_contributions');
-    expect(r.structuredContent?.total).toBe(1);
-    expect(r.structuredContent?.records[0]).toMatchObject({ id: 'IIP-0001', contributor: 'agent-kev', founding: true, public_issue: null });
+    // The founding record, and any real IIPs recorded since (the first outside one on 2 November 2026).
+    expect(r.structuredContent?.total).toBeGreaterThanOrEqual(1);
+    expect(r.structuredContent?.records.find((x: { id: string }) => x.id === 'IIP-0001')).toMatchObject({ id: 'IIP-0001', contributor: 'agent-kev', founding: true, public_issue: null });
+    for (const rec of r.structuredContent?.records ?? []) expect(rec.public_issue, rec.id).toBeNull();
     expect(r.text).toContain('Links to the public issues appear when the public queue opens');
     const open = await (await connect({ submissionsOpen: true })).call('get_contributions');
-    expect(open.structuredContent?.records[0].public_issue).toContain('/issues/1');
+    expect(open.structuredContent?.records.find((x: { id: string }) => x.id === 'IIP-0001').public_issue).toContain('/issues/1');
     expect((await s.call('get_contributions', { contributor: '@agent-kev' })).structuredContent?.total).toBe(1);
     expect((await s.call('get_contributions', { contributor: 'nobody' })).structuredContent?.total).toBe(0);
   });
@@ -396,7 +398,10 @@ describe('open questions, layers and contributions', () => {
     expect(found.text).toContain('Founding blueprint');
     const none = await s.call('get_submission_status', { id: '42' });
     expect(none.structuredContent?.found).toBe(false);
-    expect(none.text).toContain('has not opened yet');
+    // While the founding record is the whole record the queue "has not opened yet"; once a real IIP is in the record it is "not in the record yet"
+    // (both wordings are tested in reading-review.test.ts with a record made for the purpose).
+    const total = (await s.call('get_contributions')).structuredContent?.total as number;
+    expect(none.text).toContain(total <= 1 ? 'has not opened yet' : "is not in OpenIslet's record yet");
   });
 });
 

@@ -17,6 +17,7 @@ import {
   authorizationErrorRedirect,
   insufficientScope,
 } from '@cloudflare/workers-oauth-provider';
+import { CONTACT_EMAIL } from './core/contact';
 import { type GitHubPort, GitHubError } from './core/queue/github';
 import { base64url, randomToken, utf8 } from './core/queue/crypto';
 import type { QueueSettings } from './core/queue/settings';
@@ -241,7 +242,9 @@ export async function handleCallback<E>(request: Request, env: E, stack: OAuthSt
   } catch (error) {
     if (error instanceof GitHubError) {
       deps.log?.('oauth.github_error', { kind: error.kind });
-      return error.kind === 'refused' ? backToApp('access_denied') : backToApp('temporarily_unavailable', 'GitHub did not answer');
+      if (error.kind === 'refused') return backToApp('access_denied');
+      // Our own set-up is wrong (see GitHubError): say so, rather than "GitHub did not answer".
+      return backToApp('temporarily_unavailable', error.kind === 'broken' ? `OpenIslet has a fault on our side, not yours. Please try again later, or tell us at ${CONTACT_EMAIL}.` : 'GitHub did not answer');
     }
     throw error;
   }

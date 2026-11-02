@@ -51,9 +51,20 @@ describe('the contributor signs in', () => {
     await expect(c.exchangeCode({ code: 'nonsense', redirectUri: REDIRECT })).rejects.toMatchObject({ kind: 'refused' });
   });
 
-  it('says "unavailable" when the fault is ours (wrong client secret) or GitHub is down', async () => {
+  it('says "broken" when the fault is ours: a wrong client secret, a suspended app, a wrong redirect address', async () => {
     const code = gh.issueCode({ id: 1, login: 'a' });
-    await expect(client({ clientSecret: 'wrong' }).exchangeCode({ code, redirectUri: REDIRECT })).rejects.toMatchObject({ kind: 'unavailable' });
+    await expect(client({ clientSecret: 'wrong' }).exchangeCode({ code, redirectUri: REDIRECT })).rejects.toMatchObject({ kind: 'broken' });
+    for (const error of ['redirect_uri_mismatch', 'application_suspended', 'unauthorized_client']) {
+      gh.failNext(/access_token/, 200, { error });
+      await expect(client().exchangeCode({ code, redirectUri: REDIRECT }), error).rejects.toMatchObject({ kind: 'broken' });
+    }
+    // An error code we do not know is not assumed to be ours.
+    gh.failNext(/access_token/, 200, { error: 'something_new' });
+    await expect(client().exchangeCode({ code, redirectUri: REDIRECT })).rejects.toMatchObject({ kind: 'unavailable' });
+  });
+
+  it('says "unavailable" when GitHub is down or busy', async () => {
+    const code = gh.issueCode({ id: 1, login: 'a' });
     gh.failNext(/access_token/, 503, 'down');
     await expect(client().exchangeCode({ code, redirectUri: REDIRECT })).rejects.toMatchObject({ kind: 'unavailable' });
     gh.failNext(/access_token/, 429, {});
@@ -163,13 +174,81 @@ describe('the bot', () => {
     expect(gh.mintBodies).toHaveLength(2);
   });
 
-  it('gives up with "unavailable" when GitHub keeps refusing the issue', async () => {
-    gh.failNext(/issues$/, 500, {}, 2);
+  it('gives up with "unavailable" when GitHub keeps refusing the issue, and "broken" when it will not give the bot a token', async () => {
+    gh.failNext(/issues$/, 500, {});
     await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable' });
     gh.failNext(/issues$/, 422, { message: 'Validation Failed' });
     await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable' });
+    // A client with no cached token, so the bot has to ask GitHub for one, and GitHub will not give it.
     gh.failNext(/access_tokens/, 401, {});
-    await expect(client({ installationId: gh.installationId }).createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable' });
+    await expect(new GitHubClient(settings(), {}, gh.fetch, clock.now).createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'broken' });
+  });
+
+  it('tells a fault in our own set-up (app suspended, uninstalled or made private; issues off) from GitHub being busy', async () => {
+    const mint = () => client().installationToken(true);
+    for (const status of [401, 403, 404, 410]) {
+      gh.failNext(/access_tokens/, status, {});
+      await expect(mint(), `token ${status}`).rejects.toMatchObject({ kind: 'broken', outcomeUnknown: false });
+    }
+    for (const status of [401, 403, 404, 410]) {
+      // A 401 is tried once more with a new token, so it has to be refused twice to count.
+      gh.failNext(/issues$/, status, {}, status === 401 ? 2 : 1);
+      await expect(client().createIssue({ title: '1', body: '', labels: [] }), `issue ${status}`).rejects.toMatchObject({ kind: 'broken', outcomeUnknown: false });
+    }
+    // Asked to slow down, or a server error or a refusal of the content itself: that passes by itself or is not our set-up.
+    gh.failNext(/access_tokens/, 403, {}, 1, { 'retry-after': '30' });
+    await expect(mint()).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/access_tokens/, 403, {}, 1, { 'x-ratelimit-remaining': '0' });
+    await expect(mint()).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/access_tokens/, 429, {});
+    await expect(mint()).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/access_tokens/, 500, {});
+    await expect(mint()).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/issues$/, 403, {}, 1, { 'retry-after': '60' });
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable', outcomeUnknown: false });
+    gh.failNext(/issues$/, 429, {});
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable', outcomeUnknown: false });
+    // GitHub's secondary rate limit can come as a bare 403 with only a message that says so; a suspended app says that instead.
+    gh.failNext(/issues$/, 403, { message: 'You have exceeded a secondary rate limit. Please wait a few minutes before you try again.' });
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable', outcomeUnknown: false });
+    gh.failNext(/access_tokens/, 403, { message: 'You have triggered an abuse detection mechanism.' });
+    await expect(mint()).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/issues$/, 403, { message: 'This GitHub App has been suspended.' });
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'broken', outcomeUnknown: false });
+    // The words that mean "slow down", in any case; and a 403 whose words are about something else is still ours.
+    gh.failNext(/issues$/, 403, { message: 'TOO MANY REQUESTS right now' });
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/issues$/, 403, { message: 'API RATE LIMIT exceeded for this app' });
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/issues$/, 403, { message: 'Resource not accessible by integration' });
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'broken', outcomeUnknown: false });
+    gh.failNext(/issues$/, 500, {}, 2);
+    await expect(client().createIssue({ title: '1', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable', outcomeUnknown: true });
+  });
+
+  it('says "broken" when GitHub refuses to say who an account is, but "gone" for a deleted account', async () => {
+    gh.issueCode({ id: 1234, login: 'octo-cat' }); // the account exists
+    for (const status of [401, 403]) {
+      // A 401 is tried once more with a new token, so it has to be refused twice to count.
+      gh.failNext(/GET .*\/user\/1234$/, status, {}, status === 401 ? 2 : 1);
+      await expect(client().loginFor(1234), String(status)).rejects.toMatchObject({ kind: 'broken', outcomeUnknown: false });
+    }
+    gh.failNext(/GET .*\/user\/1234$/, 403, {}, 1, { 'retry-after': '10' });
+    await expect(client().loginFor(1234)).rejects.toMatchObject({ kind: 'unavailable' });
+    expect(await client().loginFor(999)).toBeNull();
+  });
+
+  it('does not call a failure to say who signed in "ours" (a 403 can be about the person\'s own account), and a refused sign-in is the person\'s', async () => {
+    const code = gh.issueCode({ id: 1234, login: 'octo-cat' });
+    const token = await client().exchangeCode({ code, redirectUri: REDIRECT });
+    gh.failNext(/GET .*\/user$/, 403, {});
+    await expect(client().getUser(token)).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/GET .*\/user$/, 403, {}, 1, { 'retry-after': '10' });
+    await expect(client().getUser(token)).rejects.toMatchObject({ kind: 'unavailable' });
+    gh.failNext(/GET .*\/user$/, 401, {});
+    await expect(client().getUser(token)).rejects.toMatchObject({ kind: 'refused' });
+    gh.failNext(/GET .*\/user$/, 502, {});
+    await expect(client().getUser(token)).rejects.toMatchObject({ kind: 'unavailable' });
   });
 
   it('adds a comment to an issue, and fails clearly if it cannot', async () => {
@@ -213,8 +292,10 @@ describe('the app key', () => {
     expect(() => pemToDer('-----BEGIN PRIVATE KEY-----\n!!!\n-----END PRIVATE KEY-----')).toThrow(GitHubError);
   });
 
-  it('refuses bytes that are not an RSA key', async () => {
+  it('refuses bytes that are not an RSA key, as a fault of ours', async () => {
     const junk = `-----BEGIN PRIVATE KEY-----\n${btoa('this is not a key at all')}\n-----END PRIVATE KEY-----`;
-    await expect(client({ privateKey: junk }).createIssue({ title: '', body: '', labels: [] })).rejects.toMatchObject({ kind: 'unavailable' });
+    await expect(client({ privateKey: junk }).createIssue({ title: '', body: '', labels: [] })).rejects.toMatchObject({ kind: 'broken' });
+    await expect(client({ privateKey: 'not a key' }).createIssue({ title: '', body: '', labels: [] })).rejects.toMatchObject({ kind: 'broken' });
+    await expect(client({ privateKey: '-----BEGIN RSA PRIVATE KEY-----\nAAAA\n-----END RSA PRIVATE KEY-----' }).createIssue({ title: '', body: '', labels: [] })).rejects.toMatchObject({ kind: 'broken' });
   });
 });

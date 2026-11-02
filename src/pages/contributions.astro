@@ -162,7 +162,7 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                         const s = standingOf(x);
                         const o = x.outcome;
                         return (
-                          <li class="citem" data-outcome={s.key}>
+                          <li class="citem" id={x.id.toLowerCase()} data-outcome={s.key}>
                             <div class="citem__top">
                               <h3>{x.title}</h3>
                               <span class={s.chip}>{s.label}</span>
@@ -358,7 +358,29 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
   q.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') q.blur();
   });
+  // A link such as /contributions#iip-0042 opens that contributor's row and shows the contribution, whatever the filters say.
+  function openFromHash() {
+    let id = '';
+    try {
+      id = decodeURIComponent(location.hash.slice(1));
+    } catch {
+      return;
+    }
+    const target = id ? document.getElementById(id) : null;
+    if (!target || !target.classList.contains('citem')) return;
+    const row = target.closest<HTMLElement>('#rows > li');
+    if (row?.hidden || target.hidden) {
+      q.value = '';
+      kind.value = 'all';
+      outcome.value = 'all';
+      apply();
+    }
+    target.closest('details')?.setAttribute('open', '');
+    target.scrollIntoView({ block: 'start' });
+  }
+  window.addEventListener('hashchange', openFromHash);
   apply();
+  openFromHash();
 </script>
 
 <style>
@@ -650,6 +672,13 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
   }
   .citem[hidden] {
     display: none;
+  }
+  .citem {
+    scroll-margin-top: 1.5rem;
+  }
+  .citem:target {
+    background: var(--tint);
+    box-shadow: -0.75rem 0 0 var(--tint), 0.75rem 0 0 var(--tint);
   }
   .citem:last-child {
     border-bottom: none;

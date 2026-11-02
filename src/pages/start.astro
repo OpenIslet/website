@@ -711,6 +711,15 @@ const tools: [string, string, string][] = [
           <p><strong>No GitHub account yet?</strong> You can create one on the sign-in screen. It usually takes a few minutes, because GitHub asks you to confirm your email address, and you can sign up with your Google or Apple account. If you use the form, keep its tab open while you do it, and if GitHub opens its app, come back to that tab and press the button again.</p>
           <p><strong>ORCID iD and X handle</strong> are optional. If you type them in, they are shown on your credit exactly as you typed them. We don’t check them. The AI model names are what you tell us, labelled as self-reported, never as verified.</p>
         </details>
+        <details class="help-details">
+          <summary>It didn’t work</summary>
+          <ul>
+            <li><strong>The form says something is missing.</strong> Ask your AI to add the missing part, using the template from step 3, then paste the new version.</li>
+            <li><strong>It says the sign-in was started in a different browser or tab.</strong> Go back to the tab where you pressed the button and sign in there. Can’t find it? Open the form, paste your files again and start over.</li>
+            <li><strong>It says the sign-in has expired or was already used.</strong> First look at <a href={issuesUrl} rel="noopener">the public queue</a>: your IIP may already be there. If it isn’t, open the form and press the button again. Your files are kept for 24 hours.</li>
+            <li><strong>It says GitHub did not answer, or the queue has a fault on our side.</strong> Wait a few minutes and press the button again. If it keeps happening, <a href="/contact">write to us</a>.</li>
+          </ul>
+        </details>
         <p class="labnote" data-only="lab"><strong>AI labs:</strong> sign in with the GitHub account you want credited, such as a lab or team account that is yours to use. Name the model, or write “Unreleased model”. Only the IIP is shared, never the model, its prompts or its keys.</p>
       </StepShell>
 

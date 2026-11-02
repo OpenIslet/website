@@ -64,3 +64,32 @@ describe('the design labels', () => {
     expect(queue.filter((l) => l === 'status:queued')).toHaveLength(1);
   });
 });
+
+// The form accepts a Type line written with emphasis marks (**Improvement**), so the Worker must read it the same way.
+const checkType = (type: string) => runChecks(bundle(), defaultConfig, { draft: makeDraft({ evidence, type }), review: makeReview(), consent: true });
+const typeDoor = (r: Awaited<ReturnType<typeof checkType>>) => r.door.find((d) => d.id === 'draft_type');
+
+describe('the type line, with or without emphasis marks', () => {
+  it.each(['Improvement', '**Improvement**', '*Improvement*', '_Improvement_', '__Improvement__', '**Improvement**, because it is better', 'Improvement.'])('reads "%s" as an improvement', async (written) => {
+    const r = await checkType(written);
+    expect(typeDoor(r), written).toBeUndefined();
+    expect(r.labels, written).toContain('type:improvement');
+  });
+
+  it.each([
+    ['**Problem found**', 'type:problem-found'],
+    ['_Missing evidence_', 'type:missing-evidence'],
+  ])('reads "%s" as well', async (written, label) => {
+    const r = await checkType(written);
+    expect(typeDoor(r), written).toBeUndefined();
+    expect(r.labels, written).toContain(label);
+  });
+
+  it('still refuses a value that is not one of the choices, with or without marks', async () => {
+    for (const written of ['Something else', '**Something else**', '`Improvement`']) {
+      const r = await checkType(written);
+      expect(typeDoor(r)?.status, written).toBe('fail');
+    }
+  });
+});
+

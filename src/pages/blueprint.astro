@@ -451,7 +451,7 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
                     {e.changes.map((ch) => (<li><span class={`kind kind--${ch.kind}`}>{kindLabel[ch.kind]}</span><span>{ch.text}</span></li>))}
                   </ul>
                   {handleOf(e.contribution) && (
-                    <p class="cl__credit">Credit: <a href="/contributions#board">@{handleOf(e.contribution)}</a> · contribution <span class="mono">{e.contribution}</span></p>
+                    <p class="cl__credit">Credit: <a href={`/contributions#${(e.contribution ?? '').toLowerCase()}`}>@{handleOf(e.contribution)}</a> · contribution <span class="mono">{e.contribution}</span></p>
                   )}
                 </li>
               ))

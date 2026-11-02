@@ -137,7 +137,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
 </Layout>
 
 <script>
-  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, type Problem } from '../scripts/submit';
+  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, sizeOf, type Problem } from '../scripts/submit';
 
   const form = document.getElementById('submit-form') as HTMLFormElement;
   const api = form.dataset.api ?? '';
@@ -270,7 +270,8 @@ const live = connectorStatus === 'live' || submissionsOpen;
   }
 
   const count = (box: HTMLTextAreaElement, id: string) => {
-    const n = box.value.length;
+    // The same count the Worker makes: the file inside what was pasted, not the chat around it.
+    const n = box.value.trim() ? sizeOf(box.value, id === 'review-count' ? 'review' : 'draft') : 0;
     el<HTMLElement>(id).textContent = n ? `${n.toLocaleString('en-GB')} of ${MAX_TEXT.toLocaleString('en-GB')} characters` : '';
   };
   draft.addEventListener('input', () => count(draft, 'draft-count'));

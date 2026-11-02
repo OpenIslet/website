@@ -158,11 +158,12 @@ describe('the reading tools', () => {
   });
 
   it('says the queue has not opened only while the founding blueprint is the whole record', async () => {
-    const founding = (await bundle.ledger()).records[0];
+    const founding = (await bundle.ledger()).records.find((r) => r.founding)!;
     const later = { ...founding, issue: { ...founding.issue, number: 2 }, id: 'IIP-0002' };
+    const onlyFounding = { ledger: async () => ({ records: [founding] }) } as unknown as Bundle;
     const withTwo = { ledger: async () => ({ records: [founding, later] }) } as unknown as Bundle;
     const closed = { ...defaultConfig, submissionsOpen: false };
-    expect((await submissionStatus(bundle, closed, '7')).summary).toMatch(/has not opened/);
+    expect((await submissionStatus(onlyFounding, closed, '7')).summary).toMatch(/has not opened/);
     expect((await submissionStatus(withTwo, closed, '7')).summary).toMatch(/IIP-0007 is not in OpenIslet's record yet/);
   });
 

@@ -433,6 +433,15 @@ describe('coming back from GitHub (/callback)', () => {
     expect(to.searchParams.get('error')).toBe('invalid_request');
   });
 
+  it('tells the app the fault is ours when GitHub refuses our own client details', async () => {
+    const s = await toGitHub();
+    world.github.failNext(/access_token/, 200, { error: 'incorrect_client_credentials' });
+    const to = new URL((await callback(s, { code: world.github.issueCode(ADA) })).headers.get('location')!);
+    expect(to.searchParams.get('error')).toBe('temporarily_unavailable');
+    expect(to.searchParams.get('error_description')).toMatch(/fault on our side, not yours/);
+    expect(to.searchParams.get('error_description')).not.toMatch(/secret|client/i);
+  });
+
   it('shows a plain message for a state it does not know, one used before, or one from another browser', async () => {
     const s = await toGitHub();
     const unknown = await world.call(req(`/callback?${new URLSearchParams({ state: 'nope', code: 'x' })}`, { headers: s.jar.header() }));

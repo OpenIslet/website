@@ -147,6 +147,57 @@ test('copyWithFlash flashes only the visible label and keeps the hidden words fo
   }
 });
 
+// Some in-app browsers block the clipboard API; the older copy command still works in many of them.
+async function copyIn({clipboard, execCommand, throwOnDocument=false}) {
+  const { copyWithFlash } = await loadTs('src/scripts/group.ts');
+  const timers = new Map();
+  let nextTimerId = 1;
+  const prev = { window: globalThis.window, nav: globalThis.navigator, doc: Object.getOwnPropertyDescriptor(globalThis, 'document') };
+  const made = [];
+  globalThis.window = { setTimeout(fn) { const id = nextTimerId++; timers.set(id, fn); return id; }, clearTimeout(id) { timers.delete(id); } };
+  Object.defineProperty(globalThis, 'navigator', { value: clipboard ? { clipboard } : {}, configurable: true, writable: true });
+  Object.defineProperty(globalThis, 'document', {
+    configurable: true, writable: true,
+    value: throwOnDocument ? undefined : {
+      createElement: () => { const box = { style: {}, setAttribute() {}, select() { box.selected = true; }, setSelectionRange() {}, remove() { box.removed = true; } }; made.push(box); return box; },
+      body: { append() {} },
+      execCommand: (name) => execCommand(name, made[made.length - 1]),
+    },
+  });
+  try {
+    const button = { textContent: 'Copy prompt', querySelector: () => null };
+    const worked = await copyWithFlash(button, 'the text');
+    return { worked, label: button.textContent, made };
+  } finally {
+    globalThis.window = prev.window;
+    Object.defineProperty(globalThis, 'navigator', { value: prev.nav, configurable: true, writable: true });
+    if (prev.doc) Object.defineProperty(globalThis, 'document', prev.doc); else delete globalThis.document;
+  }
+}
+test('copy uses the older copy command when the clipboard API is missing, and cleans up after itself', async () => {
+  const r = await copyIn({ clipboard: null, execCommand: (name, box) => name === 'copy' && box.selected === true });
+  assert.equal(r.worked, true);
+  assert.equal(r.label, 'Copied');
+  assert.equal(r.made.length, 1);
+  assert.equal(r.made[0].removed, true);
+});
+test('copy uses the older copy command when the clipboard API refuses', async () => {
+  const r = await copyIn({ clipboard: { async writeText() { throw new Error('blocked'); } }, execCommand: () => true });
+  assert.equal(r.worked, true);
+  assert.equal(r.label, 'Copied');
+});
+test('copy says "Copy failed" when neither way works, and never throws', async () => {
+  const refuses = { async writeText() { throw new Error('blocked'); } };
+  assert.deepEqual(await copyIn({ clipboard: refuses, execCommand: () => false }).then((r) => [r.worked, r.label]), [false, 'Copy failed']);
+  assert.deepEqual(await copyIn({ clipboard: refuses, execCommand: () => { throw new Error('no'); } }).then((r) => [r.worked, r.label]), [false, 'Copy failed']);
+  assert.deepEqual(await copyIn({ clipboard: null, execCommand: () => true, throwOnDocument: true }).then((r) => [r.worked, r.label]), [false, 'Copy failed']);
+});
+test('the modern clipboard is still used first, and the older command is not touched when it works', async () => {
+  const r = await copyIn({ clipboard: { async writeText() {} }, execCommand: () => { throw new Error('should not be called'); } });
+  assert.equal(r.worked, true);
+  assert.equal(r.made.length, 0);
+});
+
 test('the contributions board filters by outcome, lists newest first and never ranks', async () => {
   const source=await readFile(join(root,'src/pages/contributions.astro'),'utf8');
   assert.doesNotMatch(source,/impact score|weights|crow__rank|Highest impact/i);
@@ -161,7 +212,7 @@ test('the contributions board filters by outcome, lists newest first and never r
   const control=(value)=>({value,form:null,blur(){},addEventListener:(type,f)=>{if(type==='input')listeners.push(f);}});
   const els={q:control(''),kind:control('all'),outcome:control('all'),sort:control('recent'),count:{textContent:''},empty:{hidden:true},rows:{appendChild:(r)=>order.push(r.dataset.name)}};
   const document={querySelectorAll:()=>[a,b],getElementById:(id)=>els[id]};
-  vm.runInNewContext((await transform(script,{loader:'ts',format:'iife'})).code,{document});
+  vm.runInNewContext((await transform(script,{loader:'ts',format:'iife'})).code,{document,window:{addEventListener(){}},location:{hash:''}});
   assert.deepEqual(order,['beta','alpha']);
   els.outcome.value='changed_blueprint';
   order.length=0;
@@ -175,6 +226,46 @@ test('the contributions board filters by outcome, lists newest first and never r
   order.length=0;
   listeners[0]();
   assert.deepEqual(order,['alpha','beta']);
+});
+
+// A link such as /contributions#iip-0002 opens that contributor's row and shows the contribution (used by the X post for a contribution).
+async function boardWithHash(hash, {outcomeAtLoad='all'}={}) {
+  const source=await readFile(join(root,'src/pages/contributions.astro'),'utf8');
+  const script=source.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  const log={opened:0,scrolled:0,listeners:{}};
+  const details={setAttribute:(name)=>{if(name==='open')log.opened++;}};
+  const target={id:'iip-0002',dataset:{outcome:'changed_blueprint'},hidden:false,classList:{contains:(c)=>c==='citem'},scrollIntoView:()=>{log.scrolled++;}};
+  const row={dataset:{name:'alpha',last:'2026-11-02',kind:'person',outcomes:'changed_blueprint',search:'alpha'},hidden:false,querySelectorAll:()=>[target]};
+  target.closest=(selector)=>selector==='#rows > li'?row:selector==='details'?details:null;
+  const control=(value)=>({value,form:null,blur(){},addEventListener(){}});
+  const els={q:control(''),kind:control('all'),outcome:control(outcomeAtLoad),sort:control('recent'),count:{textContent:''},empty:{hidden:true},rows:{appendChild(){}},'iip-0002':target,credit:{classList:{contains:()=>false},closest:()=>null}};
+  const document={querySelectorAll:()=>[row],getElementById:(id)=>els[id]};
+  const window={addEventListener:(type,f)=>{log.listeners[type]=f;}};
+  vm.runInNewContext((await transform(script,{loader:'ts',format:'iife'})).code,{document,window,location:{hash}});
+  return {log,els,row,target};
+}
+test('each contribution has an id, and a link to it opens its row and scrolls to it', async()=>{
+  const source=await readFile(join(root,'src/pages/contributions.astro'),'utf8');
+  assert.match(source,/<li class="citem" id=\{x\.id\.toLowerCase\(\)\}/);
+  const {log}=await boardWithHash('#iip-0002');
+  assert.equal(log.opened,1);
+  assert.equal(log.scrolled,1);
+  assert.equal(typeof log.listeners.hashchange,'function');
+});
+test('a link to a contribution clears a filter that would hide it', async()=>{
+  const {log,els,row}=await boardWithHash('#iip-0002',{outcomeAtLoad:'dead_end'});
+  assert.equal(els.outcome.value,'all');
+  assert.equal(els.q.value,'');
+  assert.equal(row.hidden,false);
+  assert.equal(log.opened,1);
+  assert.equal(log.scrolled,1);
+});
+test('an ordinary or broken address fragment does nothing, and does not throw', async()=>{
+  for (const hash of ['','#credit','#nothing-here','#%E0%A4%A','#iip-0002%']) {
+    const {log}=await boardWithHash(hash);
+    assert.equal(log.opened,0,hash);
+    assert.equal(log.scrolled,0,hash);
+  }
 });
 
 const validArgs=['--version','v0.8.1','--title','Fixture title','--summary','Fixture summary','--fixed','Fixture change'];

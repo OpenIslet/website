@@ -112,7 +112,7 @@ try {
 const state = {
   /** Who "signs in" next. Change it with POST /_mock/user, or with ?login=name on the authorize address. */
   user: { login: process.env.MOCK_GITHUB_LOGIN ?? 'mock-contributor', id: Number(process.env.MOCK_GITHUB_ID ?? 4242) },
-  /** ok | down (every GitHub address answers 503) | refuse_code (the code swap fails) | decline (the person presses Cancel) | issues_fail (opening an issue fails) */
+  /** ok | down (every GitHub address answers 503) | refuse_code (the code swap fails) | decline (the person presses Cancel) | issues_fail (opening an issue fails) | app_suspended (the bot gets no token: 403) | slow_issues (opening an issue takes six seconds) */
   mode: 'ok',
   codes: new Map(),
   userTokens: new Map(),
@@ -260,7 +260,7 @@ async function handle(req, res) {
     }
     if (route === 'POST /_mock/mode') {
       const { mode } = await readBody(req);
-      if (!['ok', 'down', 'refuse_code', 'decline', 'issues_fail'].includes(mode)) return send(res, 400, { error: 'mode must be ok, down, refuse_code, decline or issues_fail' });
+      if (!['ok', 'down', 'refuse_code', 'decline', 'issues_fail', 'app_suspended', 'slow_issues'].includes(mode)) return send(res, 400, { error: 'mode must be ok, down, refuse_code, decline, issues_fail, app_suspended or slow_issues' });
       state.mode = mode;
       note(`mode ${mode}`);
       return send(res, 200, { mode });
@@ -363,6 +363,10 @@ async function handle(req, res) {
       return send(res, 401, { message: problem });
     }
     if (mint[1] !== INSTALLATION_ID) return send(res, 404, { message: 'Not Found' });
+    if (state.mode === 'app_suspended') {
+      note('refused the bot a token (mode app_suspended)');
+      return send(res, 403, { message: 'This GitHub App has been suspended.' });
+    }
     const body = await readBody(req);
     const t = token('ghs');
     const expires = Date.now() + 60 * 60_000;
@@ -377,6 +381,10 @@ async function handle(req, res) {
     if (state.mode === 'issues_fail') {
       note('refused to open an issue (mode issues_fail)');
       return send(res, 500, { message: 'The mock is pretending issue creation fails.' });
+    }
+    if (state.mode === 'slow_issues') {
+      note('opening an issue slowly (mode slow_issues)');
+      await new Promise((resolve) => setTimeout(resolve, 6000));
     }
     const body = await readBody(req);
     if (typeof body.title !== 'string' || !body.title.trim()) return send(res, 422, { message: 'Validation Failed', errors: [{ resource: 'Issue', field: 'title', code: 'missing_field' }] });

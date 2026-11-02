@@ -5,13 +5,14 @@ import assert from 'node:assert/strict';
 import { build } from 'esbuild';
 import { dirname, resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readFile } from 'node:fs/promises';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 async function load() {
   const result = await build({ entryPoints: [join(root, 'src/scripts/submit.ts')], bundle: true, write: false, format: 'esm', platform: 'node', logLevel: 'silent' });
   return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 }
-const { orcidOk, orcidClean, xHandleOk, verdictOf, quickCheck, draftProblems, reviewProblems, whatIsThis, tidy, sha256Hex, newSecret, stateOf, bindingKey, store, STAGED_KEY } = await load();
+const { MAX_TEXT, sizeOf, orcidOk, orcidClean, xHandleOk, verdictOf, quickCheck, draftProblems, reviewProblems, whatIsThis, tidy, sha256Hex, newSecret, stateOf, bindingKey, store, STAGED_KEY } = await load();
 
 // Complete files, written the way the templates in src/data/prompts.ts ask (the Worker refuses anything less, so the form does too).
 const goodDraft = [
@@ -257,4 +258,39 @@ test('a missing part is named, and a type outside the list is caught, as the Wor
   const noClaim = goodDraft.replace(/\*\*Claim in one sentence:\*\*.*\n/, '');
   assert.match(draftProblems(noClaim)[0].text, /missing "Claim in one sentence"/);
   assert.match(draftProblems(goodDraft.replace('Problem found', 'A worry'))[0].text, /“Type” line should say one of/);
+});
+
+test('a file pasted twice, or two files in one box, gets one clear message, not a list of missing parts', () => {
+  const draftTwice = draftProblems(`${goodDraft}\n\n${goodDraft}`);
+  assert.equal(draftTwice.length, 1);
+  assert.equal(draftTwice[0].field, 'draft');
+  assert.match(draftTwice[0].text, /more than one file in this box/);
+  assert.doesNotMatch(draftTwice[0].text, /missing/);
+  const reviewTwice = reviewProblems(`${goodReview}\n\n${goodReview}`);
+  assert.equal(reviewTwice.length, 1);
+  assert.equal(reviewTwice[0].field, 'review');
+  assert.match(reviewTwice[0].text, /more than one file in this box/);
+  assert.doesNotMatch(reviewTwice[0].text, /missing/);
+  // A single good file is not touched, and a file that is only missing parts still says which.
+  assert.deepEqual(draftProblems(goodDraft), []);
+  assert.deepEqual(reviewProblems(goodReview), []);
+  assert.match(draftProblems(goodDraft.replace(/## Evidence[\s\S]*?(?=## What I propose)/, ''))[0].text, /missing/);
+});
+
+test('the size limit on the form is the Worker\'s own, and is measured on the file, not on the chat around it', async () => {
+  const draftSource = await readFile(join(root, 'connector/src/core/draft.ts'), 'utf8');
+  const workerMax = Number(/export const LIMITS = \{ min: \d+, max: (\d+) \}/.exec(draftSource)?.[1]);
+  assert.equal(MAX_TEXT, workerMax);
+  // Pad the "What I propose changing" section until the file is exactly the limit, then one over.
+  const padded = (n) => goodDraft.replace('Measure CD47 at hour zero.', 'x'.repeat(n));
+  const base = sizeOf(padded(1), 'draft') - 1;
+  const atLimit = padded(MAX_TEXT - base);
+  assert.equal(sizeOf(atLimit, 'draft'), MAX_TEXT);
+  assert.ok(!draftProblems(atLimit).some((p) => /too long/.test(p.text)));
+  const over = padded(MAX_TEXT - base + 1);
+  assert.match(draftProblems(over)[0].text, /too long \(30,001 characters\)\. The limit is 30,000/);
+  // A file just under the limit inside a long chatty reply is fine: only the file counts, as at the Worker.
+  const chatty = `Here is your file:\n\n\`\`\`markdown\n${atLimit}\n\`\`\`\n\n${'Hope this helps! '.repeat(400)}`;
+  assert.ok(chatty.length > MAX_TEXT + 5000);
+  assert.ok(!draftProblems(chatty).some((p) => /too long/.test(p.text)));
 });

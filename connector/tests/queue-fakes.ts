@@ -186,9 +186,10 @@ interface Failure {
   status: number;
   body: unknown;
   times: number;
+  headers?: Record<string, string>;
 }
 
-const json = (body: unknown, status = 200): Response => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
+const json = (body: unknown, status = 200, headers: Record<string, string> = {}): Response => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', ...headers } });
 
 export class FakeGitHub {
   readonly web = 'https://github.test';
@@ -211,6 +212,8 @@ export class FakeGitHub {
   /** Every code and token this GitHub ever handed out, for checking that none of them is ever shown or kept. */
   readonly everIssued: string[] = [];
   private readonly failures: Failure[] = [];
+  private readonly holds: { match: RegExp; gate: Promise<void> }[] = [];
+  private readonly losses: { match: RegExp; times: number }[] = [];
   private counter = 0;
   /** Set by makeWorkerEnv(): the public half of the app's key, for checking the JWT. */
   publicKey?: CryptoKey;
@@ -232,9 +235,22 @@ export class FakeGitHub {
     else this.accounts.set(id, login);
   }
 
-  /** The next `times` requests whose "METHOD url" matches get this answer instead of the usual one. */
-  failNext(match: RegExp, status: number, body: unknown = { message: 'failed' }, times = 1): void {
-    this.failures.push({ match, status, body, times });
+  /** The next `times` requests whose "METHOD url" matches get this answer instead of the usual one (with these headers, if given). */
+  failNext(match: RegExp, status: number, body: unknown = { message: 'failed' }, times = 1, headers?: Record<string, string>): void {
+    this.failures.push({ match, status, body, times, headers });
+  }
+
+  /** The next `times` matching requests are carried out as usual, but their answer is lost: the caller gets a 500, as after a dropped connection. */
+  loseAnswerNext(match: RegExp, times = 1): void {
+    this.losses.push({ match, times });
+  }
+
+  /** Requests whose "METHOD url" matches wait until the function this returns is called, as a slow GitHub would make them. */
+  hold(match: RegExp): () => void {
+    let release!: () => void;
+    const gate = new Promise<void>((resolve) => (release = resolve));
+    this.holds.push({ match, gate });
+    return release;
   }
 
   get newestIssue() {
@@ -255,15 +271,28 @@ export class FakeGitHub {
 
   /** Same shape as fetch, so it can be given to GitHubClient or put in place of the global fetch. */
   fetch = async (input: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
+    const label = `${(init.method ?? 'GET').toUpperCase()} ${new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url).href}`;
+    const res = await this.handle(input, init);
+    // Only a request that went through can lose its answer (a stale token that GitHub refuses first has nothing to lose).
+    const loss = res.ok ? this.losses.find((l) => l.times > 0 && l.match.test(label)) : undefined;
+    if (loss) {
+      loss.times--;
+      return json({ message: 'the answer was lost' }, 500);
+    }
+    return res;
+  };
+
+  private handle = async (input: string | URL | Request, init: RequestInit = {}): Promise<Response> => {
     const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url);
     const method = (init.method ?? 'GET').toUpperCase();
     const headers = new Headers(init.headers);
     this.requests.push({ method, url: url.href });
     const label = `${method} ${url.href}`;
+    for (const h of this.holds) if (h.match.test(label)) await h.gate;
     const failure = this.failures.find((f) => f.times > 0 && f.match.test(label));
     if (failure) {
       failure.times--;
-      return json(failure.body, failure.status);
+      return json(failure.body, failure.status, failure.headers);
     }
     const body = typeof init.body === 'string' && init.body ? JSON.parse(init.body) : {};
 

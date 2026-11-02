@@ -204,6 +204,47 @@ describe('open, and the caller holds a valid token', () => {
     await s.close();
   });
 
+  it('says the queue is broken on our side, not "try again in a few minutes", when GitHub refuses our own request', async () => {
+    const s = await connect({ identity: ADA });
+    world.github.failNext(/access_tokens/, 404, {});
+    const r = await s.submit({ idempotency_key: 'k' });
+    expect(r.isError).toBe(true);
+    expect(r.structuredContent).toMatchObject({ submitted: false, reason: 'queue_broken' });
+    expect(r.text).toMatch(/fault on our side, not yours/);
+    expect(r.text).toMatch(/keep your draft and your blind review/i);
+    expect(r.text).not.toMatch(/few minutes/);
+    expect(r.text).not.toMatch(/saved here/); // nothing is saved on our side for this route
+    expect(world.github.issues).toHaveLength(0);
+    // Nothing was kept, so the same call works once it is put right.
+    const later = await s.submit({ idempotency_key: 'k' });
+    expect(later.structuredContent).toMatchObject({ submitted: true });
+    await s.close();
+  });
+
+  it('records the answer as soon as the issue exists, before the checks comment, which may be slow', async () => {
+    const s = await connect({ identity: ADA });
+    const release = world.github.hold(/comments$/);
+    const pending = s.submit({ idempotency_key: 'k-order' });
+    await vi.waitFor(() => expect(world.github.issues).toHaveLength(1));
+    await vi.waitFor(() => expect(world.kv.keys().some((k) => k.startsWith('idem:'))).toBe(true));
+    expect(world.github.newestIssue.comments).toHaveLength(0);
+    release();
+    const r = await pending;
+    expect(r.structuredContent).toMatchObject({ submitted: true });
+    expect(world.github.newestIssue.comments).toHaveLength(1);
+    await s.close();
+  });
+
+  it('hands the posting to the Worker, so it finishes even if the AI app stops waiting', async () => {
+    const s = await connect({ identity: ADA });
+    const spy = vi.spyOn(world.ctx, 'waitUntil');
+    const r = await s.submit({ idempotency_key: 'k-defer' });
+    expect(r.structuredContent).toMatchObject({ submitted: true });
+    expect(spy).toHaveBeenCalled();
+    await world.ctx.flush();
+    await s.close();
+  });
+
   it('still says nothing was posted when GitHub fails before anything was sent to open the issue', async () => {
     const s = await connect({ identity: ADA });
     world.github.failNext(/access_tokens/, 500, {});

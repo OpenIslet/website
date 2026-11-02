@@ -307,3 +307,56 @@ describe('labels and the first comment', () => {
     expect(cleanBlock(md)).toBe(md.trim());
   });
 });
+
+describe('cleaning stays quick on very long runs, and gives the same text as before', () => {
+  // The two patterns as they were before they were made linear (audit item L3, 2 November 2026).
+  const oldDetails = (t: string) => t.replace(/<(\s*\/?\s*)(details|summary)\b/gi, '&lt;$1$2');
+  const oldCross = (t: string) => t.replace(/([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)#(?=\d)/g, `$1#${ZWSP}`);
+
+  const samples = [
+    '', 'plain text', '<details>', '</details>', '< details >', '</ summary>', '<  /  details', '<DETAILS open>', 'a <summary>b</summary> c',
+    '<detailsx>', '<details', 'x<details>y', '<\n/\tsummary', 'see torvalds/linux#12 and #4', 'a/b#1', 'a/b#', 'a.b-c_d/e.f-g_h#99',
+    'x y/z#1 w/v#2', '/#1', 'a/#1', '#12', 'owner/repo#12abc', '1/2#3', 'aaa/bbb/ccc#4', 'a//b#5', '-/-#6',
+  ];
+
+  it('gives the same text as before for ordinary input', () => {
+    for (const s of samples) {
+      expect(neutraliseDetails(s), s).toBe(oldDetails(s));
+      expect(defangCrossReferences(s), s).toBe(oldCross(s));
+    }
+  });
+
+  it('gives the same text as before for a few hundred made-up strings', () => {
+    // A fixed pseudo-random sequence, so a failure can be reproduced.
+    let seed = 20261102;
+    const next = () => (seed = (seed * 1103515245 + 12345) % 2147483648) / 2147483648;
+    const pieces = ['<', '/', ' ', '\n', 'details', 'summary', 'DETAILS', 'a', 'b', '1', '#', '.', '-', '_', '&', '@'];
+    let compared = 0;
+    for (let i = 0; i < 400; i++) {
+      let s = '';
+      for (let n = 1 + Math.floor(next() * 30); n > 0; n--) s += pieces[Math.floor(next() * pieces.length)];
+      expect(defangCrossReferences(s), JSON.stringify(s)).toBe(oldCross(s));
+      // The new pattern also escapes "<//details" (two slashes), which the old one left alone and which does nothing in GitHub anyway.
+      if (!/\/[\s/]*\//.test(s)) {
+        expect(neutraliseDetails(s), JSON.stringify(s)).toBe(oldDetails(s));
+        compared++;
+      }
+    }
+    expect(compared).toBeGreaterThan(200);
+  });
+
+  it('escapes a doubled slash too, which is harmless', () => {
+    expect(neutraliseDetails('<//details>')).toBe('&lt;//details>');
+  });
+
+  it('does not slow down on a very long run of spaces or name characters', () => {
+    const spaces = `<${' '.repeat(30_000)}x`;
+    const name = 'a'.repeat(30_000);
+    const started = performance.now();
+    neutraliseDetails(spaces);
+    defangCrossReferences(name);
+    cleanBlock(spaces + name);
+    // Each of these took a third of a second or more before; now a few milliseconds. The limit leaves room for a slow machine.
+    expect(performance.now() - started).toBeLessThan(250);
+  });
+});

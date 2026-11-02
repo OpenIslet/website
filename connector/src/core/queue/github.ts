@@ -8,10 +8,13 @@
 // error message: callers can show or log a GitHubError safely.
 import { base64url, utf8 } from './crypto';
 
-export type GitHubErrorKind = 'refused' | 'unavailable';
+export type GitHubErrorKind = 'refused' | 'unavailable' | 'broken';
 
 /**
- * `refused`: GitHub said no to this person (a bad or used code). `unavailable`: GitHub or our set-up is at fault, so try again later.
+ * `refused`: GitHub said no to this person (a bad or used code). `unavailable`: GitHub is not answering, or is busy or slow, so try again
+ * later. `broken`: GitHub refused one of OUR requests in a way that trying again will not fix (the app suspended, uninstalled or made
+ * private, its key or client secret wrong or replaced, issues switched off, the repository archived or gone): someone has to put our
+ * set-up right, and the person should be told it is not their fault.
  * `outcomeUnknown`: the request to open the issue was sent and no clear answer came back (the connection dropped, it timed out, or GitHub
  * answered with a server error), so the issue may exist. Without it, nothing was sent, and "nothing was posted" is true.
  */
@@ -69,6 +72,26 @@ const RENEW_BEFORE_MS = 5 * 60_000;
 const API_VERSION = '2022-11-28';
 const LOGIN = /^[A-Za-z0-9][A-Za-z0-9_-]{0,38}$/;
 
+/**
+ * A 401, 403, 404 or 410 to one of our own requests means our set-up is broken (see GitHubErrorKind), unless GitHub is only asking us
+ * to slow down, which passes by itself. It says so with a retry-after or an exhausted rate limit (a 403 or 429), and a secondary rate
+ * limit can come as a bare 403 with only a message that says so, so the message is read too.
+ */
+async function trouble(res: Response): Promise<GitHubErrorKind> {
+  if (![401, 403, 404, 410].includes(res.status)) return 'unavailable';
+  if (res.headers.get('retry-after') !== null || res.headers.get('x-ratelimit-remaining') === '0') return 'unavailable';
+  let said = '';
+  try {
+    said = (await res.text()).slice(0, 2000);
+  } catch {
+    // an answer we cannot read says nothing about a rate limit
+  }
+  return /rate limit|abuse|too many requests/i.test(said) ? 'unavailable' : 'broken';
+}
+
+/** What GitHub's code exchange answers when our own client id, client secret or redirect address is the problem. */
+const OUR_OAUTH_ERRORS = new Set(['incorrect_client_credentials', 'redirect_uri_mismatch', 'application_suspended', 'unauthorized_client', 'device_flow_disabled']);
+
 type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -77,15 +100,15 @@ type FetchLike = (input: string, init?: RequestInit) => Promise<Response>;
 
 /** Reads a PKCS#8 PEM, tolerating the "\n" that pasted secrets often carry instead of real line breaks. */
 export function pemToDer(pem: string): Uint8Array {
-  if (/BEGIN RSA PRIVATE KEY/.test(pem)) throw new GitHubError('unavailable', 'The GitHub App key is in the old PKCS#1 format; convert it to PKCS#8 (see connector/DEPLOY.md, step 4)');
+  if (/BEGIN RSA PRIVATE KEY/.test(pem)) throw new GitHubError('broken', 'The GitHub App key is in the old PKCS#1 format; convert it to PKCS#8 (see connector/DEPLOY.md, step 4)');
   const text = pem.replace(/\\n/g, '\n');
   const m = /-----BEGIN PRIVATE KEY-----([\s\S]*?)-----END PRIVATE KEY-----/.exec(text);
-  if (!m) throw new GitHubError('unavailable', 'The GitHub App key is not a PKCS#8 PEM');
+  if (!m) throw new GitHubError('broken', 'The GitHub App key is not a PKCS#8 PEM');
   let binary: string;
   try {
     binary = atob(m[1].replace(/\s+/g, ''));
   } catch {
-    throw new GitHubError('unavailable', 'The GitHub App key is not valid base64');
+    throw new GitHubError('broken', 'The GitHub App key is not valid base64');
   }
   return Uint8Array.from(binary, (c) => c.charCodeAt(0));
 }
@@ -95,7 +118,7 @@ export async function importAppKey(pem: string): Promise<CryptoKey> {
   try {
     return await crypto.subtle.importKey('pkcs8', der, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
   } catch {
-    throw new GitHubError('unavailable', 'The GitHub App key was not accepted (it must be an RSA private key in PKCS#8 form)');
+    throw new GitHubError('broken', 'The GitHub App key was not accepted (it must be an RSA private key in PKCS#8 form)');
   }
 }
 
@@ -167,13 +190,14 @@ export class GitHubClient implements GitHubPort {
     if (typeof data.access_token === 'string' && data.access_token) return data.access_token;
     // A used or wrong code is the contributor's to retry. Anything else (wrong client secret, wrong redirect address) is ours to fix.
     if (data.error === 'bad_verification_code') throw new GitHubError('refused', 'GitHub did not accept the sign-in code');
-    throw new GitHubError('unavailable', `GitHub refused the code exchange (${typeof data.error === 'string' ? data.error.slice(0, 60) : `HTTP ${res.status}`})`);
+    throw new GitHubError(typeof data.error === 'string' && OUR_OAUTH_ERRORS.has(data.error) ? 'broken' : 'unavailable', `GitHub refused the code exchange (${typeof data.error === 'string' ? data.error.slice(0, 60) : `HTTP ${res.status}`})`);
   }
 
   /** Who signed in. The user token is used for this and nothing else. */
   async getUser(token: string): Promise<{ id: number; login: string }> {
     const res = await this.call(`${this.settings.apiBase}/user`, { method: 'GET', headers: this.apiHeaders(`Bearer ${token}`) });
     if (res.status === 401) throw new GitHubError('refused', 'GitHub did not accept the sign-in');
+    // Not classified as our fault: a 403 here can be about the person's own account. A suspended app shows at the code exchange instead.
     if (!res.ok) throw new GitHubError('unavailable', `GitHub answered ${res.status} when asked who signed in`);
     let user: { id?: unknown; login?: unknown };
     try {
@@ -232,7 +256,7 @@ export class GitHubClient implements GitHubPort {
       // Least privilege: this token can open issues in the queue repository and nothing else.
       body: JSON.stringify({ repositories: [s.repo], permissions: { issues: 'write' } }),
     });
-    if (res.status !== 201 && res.status !== 200) throw new GitHubError('unavailable', `GitHub answered ${res.status} when the bot asked for a token`);
+    if (res.status !== 201 && res.status !== 200) throw new GitHubError(await trouble(res), `GitHub answered ${res.status} when the bot asked for a token`);
     let data: { token?: unknown; expires_at?: unknown };
     try {
       data = (await res.json()) as typeof data;
@@ -280,7 +304,7 @@ export class GitHubClient implements GitHubPort {
       throw error;
     }
     if (res.status === 404) return null;
-    if (!res.ok) throw new GitHubError('unavailable', `GitHub answered ${res.status} when asked for the account's name`);
+    if (!res.ok) throw new GitHubError(await trouble(res), `GitHub answered ${res.status} when asked for the account's name`);
     let user: { id?: unknown; login?: unknown };
     try {
       user = (await res.json()) as typeof user;
@@ -295,7 +319,8 @@ export class GitHubClient implements GitHubPort {
     const { owner, repo } = this.settings;
     const res = await this.asBot(`/repos/${owner}/${repo}/issues`, { method: 'POST', body: JSON.stringify(args) });
     // A server error, or any answer we cannot read, may still come from an issue that was made. A clear refusal (4xx) made nothing.
-    if (res.status !== 201) throw new GitHubError('unavailable', `GitHub answered ${res.status} when the issue was opened`, res.status >= 500);
+    // A 401, 403, 404 or 410 here is our own set-up (see trouble()); a 422 or a 429 is not, so it stays "unavailable".
+    if (res.status !== 201) throw new GitHubError(await trouble(res), `GitHub answered ${res.status} when the issue was opened`, res.status >= 500);
     let issue: { number?: unknown; html_url?: unknown };
     try {
       issue = (await res.json()) as typeof issue;

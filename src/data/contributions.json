@@ -19,5 +19,18 @@
       "Grok 4.7 (xhigh)"
     ],
     "outcome": null
+  },
+  {
+    "id": "IIP-0002",
+    "date": "2026-11-02",
+    "decided": "2026-11-02",
+    "title": "Test delayed and reduced vascular oxygen support together",
+    "summary": "Asks what happens to the graft's oxygen supply when new blood vessels connect late and carry less oxygen than hoped, both at once.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "MarissaFamularo", "kind": "person", "github": "MarissaFamularo", "name": "Marissa Famularo", "orcid": "0009-0001-8032-2215", "x": "MarissaFamularo", "verified": { "github": true, "orcid": false } },
+    "models": ["ChatGPT, GPT-6 Astra Pro"],
+    "outcome": { "kind": "evidence", "note": "The blueprint now tests late-forming blood vessels and weaker oxygen delivery together, under both ways the cells release oxygen, and publishes the whole grid, so it shows where the oxygen margin runs out." }
   }
 ]

@@ -63,6 +63,9 @@ export const MESSAGES = {
   // These two are for a failure before anything was sent to GitHub to open the issue (the sign-in, or getting the bot's token).
   webUnavailable: 'GitHub did not answer, so nothing was posted. Your files are still saved here for 24 hours: go back to the form and try again in a few minutes.',
   toolUnavailable: 'GitHub did not answer, so nothing was posted. Nothing is saved on our side either, so keep your draft and your blind review and ask again in a few minutes.',
+  // GitHub refused one of our own requests in a way that trying again will not fix (see GitHubError): our set-up is at fault, not the person.
+  webBroken: `The queue has a fault on our side, not yours, so nothing was posted. Your files are still saved here for 24 hours: go back to the form and try again later. If it is still broken, tell us at ${CONTACT_EMAIL}.`,
+  toolBroken: `The queue has a fault on our side, not yours, so nothing was posted. Nothing is saved on our side either, so keep your draft and your blind review. Please ask again later, and if it is still broken, tell us at ${CONTACT_EMAIL}.`,
   // The posting limits are kept in one place (QUEUE_LIMITS); if it does not answer, nothing is posted.
   webLimitsDown: 'The queue could not check its limits just now, so nothing was posted. Your files are still saved here for 24 hours: go back to the form and try again in a few minutes.',
   toolLimitsDown: 'The queue could not check its limits just now, so nothing was posted. Nothing is saved on our side either, so keep your draft and your blind review and ask again in a few minutes.',
@@ -657,6 +660,20 @@ export class QueueService implements QueueForTool {
     const earlier = await getJson<CompleteOutput>(this.kv, await this.resultKey(rec.staged_id));
     if (earlier) return ok(earlier);
 
+    return this.keepAlive(this.signInAndPost(stateKey, rec, staged, input));
+  }
+
+  /**
+   * Lets work that has begun finish even if the browser or the AI app goes away (a closed tab, a reload, a sleeping phone, a timeout):
+   * the Worker's waitUntil keeps it running once the response is gone. The caller still waits for the same work and gets its answer.
+   */
+  private keepAlive<T>(work: Promise<T>): Promise<T> {
+    this.deps.defer?.(work.then(() => undefined, () => undefined));
+    return work;
+  }
+
+  /** From the GitHub code to the posted issue. Runs under keepAlive, so a closed tab cannot leave it half done. */
+  private async signInAndPost(stateKey: string, rec: StateRecord, staged: StagedRecord, input: CompleteInput): Promise<ApiResult<CompleteOutput>> {
     const s = this.deps.settings;
     let user: { id: number; login: string };
     try {
@@ -669,7 +686,14 @@ export class QueueService implements QueueForTool {
     } catch (error) {
       return this.githubFailure(error, 'sign-in', 'web');
     }
+    return this.postFor(stateKey, rec, staged, user);
+  }
 
+  /**
+   * Takes a place under the limits, opens the issue, records the answer, and only then adds the checks comment, so nothing slow or
+   * failing after the issue exists can lose the answer.
+   */
+  private async postFor(stateKey: string, rec: StateRecord, staged: StagedRecord, user: { id: number; login: string }): Promise<ApiResult<CompleteOutput>> {
     const place = await this.reservePost(user.id, staged.draft, staged.review, staged.wetlab, 'form');
     if ('answer' in place) {
       // The same IIP was already posted (for example, the person started again after a lost answer): this sign-in gets that answer.
@@ -679,7 +703,7 @@ export class QueueService implements QueueForTool {
 
     let posted: { number: number; url: string };
     try {
-      posted = await this.openIssue(staged, user, staged.via);
+      posted = await this.createIssueFor(staged, user, staged.via);
     } catch (error) {
       await this.finishPost(place.ticket, { failed: true });
       return this.githubFailure(error, 'issue', 'web');
@@ -687,6 +711,7 @@ export class QueueService implements QueueForTool {
     const out = this.completeOutput(posted, user, staged.contributor);
     await this.finishPost(place.ticket, { posted: out });
     await this.keepResult(stateKey, rec, out);
+    await this.addChecks(posted.number, staged);
     this.log('queue.posted', { via: staged.via, issue: posted.number });
     return ok(out);
   }
@@ -723,6 +748,10 @@ export class QueueService implements QueueForTool {
   // ---- submit_proposal with a token ----
 
   async postSignedIn(a: ToolSubmission & { identity: Identity }): Promise<ApiResult<ToolPosted>> {
+    return this.keepAlive(this.postSignedInNow(a));
+  }
+
+  private async postSignedInNow(a: ToolSubmission & { identity: Identity }): Promise<ApiResult<ToolPosted>> {
     const closed = this.gate('post');
     if (closed) return closed;
     const contributor = normaliseContributor(a.contributor);
@@ -743,7 +772,7 @@ export class QueueService implements QueueForTool {
       review: a.review,
       ai_tools: a.ai_tools ?? {},
       contributor: contributor.value,
-      via: 'web_form', // not used: the way in is passed to openIssue below
+      via: 'web_form', // not used: the way in is passed to createIssueFor below
       idempotency_key: a.idempotency_key ?? null,
       wetlab,
       written_against: `${meta.id} (blueprint release ${meta.blueprint_release})`,
@@ -778,14 +807,16 @@ export class QueueService implements QueueForTool {
 
     let posted: { number: number; url: string };
     try {
-      posted = await this.openIssue(record, user, 'mcp_signed_in');
+      posted = await this.createIssueFor(record, user, 'mcp_signed_in');
     } catch (error) {
       await this.finishPost(place.ticket, { failed: true });
       return this.githubFailure(error, 'issue', 'tool');
     }
     const out = this.completeOutput(posted, user, contributor.value);
+    // Recorded before the checks comment, so nothing slow or failing after the issue exists can lose the answer.
     await this.finishPost(place.ticket, { posted: out });
     if (idem) await this.keepReplay(idem, out);
+    await this.addChecks(posted.number, record);
     this.log('queue.posted', { via: 'mcp_signed_in', issue: posted.number });
     return ok(out);
   }
@@ -813,8 +844,8 @@ export class QueueService implements QueueForTool {
     };
   }
 
-  /** Opens the public issue as the bot, then adds the first comment. A missing comment never undoes the issue. */
-  private async openIssue(r: StagedRecord, user: Identity, via: Via): Promise<{ number: number; url: string }> {
+  /** Opens the public issue as the bot. The first comment is added separately (addChecks), after the answer has been recorded. */
+  private async createIssueFor(r: StagedRecord, user: Identity, via: Via): Promise<{ number: number; url: string }> {
     const body = await buildIssueBody(
       {
         login: user.login,
@@ -831,13 +862,16 @@ export class QueueService implements QueueForTool {
       },
       this.signingKey(),
     );
-    const issue = await this.deps.github.createIssue({ title: cleanTitle(r.report.title), body, labels: issueLabels(r.report) });
+    return this.deps.github.createIssue({ title: cleanTitle(r.report.title), body, labels: issueLabels(r.report) });
+  }
+
+  /** The first comment, the Automatic checks. A missing comment never undoes the issue, so a failure is only logged. */
+  private async addChecks(issueNumber: number, r: StagedRecord): Promise<void> {
     try {
-      await this.deps.github.createComment(issue.number, checksComment(r.report));
+      await this.deps.github.createComment(issueNumber, checksComment(r.report));
     } catch {
-      this.log('queue.comment_failed', { issue: issue.number });
+      this.log('queue.comment_failed', { issue: issueNumber });
     }
-    return issue;
   }
 
   /** Lets go of the contributor's GitHub token as soon as we know who they are. */
@@ -858,6 +892,11 @@ export class QueueService implements QueueForTool {
       const code = /\(([a-z_]{3,60})\)|\b(\d{3})\b/.exec(error.message);
       this.log('queue.github_error', { step, kind: error.kind, unsure: error.outcomeUnknown, ...(code ? { code: code[1] ?? code[2] } : {}) });
       if (error.kind === 'refused') return fail(401, 'github_refused', MESSAGES.refused);
+      if (error.kind === 'broken') {
+        // Our own set-up (the app, its key, the repository) is wrong, so a retry will not help until someone fixes it. Its own log event, so it stands out.
+        this.log('queue.broken', { step, ...(code ? { code: code[1] ?? code[2] } : {}) });
+        return fail(503, 'queue_broken', via === 'web' ? MESSAGES.webBroken : MESSAGES.toolBroken);
+      }
       if (error.outcomeUnknown) {
         const queueUrl = this.queueUrl();
         return fail(502, 'github_unavailable', unsureMessage(queueUrl, via === 'web' ? 'form' : 'ask'), { outcome_unknown: true, queue_url: queueUrl });

@@ -94,7 +94,7 @@ curl -s -X POST $API/api/complete -H 'content-type: application/json' -H 'origin
 curl -s http://127.0.0.1:8788/_mock/issues | jq '.[0]'                       # the issue as the Worker opened it
 ```
 
-`open http://127.0.0.1:8788/_mock/` shows the same in a page. To rehearse a failure: `curl -X POST http://127.0.0.1:8788/_mock/mode -d '{"mode":"down"}'` (other modes: `refuse_code`, `decline`, `issues_fail`, `ok`); to change who signs in: `curl -X POST http://127.0.0.1:8788/_mock/user -d '{"login":"someone"}'`. The local settings let the website's dev addresses (`localhost:4321`, `localhost:4400`, `127.0.0.1:4321`) call the API, and loosen the per-address and per-account limits so a day of testing is not cut short. Use `localhost`, not `127.0.0.1`, for the connector's own sign-in (`http://localhost:8787/authorize`): the sign-in is built on the address it was reached at.
+`open http://127.0.0.1:8788/_mock/` shows the same in a page. To rehearse a failure: `curl -X POST http://127.0.0.1:8788/_mock/mode -d '{"mode":"down"}'` (other modes: `refuse_code`, `decline`, `issues_fail`, `app_suspended` for a suspended or uninstalled app, `slow_issues` for an issue that takes six seconds to open, `ok`); to change who signs in: `curl -X POST http://127.0.0.1:8788/_mock/user -d '{"login":"someone"}'`. The local settings let the website's dev addresses (`localhost:4321`, `localhost:4400`, `127.0.0.1:4321`) call the API, and loosen the per-address and per-account limits so a day of testing is not cut short. Use `localhost`, not `127.0.0.1`, for the connector's own sign-in (`http://localhost:8787/authorize`): the sign-in is built on the address it was reached at.
 
 ## The data bundle
 

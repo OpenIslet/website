@@ -50,7 +50,8 @@ export function neutraliseEntities(text: string): string {
  *  A zero-width space keeps them readable but inert. */
 export function defangCrossReferences(text: string): string {
   return text
-    .replace(/([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)#(?=\d)/g, `$1#${ZWSP}`)
+    // The lookbehind lets a long run of name characters be tried once, from its start, instead of from every character in it.
+    .replace(/(?<![A-Za-z0-9_.-])([A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+)#(?=\d)/g, `$1#${ZWSP}`)
     .replace(/https?:\/\/(?:www\.)?github\.com\/[^\s/]+\/[^\s/]+\/(?:issues|pull|discussions)\//gi, (m) => m.replace('://', `://${ZWSP}`));
 }
 
@@ -78,7 +79,8 @@ export function removeMarkers(text: string): string {
 
 /** Stops a draft from opening or closing the <details> and <summary> blocks that hold it. */
 export function neutraliseDetails(text: string): string {
-  return text.replace(/<(\s*\/?\s*)(details|summary)\b/gi, '&lt;$1$2');
+  // One character class instead of \s*\/?\s*: the same matches, without trying every split of a long run of spaces.
+  return text.replace(/<([\s/]*)(details|summary)\b/gi, '&lt;$1$2');
 }
 
 /** A whole file (the draft or the review), ready to sit inside a <details> block. */

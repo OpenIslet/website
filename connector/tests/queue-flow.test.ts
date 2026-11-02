@@ -323,12 +323,56 @@ describe('POST /api/complete: when GitHub says no or does not answer', () => {
     expect([...world.limits.storage.data.keys()].some((k) => k.startsWith('seen:'))).toBe(false);
   });
 
-  it('answers github_unavailable when the bot key is not accepted, and never shows why', async () => {
+  it('answers queue_broken (503) when the bot key is not accepted, says it is not the person\'s fault, and never shows why', async () => {
     await setup({ GITHUB_APP_PRIVATE_KEY: '-----BEGIN PRIVATE KEY-----\nAAAA\n-----END PRIVATE KEY-----' });
     const b = await begin();
     const { res, body } = await finish(b, world.github.issueCode(ADA));
-    expect(res.status).toBe(502);
+    expect(res.status).toBe(503);
+    expect(body.error).toBe('queue_broken');
+    expect(body.message).toMatch(/fault on our side, not yours/);
+    expect(body.message).toMatch(/still saved here for 24 hours/);
     expect(JSON.stringify(body)).not.toMatch(/PKCS|key|AAAA/i);
+    expect((await staged(b.stagedId)).status).toBe(200);
+  });
+
+  it.each([
+    ['the app was uninstalled or made private, so the bot gets no token', /access_tokens/, 404],
+    ['the app is suspended, so the bot is forbidden to open the issue', /issues$/, 403],
+    ['issues are switched off on the repository', /issues$/, 410],
+  ] as const)('answers queue_broken (503), not "try again in a few minutes", when %s', async (_why, match, status) => {
+    const b = await begin();
+    world.github.failNext(match, status, { message: 'nope' }, 3);
+    const { res, body } = await finish(b, world.github.issueCode(ADA));
+    expect(res.status).toBe(503);
+    expect(body.error).toBe('queue_broken');
+    expect(body.message).toMatch(/fault on our side, not yours/);
+    expect(body.message).toMatch(/still saved here for 24 hours/);
+    expect(body.message).not.toMatch(/few minutes|did not answer/);
+    expect(body.outcome_unknown).toBeUndefined();
+    expect(world.github.issues).toHaveLength(0);
+    // The files are kept, the day's allowance is not used up, and the person can press the button again.
+    expect((await staged(b.stagedId)).status).toBe(200);
+    expect([...world.limits.storage.data].filter(([k, v]) => /^(acct|hour):/.test(k) && v !== 0)).toEqual([]);
+    expect(world.logs.join('\n')).toContain('queue.broken');
+  });
+
+  it('answers queue_broken (503) when GitHub refuses our own client details at sign-in, without naming them', async () => {
+    await setup({ GITHUB_CLIENT_SECRET: 'a-secret-github-does-not-know' });
+    const b = await begin();
+    const { res, body } = await finish(b, world.github.issueCode(ADA));
+    expect(res.status).toBe(503);
+    expect(body.error).toBe('queue_broken');
+    expect(JSON.stringify(body)).not.toMatch(/secret/i);
+    expect(world.logs.join('\n')).toContain('queue.broken');
+  });
+
+  it('still says "try again" when GitHub only asks us to slow down', async () => {
+    const b = await begin();
+    world.github.failNext(/issues$/, 403, { message: 'secondary rate limit' }, 1, { 'retry-after': '60' });
+    const { res, body } = await finish(b, world.github.issueCode(ADA));
+    expect(res.status).toBe(502);
+    expect(body.error).toBe('github_unavailable');
+    expect(world.logs.join('\n')).not.toContain('queue.broken');
   });
 
   it('refuses a username it cannot trust', async () => {
@@ -337,6 +381,107 @@ describe('POST /api/complete: when GitHub says no or does not answer', () => {
     expect(res.status).toBe(502);
     expect(body.error).toBe('github_unavailable');
     expect(world.github.issues).toHaveLength(0);
+  });
+});
+
+describe('POST /api/complete: a try that is cut off', () => {
+  it('does not resume a try that signed in but never posted: the same page says the sign-in was used, and nothing is posted twice', async () => {
+    const b = await begin();
+    const code = world.github.issueCode(ADA);
+    world.limits.down = true; // the first try gets as far as signing in, then cannot take a place under the limits
+    const first = await finish(b, code);
+    expect(first.res.status).toBe(503);
+    world.limits.down = false;
+    // The same page again: the code was used and nothing was posted, so this sign-in is finished. It says so; it never posts.
+    const again = await finish(b, code);
+    expect(again.res.status).toBe(400);
+    expect(again.body.error).toBe('state_unknown');
+    expect(world.github.issues).toHaveLength(0);
+    // Pressing the button again from the form starts a new sign-in for the same saved files, and that works.
+    const next = await post('/api/begin', { staged_id: b.stagedId, consent: true, binding_hash: await bindingFor('second-secret') });
+    const state = new URL(next.body.authorize_url).searchParams.get('state')!;
+    const done = await post('/api/complete', { code: world.github.issueCode(ADA), state, binding: 'second-secret' });
+    expect(done.res.status).toBe(200);
+    expect(world.github.issues).toHaveLength(1);
+  });
+
+  it('does not post a second issue when GitHub made the first but its answer was lost and the page is reloaded', async () => {
+    const b = await begin();
+    const code = world.github.issueCode(ADA);
+    world.github.loseAnswerNext(/issues$/);
+    const first = await finish(b, code);
+    // GitHub made the issue, but we could not be sure: the answer says to look at the public queue before trying again.
+    expect(first.res.status).toBe(502);
+    expect(first.body.outcome_unknown).toBe(true);
+    expect(world.github.issues).toHaveLength(1);
+    // Reloading the page must not post again: the sign-in was used.
+    const reload = await finish(b, code);
+    expect(reload.res.status).toBe(400);
+    expect(reload.body.error).toBe('state_unknown');
+    expect(world.github.issues).toHaveLength(1);
+  });
+
+  it('does not let another browser read or finish a cut-off try', async () => {
+    const b = await begin();
+    const code = world.github.issueCode(ADA);
+    world.limits.down = true;
+    await finish(b, code);
+    world.limits.down = false;
+    const stranger = await post('/api/complete', { code, state: b.state, binding: 'someone-elses-secret' });
+    expect(stranger.res.status).toBe(400);
+    expect(stranger.body.error).toBe('binding_mismatch');
+    expect(world.github.issues).toHaveLength(0);
+  });
+
+  it('records the answer as soon as the issue exists, before the checks comment, which may be slow', async () => {
+    const b = await begin();
+    const spy = vi.spyOn(world.ctx, 'waitUntil');
+    const release = world.github.hold(/comments$/);
+    const pending = finish(b, world.github.issueCode(ADA));
+    // The issue is there and the answer is recorded while the comment is still held back.
+    await vi.waitFor(() => expect(world.github.issues).toHaveLength(1));
+    await vi.waitFor(() => expect(world.kv.keys().some((k) => k.startsWith('result:'))).toBe(true));
+    expect(world.github.newestIssue.comments).toHaveLength(0);
+    // And the posting itself is what the Worker has been asked to keep alive: its promise is still unfinished while the comment is held.
+    const stillGoing = async (p: Promise<unknown>) => (await Promise.race([p.then(() => 'done', () => 'done'), new Promise((r) => setTimeout(() => r('going'), 30))])) === 'going';
+    const kept = spy.mock.calls.map((c) => c[0] as Promise<unknown>);
+    expect((await Promise.all(kept.map(stillGoing))).some(Boolean)).toBe(true);
+    // The limits know too: pressing the button again with the same files, while the comment is still held back, gets this issue.
+    const b2 = await begin();
+    const second = await finish(b2, world.github.issueCode(ADA));
+    expect(second.res.status).toBe(200);
+    expect(second.body.issue.number).toBe(1);
+    expect(world.github.issues).toHaveLength(1);
+    release();
+    const { res, body } = await pending;
+    expect(res.status).toBe(200);
+    expect(body.issue.number).toBe(1);
+    expect(world.github.newestIssue.comments).toHaveLength(1);
+    await world.ctx.flush();
+    expect((await Promise.all(kept.map(stillGoing))).some(Boolean)).toBe(false);
+  });
+
+  it('gives the same answer again to the same browser when the first try finished while it was away', async () => {
+    const b = await begin();
+    const code = world.github.issueCode(ADA);
+    const first = await finish(b, code);
+    expect(first.res.status).toBe(200);
+    // The page is loaded again with the same code, sign-in and secret (the first answer was never seen): the first answer, no second issue.
+    const again = await finish(b, code);
+    expect(again.res.status).toBe(200);
+    expect(again.body.issue).toEqual(first.body.issue);
+    expect(world.github.issues).toHaveLength(1);
+  });
+
+  it('hands the posting to the Worker, so it finishes even if the browser has gone', async () => {
+    const b = await begin();
+    const spy = vi.spyOn(world.ctx, 'waitUntil');
+    const { res } = await finish(b, world.github.issueCode(ADA));
+    expect(res.status).toBe(200);
+    // One for letting go of the GitHub token, and one for the posting itself.
+    expect(spy.mock.calls.length).toBeGreaterThanOrEqual(2);
+    await world.ctx.flush();
+    expect(world.github.issues).toHaveLength(1);
   });
 });
 

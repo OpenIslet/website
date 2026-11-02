@@ -2,7 +2,7 @@
 //
 // The draft and the review are read with the connector's own code (connector/src/core/template.ts), so this page and the Worker agree
 // about every file: the AI's whole reply, the file copied as formatted text, and the template's own Markdown are all read the same way.
-import { TEMPLATE, cleanPaste, looksLike, parseDoc, templateGaps, verdictOf as readVerdict, type Cleaned, type Kind } from '../../connector/src/core/template';
+import { TEMPLATE, cleanPaste, looksLike, parseDoc, templateGaps, unfence, verdictOf as readVerdict, type Cleaned, type Kind } from '../../connector/src/core/template';
 //
 // quickCheck is a courtesy: it spots the common slips before anything is sent. The Worker runs the real checks (the same ones as the
 // connector's check_draft tool) and its answer is the one that counts.
@@ -11,7 +11,11 @@ import { TEMPLATE, cleanPaste, looksLike, parseDoc, templateGaps, verdictOf as r
 export const BINDING_PREFIX = 'openislet.submit.binding.';
 export const bindingKey = (state: string): string => `${BINDING_PREFIX}${state}`;
 export const STAGED_KEY = 'openislet.submit.staged';
-export const MAX_TEXT = 60000;
+/** The Worker's own limit for each file (LIMITS.max in connector/src/core/draft.ts; tests/submit-form.test.mjs checks they agree). */
+export const MAX_TEXT = 30000;
+
+/** How long the Worker counts a file to be: the file inside what was pasted, read the way its own checks read it. */
+export const sizeOf = (raw: string, kind: Kind): number => unfence(cleanPaste(raw, kind).text).length;
 
 /** The sign-in `state` inside the GitHub address the Worker hands back, or null when it is missing or not the shape we issue. */
 export function stateOf(authorizeUrl: string): string | null {
@@ -83,15 +87,21 @@ function missingParts(text: string, kind: Kind): string[] {
   );
 }
 
+/** True when the box holds the file twice, or two files: their headings and lines come out more than once. */
+const pastedTwice = (text: string, kind: Kind): boolean =>
+  templateGaps(parseDoc(cleanPaste(text, kind).text), TEMPLATE[kind], kind).some((g) => g.startsWith('duplicate ') || g === 'multiple title lines');
+
 /** What is wrong with the draft on its own. An empty box is a problem too: it has not been added yet. */
 export function draftProblems(raw: string): Problem[] {
   const out: Problem[] = [];
   const draft = raw.trim();
   if (!draft) return [{ field: 'draft', text: 'Paste your draft, or upload the file your AI made in step 3 (openislet-iip-….md).' }];
-  if (draft.length > MAX_TEXT) return [{ field: 'draft', text: `The draft is too long (${draft.length.toLocaleString('en-GB')} characters). The limit is ${MAX_TEXT.toLocaleString('en-GB')}. One IIP should be one claim.` }];
+  const draftSize = sizeOf(draft, 'draft');
+  if (draftSize > MAX_TEXT) return [{ field: 'draft', text: `The draft is too long (${draftSize.toLocaleString('en-GB')} characters). The limit is ${MAX_TEXT.toLocaleString('en-GB')}. One IIP should be one claim.` }];
   const kind = looksLike(draft);
   if (kind === 'review') return [...out, { field: 'draft', text: 'This looks like your blind review, not your draft. The draft is the file your AI wrote in step 3. Put the review in box 2.' }];
   if (kind === 'review-prompt') return [...out, { field: 'draft', text: 'This is the prompt for the fresh chat in step 4, not your draft. The draft is the first file your AI wrote in step 3.' }];
+  if (pastedTwice(draft, 'draft')) return [...out, { field: 'draft', text: 'There is more than one file in this box, or the same file twice. Clear the box and paste just the draft, once.' }];
   const missing = missingParts(draft, 'draft');
   if (missing.length >= 6) out.push({ field: 'draft', text: 'This does not look like a draft yet. Paste the file your AI wrote in step 3: it starts with a title and has a “Claim in one sentence” line.' });
   else if (missing.length) out.push({ field: 'draft', text: `Your draft is missing ${listed(missing)}. Ask your AI to fill these in using the template from step 3 (it should write “Not known” for anything it does not know).` });
@@ -109,11 +119,13 @@ export function reviewProblems(raw: string): Problem[] {
   const out: Problem[] = [];
   const review = raw.trim();
   if (!review) return [{ field: 'review', text: 'Paste your blind review, or upload the file from step 4 (openislet-review-….md).' }];
-  if (review.length > MAX_TEXT) return [{ field: 'review', text: `The review is too long (${review.length.toLocaleString('en-GB')} characters). The limit is ${MAX_TEXT.toLocaleString('en-GB')}.` }];
+  const reviewSize = sizeOf(review, 'review');
+  if (reviewSize > MAX_TEXT) return [{ field: 'review', text: `The review is too long (${reviewSize.toLocaleString('en-GB')} characters). The limit is ${MAX_TEXT.toLocaleString('en-GB')}.` }];
   const kind = looksLike(review);
   if (kind === 'review-prompt')
     return [...out, { field: 'review', text: 'This is the prompt you paste into a brand-new chat, not the review itself. Paste it into a new chat, and paste the answer that chat gives you here: that answer is the review.' }];
   if (kind === 'draft') return [...out, { field: 'review', text: 'This looks like your draft, not the blind review. Put it in box 1, and paste the review from your fresh chat (step 4) here.' }];
+  if (pastedTwice(review, 'review')) return [...out, { field: 'review', text: 'There is more than one file in this box, or the same file twice. Clear the box and paste just the blind review, once.' }];
   const verdict = verdictOf(review);
   const missing = missingParts(review, 'review').filter((m) => m !== '“Verdict”' && m !== '"Verdict"');
   if (missing.length >= 6 && !verdict) return [...out, { field: 'review', text: 'This does not look like a blind review yet. Paste the answer from your fresh chat in step 4: it starts with “Review:” and has a “Verdict” line.' }];

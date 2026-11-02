@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-02",
+    "title": "Oxygen supply tested under late and weak blood vessels together",
+    "summary": "Blood vessels that connect late and vessels that carry less oxygen than hoped are now tested together, and the whole grid is published.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A joint test of when the blood vessels connect (36 to 60 hours in 4-hour steps, plus 96 and 168 hours as stress tests) and how well they carry oxygen, under both of the model's oxygen-release laws, with unrounded results and a finer-mesh check of the closest calls."
+      },
+      {
+        "kind": "added",
+        "text": "An exact no-blood-vessel lower bound: what the cells get with no vessels at all."
+      },
+      {
+        "kind": "added",
+        "text": "A table of where each setting in the test comes from."
+      },
+      {
+        "kind": "changed",
+        "text": "The timing axis is now labelled as the target midpoint; the realised half-way point comes about 3 hours later."
+      },
+      {
+        "kind": "fixed",
+        "text": "The Python requirement is now numpy 2.0 or later, which the Layer 4 code needs (it crashed on older versions)."
+      }
+    ],
+    "contribution": "IIP-0002"
+  }
+]

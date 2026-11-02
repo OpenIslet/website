@@ -72,7 +72,12 @@ import { queueApi, issuesUrl } from '../../data/site';
 
   async function finish() {
     if (refused) {
-      show('You chose not to sign in', ['Nothing was posted. Your files are still held for up to 24 hours, so you can go back and try again whenever you like.'], [{ text: 'Back to the form', href: backHref, primary: true }]);
+      // GitHub sends access_denied when the person pressed Cancel. Any other error word is something else going wrong, not a choice.
+      if (refused === 'access_denied') {
+        show('You chose not to sign in', ['Nothing was posted. Your files are still held for up to 24 hours, so you can go back and try again whenever you like.'], [{ text: 'Back to the form', href: backHref, primary: true }]);
+      } else {
+        show('GitHub could not sign you in', ['Nothing was posted. Your files are still held for up to 24 hours: go back to the form and press the button again. If it keeps happening, write to us.'], [{ text: 'Back to the form', href: backHref, primary: true }, { text: 'Write to us', href: '/contact' }]);
+      }
       return;
     }
     if (!code || !state) {
@@ -88,7 +93,7 @@ import { queueApi, issuesUrl } from '../../data/site';
       }
       show(
         'We can’t finish this in a different browser or tab',
-        ['To keep your submission safe, the sign-in has to be finished in the same browser tab where you started it. Please go back to the form and start again.'],
+        ['The sign-in has to be finished in the browser tab where you pressed the button. Go back to that tab and sign in there. Can’t find it? Open the form, paste your files again and start over.'],
         [{ text: 'Back to the form', href: backHref, primary: true }],
       );
       return;
@@ -147,7 +152,7 @@ import { queueApi, issuesUrl } from '../../data/site';
         show('This sign-in has expired or was already used', ['Sign-in links last 15 minutes and work once. Go back to the form and press the button again.'], retry);
         return;
       case 'binding_mismatch':
-        show('We can’t finish this in a different browser or tab', ['The sign-in has to be finished in the same browser tab where you started it. Please start again from the form.'], retry);
+        show('We can’t finish this in a different browser or tab', ['The sign-in has to be finished in the browser tab where you pressed the button. Go back to that tab and sign in there. Can’t find it? Open the form, paste your files again and start over.'], retry);
         return;
       case 'github_refused':
         show('GitHub did not accept the sign-in', ['This can happen if the page was open for a long time. Please try again.'], retry);
