@@ -12,6 +12,10 @@ export type Route = 'mcp' | 'paste';
 export const checkPrompt =
   'Using the OpenIslet MCP tools, tell me in two sentences what the OpenIslet blueprint is, then list its five tests in plain English.';
 
+/** Step 1, the one-line way: pasted into a chat, the AI reads the starter pack on the website itself. */
+export const packLine =
+  'Read all of https://openislet.org/openislet-starter-pack.md (the OpenIslet starter pack), then help me with the OpenIslet blueprint.';
+
 /** The copy-and-paste version of the check: paste the starter pack first, then ask this. */
 export const checkPromptPaste =
   'Using the OpenIslet starter pack I pasted at the start of this chat, tell me in two sentences what the OpenIslet blueprint is, then list its five tests in plain English.';

@@ -11,7 +11,7 @@ import { cadence } from '../data/versions';
 import { mcpEndpoint, submissionsOpen, issuesUrl, release, longDate, repo, fullBlueprintUrl } from '../data/site';
 import { gates } from '../data/gates';
 import { clients, checkedOn } from '../data/connect';
-import { checkPrompt, checkPromptPaste, explorePrompts, draftPrompt, reviewPrompt, submitPrompt, draftPreview } from '../data/prompts';
+import { checkPrompt, checkPromptPaste, explorePrompts, draftPrompt, reviewPrompt, submitPrompt, draftPreview, packLine } from '../data/prompts';
 
 const count = (n: number) => n.toLocaleString('en-US');
 
@@ -391,11 +391,28 @@ const tools: [string, string, string][] = [
               <li>
                 <span class="do__n">1</span>
                 <div class="do__body">
-                  <p class="do__t">Copy the starter pack</p>
-                  <div class="do__acts">
-                    <button type="button" class="btn btn--primary btn--lg" data-copy-pack data-href={packHref}>Copy the starter pack</button>
-                    <a class="btn btn--quiet btn--lg" href={packHref} download="openislet-starter-pack.md">Download it as a file</a>
-                  </div>
+                  <p class="do__t">Give your AI the starter pack, one of three ways</p>
+                  <ul class="ways">
+                    <li class="way">
+                      <p class="way__t">One line <span class="way__d">for an AI that can open web pages</span></p>
+                      <div class="do__acts">
+                        <button type="button" class="btn btn--quiet" data-copy-line data-line={packLine}>Copy the line</button>
+                      </div>
+                      <p class="way__line"><span class="sr-only">The line: </span>{packLine}</p>
+                    </li>
+                    <li class="way">
+                      <p class="way__t">The whole pack <span class="way__d">works in any chat</span></p>
+                      <div class="do__acts">
+                        <button type="button" class="btn btn--quiet" data-copy-pack data-href={packHref}>Copy the starter pack</button>
+                      </div>
+                    </li>
+                    <li class="way">
+                      <p class="way__t">A file <span class="way__d">if the chat says the message is too long</span></p>
+                      <div class="do__acts">
+                        <a class="btn btn--quiet" href={packHref} download="openislet-starter-pack.md">Download it as a file</a>
+                      </div>
+                    </li>
+                  </ul>
                   <p class="pack__status" role="status" aria-live="polite" data-pack-status></p>
                   <p class="do__fine">About 7,000 words: the blueprint, the Idea Graveyard and the open questions. It leaves out the {count(release.counts.studies)} studies behind them, so an AI that can search the web can look papers up, and the others will say so.</p>
                   <p class="do__fine">The files behind it are open on GitHub: <a href={repo.url} rel="noopener">the repository</a> and <a href={fullBlueprintUrl} rel="noopener">the full blueprint</a>. The pack lists the file for each part.</p>
@@ -408,14 +425,14 @@ const tools: [string, string, string][] = [
                   <div class="do__acts do__acts--chats">
                     {aiChats.map((a) => <a class="btn btn--quiet chatlink" href={a.href} target="_blank" rel="noopener"><AssistantMark id={a.mark} uid={`s1-${a.mark}`} /><span>{a.name} <span aria-hidden="true">↗</span></span><span class="sr-only"> (opens in a new tab)</span></a>)}
                   </div>
-                  <p class="do__fine">Any AI chat that lets you paste a long message works, including free plans.</p>
+                  <p class="do__fine">Any AI chat works, including free plans.</p>
                 </div>
               </li>
               <li>
                 <span class="do__n">3</span>
                 <div class="do__body">
                   <p class="do__t">Paste it and send</p>
-                  <p class="do__fine">Ctrl+V on Windows, Cmd+V on a Mac. Then wait for the reply.</p>
+                  <p class="do__fine">Ctrl+V on Windows, Cmd+V on a Mac, or attach the file. Then wait for the reply.</p>
                 </div>
               </li>
             </ol>
@@ -424,6 +441,7 @@ const tools: [string, string, string][] = [
           <details class="help-details">
             <summary>It didn’t work</summary>
             <ul>
+              <li><strong>The one line didn’t work.</strong> Your AI could not open the page, or did not read all of it. Use the whole pack or the file instead.</li>
               <li><strong>The chat says my message is too long.</strong> Download the pack and attach it as a file instead, or try another AI.</li>
               <li><strong>The copy button says “Copy failed”.</strong> Some browsers block it. Use “Download it as a file” and attach the file to your chat.</li>
               <li><strong>Your AI doesn’t say it has read the pack, or its answers don’t sound like the blueprint.</strong> Make sure the pack was the first thing in the chat. You can also paste the check below.</li>
@@ -936,6 +954,14 @@ const tools: [string, string, string][] = [
       freshSay(button, problems.length ? `Copied. ${problems[0].text}` : 'Copied.', problems.length > 0);
     });
   });
+
+  // Step 1's one line, copied as it is shown.
+  document.querySelectorAll<HTMLButtonElement>('button[data-copy-line]').forEach((button) =>
+    button.addEventListener('click', async () => {
+      const copied = await copyWithFlash(button, button.dataset.line ?? '');
+      say(button, copied ? 'Copied. Now open a new chat in your AI, paste it and send.' : 'Your browser blocked the copy. Select the line below and copy it.');
+    }),
+  );
 
   // Which steps someone has finished (pressing "Next" finishes a step). Kept only in this browser, and the guide works without it.
   const KEY = 'openislet.guide.done';
@@ -1506,6 +1532,43 @@ const tools: [string, string, string][] = [
     min-height: 1.5rem;
     font-weight: 600;
     color: var(--pass) !important;
+  }
+  /* step 1: the three ways to give an AI the starter pack, one under the other */
+  .ways {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.875rem;
+  }
+  .way {
+    display: grid;
+    gap: 0.5rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--line);
+    min-width: 0;
+  }
+  .way:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+  .way__t {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .way__d {
+    font-weight: 400;
+    color: var(--body);
+  }
+  .way__d::before {
+    content: ' · ';
+  }
+  .way__line {
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--body);
+    overflow-wrap: anywhere;
   }
   .pack__status.is-warn {
     color: var(--warn) !important;
