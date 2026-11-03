@@ -40,7 +40,7 @@ describe('/mcp stays open for reading', () => {
       expect(init.status).toBe(200);
       expect(JSON.stringify(await readRpc(init))).toContain('openislet');
       const tools = await readRpc(await read());
-      expect(tools.result.tools.map((t: { name: string }) => t.name)).toHaveLength(12);
+      expect(tools.result.tools.map((t: { name: string }) => t.name)).toHaveLength(13);
       const answer = await callTool(world, 'get_blueprint_overview', {});
       expect(answer.result?.isError).toBeFalsy();
       expect(answer.result?.content[0].text).toContain('Islet-1');

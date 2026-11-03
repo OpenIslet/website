@@ -75,6 +75,7 @@ const tools: [string, string, string][] = [
   ['get_layer_atlas', 'The DNA, protein, tissue and patient layers: construct maps, 3D structures and simulations.', 'No'],
   ['get_contributions', 'Who has contributed, and what each IIP changed.', 'No'],
   ['get_submission_status', 'Where a submission is in the review. Submissions are public, so no sign-in.', 'No'],
+  ['get_review_prompt', 'The prompt for the blind review, made from your draft.', 'No'],
   ['check_draft', 'A dry run of the checks on a draft and its blind review. It posts nothing.', 'No'],
   [
     'submit_proposal',
@@ -494,7 +495,7 @@ const tools: [string, string, string][] = [
       <StepShell
         n={3}
         title="Save your IIP as a draft"
-        lead="When you have one clear idea, paste this prompt into the same chat. Your AI writes it up as an Islet Improvement Proposal (IIP) in a standard format, and prepares the prompt for step 4."
+        lead="When you have one clear idea, paste this prompt into the same chat. Your AI writes it up as an Islet Improvement Proposal (IIP) in a standard format."
       >
         <div class="do">
           <p class="do__tag">Do this</p>
@@ -517,11 +518,9 @@ const tools: [string, string, string][] = [
         </div>
 
         <div>
-          <h3 class="sub">You should get two things back</h3>
+          <h3 class="sub">You should get your draft back</h3>
           <div class="two">
             <div class="two__item">
-              <span class="chip chip--ink">1</span>
-              <h4>Your draft</h4>
               <p>A file called <span class="mono-chip">openislet-iip-…md</span>. Download it, or copy it from the code block.</p>
               <div class="doc" aria-hidden="true">
                 {
@@ -530,12 +529,6 @@ const tools: [string, string, string][] = [
                   ))
                 }
               </div>
-            </div>
-            <div class="two__item">
-              <span class="chip chip--ink">2</span>
-              <h4>A prompt for a fresh chat</h4>
-              <p>A code block titled <span class="mono-chip">FRESH-CHAT PROMPT</span>. Press Copy on it and keep it ready for step 4.</p>
-              <p class="note">It contains your claim and the review instructions, but not your reasoning. That is what makes the second opinion blind.</p>
             </div>
           </div>
         </div>
@@ -553,35 +546,32 @@ const tools: [string, string, string][] = [
             <li>
               <span class="do__n">1</span>
               <div class="do__body">
-                <p class="do__t">Open a brand-new chat</p>
-                <div class="do__acts do__acts--chats" data-route-only="paste">
-                  {aiChats.map((a) => <a class="btn btn--quiet chatlink" href={a.href} target="_blank" rel="noopener"><AssistantMark id={a.mark} uid={`s4-${a.mark}`} /><span>{a.name} <span aria-hidden="true">↗</span></span><span class="sr-only"> (opens in a new tab)</span></a>)}
-                </div>
-                <p class="do__fine">Not the old one. Use the strongest AI model you have.</p>
+                <label class="do__t" for="s4-draft">Paste your draft here</label>
+                <textarea id="s4-draft" class="s4-draft" rows="6" spellcheck="false" autocomplete="off" aria-describedby="s4-draft-note"></textarea>
+                <p class="do__fine" id="s4-draft-note" data-route-only="paste">It stays in this tab, so the form in step 5 is filled in for you.</p>
               </div>
             </li>
-            <li data-route-only="paste">
+            <li>
               <span class="do__n">2</span>
               <div class="do__body">
-                <p class="do__t">Paste the starter pack first, and wait for the reply</p>
+                <p class="do__t">Copy the message for the fresh chat</p>
                 <div class="do__acts">
-                  <button type="button" class="btn btn--primary" data-copy-pack data-href={packHref} data-after="Copied. Now paste it in the new chat and wait for the reply.">Copy the starter pack again</button>
+                  <button type="button" class="btn btn--primary" data-copy-fresh>Copy for the fresh chat</button>
                 </div>
-                <p class="pack__status" role="status" aria-live="polite" data-pack-status></p>
-              </div>
-            </li>
-            <li data-route-only="mcp">
-              <span class="do__n">2</span>
-              <div class="do__body">
-                <p class="do__t">Check OpenIslet is on for this chat</p>
-                <p class="do__fine">A new session has it already in most coding assistants. In Claude Code, ask which connectors it has. In the ChatGPT desktop app, type /mcp. In ChatGPT in a browser, type @.</p>
+                <p class="pack__status" role="status" aria-live="polite" data-fresh-status></p>
+                <p class="do__fine" data-route-only="paste">It holds the starter pack, your claim, evidence and proposed change, and the review instructions.</p>
+                <p class="do__fine" data-route-only="mcp">It holds your claim, evidence and proposed change, and the review instructions.</p>
               </div>
             </li>
             <li>
               <span class="do__n">3</span>
               <div class="do__body">
-                <p class="do__t">Paste the FRESH-CHAT PROMPT from step 3</p>
-                <p class="do__fine">It is the second code block your AI gave you. Don’t have one? Use the public reviewer prompt below.</p>
+                <p class="do__t">Open a brand-new chat, paste it and send</p>
+                <div class="do__acts do__acts--chats" data-route-only="paste">
+                  {aiChats.map((a) => <a class="btn btn--quiet chatlink" href={a.href} target="_blank" rel="noopener"><AssistantMark id={a.mark} uid={`s4-${a.mark}`} /><span>{a.name} <span aria-hidden="true">↗</span></span><span class="sr-only"> (opens in a new tab)</span></a>)}
+                </div>
+                <p class="do__fine">Not the old one. Use the strongest AI model you have.</p>
+                <p class="do__fine" data-route-only="mcp">Check OpenIslet is on for that chat. A new session has it already in most coding assistants. In Claude Code, ask which connectors it has. In the ChatGPT desktop app, type /mcp. In ChatGPT in a browser, type @.</p>
               </div>
             </li>
             <li>
@@ -616,8 +606,15 @@ const tools: [string, string, string][] = [
           </ul>
         </details>
         <details class="help-details">
-          <summary>No fresh-chat prompt, or the form says “does not look like the template”? Use the public reviewer prompt</summary>
-          <p>Replace <span class="mono-chip">[CLAIM]</span> with your claim in one sentence, your evidence, and what you propose changing. Leave out your reasoning.</p>
+          <summary>It didn’t work</summary>
+          <ul>
+            <li data-route-only="paste">
+              <strong>The chat says my message is too long.</strong> Start the new chat with the starter pack file, as in step 1, then paste just the review prompt.
+              <div class="do__acts fold__acts"><button type="button" class="btn btn--quiet" data-copy-fresh data-prompt-only>Copy the review prompt only</button></div>
+              <p class="pack__status" role="status" aria-live="polite" data-fresh-status></p>
+            </li>
+            <li><strong>The copy is blocked, or you’d rather do it by hand.</strong> Use the public reviewer prompt below: replace <span class="mono-chip">[CLAIM]</span> with your claim in one sentence, your evidence, and what you propose changing. Leave out your reasoning. On the copy-and-paste route, paste the starter pack into the new chat first.</li>
+          </ul>
           <CopyBox label="Reviewer prompt [OPENISLET-REVIEW-v1]" text={reviewPrompt} maxHeight="18rem" />
         </details>
       </StepShell>
@@ -673,16 +670,15 @@ const tools: [string, string, string][] = [
                 <div class="do__body">
                   <p class="do__t">Open the submission form</p>
                   <div class="do__acts">
-                    <a class="btn btn--primary btn--lg" href="/submit" target="_blank" rel="noopener">Open the form <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span></a>
+                    <a class="btn btn--primary btn--lg" href="/submit">Open the form</a>
                   </div>
-                  <p class="do__fine">It opens in a new tab. Keep this page open: step 6 explains what happens next.</p>
                 </div>
               </li>
               <li>
                 <span class="do__n">2</span>
                 <div class="do__body">
-                  <p class="do__t">Paste your draft and your review</p>
-                  <p class="do__fine">Paste what your AI gave you (the whole reply is fine), or upload the two files. The form tells you straight away if something is missing or doesn’t look right.</p>
+                  <p class="do__t">Paste your review</p>
+                  <p class="do__fine">Your draft from step 4 is already in box 1. Paste the review your AI gave you (the whole reply is fine), or upload the file. The form tells you straight away if something is missing or doesn’t look right.</p>
                 </div>
               </li>
               <li>
@@ -808,6 +804,8 @@ const tools: [string, string, string][] = [
 <script>
   import { wireGroup, copyWithFlash } from '../scripts/group';
   import { revealInRow } from '../scripts/sidescroll';
+  import { freshChatMessage } from '../scripts/fresh-chat';
+  import { draftProblems, forgetIfPosted, remember, remembered, whatIsThis } from '../scripts/submit';
 
   wireGroup({ key: 'client', buttons: 'button[data-client]', panels: 'div[data-client]' });
 
@@ -878,6 +876,64 @@ const tools: [string, string, string][] = [
       await loadPack();
       if (!packText) return say(button, 'Could not get the starter pack. Use “Download it as a file” instead, or try again in a moment.');
       report(button, await copyWithFlash(button, packText));
+    });
+  });
+
+  // Step 4: the message for the fresh chat, made from the draft pasted here. The draft is kept in this tab with the form's own copy
+  // (src/scripts/submit.ts), so the form in step 5 is filled in. The starter pack is fetched ahead, so the copy happens inside the click.
+  const freshDraft = document.getElementById('s4-draft') as HTMLTextAreaElement | null;
+  const freshButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('button[data-copy-fresh]'));
+  const freshSay = (button: HTMLElement, text: string, warn = true) => {
+    const status = (button.closest('li') ?? document).querySelector<HTMLElement>('[data-fresh-status]');
+    if (!status) return;
+    status.textContent = text;
+    status.classList.toggle('is-warn', warn);
+  };
+  // Only an edit is kept, so a page brought back by the Back button never writes its older draft over a newer one from the form.
+  // Files already posted are not brought back.
+  const blank = { draft: '', review: '', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' };
+  const fillDraft = () => {
+    if (freshDraft) freshDraft.value = forgetIfPosted() ? '' : (remembered()?.draft ?? '');
+  };
+  fillDraft();
+  addEventListener('pageshow', (event) => event.persisted && fillDraft());
+  let edited = false;
+  let keeping = 0;
+  const keepDraft = () => {
+    if (!freshDraft || !edited) return;
+    edited = false;
+    remember({ ...(remembered() ?? blank), draft: freshDraft.value });
+  };
+  freshDraft?.addEventListener('input', () => {
+    freshButtons.forEach((b) => freshSay(b, ''));
+    edited = true;
+    window.clearTimeout(keeping);
+    keeping = window.setTimeout(keepDraft, 400);
+  });
+  addEventListener('pagehide', keepDraft);
+  freshButtons.forEach((button) => {
+    // The prompt alone: for MCP, or after the starter pack was given as a file because the whole message was too long.
+    const promptOnly = () => 'promptOnly' in button.dataset || guide?.dataset.route === 'mcp';
+    button.addEventListener('pointerenter', () => !promptOnly() && void loadPack());
+    button.addEventListener('focus', () => !promptOnly() && void loadPack());
+    button.addEventListener('click', async () => {
+      const text = freshDraft?.value ?? '';
+      if (!text.trim()) return freshSay(button, 'Paste your draft in the box first.');
+      keepDraft();
+      const kind = whatIsThis(text);
+      const problems = draftProblems(text);
+      if (kind === 'review') return freshSay(button, 'This looks like a review, not your draft. Paste the draft your AI wrote in step 3.');
+      if (kind === 'review-prompt') return freshSay(button, problems[0]?.text ?? 'This is a reviewer prompt, not your draft.');
+      const withPack = !promptOnly();
+      if (withPack && !packText) {
+        freshSay(button, 'Getting the starter pack…', false);
+        await loadPack();
+        if (!packText) return freshSay(button, 'Could not get the starter pack. Try again in a moment.');
+      }
+      const message = freshChatMessage(text, withPack ? (packText ?? undefined) : undefined);
+      if (!message.ok) return freshSay(button, problems[0]?.text ?? `Your draft is missing ${message.missing.join(', ')}.`);
+      if (!(await copyWithFlash(button, message.text))) return freshSay(button, 'Your browser blocked the copy. Press the button again, or see “It didn’t work” below.');
+      freshSay(button, problems.length ? `Copied. ${problems[0].text}` : 'Copied.', problems.length > 0);
     });
   });
 
@@ -1419,6 +1475,29 @@ const tools: [string, string, string][] = [
     font-size: 0.75rem;
     font-weight: 700;
   }
+  .s4-draft {
+    width: 100%;
+    min-height: 8rem;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    background: #fff;
+    color: var(--ink);
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    resize: vertical;
+  }
+  /* On a touch screen text smaller than 16px makes the iPhone zoom in on the box when it is tapped. */
+  @media (pointer: coarse) {
+    .s4-draft {
+      font-size: 1rem;
+    }
+  }
+  .s4-draft:focus {
+    outline: 3px solid var(--accent-lt);
+    outline-offset: 2px;
+  }
   .pack__status:empty {
     min-height: 0;
     margin-block: -0.3125rem;
@@ -1427,6 +1506,12 @@ const tools: [string, string, string][] = [
     min-height: 1.5rem;
     font-weight: 600;
     color: var(--pass) !important;
+  }
+  .pack__status.is-warn {
+    color: var(--warn) !important;
+  }
+  .fold__acts {
+    margin-top: 0.5rem;
   }
 
   /* path switch */

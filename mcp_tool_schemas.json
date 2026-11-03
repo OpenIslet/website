@@ -383,6 +383,25 @@
       }
     },
     {
+      "name": "get_review_prompt",
+      "category": "read_only_anonymous",
+      "description": "Builds the prompt for the blind review from the draft: the public reviewer template with the draft's claim, evidence and proposed change in it, word for word. Give it to the person exactly as it is, to paste into a brand-new chat. Do not do the review in this chat. Nothing is stored or sent.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "draft": {
+            "type": "string",
+            "maxLength": 60000,
+            "description": "The whole draft file (Markdown)."
+          }
+        },
+        "required": [
+          "draft"
+        ],
+        "$schema": "https://json-schema.org/draft/2020-12/schema"
+      }
+    },
+    {
       "name": "check_draft",
       "category": "deterministic_precheck_anonymous",
       "description": "A dry run of the checks a submission goes through. Give the draft file and the blind review file. It reports whether they follow the templates and meet the basic rules, then checks the cited papers and quotes against the OpenIslet record, whether the review is about the same claim, related Idea Graveyard rules, duplicates and links, and says what to fix. Nothing is stored or sent. Use it before submit_proposal.",
@@ -881,7 +900,7 @@
     }
   ],
   "stage1_lab_desk_and_layer_simulation_extension_schemas": {
-    "note": "Input contracts for the blueprint repository's layer scripts and wet-lab ingestor. The connector does not serve them; its 12 tools are listed above.",
+    "note": "Input contracts for the blueprint repository's layer scripts and wet-lab ingestor. The connector does not serve them; its 13 tools are listed above.",
     "layer2_perturbation_genotype_id_enum": [
       "WT_UNEDITED_CONTROL",
       "SCENARIO_A_ARM_1B_UNIVERSAL_LEAN_4LOCUS",

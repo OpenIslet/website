@@ -23,7 +23,7 @@ const expect = (ok, what) => {
 const text = (r) => r.content.map((c) => c.text).join('\n');
 
 const { tools } = await client.listTools();
-expect(tools.length === 12, `lists 12 tools (${tools.map((t) => t.name).join(', ')})`);
+expect(tools.length === 13, `lists 13 tools (${tools.map((t) => t.name).join(', ')})`);
 
 let r = await client.callTool({ name: 'get_blueprint_overview', arguments: {} });
 expect(!r.isError && text(r).includes('Islet-1') && r.structuredContent?.counts?.studies === 563 && text(r).includes('study records'), 'get_blueprint_overview answers in plain English');

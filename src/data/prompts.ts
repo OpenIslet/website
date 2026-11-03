@@ -114,10 +114,9 @@ Then do both of these, so I can use the review:
 (a) If you can create files, save the review as openislet-review-[short-title].md so I can download it.
 (b) Also show the whole review inside one code block, so I can press Copy.`;
 
-/** Step 3: one prompt that makes the draft and the prompt for the fresh chat. */
-export const draftPrompt = `I want to save an Islet Improvement Proposal (IIP) for OpenIslet, the open project to design a personalised, drug-free cure for type 1 diabetes. Please do two things.
+/** Step 3: the prompt that writes the draft. The prompt for the fresh chat is made from the draft in step 4 (and by get_review_prompt). */
+export const draftPrompt = `I want to save an Islet Improvement Proposal (IIP) for OpenIslet, the open project to design a personalised, drug-free cure for type 1 diabetes.
 
-PART 1: THE DRAFT
 Write my IIP as a Markdown file called openislet-iip-[short-title].md. If you can create files, save it so I can download it. Also show the whole file inside one code block, so I can press Copy. Use exactly this structure and fill every section from our conversation. If something is missing, write "Not known". Never invent evidence, quotes or PubMed IDs.
 
 # [Short title]
@@ -135,17 +134,9 @@ Write my IIP as a Markdown file called openislet-iip-[short-title].md. If you ca
 ## Cheapest way to check it
 [The simplest analysis or lab test that would settle it]
 ## AI tools used
-[Your model name and effort setting. Write "Unreleased model" if you cannot say.]
+[Your model name and effort setting. Write "Unreleased model" if you cannot say.]`;
 
-PART 2: THE PROMPT FOR A FRESH CHAT
-Now write a second block titled FRESH-CHAT PROMPT, inside one code block so I can press Copy. I will paste it into a brand-new chat that has not seen this conversation, so it must stand on its own. It must contain:
-1. The review instructions below, word for word.
-2. Under CLAIM TO TEST, only my claim in one sentence, the evidence list, and what I propose changing. Leave out your reasoning, and do not say whether you agree with me.
-
-REVIEW INSTRUCTIONS (copy these word for word):
-${reviewTemplate}`;
-
-/** Step 4 backup: the reviewer prompt on its own, if the first chat did not make one. */
+/** Step 4 by hand: the reviewer prompt on its own, for anyone who fills in [CLAIM] themselves. */
 export const reviewPrompt = reviewTemplate;
 
 /** Step 5 with MCP: the AI sends the two files. */

@@ -720,7 +720,8 @@ function parseStructure(block) {
   }
   return out;
 }
-const draftStructure = parseStructure(between(site.draftPrompt, '# [Short title]', '\nPART 2'));
+// The draft prompt ends with its template.
+const draftStructure = parseStructure(between(`${site.draftPrompt}\n`, '# [Short title]', '\n[Your model name'));
 const reviewStructure = parseStructure(between(site.reviewTemplate, '# Review: [short title]', '\n\nBe strict'));
 if (!draftStructure.fields.length || !reviewStructure.fields.length) throw new Error('The prompt structure could not be read. Has the template in src/data/prompts.ts changed shape?');
 put('prompts/structure.json', {

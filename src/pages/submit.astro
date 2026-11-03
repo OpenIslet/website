@@ -102,7 +102,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
           To take an IIP down later, <a href="/contact">contact us</a>: we log every removal publicly, with the reason.
         </p>
         <label class="agree" for="consent">
-          <input id="consent" name="consent" type="checkbox" />
+          <input id="consent" name="consent" type="checkbox" autocomplete="off" />
           <span>I agree that my IIP and its review will be published openly under CC BY 4.0, credited to the GitHub account I sign in with.</span>
         </label>
 
@@ -137,7 +137,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
 </Layout>
 
 <script>
-  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, sizeOf, type Problem } from '../scripts/submit';
+  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, shared, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, sizeOf, splitFiles, remember, remembered, forgetIfPosted, type Problem, type Saved } from '../scripts/submit';
 
   const form = document.getElementById('submit-form') as HTMLFormElement;
   const api = form.dataset.api ?? '';
@@ -183,6 +183,15 @@ const live = connectorStatus === 'live' || submissionsOpen;
   function arrange(box: HTMLTextAreaElement) {
     const want = box === draft ? 'draft' : 'review';
     const other = box === draft ? review : draft;
+    const both = other.value.trim() ? null : splitFiles(box.value);
+    if (both) {
+      draft.value = both.draft;
+      review.value = both.review;
+      touched.add(other);
+      tidied.delete(other);
+      tidied.set(box, 'Your draft and review were in one box, so we split them.');
+      return;
+    }
     const is = whatIsThis(box.value);
     if ((is === 'draft' || is === 'review') && is !== want && (!other.value.trim() || whatIsThis(other.value) === want)) {
       const moved = tidy(box.value, is).text;
@@ -301,6 +310,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
       count(draft, 'draft-count');
       count(review, 'review-count');
       refresh();
+      keepSoon();
       say(`Loaded ${file.name}.`);
     });
   }
@@ -372,6 +382,54 @@ const live = connectorStatus === 'live' || submissionsOpen;
   };
   for (const box of [draft, review, nameInput, orcid, xhandle]) box.addEventListener('input', soon);
   consent.addEventListener('change', refresh);
+
+  // What was typed here comes back after a reload, or after a phone puts this tab to sleep, unless a link from the connector brings
+  // files of its own. It counts as the person's own words. The tick never comes back: it is agreement to publish the files as they are.
+  // Only an edit is kept, so a page brought back by the Back button never writes its older text over newer text (from Start here).
+  let edited = false;
+  const keep = () => {
+    if (!edited) return;
+    edited = false;
+    remember({ draft: draft.value, review: review.value, name: nameInput.value, orcid: orcid.value, x: xhandle.value, aiDraft: aiDraft.value, aiReview: aiReview.value });
+  };
+  let keeping = 0;
+  const keepSoon = () => {
+    edited = true;
+    window.clearTimeout(keeping);
+    keeping = window.setTimeout(keep, 400);
+  };
+  for (const box of [draft, review, nameInput, orcid, xhandle, aiDraft, aiReview]) box.addEventListener('input', keepSoon);
+  addEventListener('pagehide', keep);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') keep();
+  });
+  const boxesOf = (v: Saved): [HTMLInputElement | HTMLTextAreaElement, string][] => [[draft, v.draft], [review, v.review], [nameInput, v.name], [orcid, v.orcid], [xhandle, v.x], [aiDraft, v.aiDraft], [aiReview, v.aiReview]];
+  const blank: Saved = { draft: '', review: '', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' };
+  /** Puts kept text in the boxes: into empty ones on a fresh page, into every one on a page the Back button brought back. */
+  function fill(v: Saved, every: boolean) {
+    for (const [box, value] of boxesOf(v)) {
+      if (every ? box.value === value : !value || box.value) continue;
+      box.value = value;
+      touched.add(box);
+      tidied.delete(box);
+    }
+    consent.checked = false;
+    count(draft, 'draft-count');
+    count(review, 'review-count');
+  }
+  // Back on the form, this tab's earlier sign-in is not being finished in another tab, so its copy for other tabs goes. Files already
+  // posted (from this tab, or from another one GitHub sent the person to) are never brought back.
+  const welcomeBack = (restored: boolean) => {
+    shared.sweep();
+    if (forgetIfPosted()) {
+      stagedId = null;
+      if (restored) fill(blank, true);
+    } else for (const key of store.bindings()) shared.remove(key);
+  };
+  welcomeBack(false);
+  const fromLink = /(^|[#?&])staged=/.test(location.hash) || /(^|[?&])staged=/.test(location.search);
+  const saved = fromLink || draft.value.trim() || review.value.trim() ? null : remembered();
+  if (saved) fill(saved, false);
   refresh();
 
   const aiTools = () => {
@@ -485,7 +543,11 @@ const live = connectorStatus === 'live' || submissionsOpen;
         showProblems([{ field: 'none', text: STORAGE_BLOCKED }], 'We can’t start the sign-in here:');
         return;
       }
-      if (typeof result.data.staged_id === 'string') store.set(STAGED_KEY, result.data.staged_id);
+      const staged = typeof result.data.staged_id === 'string' ? result.data.staged_id : null;
+      if (staged) store.set(STAGED_KEY, staged);
+      // A copy of the secret (never the files' id) for another tab of this browser, in case GitHub sends people back to a new one.
+      // This tab's copy is the one that must work.
+      shared.set(bindingKey(state), { secret });
       say('Taking you to GitHub to sign in…');
       leaving = true; // the button stays switched off while the browser leaves this page
       location.assign(next);
@@ -497,6 +559,10 @@ const live = connectorStatus === 'live' || submissionsOpen;
   // Coming back to this page with the Back button can restore it exactly as it was left, with the button still off.
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
+      welcomeBack(true);
+      const kept = remembered();
+      if (kept) fill(kept, true);
+      consent.checked = false;
       setBusy(false);
       say('');
       refresh();
@@ -566,6 +632,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
     fill(orcid, d.contributor?.orcid ?? '');
     fill(xhandle, d.contributor?.x ? `@${d.contributor.x}` : '');
     stagedId = wanted;
+    keepSoon();
     note.textContent = 'Your AI filled this in for you. Read it through, tick the box, then press “Continue with GitHub & Submit”.';
   }
   void loadStaged();

@@ -86,11 +86,23 @@ const browser = await puppeteer.launch({ executablePath: CHROME, headless: true 
 await scenario('the tools and prompts are there, and the prompts are the current ones (IIP, not "finding")', async () => {
   const client = await connect();
   const tools = (await client.listTools()).tools.map((t) => t.name);
-  for (const t of ['check_draft', 'submit_proposal', 'get_submission_status', 'get_blueprint_overview']) expect(tools.includes(t), `missing tool ${t}`);
+  for (const t of ['get_review_prompt', 'check_draft', 'submit_proposal', 'get_submission_status', 'get_blueprint_overview']) expect(tools.includes(t), `missing tool ${t}`);
   const prompts = (await client.listPrompts()).prompts.map((p) => p.name);
   for (const p of ['draft_a_proposal', 'blind_review', 'submit_my_proposal']) expect(prompts.includes(p), `missing prompt ${p}`);
   const drafting = (await client.getPrompt({ name: 'draft_a_proposal', arguments: {} })).messages.map((m) => m.content.text).join('\n');
-  expect(/openislet-iip-\[short-title\]\.md/.test(drafting) && !/openislet-finding-/.test(drafting), 'the drafting prompt is out of date: reseed the local bundle (npm --prefix connector run seed) and restart the Worker');
+  expect(/openislet-iip-\[short-title\]\.md/.test(drafting) && !/openislet-finding-/.test(drafting) && !/FRESH-CHAT/.test(drafting), 'the drafting prompt is out of date: reseed the local bundle (npm --prefix connector run seed) and restart the Worker');
+  await client.close();
+});
+
+await scenario('get_review_prompt makes the prompt for the fresh chat from the AI’s whole reply', async () => {
+  const client = await connect();
+  const r = await client.callTool({ name: 'get_review_prompt', arguments: { draft: wholeReply(draft('MCP: review prompt')) } });
+  expect(!r.isError, text(r).slice(0, 300));
+  const prompt = r.structuredContent?.prompt ?? '';
+  expect(prompt.startsWith('You are a blind reviewer') && prompt.includes('[OPENISLET-REVIEW-v1]') && !prompt.includes('[CLAIM]'), 'the prompt is not the filled-in reviewer template');
+  expect(!/## How this could be wrong/.test(prompt), 'the draft’s own reasoning reached the prompt');
+  const missing = await client.callTool({ name: 'get_review_prompt', arguments: { draft: '# Only a title' } });
+  expect(missing.isError && /missing/.test(text(missing)), 'a draft with parts missing was not refused');
   await client.close();
 });
 

@@ -19,7 +19,7 @@ npm run mock-github   # a stand-in for GitHub, to try the submission queue (see 
 
 `npm run export` reads the blueprint repository at `../../OpenIslet` (or `OPENISLET_REPO`) and writes nothing there. A plain clone of the public repository already is the export, so it is checked and copied as it is, without its `.git` folder and Python caches. Exporting it again would change its manifest, and the website's numbers would stop matching it. The full working repository is exported with its own allowlist instead (`export_public_bundle()`). Either way the result is verified before `npm run bundle` uses it.
 
-## The twelve tools
+## The thirteen tools
 
 | Tool | What it does |
 | --- | --- |
@@ -33,6 +33,7 @@ npm run mock-github   # a stand-in for GitHub, to try the submission queue (see 
 | `get_layer_atlas` | The DNA, protein, tissue and patient layers |
 | `get_contributions` | Who has contributed, and what each IIP changed, in words. No scores or rankings |
 | `get_submission_status` | Where a submission is. Public, so no sign-in |
+| `get_review_prompt` | The prompt for the blind review, built from the draft, to paste into a fresh chat |
 | `check_draft` | A dry run of the submission checks. It posts nothing |
 | `submit_proposal` | Sends an IIP to the public queue. Signed in with GitHub, it opens the public issue at once; not signed in, it saves the checked files for a day and returns a link to the web form with them filled in. **Closed until `SUBMISSIONS_OPEN` is switched on**: it runs the same checks, then says submissions open soon |
 

@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { queueApi, issuesUrl } from '../../data/site';
 
 // Where GitHub sends the browser back after sign-in (contract: docs/connector/QUEUE-API.md). The page reads ?code and ?state,
-// posts them with the secret this tab kept to the Worker, and shows the link to the new public IIP. It is a page of its own so that a
+// posts them with the secret this browser kept to the Worker, and shows the link to the new public IIP. It is a page of its own so that a
 // person who cancels, or whose link has expired, always lands somewhere that says what happened and what to do next.
 ---
 
@@ -21,7 +21,7 @@ import { queueApi, issuesUrl } from '../../data/site';
 </Layout>
 
 <script>
-  import { callApi, explain, store, bindingKey, STORAGE_BLOCKED, STAGED_KEY } from '../../scripts/submit';
+  import { callApi, explain, store, shared, bindingKey, doneKey, STORAGE_BLOCKED, STAGED_KEY, SAVED_KEY, POSTED_KEY } from '../../scripts/submit';
 
   const box = document.getElementById('result') as HTMLElement;
   const api = box.dataset.api ?? '';
@@ -33,6 +33,11 @@ import { queueApi, issuesUrl } from '../../data/site';
   // Take the one-time values out of the address bar so a refresh cannot try to use them twice.
   history.replaceState(null, '', location.pathname);
 
+  // This tab's own note first; then the copy of the secret the form left for another tab of this browser (GitHub can send people
+  // back to a new one). The files' id is only ever this tab's own.
+  const kept = state ? shared.get(bindingKey(state)) : null;
+  const elsewhere = kept && kept !== 'expired' ? kept : null;
+  shared.sweep();
   const stagedId = store.get(STAGED_KEY);
   const backHref = stagedId ? `/submit#staged=${encodeURIComponent(stagedId)}` : '/submit';
 
@@ -72,6 +77,11 @@ import { queueApi, issuesUrl } from '../../data/site';
 
   async function finish() {
     if (refused) {
+      // A cancelled sign-in is never finished: pressing the button again starts a new one. So its secret goes now.
+      if (state) {
+        store.remove(bindingKey(state));
+        shared.remove(bindingKey(state));
+      }
       // GitHub sends access_denied when the person pressed Cancel. Any other error word is something else going wrong, not a choice.
       if (refused === 'access_denied') {
         show('You chose not to sign in', ['Nothing was posted. Your files are still held for up to 24 hours, so you can go back and try again whenever you like.'], [{ text: 'Back to the form', href: backHref, primary: true }]);
@@ -84,16 +94,20 @@ import { queueApi, issuesUrl } from '../../data/site';
       show('There is nothing to finish here', ['This page is where GitHub sends you after you sign in. Start from the submission form.'], [{ text: 'Open the form', href: '/submit', primary: true }]);
       return;
     }
-    const binding = store.get(bindingKey(state));
+    const binding = store.get(bindingKey(state)) ?? elsewhere?.secret ?? null;
     if (!binding) {
-      // A browser that blocks storage cannot have kept the secret, and says nothing about it: tell the person, not just "wrong tab".
+      // A browser that blocks storage cannot have kept the secret, and says nothing about it: tell the person, not just "wrong browser".
       if (!store.works()) {
         show('Your browser is blocking storage', [STORAGE_BLOCKED], [{ text: 'Back to the form', href: backHref, primary: true }]);
         return;
       }
+      if (kept === 'expired') {
+        show('This sign-in has expired or was already used', ['Sign-in links last 15 minutes and work once. Go back to the form and press the button again.'], [{ text: 'Back to the form', href: backHref, primary: true }]);
+        return;
+      }
       show(
-        'We can’t finish this in a different browser or tab',
-        ['The sign-in has to be finished in the browser tab where you pressed the button. Go back to that tab and sign in there. Can’t find it? Open the form, paste your files again and start over.'],
+        'We can’t finish this in a different browser',
+        ['The sign-in has to be finished in the browser where you pressed the button. Go back to that browser and sign in there. Can’t find it? Open the form, paste your files again and start over.'],
         [{ text: 'Back to the form', href: backHref, primary: true }],
       );
       return;
@@ -114,6 +128,7 @@ import { queueApi, issuesUrl } from '../../data/site';
       return;
     }
     store.remove(bindingKey(state));
+    shared.remove(bindingKey(state));
 
     const issue = result.data.issue as { number?: number; url?: string } | undefined;
     // The link goes to GitHub. (When the form talks to a local Worker and a pretend GitHub, the pretend one is allowed too.)
@@ -121,6 +136,10 @@ import { queueApi, issuesUrl } from '../../data/site';
     const isGitHub = (url: unknown): url is string => typeof url === 'string' && (/^https:\/\/github\.com\//.test(url) || (local.test(api) && local.test(url)));
     if (result.ok && result.data.submitted === true && isGitHub(issue?.url)) {
       store.remove(STAGED_KEY);
+      store.remove(SAVED_KEY);
+      // The form, brought back by the Back button in this tab or open in another one, then knows not to show these files again.
+      store.set(POSTED_KEY, '1');
+      shared.set(doneKey(state), {});
       const id = typeof result.data.record_id === 'string' ? result.data.record_id : `#${issue.number ?? ''}`;
       show(
         'Thank you. Your IIP is public.',
@@ -152,7 +171,7 @@ import { queueApi, issuesUrl } from '../../data/site';
         show('This sign-in has expired or was already used', ['Sign-in links last 15 minutes and work once. Go back to the form and press the button again.'], retry);
         return;
       case 'binding_mismatch':
-        show('We can’t finish this in a different browser or tab', ['The sign-in has to be finished in the browser tab where you pressed the button. Go back to that tab and sign in there. Can’t find it? Open the form, paste your files again and start over.'], retry);
+        show('We can’t finish this in a different browser', ['The sign-in has to be finished in the browser where you pressed the button. Go back to that browser and sign in there. Can’t find it? Open the form, paste your files again and start over.'], retry);
         return;
       case 'github_refused':
         show('GitHub did not accept the sign-in', ['This can happen if the page was open for a long time. Please try again.'], retry);

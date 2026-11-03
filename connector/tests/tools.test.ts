@@ -18,12 +18,12 @@ afterAll(async () => {
 });
 
 describe('the server', () => {
-  it('offers exactly the twelve tools, with honest annotations', async () => {
+  it('offers exactly the thirteen tools, with honest annotations', async () => {
     const { tools } = await s.client.listTools();
     expect(tools.map((t) => t.name).sort()).toEqual(
       [
         'check_against_graveyard', 'check_draft', 'get_blueprint_overview', 'get_conflicting_evidence', 'get_contributions', 'get_layer_atlas',
-        'get_open_questions', 'get_study', 'get_submission_status', 'list_versions', 'search_studies', 'submit_proposal',
+        'get_open_questions', 'get_review_prompt', 'get_study', 'get_submission_status', 'list_versions', 'search_studies', 'submit_proposal',
       ].sort(),
     );
     for (const t of tools) {

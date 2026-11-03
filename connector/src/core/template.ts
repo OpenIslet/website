@@ -404,3 +404,24 @@ export function verdictOf(value: string | undefined): string | null {
   for (const label of ['not supported', 'partly supported', 'cannot tell', 'supported']) if (v === label || new RegExp(`^${label}[\\s.,:;!—–-]`).test(v)) return label.replace(/^./, (c) => c.toUpperCase());
   return null;
 }
+
+/** The three parts of a draft that go to the reviewer: the claim, the evidence and the proposed change, copied word for word. */
+export function claimToTest(rawDraft: string): { ok: true; text: string } | { ok: false; missing: string[] } {
+  const d = parseDoc(cleanPaste(rawDraft, 'draft').text);
+  const parts: [string, string | undefined][] = [
+    ['Claim in one sentence', d.fields.get(keyOf('Claim in one sentence'))],
+    ['Evidence', d.sections.get(keyOf('Evidence'))],
+    ['What I propose changing', d.sections.get(keyOf('What I propose changing'))],
+  ];
+  const missing = parts.filter(([, v]) => placeholder(v)).map(([name]) => name);
+  if (missing.length) return { ok: false, missing };
+  const [claim, evidence, proposal] = parts.map(([, v]) => (v ?? '').trim());
+  return { ok: true, text: `${claim}\n\nEvidence:\n${evidence}\n\nWhat I propose changing:\n${proposal}` };
+}
+
+/** The prompt for the fresh chat: the public reviewer template with those three parts in its [CLAIM] slot. */
+export function reviewPromptFor(template: string, rawDraft: string): { ok: true; text: string } | { ok: false; missing: string[] } {
+  if (!template.includes('[CLAIM]')) throw new Error('the reviewer template has no [CLAIM] slot');
+  const c = claimToTest(rawDraft);
+  return c.ok ? { ok: true, text: template.replace('[CLAIM]', () => c.text) } : c;
+}

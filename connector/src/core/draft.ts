@@ -5,13 +5,13 @@
 // The checks run straight away look at the format, the Idea Graveyard rules, and whether quotes match the studies OpenIslet
 // already holds. Checks that need the outside world (does the paper exist on PubMed, is it retracted, does the quote appear in
 // the full text) are made by a person in the weekend review, and this tool says so.
-import { type Answer, type Config, md } from './answer';
+import { type Answer, type Config, md, problem } from './answer';
 import type { Bundle } from './bundle';
 import { CONTACT_EMAIL } from './contact';
 import { suggestFromIdea } from './graveyard';
 import type { ApiError, StageOutput, SubmitContext, ToolPosted, ToolSubmission } from './queue/types';
 import { clip, normalise, similarity } from './text';
-import { cleanPaste, keyOf, looksLike, parseDoc, placeholder, templateGaps, unfence, verdictOf, type Parsed } from './template';
+import { cleanPaste, keyOf, looksLike, parseDoc, placeholder, reviewPromptFor, templateGaps, unfence, verdictOf, type Parsed } from './template';
 import type { Finding } from './types';
 
 import { normalizeWetlabReadouts, type WetlabEmpiricalReadouts } from './wetlab-readouts';
@@ -89,6 +89,11 @@ export function pmidsIn(text: string): string[] {
 const ALLOWED_HOSTS = [
   'doi.org', 'pubmed.ncbi.nlm.nih.gov', 'ncbi.nlm.nih.gov', 'europepmc.org', 'biorxiv.org', 'medrxiv.org', 'arxiv.org', 'openislet.org', 'clinicaltrials.gov', 'rcsb.org', 'alphafold.ebi.ac.uk',
 ];
+/** A link that is fine to have: an allowed host, or OpenIslet's own repositories on GitHub (the starter pack links to them). */
+function linkAllowed(host: string, path: string): boolean {
+  if (ALLOWED_HOSTS.some((a) => host === a || host.endsWith(`.${a}`))) return true;
+  return (host === 'github.com' || host === 'raw.githubusercontent.com') && /^\/openislet(?:[/?#]|$)/i.test(path);
+}
 const SECRET_PATTERNS: [RegExp, string][] = [
   [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, 'a private key'],
   [/\bAKIA[0-9A-Z]{16}\b/, 'an AWS access key'],
@@ -492,8 +497,12 @@ export async function runChecks(bundle: Bundle, cfg: Config, input: DraftInput):
   });
 
   // Links and personal data
-  const hosts = [...new Set([...`${draftText}\n${reviewText}`.matchAll(/https?:\/\/([a-z0-9.-]{1,253})/gi)].map((m) => m[1].toLowerCase().replace(/^www\./, '')))];
-  const odd = hosts.filter((h) => !ALLOWED_HOSTS.some((a) => h === a || h.endsWith(`.${a}`)));
+  // The host is what follows any "name@" and comes before any ":port": an allowed name written before the @ does not make a link allowed.
+  const links = [...`${draftText}\n${reviewText}`.matchAll(/https?:\/\/([^\s/?#<>()[\]"'`]{1,300})([^\s<>()[\]"'`]*)/gi)].map((m) => ({
+    host: (m[1].split('@').pop() ?? '').replace(/:\d*$/, '').toLowerCase().replace(/^www\./, ''),
+    path: m[2],
+  }));
+  const odd = [...new Set(links.filter((l) => !linkAllowed(l.host, l.path)).map((l) => l.host))];
   const personal = [
     hasEmail(`${draftText}\n${reviewText}`) ? 'an email address' : null,
     /(?<!\d)(?:\+?\d[\s().-]?){9,14}\d(?!\d)/.test(`${draftText}\n${reviewText}`.replace(/\b\d{5,9}\b/g, '')) ? 'what may be a phone number' : null,
@@ -610,6 +619,30 @@ export async function checkDraft(bundle: Bundle, cfg: Config, input: DraftInput)
     notes: [
       'This is a dry run of the instant checks: the format, the Idea Graveyard rules, and whether quotes match the studies OpenIslet already holds. It does not look papers up on PubMed or judge the science. That happens in the weekend review.',
       cfg.submissionsOpen ? 'Submissions are open.' : 'Sending an Islet Improvement Proposal (IIP) opens when the public queue opens. Keep your files: nothing here was saved.',
+    ],
+  };
+}
+
+/**
+ * The prompt for the blind review, built here from the draft so no AI has to copy the reviewer template word for word: the public
+ * template with the draft's claim, evidence and proposed change in its slot. Shown in a code fence longer than any run of backticks
+ * in it, so a draft's own code blocks cannot cut the prompt short.
+ */
+export async function reviewPrompt(bundle: Bundle, draft: string): Promise<Answer> {
+  const p = reviewPromptFor(await bundle.text('prompts/review-template.md'), draft);
+  if (!p.ok)
+    return {
+      ...problem(`The draft is missing what the reviewer needs: ${p.missing.map((m) => `"${m}"`).join(', ')}.`, ['Fill those parts in the draft, then ask for the prompt again.']),
+      data: { missing: p.missing },
+    };
+  const fence = '`'.repeat(Math.max(3, ...(p.text.match(/`+/g) ?? []).map((run) => run.length + 1)));
+  return {
+    summary: 'Here is the prompt for the blind review. Paste it, exactly as it is, into a brand-new chat that has not seen this one.',
+    body: `${md.h(1, 'The prompt for a fresh chat')}\n${fence}\n${p.text}\n${fence}\n`,
+    data: { prompt: p.text },
+    notes: [
+      'Give the person this prompt exactly as written. Do not do the review in this chat: a blind review needs a chat that has not seen how the claim was reached.',
+      'When they have the review, check both files with check_draft.',
     ],
   };
 }

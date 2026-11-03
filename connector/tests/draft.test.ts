@@ -193,6 +193,26 @@ describe('check_draft: the automatic checks', () => {
     expect(dup.structuredContent!.checks.find((c: { id: string }) => c.id === 'duplicates').detail).toContain('OQ-012');
   });
 
+  it('lets links to OpenIslet’s own GitHub through, and still flags other GitHub pages', async () => {
+    const safety = async (extra: string) =>
+      (await check({ draft: `${good().draft}\n${extra}`, review: good().review, consent: true })).structuredContent!.checks.find((c: { id: string }) => c.id === 'safety');
+    expect((await safety('The site code: https://github.com/OpenIslet/website')).status).toBe('pass');
+    const other = await safety('My notes: https://github.com/example-user/notes');
+    expect(other.status).toBe('amber');
+    expect(other.detail).toContain('github.com');
+    expect((await safety('Not ours: https://github.com/OpenIsletX/website')).status).toBe('amber');
+  });
+
+  it('lets links to OpenIslet’s own GitHub through, and still flags other GitHub pages', async () => {
+    const safety = async (extra: string) =>
+      (await check({ draft: `${good().draft}\n${extra}`, review: good().review, consent: true })).structuredContent!.checks.find((c: { id: string }) => c.id === 'safety');
+    expect((await safety('See https://github.com/OpenIslet/website and https://www.github.com/openislet')).status).toBe('pass');
+    const other = await safety('See https://github.com/someone/else');
+    expect(other.status).toBe('amber');
+    expect(other.detail).toContain('github.com');
+    expect((await safety('See https://github.com/OpenIsletX/website')).status).toBe('amber');
+  });
+
   it('warns, without refusing, when a draft names no design', async () => {
     const { f, review } = good();
     const evidence = [`${f.cite}, PMID ${f.pmid}, "${f.quote}"`];

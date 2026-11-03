@@ -12,7 +12,7 @@ async function load() {
   const result = await build({ entryPoints: [join(root, 'src/scripts/submit.ts')], bundle: true, write: false, format: 'esm', platform: 'node', logLevel: 'silent' });
   return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 }
-const { MAX_TEXT, sizeOf, orcidOk, orcidClean, xHandleOk, verdictOf, quickCheck, draftProblems, reviewProblems, whatIsThis, tidy, sha256Hex, newSecret, stateOf, bindingKey, store, STAGED_KEY } = await load();
+const { MAX_TEXT, sizeOf, orcidOk, orcidClean, xHandleOk, verdictOf, quickCheck, draftProblems, reviewProblems, whatIsThis, tidy, sha256Hex, newSecret, stateOf, bindingKey, store, STAGED_KEY, shared, doneKey, postedElsewhere, LINGER_MS, SAVED_KEY, POSTED_KEY, remember, remembered, forgetIfPosted, splitFiles } = await load();
 
 // Complete files, written the way the templates in src/data/prompts.ts ask (the Worker refuses anything less, so the form does too).
 const goodDraft = [
@@ -170,16 +170,18 @@ function fakeStorage({ throws = false, forgets = false } = {}) {
     },
   };
 }
-function withStorage(storage, run) {
-  const had = Object.getOwnPropertyDescriptor(globalThis, 'sessionStorage');
-  Object.defineProperty(globalThis, 'sessionStorage', { value: storage, configurable: true, writable: true });
+function withStorage(storage, run, name = 'sessionStorage') {
+  const had = Object.getOwnPropertyDescriptor(globalThis, name);
+  Object.defineProperty(globalThis, name, { value: storage, configurable: true, writable: true });
   try {
     return run(storage);
   } finally {
-    if (had) Object.defineProperty(globalThis, 'sessionStorage', had);
-    else delete globalThis.sessionStorage;
+    if (had) Object.defineProperty(globalThis, name, had);
+    else delete globalThis[name];
   }
 }
+/** This tab's storage and the browser's shared storage, both fresh. */
+const withBoth = (run, local = fakeStorage()) => withStorage(fakeStorage(), (tab) => withStorage(local, (browser) => run(tab, browser), 'localStorage'));
 
 test('the sign-in state is read from the GitHub address, and only if it has the shape the Worker issues', () => {
   const state = 'AbCdEfGhIjKlMnOpQrStUv';
@@ -293,4 +295,182 @@ test('the size limit on the form is the Worker\'s own, and is measured on the fi
   const chatty = `Here is your file:\n\n\`\`\`markdown\n${atLimit}\n\`\`\`\n\n${'Hope this helps! '.repeat(400)}`;
   assert.ok(chatty.length > MAX_TEXT + 5000);
   assert.ok(!draftProblems(chatty).some((p) => /too long/.test(p.text)));
+});
+
+// ---- Another tab, a reload, two files in one box (3 November 2026). Neutral sample files: these tests are about the form only.
+const plainDraft = [
+  '# Steps in the other order',
+  '**Type:** Improvement',
+  '**Claim in one sentence:** Step two should come before step one.',
+  '**In plain English:** Doing the steps the other way round saves a day.',
+  '**Affects test:** 1, because it changes the order',
+  '**Affects design:** Design A',
+  '## Evidence',
+  '- Example paper, PMID 12345678, "An example quote."',
+  '## What I propose changing',
+  'Swap steps one and two.',
+  '## How this could be wrong',
+  'Step one may need step two first.',
+  '## Cheapest way to check it',
+  'Time both orders once.',
+  '## AI tools used',
+  'Example model (High Effort)',
+].join('\n');
+const plainReview = [
+  '# Review: Steps in the other order',
+  '**Claim reviewed:** Swapping the two steps saves a day.',
+  '**Verdict:** Partly supported',
+  '**Confidence:** Medium',
+  '**Submit to OpenIslet?** Yes',
+  '**In plain English:** The swap probably helps, but nobody has timed it.',
+  '## What I checked',
+  'The claim against the blueprint.',
+  '## Evidence for',
+  '- The example paper says so.',
+  '## Evidence against',
+  '- Nothing found.',
+  '## Idea Graveyard check',
+  'No rule nearby.',
+  '## Other ways it could fail',
+  'The saving may be smaller.',
+  '## Cheapest way to settle it',
+  'Time both orders once.',
+  '## AI tools used',
+  'Another example model (Max Effort)',
+].join('\n');
+const S1 = 'AAAAAAAAAAAAAAAAAAAAAA';
+const S2 = 'BBBBBBBBBBBBBBBBBBBBBB';
+
+test('a sign-in kept for another tab comes back until it expires, then is gone', () => {
+  withBoth((tab, browser) => {
+    const now = 1_000_000;
+    assert.equal(shared.set(bindingKey(S1), { secret: 'one', staged: 'files' }, now), true);
+    assert.deepEqual(shared.get(bindingKey(S1), now + LINGER_MS - 1), { secret: 'one', staged: 'files' });
+    assert.equal(shared.get(bindingKey(S1), now + LINGER_MS), 'expired');
+    assert.equal(browser.length, 0);
+    assert.equal(shared.get(bindingKey(S1), now + LINGER_MS), null);
+    assert.equal(LINGER_MS, 15 * 60 * 1000); // as long as a sign-in link lasts
+  });
+});
+
+test('a kept sign-in from a clock moved back, or damaged, is not used', () => {
+  withBoth((tab, browser) => {
+    const now = 1_000_000;
+    shared.set(bindingKey(S1), { secret: 'one' }, now + 2 * LINGER_MS);
+    assert.equal(shared.get(bindingKey(S1), now), 'expired');
+    browser.setItem(bindingKey(S2), 'not json');
+    assert.equal(shared.get(bindingKey(S2), now), null);
+    browser.setItem(bindingKey(S2), JSON.stringify({ secret: 'two' }));
+    assert.equal(shared.get(bindingKey(S2), now), null);
+    browser.setItem(bindingKey(S2), JSON.stringify({ secret: 7, until: now + 1000 }));
+    assert.deepEqual(shared.get(bindingKey(S2), now), {});
+    assert.equal(browser.length, 1);
+  });
+});
+
+test('a browser that will not keep the shared copy just goes without it', () => {
+  withBoth(
+    () => {
+      assert.equal(shared.set(bindingKey(S1), { secret: 'one' }), false);
+      assert.equal(shared.get(bindingKey(S1)), null);
+      shared.sweep();
+    },
+    fakeStorage({ throws: true }),
+  );
+});
+
+test('the sweep removes only expired sign-in entries', () => {
+  withBoth((tab, browser) => {
+    const now = 1_000_000;
+    shared.set(bindingKey(S1), { secret: 'old' }, now - LINGER_MS);
+    shared.set(doneKey(S1), {}, now - LINGER_MS);
+    shared.set(bindingKey(S2), { secret: 'new' }, now);
+    browser.setItem('unrelated', 'x');
+    shared.sweep(now + 1);
+    assert.deepEqual([...Array(browser.length).keys()].map((i) => browser.key(i)).sort(), [bindingKey(S2), 'unrelated'].sort());
+  });
+});
+
+test('starting a new sign-in removes this tab\'s old ones from the shared copy too, and no other tab\'s', () => {
+  withBoth(() => {
+    store.set(bindingKey(S1), 'one');
+    shared.set(bindingKey(S1), { secret: 'one' });
+    shared.set(bindingKey(S2), { secret: 'another tab' });
+    store.clearBindings();
+    assert.equal(shared.get(bindingKey(S1)), null);
+    assert.deepEqual(shared.get(bindingKey(S2)), { secret: 'another tab' });
+  });
+});
+
+test('a sign-in finished in another tab is noticed by the tab that started it, and only by that tab', () => {
+  withBoth(() => {
+    store.set(bindingKey(S1), 'one');
+    assert.equal(postedElsewhere(), false);
+    shared.set(doneKey(S2), {});
+    assert.equal(postedElsewhere(), false);
+    shared.set(doneKey(S1), {});
+    assert.equal(postedElsewhere(), true);
+  });
+});
+
+test('the form\'s text is kept in this tab, never the tick, and an empty form keeps nothing', () => {
+  withBoth((tab, browser) => {
+    const v = { draft: 'd', review: 'r', name: 'n', orcid: '', x: '', aiDraft: 'a', aiReview: '', consent: true };
+    remember(v);
+    assert.equal(browser.length, 0);
+    assert.doesNotMatch(tab.getItem(SAVED_KEY), /consent/);
+    assert.deepEqual(remembered(), { draft: 'd', review: 'r', name: 'n', orcid: '', x: '', aiDraft: 'a', aiReview: '' });
+    remember({ draft: ' ', review: '', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' });
+    assert.equal(tab.getItem(SAVED_KEY), null);
+    assert.equal(remembered(), null);
+    tab.setItem(SAVED_KEY, '{damaged');
+    assert.equal(remembered(), null);
+    tab.setItem(SAVED_KEY, JSON.stringify({ draft: 5, review: 'r' }));
+    assert.deepEqual(remembered(), { draft: '', review: 'r', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' });
+  });
+});
+
+test('a draft and a review in one box are split, in either order and however they were pasted', () => {
+  const both = { draft: plainDraft, review: plainReview };
+  assert.deepEqual(splitFiles(`${plainDraft}\n\n${plainReview}`), both);
+  assert.deepEqual(splitFiles(`${plainReview}\n\n${plainDraft}`), both);
+  assert.deepEqual(splitFiles(`${plainDraft}\r\n\r\n${plainReview}`.replace(/\n/g, '\r\n')), both);
+  const chat = `Here is the draft:\n\n\`\`\`markdown\n${plainDraft}\n\`\`\`\n\nAnd the review:\n\n\`\`\`markdown\n${plainReview}\n\`\`\`\n\nAnything else?`;
+  assert.deepEqual(splitFiles(chat), both);
+  const copied = splitFiles(`${rendered(plainDraft)}\n\n${rendered(plainReview)}`);
+  assert.ok(copied);
+  assert.equal(whatIsThis(copied.draft), 'draft');
+  assert.equal(whatIsThis(copied.review), 'review');
+  assert.deepEqual(draftProblems(copied.draft), []);
+  assert.deepEqual(reviewProblems(copied.review), []);
+});
+
+test('one file, or the same file twice, is never split', () => {
+  for (const text of [plainDraft, plainReview, `${plainDraft}\n\n${plainDraft}`, `${plainReview}\n\n${plainReview}`, '', 'Just some words.\n# A heading\nMore words.'])
+    assert.equal(splitFiles(text), null, text.slice(0, 40));
+});
+
+test('files already posted, from this tab or another, are forgotten, and nothing else is', () => {
+  withBoth(() => {
+    remember({ draft: 'd', review: 'r', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' });
+    store.set(bindingKey(S1), 'one');
+    assert.equal(forgetIfPosted(), false);
+    assert.ok(remembered());
+    shared.set(doneKey(S1), {});
+    assert.equal(forgetIfPosted(), true);
+    assert.equal(remembered(), null);
+    assert.equal(store.get(bindingKey(S1)), null);
+    assert.equal(forgetIfPosted(), false);
+    remember({ draft: 'new', review: '', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' });
+    store.set(POSTED_KEY, '1');
+    assert.equal(forgetIfPosted(), true);
+    assert.equal(remembered(), null);
+    assert.equal(store.get(POSTED_KEY), null);
+  });
+});
+
+test('a title quoted further down a code block is not a place to split', () => {
+  const quoted = plainDraft.replace('Swap steps one and two.', `Swap steps one and two, as this example shows:\n\n\`\`\`\nAn example of a review:\n${plainReview}\n\`\`\``);
+  assert.equal(splitFiles(quoted), null);
+  assert.deepEqual(splitFiles(`${plainDraft}\n\n\`\`\`\n\n${plainReview}\n\`\`\``), { draft: plainDraft, review: plainReview });
 });

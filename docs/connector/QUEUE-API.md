@@ -91,7 +91,7 @@ Starts sign-in for a submission. Validates, stores the submission, and returns t
 
 Request: `{ staged_id?, draft?, review?, ai_tools?, consent, contributor?, binding_hash }`.
 - Either `staged_id` (a submission staged earlier by the connector) or `draft` + `review` (typed on the form). If both are sent, the typed values replace the staged ones.
-- `binding_hash`: lowercase hex SHA-256 of a random secret the browser keeps in `sessionStorage`. It ties the sign-in to the browser that started it. The secret itself never reaches the server until `/api/complete`.
+- `binding_hash`: lowercase hex SHA-256 of a random secret the browser keeps (see `/submit/finish` below). It ties the sign-in to the browser that started it. The secret itself never reaches the server until `/api/complete`.
 
 Checks, in order: queue open (`503 queue_not_open`), configured (`503 queue_not_configured`), limits (`429`), the basic rules of `check_draft` (`422 basic_rules` with `what_to_fix`, `door`), `consent === true` (`422 consent_needed`), contributor field formats (`422 bad_contributor` naming the field).
 
@@ -155,7 +155,7 @@ The connector is its own OAuth server for MCP clients, with GitHub as the upstre
 
 - `/submit`: form with draft, review, AI tools, optional name / ORCID iD / X handle, consent box, a **Check my files** button (`/api/check`) and **Continue with GitHub & Submit** (`/api/begin`, then the browser goes to `authorize_url`). With `#staged=<id>` (or an older `?staged=<id>`) it takes the id out of the address bar at once, then calls `GET /api/staged/:id` to pre-fill.
 - `/submit/finish`: GitHub sends the browser here with `?code=…&state=…`. The page posts `{ code, state, binding }` to `/api/complete` and shows the link to the new public issue.
-- The browser-side secret is kept in `sessionStorage` under `openislet.submit.binding`. Before leaving for GitHub the page also keeps nothing else: the draft and review are held by the Worker, not the browser.
+- The browser-side secret is kept in the tab's `sessionStorage` under `openislet.submit.binding.<state>`, and a copy of the secret alone in `localStorage` under the same name, for 15 minutes, so the sign-in can also be finished in another tab of the same browser (GitHub's phone app may open one). The finish page reads the tab's copy first and removes both after use or a cancel; the form removes its tab's copies when the person is back on it; both pages sweep out expired copies. The saved-files id stays in the tab. Another browser has neither. The form also keeps what was typed in the tab's `sessionStorage` (`openislet.submit.saved`), never the consent tick, and clears it after a successful submission.
 - The API address is `PUBLIC_QUEUE_API` (default `https://mcp.openislet.org`).
 
 ## Privacy, in one place

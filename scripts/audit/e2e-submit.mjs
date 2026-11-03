@@ -194,7 +194,7 @@ await scenario('one-click link from the connector pre-fills the form, then posts
 await scenario('finishing the sign-in in another browser is refused safely', async (page) => {
   const before = issueList(await mockIssues()).length;
   await page.goto(`${SITE}/submit/finish?code=made-up&state=made-up`, { waitUntil: 'networkidle0' });
-  await page.waitForFunction(() => /different browser or tab/.test(document.getElementById('result').innerText), { timeout: 10000 });
+  await page.waitForFunction(() => /different browser/.test(document.getElementById('result').innerText), { timeout: 10000 });
   expect(issueList(await mockIssues()).length === before, 'an issue was opened without a sign-in');
 });
 
@@ -369,6 +369,149 @@ await scenario('an answer cut off after the IIP was posted keeps the sign-in, an
   const done = await text(page, '#result');
   expect(/Thank you\. Your IIP is public\./.test(done), `after Try again the page said: ${done.slice(0, 200)}`);
   expect(issueList(await mockIssues()).length === before + 1, 'Try again opened a second issue');
+});
+
+// ---- 3 November 2026: another tab, a reload, two files in one box, and the message for the fresh chat from Start here.
+
+/** Fills the form, presses the final button and stops this tab at GitHub's door, as when GitHub's phone app sends people back to a new tab. */
+async function stopAtGitHub(page, title) {
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  await type(page, '#draft', draft(title));
+  await type(page, '#review', review());
+  await page.click('#consent');
+  let authorize = null;
+  await page.setRequestInterception(true);
+  const stop = (request) => {
+    if (request.url().startsWith(`${MOCK}/login/oauth/authorize`)) {
+      authorize = request.url();
+      request.abort();
+    } else request.continue();
+  };
+  page.on('request', stop);
+  await page.click('#go-btn');
+  for (let i = 0; i < 150 && !authorize; i++) await new Promise((r) => setTimeout(r, 100));
+  expect(authorize, 'the form did not send the browser to GitHub');
+  page.off('request', stop);
+  await page.setRequestInterception(false);
+  return authorize;
+}
+const keptBindings = (page) => page.evaluate(() => Object.keys(localStorage).filter((k) => k.startsWith('openislet.submit.binding.')).length);
+
+await scenario('finishing the sign-in in a new tab of the same browser posts the IIP, and the form tab does not fill itself in again', async (page, context) => {
+  const before = issueList(await mockIssues()).length;
+  const authorize = await stopAtGitHub(page, 'E2E: finished in a new tab');
+  const other = await context.newPage();
+  await other.goto(authorize, { waitUntil: 'networkidle0' });
+  await other.waitForFunction(() => /Thank you|could not|can.t finish|expired/i.test(document.getElementById('result')?.innerText ?? ''), { timeout: 20000 });
+  expect(/Thank you\. Your IIP is public/.test(await text(other, '#result')), `the new tab said: ${(await text(other, '#result')).slice(0, 200)}`);
+  expect(issueList(await mockIssues()).length === before + 1, 'the IIP was not posted exactly once');
+  expect((await keptBindings(other)) === 0, 'the sign-in secret was left in the browser after use');
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  await new Promise((r) => setTimeout(r, 300));
+  expect((await page.$eval('#draft', (el) => el.value)) === '', 'the form tab filled itself in again with files already posted');
+}, [/ERR_FAILED/]);
+
+await scenario('a sign-in kept for another tab is not used after its time, and is cleared away', async (page, context) => {
+  const before = issueList(await mockIssues()).length;
+  const authorize = await stopAtGitHub(page, 'E2E: kept too long');
+  const other = await context.newPage();
+  await other.goto(`${SITE}/submit/finish`, { waitUntil: 'networkidle0' });
+  await other.evaluate(() => {
+    for (const k of Object.keys(localStorage)) {
+      if (!k.startsWith('openislet.submit.binding.')) continue;
+      const v = JSON.parse(localStorage.getItem(k));
+      v.until = Date.now() - 1;
+      localStorage.setItem(k, JSON.stringify(v));
+    }
+  });
+  await other.goto(authorize, { waitUntil: 'networkidle0' });
+  await other.waitForFunction(() => /expired or was already used/.test(document.getElementById('result')?.innerText ?? ''), { timeout: 20000 });
+  expect(issueList(await mockIssues()).length === before, 'an issue was opened with an expired sign-in');
+  expect((await keptBindings(other)) === 0, 'the expired secret was not cleared away');
+}, [/ERR_FAILED/]);
+
+await scenario('a sign-in cancelled in another tab removes its kept secret, and never hands that tab the saved files', async (page, context) => {
+  const authorize = await stopAtGitHub(page, 'E2E: cancelled in a new tab');
+  const state = new URL(authorize).searchParams.get('state');
+  const other = await context.newPage();
+  await other.goto(`${SITE}/submit/finish?error=access_denied&state=${state}`, { waitUntil: 'networkidle0' });
+  await other.waitForFunction(() => /chose not to sign in/.test(document.getElementById('result').innerText), { timeout: 10000 });
+  expect((await other.$eval('#result a', (a) => a.getAttribute('href'))) === '/submit', 'the other tab was handed the saved files');
+  expect((await keptBindings(other)) === 0, 'the cancelled sign-in left its secret behind');
+}, [/ERR_FAILED/]);
+
+await scenario('after posting, the Back button does not bring the posted files back', async (page) => {
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  await type(page, '#draft', draft('E2E: back after posting'));
+  await type(page, '#review', review());
+  await page.click('#consent');
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#go-btn')]);
+  await page.waitForFunction(() => /Thank you|could not|can.t finish|expired/i.test(document.getElementById('result')?.innerText ?? ''), { timeout: 20000 });
+  expect(/Thank you\. Your IIP is public/.test(await text(page, '#result')), 'the confirmation page did not confirm');
+  await page.goBack({ waitUntil: 'networkidle0' });
+  await new Promise((r) => setTimeout(r, 300));
+  const after = await page.evaluate(() => ({ path: location.pathname, draft: document.getElementById('draft')?.value, tick: document.getElementById('consent')?.checked }));
+  expect(after.path.startsWith('/submit') && after.draft === '' && after.tick === false, `the form came back with: ${JSON.stringify(after).slice(0, 120)}`);
+});
+
+await scenario('a reload keeps what was typed, but not the tick', async (page) => {
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  const file = draft('E2E: kept over a reload');
+  await type(page, '#draft', file);
+  await type(page, '#review', review());
+  await type(page, '#name', 'Reload Tester');
+  await page.click('#consent');
+  await new Promise((r) => setTimeout(r, 700));
+  await page.reload({ waitUntil: 'networkidle0' });
+  await new Promise((r) => setTimeout(r, 300));
+  const after = await page.evaluate(() => ({ draft: document.getElementById('draft').value, review: document.getElementById('review').value, name: document.getElementById('name').value, tick: document.getElementById('consent').checked, note: document.getElementById('review-note').innerText }));
+  expect(after.draft === file && after.review === review() && after.name === 'Reload Tester', 'the typed text did not come back after a reload');
+  expect(after.tick === false, 'the tick came back after a reload');
+  expect(/Partly supported/.test(after.note), `the review note said: ${after.note}`);
+});
+
+await scenario('a draft and its review pasted into one box are split into the two boxes', async (page) => {
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  const file = draft('E2E: both in one box');
+  await paste(page, '#draft', `${file}\n\n${review()}`);
+  const after = await page.evaluate(() => ({ draft: document.getElementById('draft').value, review: document.getElementById('review').value, note: document.getElementById('draft-note').innerText }));
+  expect(after.draft === file, 'the draft box does not hold just the draft');
+  expect(after.review === review(), 'the review did not go to box 2');
+  expect(/split them/.test(after.note), `the draft note said: ${after.note}`);
+});
+
+await scenario('step 4 on Start here copies the message for the fresh chat, and the form is filled in', async (page, context) => {
+  await context.overridePermissions(SITE, ['clipboard-read', 'clipboard-write', 'clipboard-sanitized-write']);
+  await page.goto(`${SITE}/start`, { waitUntil: 'networkidle0' });
+  const file = draft('E2E: step 4');
+  const copy = async () => {
+    await page.evaluate(() => (document.querySelector('[data-fresh-status]').textContent = ''));
+    await page.click('button[data-copy-fresh]');
+    await page.waitForFunction(() => document.querySelector('[data-fresh-status]').innerText.trim(), { timeout: 15000 });
+    const status = await text(page, '[data-fresh-status]');
+    expect(/^Copied/.test(status), `step 4 said: ${status}`);
+    return page.evaluate(() => navigator.clipboard.readText());
+  };
+  await type(page, '#s4-draft', file);
+  const pasted = await copy();
+  expect(pasted.startsWith('This message holds the OpenIslet starter pack'), 'the message does not open by saying what it holds');
+  expect(pasted.includes('=== END OF THE OPENISLET STARTER PACK ===') && pasted.indexOf('=== END OF THE OPENISLET STARTER PACK ===') < pasted.indexOf('CLAIM TO TEST'), 'the starter pack does not come before the review');
+  expect(pasted.includes('[OPENISLET-REVIEW-v1]') && !pasted.includes('[CLAIM]'), 'the reviewer prompt is not filled in');
+  expect(!pasted.includes('## How this could be wrong'), 'the draft’s own reasoning reached the fresh chat');
+  await page.click('button[data-guideroute="mcp"]');
+  const viaMcp = await copy();
+  expect(viaMcp.startsWith('You are a blind reviewer') && !viaMcp.includes('STARTER PACK'), 'with MCP the message should be the reviewer prompt alone');
+  await type(page, '#s4-draft', '# Just a title');
+  await page.evaluate(() => (document.querySelector('[data-fresh-status]').textContent = ''));
+  await page.click('button[data-copy-fresh]');
+  await page.waitForFunction(() => document.querySelector('[data-fresh-status]').innerText.trim(), { timeout: 15000 });
+  const refused = await text(page, '[data-fresh-status]');
+  expect(!/^Copied/.test(refused) && /missing|does not look like a draft/.test(refused), `a draft with parts missing got: ${refused}`);
+  await type(page, '#s4-draft', file);
+  await new Promise((r) => setTimeout(r, 700));
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  await new Promise((r) => setTimeout(r, 300));
+  expect((await page.$eval('#draft', (el) => el.value)) === file, 'the form was not filled in with the draft from step 4');
 });
 
 await browser.close();

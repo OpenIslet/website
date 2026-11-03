@@ -379,6 +379,15 @@ export interface SuggestResult {
 }
 
 const GENERIC = new Set(['cell', 'cells', 'gene', 'genes', 'islet', 'islets', 'beta', 'design', 'designs', 'edit', 'edits', 'editing', 'with', 'that', 'this', 'from', 'into', 'idea', 'new', 'use', 'using', 'make', 'add', 'adding']);
+// Words in an idea that say nothing about any rule. Searching with them made "a" match every rule word starting with a ("attack",
+// "allo"), and bare numbers ("180", "000") match the numbers in a rule's text, so an oxygen analysis was flagged against immune rules.
+const FILLER = new Set(['a', 'an', 'the', 'and', 'or', 'but', 'nor', 'not', 'no', 'of', 'to', 'in', 'on', 'at', 'by', 'for', 'as', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'it', 'its', 'if', 'so', 'than', 'then', 'there', 'these', 'those', 'they', 'them', 'their', 'we', 'our', 'you', 'your', 'he', 'she', 'his', 'her', 'i', 'my', 'me', 'do', 'does', 'did', 'done', 'has', 'have', 'had', 'can', 'could', 'should', 'would', 'will', 'may', 'might', 'must', 'shall', 'about', 'above', 'after', 'again', 'against', 'all', 'also', 'always', 'any', 'assume', 'assumes', 'before', 'below', 'between', 'both', 'each', 'either', 'every', 'few', 'how', 'just', 'least', 'less', 'like', 'many', 'more', 'most', 'much', 'neither', 'never', 'now', 'often', 'once', 'only', 'other', 'over', 'own', 'per', 'same', 'some', 'such', 'still', 'through', 'under', 'until', 'up', 'upon', 'very', 'via', 'what', 'when', 'where', 'whether', 'which', 'while', 'who', 'whom', 'why', 'within', 'without', 'yet', 'e.g', 'eg', 'ie', 'etc', 'vs']);
+const queryTerm = (t: string): string | null => {
+  const term = t.toLowerCase();
+  return GENERIC.has(term) || FILLER.has(term) || /^\d[\d.,]*$/.test(term) ? null : term;
+};
+// A word in the idea also finds rule words that start with it ("oxygen" finds "oxygenation"), but only from four letters on.
+const prefixFrom = (term: string): boolean => term.length >= 4;
 const caches = new WeakMap<Bundle, Promise<MiniSearch>>();
 
 function ruleIndex(bundle: Bundle): Promise<MiniSearch> {
@@ -413,7 +422,7 @@ function ruleIndex(bundle: Bundle): Promise<MiniSearch> {
 export async function suggestFromIdea(bundle: Bundle, rawIdea: string): Promise<SuggestResult> {
   const idea = rawIdea.slice(0, 2000);
   const [rules, ms, modules, genes] = await Promise.all([bundle.rules(), ruleIndex(bundle), bundle.modules(), bundle.targetGenes()]);
-  const hits = ms.search(idea, { prefix: true, fuzzy: 0.15, combineWith: 'OR' });
+  const hits = ms.search(idea, { prefix: prefixFrom, fuzzy: 0.15, combineWith: 'OR', processTerm: queryTerm });
   const best = hits[0]?.score ?? 0;
   const suggestions = hits
     .filter((h) => h.score >= best * 0.45 && h.score >= 4)

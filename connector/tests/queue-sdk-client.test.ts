@@ -98,7 +98,7 @@ describe('an AI app that follows the MCP sign-in rules', () => {
 
     const client = new Client({ name: 'sdk-oauth-test', version: '1.0.0' });
     await client.connect(new StreamableHTTPClientTransport(new URL(serverUrl), { authProvider: provider as never, fetch: fetchFn }));
-    expect((await client.listTools()).tools).toHaveLength(12);
+    expect((await client.listTools()).tools).toHaveLength(13);
     const sent = (await client.callTool({ name: 'submit_proposal', arguments: { draft, review, consent: true, contributor: { name: 'SDK Person' } } })) as { isError?: boolean; structuredContent: Record<string, any> }; // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(sent.isError).toBeFalsy();
     expect(sent.structuredContent).toMatchObject({ submitted: true, record_id: 'IIP-0001', contributor: { github: 'sdk-person', name: 'SDK Person' } });
@@ -116,7 +116,7 @@ describe('an AI app that follows the MCP sign-in rules', () => {
   it('can still read without signing in at all', async () => {
     const client = new Client({ name: 'sdk-anonymous', version: '1.0.0' });
     await client.connect(new StreamableHTTPClientTransport(new URL(serverUrl), { fetch: fetchFn }));
-    expect((await client.listTools()).tools).toHaveLength(12);
+    expect((await client.listTools()).tools).toHaveLength(13);
     const sent = (await client.callTool({ name: 'submit_proposal', arguments: { draft, review, consent: true } })) as { isError?: boolean; structuredContent: Record<string, any> }; // eslint-disable-line @typescript-eslint/no-explicit-any
     expect(sent.isError).toBeFalsy();
     expect(sent.structuredContent).toMatchObject({ submitted: false, reason: 'sign_in_needed' });
