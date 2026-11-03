@@ -19,12 +19,14 @@ import { normaliseContributor } from './contributor';
 import { type GitHubPort, GitHubError } from './github';
 import { buildIssueBody, checksComment, cleanTitle, estimateBodyLength, issueLabels, recordId, BODY_LIMIT } from './issue';
 import { type QueueKV, getJson, putJson } from './kv';
+import { type OrcidPort, OrcidError, makeOrcidProof, readOrcidProof } from './orcid';
 import type { LimitsPort, Outcome, Reservation, Ticket } from './limits';
 import { type Need, type QueueSettings, missingFor } from './settings';
 import type {
   AiTools,
   ApiResult,
   BeginOutput,
+  OrcidOutput,
   Caller,
   CompleteOutput,
   Contributor,
@@ -45,8 +47,11 @@ export const STAGED_TTL_SECONDS = 24 * 3600;
 export const STATE_TTL_SECONDS = 15 * 60;
 export const RESULT_TTL_SECONDS = 24 * 3600;
 export const HOUR_SECONDS = 3600;
-/** Calls per hour, per hashed address. `authorize`: opening an AI app's approval page, which saves a short-lived record each time. */
-export const IP_LIMITS = { check: 30, begin: 10, register: 20, authorize: 30 } as const;
+/**
+ * Calls per hour, per hashed address. `authorize`: opening an AI app's approval page, which saves a short-lived record each time.
+ * `orcid`: starting "Verify my ORCID iD", which saves a short-lived record each time.
+ */
+export const IP_LIMITS = { check: 30, begin: 10, register: 20, authorize: 30, orcid: 20, orcidEveryone: 200 } as const;
 /** An AI app's server sends everyone's requests from a few addresses, so its share of each hourly limit is this much larger. */
 export const SHARED_IP_MULTIPLIER = 10;
 export type IpLimit = keyof typeof IP_LIMITS;
@@ -70,6 +75,15 @@ export const MESSAGES = {
   webLimitsDown: 'The queue could not check its limits just now, so nothing was posted. Your files are still saved here for 24 hours: go back to the form and try again in a few minutes.',
   toolLimitsDown: 'The queue could not check its limits just now, so nothing was posted. Nothing is saved on our side either, so keep your draft and your blind review and ask again in a few minutes.',
   accountGone: 'GitHub no longer has the account this AI app signed in with, so nothing was posted. Please connect the app to OpenIslet again with your current GitHub account, then ask again.',
+  // "Verify my ORCID iD". Nothing here is ever about the submission itself: a failed check leaves the iD as stated.
+  orcidNotConfigured: 'Checking an ORCID iD is not switched on yet. You can still add your ORCID iD: it is shown as stated by you.',
+  orcidStateUnknown: 'This ORCID check has expired or has already been used. Please go back to the form and press “Verify my ORCID iD” again.',
+  orcidBinding: 'This ORCID check was started in a different browser or tab, so it was stopped. Please go back to the form and press “Verify my ORCID iD” again there.',
+  orcidRefused: 'ORCID did not confirm your iD. Please go back to the form and press “Verify my ORCID iD” again.',
+  orcidUnavailable: 'ORCID did not answer, so your iD could not be checked. Please go back to the form and try again in a few minutes. You can also send your IIP with the iD as stated.',
+  orcidBroken: `Checking an ORCID iD has a fault on our side, not yours. You can send your IIP with the iD as stated, or tell us at ${CONTACT_EMAIL}.`,
+  orcidProof: 'Your ORCID check has expired (it lasts an hour). Press “Verify my ORCID iD” again, or send your IIP with the iD as stated.',
+  orcidMismatch: 'The ORCID iD in the box is not the one you verified. Press “Verify my ORCID iD” again, or put the verified iD back.',
 } as const;
 
 /** Many accounts together have used up this hour's posts. */
@@ -119,6 +133,14 @@ interface StagedRecord {
   written_against: string;
   report: StoredReport;
   created_at: number;
+  expires_at: number;
+}
+
+/** An ORCID check in progress. Single use, and nothing is kept once it has been used. */
+interface OrcidStateRecord {
+  v: 1;
+  binding_hash: string;
+  status: 'open' | 'used';
   expires_at: number;
 }
 
@@ -173,12 +195,18 @@ export interface BeginInput {
   consent: unknown;
   contributor?: unknown;
   binding_hash: string;
+  /** From /api/orcid/complete, when the person verified their ORCID iD on the form. */
+  orcid_proof?: string;
 }
 export interface CompleteInput {
   code: string;
   state: string;
   binding: string;
 }
+export interface OrcidBeginInput {
+  binding_hash: string;
+}
+export type OrcidCompleteInput = CompleteInput;
 
 export interface QueueDeps {
   /** Absent when the KV binding is not set up; every path that needs it then answers `queue_not_configured`. */
@@ -188,6 +216,8 @@ export interface QueueDeps {
   settings: QueueSettings;
   config: Config;
   github: GitHubPort;
+  /** "Verify my ORCID iD". Absent until ORCID's client id and secret are set: /api/orcid/* then answer `orcid_not_configured`. */
+  orcid?: OrcidPort;
   now?: () => number;
   /** Run something after the response is sent (the Worker's waitUntil). Used to let go of the GitHub user token. */
   defer?: (work: Promise<unknown>) => void;
@@ -369,6 +399,7 @@ export class QueueService implements QueueForTool {
 
   private stagedKey = async (id: string) => `staged:${await sha256Hex(id)}`;
   private stateKey = async (state: string) => `state:${await sha256Hex(state)}`;
+  private orcidStateKey = async (state: string) => `orcid-state:${await sha256Hex(state)}`;
   private resultKey = async (stagedId: string) => `result:${await sha256Hex(stagedId)}`;
 
   /**
@@ -576,7 +607,9 @@ export class QueueService implements QueueForTool {
     if (closed) return closed;
     const rec = await this.loadStaged(id);
     if (!rec) return fail(404, 'staged_unknown', MESSAGES.stagedUnknown);
-    return ok({ draft: rec.draft, review: rec.review, ai_tools: rec.ai_tools, contributor: rec.contributor, expires_at: iso(rec.expires_at) });
+    // The form fills its boxes from this. A verified mark never travels with it: only a fresh ORCID check sets one again.
+    const { orcid_verified: _verified, ...contributor } = rec.contributor;
+    return ok({ draft: rec.draft, review: rec.review, ai_tools: rec.ai_tools, contributor, expires_at: iso(rec.expires_at) });
   }
 
   // ---- POST /api/begin ----
@@ -603,6 +636,17 @@ export class QueueService implements QueueForTool {
       idempotency_key: base?.idempotency_key ?? null,
     });
     if (!prepared.ok) return prepared;
+
+    // A verified ORCID iD: only from a proof this Worker signed in the last hour, and only for the iD the proof names. This is the one
+    // place the flag is ever set (prepare's normaliseContributor drops anything but the three typed fields).
+    if (input.orcid_proof !== undefined) {
+      const proven = await readOrcidProof(this.signingKey(), input.orcid_proof, this.deps.settings.orcidBase, this.now());
+      if (!proven) return fail(422, 'orcid_proof_invalid', MESSAGES.orcidProof, { field: 'orcid' });
+      const c = prepared.body.contributor;
+      if (c.orcid !== undefined && c.orcid !== proven) return fail(422, 'orcid_mismatch', MESSAGES.orcidMismatch, { field: 'orcid' });
+      prepared.body.contributor = { ...c, orcid: proven, orcid_verified: true };
+      if (this.tooLarge(prepared.body)) return this.sizeFailure(prepared.body.report.door);
+    }
 
     // Never replace content that an earlier sign-in approved. Identical retries may reuse the immutable record;
     // edits (including attachments, contributor metadata, source version or the check report) get a separate record.
@@ -661,6 +705,91 @@ export class QueueService implements QueueForTool {
     if (earlier) return ok(earlier);
 
     return this.keepAlive(this.signInAndPost(stateKey, rec, staged, input));
+  }
+
+  // ---- POST /api/orcid/begin and /api/orcid/complete: "Verify my ORCID iD" ----
+
+  /** Open, set up, and ORCID's client id and secret given. Null means go on. */
+  private orcidGate(): ApiResult<never> | null {
+    const closed = this.gate('web');
+    if (closed) return closed;
+    if (!this.deps.orcid || this.missing('orcid').length) {
+      this.log('orcid.not_configured');
+      return fail(503, 'orcid_not_configured', MESSAGES.orcidNotConfigured);
+    }
+    return null;
+  }
+
+  private orcidRedirect(): string {
+    return `${this.deps.settings.siteOrigin}/submit/orcid`;
+  }
+
+  /** Starts a check: a single-use record tied to the browser's secret (by its hash), and the address of ORCID's sign-in page. */
+  async orcidBegin(input: OrcidBeginInput, caller?: Caller): Promise<ApiResult<{ authorize_url: string; expires_at: string }>> {
+    const closed = this.orcidGate();
+    if (closed) return closed;
+    const limited = await this.hit('orcid', caller);
+    if (limited) return limited;
+    // And from everyone together, so many addresses cannot spend OpenIslet's standing with ORCID (each check is one code exchange).
+    const crowded = await this.hit('orcidEveryone', { ip: 'everyone' });
+    if (crowded) return crowded;
+    const state = randomToken();
+    const rec: OrcidStateRecord = { v: 1, binding_hash: input.binding_hash, status: 'open', expires_at: this.now() + STATE_TTL_SECONDS * 1000 };
+    await putJson(this.kv, await this.orcidStateKey(state), rec, STATE_TTL_SECONDS);
+    const s = this.deps.settings;
+    const url = new URL(`${s.orcidBase}/oauth/authorize`);
+    url.searchParams.set('client_id', s.orcidClientId as string);
+    url.searchParams.set('response_type', 'code');
+    url.searchParams.set('scope', '/authenticate');
+    url.searchParams.set('redirect_uri', this.orcidRedirect());
+    url.searchParams.set('state', state);
+    this.log('orcid.begin');
+    return ok({ authorize_url: url.href, expires_at: iso(rec.expires_at) });
+  }
+
+  /** Finishes a check: the browser's secret, then ORCID's code for the iD, then a proof for /api/begin. The token is let go at once. */
+  async orcidComplete(input: OrcidCompleteInput): Promise<ApiResult<OrcidOutput>> {
+    const closed = this.orcidGate();
+    if (closed) return closed;
+    const key = await this.orcidStateKey(input.state);
+    const rec = await getJson<OrcidStateRecord>(this.kv, key);
+    if (!rec || rec.v !== 1 || rec.status !== 'open' || !/^[0-9a-f]{64}$/.test(rec.binding_hash ?? '') || rec.expires_at <= this.now()) {
+      return fail(400, 'state_unknown', MESSAGES.orcidStateUnknown);
+    }
+    // Single use, for certain: KV cannot settle two requests that read "open" at the same moment, so the check is spent in the
+    // one-at-a-time store first, before the code goes anywhere. It is also marked used in KV, until it would have expired anyway.
+    let first: boolean;
+    try {
+      first = await this.limits.claimOnce(key, this.now(), STATE_TTL_SECONDS * 1000);
+    } catch {
+      this.log('queue.limits_unavailable');
+      return fail(503, 'orcid_unavailable', MESSAGES.orcidUnavailable);
+    }
+    if (!first) return fail(400, 'state_unknown', MESSAGES.orcidStateUnknown);
+    await putJson(this.kv, key, { ...rec, status: 'used' } satisfies OrcidStateRecord, STATE_TTL_SECONDS);
+    if (!timingSafeEqual(await sha256Hex(input.binding), rec.binding_hash)) return fail(400, 'binding_mismatch', MESSAGES.orcidBinding);
+
+    // Under keepAlive: a closed tab or a dropped connection cannot stop it between ORCID issuing the token and letting it go.
+    return this.keepAlive(this.orcidExchange(input.code));
+  }
+
+  private async orcidExchange(code: string): Promise<ApiResult<OrcidOutput>> {
+    const port = this.deps.orcid as OrcidPort;
+    let orcid: string;
+    try {
+      const got = await port.exchangeCode({ code, redirectUri: this.orcidRedirect() });
+      orcid = got.orcid;
+      await port.revoke(got.token).catch(() => undefined);
+    } catch (error) {
+      const kind = error instanceof OrcidError ? error.kind : 'unavailable';
+      this.log('orcid.failed', { kind, error: error instanceof Error ? error.name : 'unknown' });
+      if (kind === 'refused') return fail(400, 'orcid_refused', MESSAGES.orcidRefused);
+      if (kind === 'broken') return fail(502, 'orcid_broken', MESSAGES.orcidBroken);
+      return fail(502, 'orcid_unavailable', MESSAGES.orcidUnavailable);
+    }
+    const proof = await makeOrcidProof(this.signingKey(), orcid, this.deps.settings.orcidBase, this.now());
+    this.log('orcid.verified');
+    return ok({ orcid, proof: proof.proof, expires_at: iso(proof.expiresAt) });
   }
 
   /**
@@ -840,7 +969,13 @@ export class QueueService implements QueueForTool {
       submitted: true,
       issue: { number: issue.number, url: issue.url },
       record_id: recordId(issue.number),
-      contributor: { github: user.login, ...(c.name ? { name: c.name } : {}), ...(c.orcid ? { orcid: c.orcid } : {}), ...(c.x ? { x: c.x } : {}) },
+      contributor: {
+        github: user.login,
+        ...(c.name ? { name: c.name } : {}),
+        ...(c.orcid ? { orcid: c.orcid } : {}),
+        ...(c.orcid && c.orcid_verified === true ? { orcid_verified: true as const } : {}),
+        ...(c.x ? { x: c.x } : {}),
+      },
     };
   }
 

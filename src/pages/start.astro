@@ -8,7 +8,7 @@ import McpMark from '../components/guide/McpMark.astro';
 import AssistantMark from '../components/guide/AssistantMark.astro';
 import { stepNames } from '../data/guide';
 import { cadence } from '../data/versions';
-import { mcpEndpoint, submissionsOpen, issuesUrl, release, longDate, repo, fullBlueprintUrl } from '../data/site';
+import { mcpEndpoint, submissionsOpen, issuesUrl, release, longDate, repo, fullBlueprintUrl, orcidVerify } from '../data/site';
 import { gates } from '../data/gates';
 import { clients, checkedOn } from '../data/connect';
 import { checkPrompt, checkPromptPaste, explorePrompts, draftPrompt, reviewPrompt, submitPrompt, draftPreview, packLine } from '../data/prompts';
@@ -723,7 +723,7 @@ const tools: [string, string, string][] = [
           <summary>About signing in with GitHub</summary>
           <p><strong>GitHub</strong> proves you control a GitHub account. Your IIP is posted under that account’s name, so anyone can see it is really yours.</p>
           <p><strong>No GitHub account yet?</strong> You can create one on the sign-in screen. It usually takes a few minutes, because GitHub asks you to confirm your email address, and you can sign up with your Google or Apple account. If you use the form, keep its tab open while you do it, and if GitHub opens its app, come back to that tab and press the button again.</p>
-          <p><strong>ORCID iD and X handle</strong> are optional. If you type them in, they are shown on your credit exactly as you typed them. We don’t check them. The AI model names are what you tell us, labelled as self-reported, never as verified.</p>
+          <p><strong>ORCID iD and X handle</strong> are optional. If you type them in, they are shown on your credit exactly as you typed them. We don’t check them{orcidVerify ? ', unless you press “Verify my ORCID iD” on the form' : ''}. The AI model names are what you tell us, labelled as self-reported, never as verified.</p>
         </details>
         <details class="help-details">
           <summary>It didn’t work</summary>
@@ -797,7 +797,7 @@ const tools: [string, string, string][] = [
               <div><dt>Transport</dt><dd>Streamable HTTP</dd></div>
               <div><dt>Reading</dt><dd>No account needed.</dd></div>
               <div><dt>Submitting</dt><dd>OAuth 2.1 sign-in with GitHub, asked for when you submit. Signed in, <span class="mono">submit_proposal</span> posts straight away. Not signed in, it returns a one-click link to the pre-filled web form. The token travels only in the Authorization header, never in the tool arguments.{!submissionsOpen && ' Submitting opens when the public queue opens.'}</dd></div>
-              <div><dt>Without MCP</dt><dd>The starter pack at <span class="mono">/openislet-starter-pack.md</span> and the web form at <span class="mono">/submit</span> do the same job with no MCP connection. ORCID iD and X handle are optional text fields, shown as typed and not verified.</dd></div>
+              <div><dt>Without MCP</dt><dd>The starter pack at <span class="mono">/openislet-starter-pack.md</span> and the web form at <span class="mono">/submit</span> do the same job with no MCP connection. ORCID iD and X handle are optional text fields, shown as typed and not verified{orcidVerify ? ' (an ORCID iD can be verified with ORCID on the form)' : ''}.</dd></div>
               <div><dt>Versions</dt><dd>Every read tool takes <span class="mono">version</span>: <span class="mono">draft</span> (the default), <span class="mono">latest</span> or a locked name such as <span class="mono">islet-1.0</span>. Answers say which version they came from.</dd></div>
               <div><dt>Safety</dt><dd>Text from papers and from other people’s submissions is treated as data, never as instructions.</dd></div>
               <div><dt>Review prompt</dt><dd>Public: <span class="mono">[OPENISLET-REVIEW-v1]</span>, shown in full above.</dd></div>

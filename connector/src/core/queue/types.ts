@@ -10,11 +10,16 @@ export interface Identity {
   login: string;
 }
 
-/** What a contributor may say about themselves. It is shown as "stated by the contributor", never as verified. */
+/** What a contributor may say about themselves. It is shown as "stated by the contributor", except a verified ORCID iD (below). */
 export interface Contributor {
   name?: string;
   orcid?: string;
   x?: string;
+  /**
+   * Set by /api/begin alone, and only after an ORCID proof for this very iD checked out (core/queue/orcid.ts). Never read from what
+   * anyone sends: normaliseContributor copies only the three fields above.
+   */
+  orcid_verified?: true;
 }
 
 /** How an IIP (Islet Improvement Proposal) reached the queue. */
@@ -51,6 +56,13 @@ export interface BeginOutput {
 
 export interface ContributorOutput extends Contributor {
   github: string;
+}
+
+/** What /api/orcid/complete sends back: the iD ORCID confirmed, and the proof for /api/begin. */
+export interface OrcidOutput {
+  orcid: string;
+  proof: string;
+  expires_at: string;
 }
 
 export interface CompleteOutput {

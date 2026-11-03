@@ -20,6 +20,10 @@ export interface QueueEnv {
   GITHUB_CLIENT_SECRET?: string;
   GITHUB_APP_PRIVATE_KEY?: string;
   STATE_SIGNING_KEY?: string;
+  /** "Verify my ORCID iD": the app ORCID knows us by, its secret, and which ORCID (the real one, the practice site, or a local stand-in). */
+  ORCID_CLIENT_ID?: string;
+  ORCID_CLIENT_SECRET?: string;
+  ORCID_BASE?: string;
 }
 
 export const DEFAULTS = {
@@ -31,6 +35,7 @@ export const DEFAULTS = {
   hourlyLimit: 30,
   githubWebBase: 'https://github.com',
   githubApiBase: 'https://api.github.com',
+  orcidBase: 'https://orcid.org',
 } as const;
 
 export const MIN_SIGNING_KEY_LENGTH = 32;
@@ -53,6 +58,9 @@ export interface QueueSettings {
   installationId?: string;
   privateKey?: string;
   signingKey?: string;
+  orcidBase: string;
+  orcidClientId?: string;
+  orcidClientSecret?: string;
   /** Names of settings that were given but could not be used. */
   invalid: string[];
 }
@@ -152,6 +160,26 @@ export function readQueueSettings(env: QueueEnv): QueueSettings {
   const installationId = shaped('GITHUB_APP_INSTALLATION_ID', text(env.GITHUB_APP_INSTALLATION_ID), (v) => /^\d{1,12}$/.test(v));
   const signingKey = shaped('STATE_SIGNING_KEY', text(env.STATE_SIGNING_KEY), (v) => v.length >= MIN_SIGNING_KEY_LENGTH);
   const privateKey = shaped('GITHUB_APP_PRIVATE_KEY', text(env.GITHUB_APP_PRIVATE_KEY), (v) => /BEGIN PRIVATE KEY/.test(v));
+  // ORCID's client ids look like APP-1A2B3C4D5E6F7G8H; its secrets are UUIDs (the local stand-in uses the same shapes).
+  const orcidClientId = shaped('ORCID_CLIENT_ID', text(env.ORCID_CLIENT_ID), (v) => /^APP-[A-Z0-9]{16}$/.test(v));
+  const orcidClientSecret = shaped('ORCID_CLIENT_SECRET', text(env.ORCID_CLIENT_SECRET), (v) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v));
+  // Which ORCID vouches for an iD. The real one always; ORCID's practice site (where anyone can make an account in a minute) never for
+  // the live site; anything else only on this machine (the local stand-in). Otherwise the setting is unusable, so the check is off.
+  let orcidBase: string = DEFAULTS.orcidBase;
+  const orcid = text(env.ORCID_BASE);
+  if (orcid !== undefined) {
+    const b = baseOf(orcid);
+    let host = '';
+    try {
+      host = b ? new URL(b).hostname : '';
+    } catch {
+      host = '';
+    }
+    const local = ['localhost', '127.0.0.1', '[::1]'].includes(host);
+    const ok = b === DEFAULTS.orcidBase || (b === 'https://sandbox.orcid.org' && siteOrigin !== DEFAULTS.siteOrigin) || (b !== null && local);
+    if (ok && b) orcidBase = b;
+    else invalid.push('ORCID_BASE');
+  }
 
   return {
     siteOrigin,
@@ -169,18 +197,25 @@ export function readQueueSettings(env: QueueEnv): QueueSettings {
     installationId,
     privateKey,
     signingKey,
+    orcidBase,
+    orcidClientId,
+    orcidClientSecret,
     invalid,
   };
 }
 
-/** What a path needs: "check" (the dry run's rate limit), "post" (open an issue) or "web" (also the GitHub sign-in on the form). */
-export type Need = 'check' | 'post' | 'web';
+/**
+ * What a path needs: "check" (the dry run's rate limit), "post" (open an issue), "web" (also the GitHub sign-in on the form) or
+ * "orcid" (the form's "Verify my ORCID iD", which only makes sense where the form can post).
+ */
+export type Need = 'check' | 'post' | 'web' | 'orcid';
 
 /** Settings that have a default but were given in a form we cannot use, by the kind of path they matter to. */
 const UNUSABLE: Record<Need, string[]> = {
   check: ['IP_LIMIT_MULTIPLIER'],
   post: ['IP_LIMIT_MULTIPLIER', 'QUEUE_REPO', 'DAILY_LIMIT_PER_ACCOUNT', 'HOURLY_LIMIT_EVERYONE', 'GITHUB_API_BASE'],
   web: ['IP_LIMIT_MULTIPLIER', 'QUEUE_REPO', 'DAILY_LIMIT_PER_ACCOUNT', 'HOURLY_LIMIT_EVERYONE', 'GITHUB_API_BASE', 'SITE_ORIGIN', 'GITHUB_WEB_BASE'],
+  orcid: ['IP_LIMIT_MULTIPLIER', 'QUEUE_REPO', 'DAILY_LIMIT_PER_ACCOUNT', 'HOURLY_LIMIT_EVERYONE', 'GITHUB_API_BASE', 'SITE_ORIGIN', 'GITHUB_WEB_BASE', 'ORCID_BASE'],
 };
 
 /** The stores a path may need: the queue's KV, and the Durable Object that keeps the exact posting limits. */
@@ -200,9 +235,13 @@ export function missingFor(s: QueueSettings, have: Stores, need: Need): string[]
     if (!s.installationId) out.push('GITHUB_APP_INSTALLATION_ID');
     if (!s.privateKey) out.push('GITHUB_APP_PRIVATE_KEY');
   }
-  if (need === 'web') {
+  if (need === 'web' || need === 'orcid') {
     if (!s.clientId) out.push('GITHUB_CLIENT_ID');
     if (!s.clientSecret) out.push('GITHUB_CLIENT_SECRET');
+  }
+  if (need === 'orcid') {
+    if (!s.orcidClientId) out.push('ORCID_CLIENT_ID');
+    if (!s.orcidClientSecret) out.push('ORCID_CLIENT_SECRET');
   }
   for (const name of UNUSABLE[need]) if (s.invalid.includes(name)) out.push(name);
   return [...new Set(out)];

@@ -1,7 +1,7 @@
 // Reads the JSON bodies of the queue's API into typed inputs, or says which field is wrong.
 // This only checks shape and size (the limits in QUEUE-API.md). The rules about what a draft says belong to check_draft.
 import type { AiTools, ApiError } from './types';
-import type { BeginInput, CheckInput, CompleteInput, StageInput } from './service';
+import type { BeginInput, CheckInput, CompleteInput, OrcidBeginInput, StageInput } from './service';
 
 export const FIELD_MAX_CHARS = 60_000;
 export const AI_TOOLS_MAX_CHARS = 200;
@@ -74,6 +74,13 @@ export function parseStage(body: Body): Parsed<StageInput> {
   return { ok: true, value: { draft: draft.value as string, review: review.value as string, ai_tools: tools.value, consent: body.consent, contributor: body.contributor, idempotency_key: key.value } };
 }
 
+/** The browser's secret, as its lower-case hex SHA-256: the secret itself only comes later, to finish. */
+function bindingHash(body: Body): Parsed<string> {
+  const hash = body.binding_hash;
+  if (typeof hash !== 'string' || !/^[0-9a-f]{64}$/.test(hash)) return bad('"binding_hash" should be the lower-case hex SHA-256 of the secret kept in the browser.', 'binding_hash');
+  return { ok: true, value: hash };
+}
+
 export function parseBegin(body: Body): Parsed<BeginInput> {
   const draft = fileText(body, 'draft', false);
   if (!draft.ok) return draft;
@@ -81,8 +88,13 @@ export function parseBegin(body: Body): Parsed<BeginInput> {
   if (!review.ok) return review;
   const tools = aiTools(body);
   if (!tools.ok) return tools;
-  const hash = body.binding_hash;
-  if (typeof hash !== 'string' || !/^[0-9a-f]{64}$/.test(hash)) return bad('"binding_hash" should be the lower-case hex SHA-256 of the secret kept in the browser.', 'binding_hash');
+  const hash = bindingHash(body);
+  if (!hash.ok) return hash;
+  let orcidProof: string | undefined;
+  if (body.orcid_proof !== undefined && body.orcid_proof !== null) {
+    if (typeof body.orcid_proof !== 'string' || !body.orcid_proof || body.orcid_proof.length > 512) return bad('"orcid_proof" is not valid.', 'orcid_proof');
+    orcidProof = body.orcid_proof;
+  }
   let staged: string | undefined;
   if (body.staged_id !== undefined && body.staged_id !== null) {
     if (typeof body.staged_id !== 'string' || body.staged_id.length > 100) return bad('"staged_id" is not valid.', 'staged_id');
@@ -90,8 +102,29 @@ export function parseBegin(body: Body): Parsed<BeginInput> {
   }
   return {
     ok: true,
-    value: { staged_id: staged, draft: draft.value, review: review.value, ai_tools: tools.value, consent: body.consent, contributor: body.contributor, binding_hash: hash },
+    value: {
+      staged_id: staged,
+      draft: draft.value,
+      review: review.value,
+      ai_tools: tools.value,
+      consent: body.consent,
+      contributor: body.contributor,
+      binding_hash: hash.value,
+      ...(orcidProof !== undefined ? { orcid_proof: orcidProof } : {}),
+    },
   };
+}
+
+/** ORCID's one-time codes are short letters and digits: anything else is refused here and never sent on to ORCID. */
+export function parseOrcidComplete(body: Body): Parsed<CompleteInput> {
+  const input = parseComplete(body);
+  if (input.ok && !/^[A-Za-z0-9_-]{4,64}$/.test(input.value.code)) return bad('"code" is not valid.', 'code');
+  return input;
+}
+
+export function parseOrcidBegin(body: Body): Parsed<OrcidBeginInput> {
+  const hash = bindingHash(body);
+  return hash.ok ? { ok: true, value: { binding_hash: hash.value } } : hash;
 }
 
 export function parseComplete(body: Body): Parsed<CompleteInput> {

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CellField from '../components/CellField.astro';
-import { submissionsOpen, connectorStatus, queueApi, issuesUrl } from '../data/site';
+import { submissionsOpen, connectorStatus, queueApi, issuesUrl, orcidVerify } from '../data/site';
 
 // The web form for sending in an IIP (an Islet Improvement Proposal) without MCP. The contract with the Worker is
 // docs/connector/QUEUE-API.md. This page never posts anything by itself: the issue is opened by the OpenIslet bot after the person
@@ -63,7 +63,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
 
       <section class="box" aria-labelledby="h-credit">
         <h2 id="h-credit">3. Your credit <span class="opt">All optional</span></h2>
-        <p class="hint">Your GitHub name is always shown. Anything you add here is shown exactly as you typed it. We check only its format (an ORCID iD must pass its check digit), not that it is yours.</p>
+        <p class="hint">Your GitHub name is always shown. Anything you add here is shown exactly as you typed it. We check only its format (an ORCID iD must pass its check digit), not that it is yours{orcidVerify ? ', unless you press “Verify my ORCID iD”' : ''}.</p>
         <div class="grid3">
           <div>
             <label for="name">Display name</label>
@@ -71,7 +71,9 @@ const live = connectorStatus === 'live' || submissionsOpen;
           </div>
           <div>
             <label for="orcid">ORCID iD</label>
-            <input id="orcid" name="orcid" type="text" inputmode="text" placeholder="0000-0002-1825-0097" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" />
+            <input id="orcid" name="orcid" type="text" inputmode="text" placeholder="0000-0002-1825-0097" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" aria-describedby={orcidVerify ? 'orcid-note' : undefined} />
+            {orcidVerify && <button type="button" class="btn btn--quiet orcid-verify" id="orcid-verify">Verify my ORCID iD</button>}
+            {orcidVerify && <p class="livenote" id="orcid-note" aria-live="polite" hidden></p>}
           </div>
           <div>
             <label for="x">X handle</label>
@@ -137,7 +139,7 @@ const live = connectorStatus === 'live' || submissionsOpen;
 </Layout>
 
 <script>
-  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, shared, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, sizeOf, splitFiles, remember, remembered, forgetIfPosted, type Problem, type Saved } from '../scripts/submit';
+  import { quickCheck, draftProblems, reviewProblems, draftTitle, verdictOf, whatIsThis, tidy, callApi, explain, sha256Hex, newSecret, store, shared, orcidClean, bindingKey, stateOf, STORAGE_BLOCKED, STAGED_KEY, MAX_TEXT, sizeOf, splitFiles, remember, remembered, forgetIfPosted, keptOrcidProof, clearOrcidBindings, orcidAuthorizeOk, orcidBindingKey, ORCID_PROOF_KEY, ORCID_FRESH_KEY, FORM_STAGED_KEY, type Problem, type Saved } from '../scripts/submit';
 
   const form = document.getElementById('submit-form') as HTMLFormElement;
   const api = form.dataset.api ?? '';
@@ -429,8 +431,72 @@ const live = connectorStatus === 'live' || submissionsOpen;
   welcomeBack(false);
   const fromLink = /(^|[#?&])staged=/.test(location.hash) || /(^|[?&])staged=/.test(location.search);
   const saved = fromLink || draft.value.trim() || review.value.trim() ? null : remembered();
-  if (saved) fill(saved, false);
+  if (saved) {
+    fill(saved, false);
+    // The saved files the text came from (a connector link, or an earlier sign-in) are used again, so nothing they hold is lost.
+    const kept = store.get(FORM_STAGED_KEY);
+    if (kept && /^[A-Za-z0-9_-]{16,128}$/.test(kept)) stagedId = kept;
+  }
   refresh();
+
+  // "Verify my ORCID iD". ORCID confirms the person controls the iD, and the Worker gives back a proof that lasts an hour. It is kept
+  // in this tab only and sent with the submission, and only while the box still holds that iD: editing the box drops the mark.
+  const orcidButton = document.getElementById('orcid-verify') as HTMLButtonElement | null;
+  const orcidNote = el<HTMLElement>('orcid-note'); // only used while orcidButton exists (both are there only with PUBLIC_ORCID_VERIFY)
+  const verifiedOrcid = () => {
+    const p = keptOrcidProof();
+    return p && orcid.value.trim() && orcidClean(orcid.value) === p.orcid ? p : null;
+  };
+  function paintOrcid() {
+    if (!orcidButton) return;
+    const p = verifiedOrcid();
+    setNote(orcidNote, p ? 'ok' : 'todo', p ? 'Verified with ORCID.' : '');
+    orcidButton.hidden = !!p;
+  }
+  // Just back from ORCID: the box shows the iD ORCID confirmed. (The text and the saved files came back above, whatever ORCID said.)
+  if (orcidButton && store.get(ORCID_FRESH_KEY)) {
+    store.remove(ORCID_FRESH_KEY);
+    const p = keptOrcidProof();
+    if (p && orcidClean(orcid.value) !== p.orcid) {
+      orcid.value = p.orcid;
+      touched.add(orcid);
+      keepSoon();
+      refresh();
+    }
+  }
+  paintOrcid();
+  orcid.addEventListener('input', paintOrcid);
+  orcidButton?.addEventListener('click', async () => {
+    if (working) return;
+    showProblems([]);
+    if (!store.works()) return showProblems([{ field: 'none', text: STORAGE_BLOCKED }], 'We can’t check your ORCID iD here:');
+    working = true;
+    orcidButton.setAttribute('aria-busy', 'true');
+    let leaving = false;
+    try {
+      // Everything typed is kept first, so nothing is lost while the person is at ORCID.
+      edited = true;
+      keep();
+      const secret = newSecret();
+      const result = await callApi(api, '/api/orcid/begin', { binding_hash: await sha256Hex(secret) });
+      const next = result.ok && orcidAuthorizeOk(result.data.authorize_url, api) ? result.data.authorize_url : null;
+      const state = next ? stateOf(next) : null;
+      if (!next || !state) {
+        showProblems([{ field: 'orcid', text: result.ok ? 'The ORCID address was not what we expected, so we stopped. Please try again, and tell us if it keeps happening.' : explain(result) }], 'We could not check your ORCID iD:');
+        return;
+      }
+      clearOrcidBindings();
+      if (!store.set(orcidBindingKey(state), secret)) return showProblems([{ field: 'none', text: STORAGE_BLOCKED }], 'We can’t check your ORCID iD here:');
+      say('Taking you to ORCID…');
+      leaving = true;
+      location.assign(next);
+    } finally {
+      if (!leaving) {
+        working = false;
+        orcidButton.removeAttribute('aria-busy');
+      }
+    }
+  });
 
   const aiTools = () => {
     const tools: { draft?: string; review?: string } = {};
@@ -508,6 +574,12 @@ const live = connectorStatus === 'live' || submissionsOpen;
     }
     const problems = quickCheck(values());
     if (problems.length) return showProblems(problems);
+    // The mark said "Verified", but the hour is up: say so, rather than sending the iD as stated without a word. Pressing again sends it.
+    const orcidProof = verifiedOrcid();
+    if (orcidButton && !orcidNote.hidden && !orcidProof) {
+      paintOrcid();
+      return showProblems([{ field: 'orcid', text: 'Your ORCID check has expired (it lasts an hour). Press “Verify my ORCID iD” again, or press the button below again to send your iD as stated.' }]);
+    }
     // Without this tab's own storage the sign-in cannot be finished safely, so say so now instead of on the page GitHub sends people back to.
     if (!store.works()) return showProblems([{ field: 'none', text: STORAGE_BLOCKED }], 'We can’t start the sign-in here:');
 
@@ -524,13 +596,19 @@ const live = connectorStatus === 'live' || submissionsOpen;
         consent: true,
         contributor: contributor(),
         binding_hash: await sha256Hex(secret),
+        ...(orcidProof ? { orcid_proof: orcidProof.proof } : {}),
       });
 
       const next = result.ok ? safeAuthorize(result.data.authorize_url) : null;
       const state = next ? stateOf(next) : null;
       if (!next || !state) {
         say('');
-        const fixes = result.ok ? [] : fromServer(result.data);
+        // A proof the Worker no longer accepts (expired, or for another iD) is dropped, so the box shows plainly what will be sent.
+        if (result.data.field === 'orcid') {
+          store.remove(ORCID_PROOF_KEY);
+          paintOrcid();
+        }
+        const fixes = result.ok ? [] : result.data.field === 'orcid' ? [{ field: 'orcid' as const, text: explain(result) }] : fromServer(result.data);
         const text = result.ok ? 'The sign-in address was not what we expected, so we stopped. Please try again, and tell us if it keeps happening.' : explain(result);
         showProblems(fixes.length ? fixes : [{ field: 'none', text }], fixes.length ? 'A few things to fix first:' : 'We could not start the sign-in:');
         return;
@@ -544,7 +622,10 @@ const live = connectorStatus === 'live' || submissionsOpen;
         return;
       }
       const staged = typeof result.data.staged_id === 'string' ? result.data.staged_id : null;
-      if (staged) store.set(STAGED_KEY, staged);
+      if (staged) {
+        store.set(STAGED_KEY, staged);
+        store.set(FORM_STAGED_KEY, staged);
+      }
       // A copy of the secret (never the files' id) for another tab of this browser, in case GitHub sends people back to a new one.
       // This tab's copy is the one that must work.
       shared.set(bindingKey(state), { secret });
@@ -564,8 +645,10 @@ const live = connectorStatus === 'live' || submissionsOpen;
       if (kept) fill(kept, true);
       consent.checked = false;
       setBusy(false);
+      orcidButton?.removeAttribute('aria-busy');
       say('');
       refresh();
+      paintOrcid();
     }
   });
   if (!store.works()) {
@@ -632,7 +715,9 @@ const live = connectorStatus === 'live' || submissionsOpen;
     fill(orcid, d.contributor?.orcid ?? '');
     fill(xhandle, d.contributor?.x ? `@${d.contributor.x}` : '');
     stagedId = wanted;
+    store.set(FORM_STAGED_KEY, wanted);
     keepSoon();
+    paintOrcid();
     note.textContent = 'Your AI filled this in for you. Read it through, tick the box, then press “Continue with GitHub & Submit”.';
   }
   void loadStaged();
@@ -860,6 +945,9 @@ const live = connectorStatus === 'live' || submissionsOpen;
     content: attr(data-mark);
     flex: none;
     font-weight: 700;
+  }
+  .orcid-verify {
+    margin-top: 0.5rem;
   }
   .livenote--ok {
     color: var(--pass);

@@ -1,5 +1,6 @@
 // The optional "about the contributor" fields: a display name, an ORCID iD and an X handle.
-// They are plain text the contributor types in. They are shown as "stated by the contributor", never as verified.
+// They are plain text the contributor types in, shown as "stated by the contributor". The one exception, an ORCID iD the person
+// verifies with ORCID on the form, is marked in /api/begin only (core/queue/orcid.ts): nothing read here can mark it.
 import type { Contributor } from './types';
 
 export const NAME_MAX = 80;

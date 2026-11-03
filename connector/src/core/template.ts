@@ -405,9 +405,14 @@ export function verdictOf(value: string | undefined): string | null {
   return null;
 }
 
+/** What claimToTest says when a line is too long to read whole (see MAX_LINE): the part would be cut short, so it is not sent. */
+export const LINE_TOO_LONG = `every line under ${MAX_LINE.toLocaleString('en-GB')} characters (one is longer, so it would be cut short)`;
+
 /** The three parts of a draft that go to the reviewer: the claim, the evidence and the proposed change, copied word for word. */
 export function claimToTest(rawDraft: string): { ok: true; text: string } | { ok: false; missing: string[] } {
   const d = parseDoc(cleanPaste(rawDraft, 'draft').text);
+  // parseDoc cuts lines longer than MAX_LINE, which would send the reviewer part of a quote as if it were all of it.
+  if (d.parseIssues.includes('a line exceeds the parser limit')) return { ok: false, missing: [LINE_TOO_LONG] };
   const parts: [string, string | undefined][] = [
     ['Claim in one sentence', d.fields.get(keyOf('Claim in one sentence'))],
     ['Evidence', d.sections.get(keyOf('Evidence'))],

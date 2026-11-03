@@ -13,6 +13,7 @@ import { configFromEnv } from './core/answer';
 import { Bundle } from './core/bundle';
 import { CONTACT_EMAIL } from './core/contact';
 import { GitHubClient, type GitHubSettings, type TokenCache } from './core/queue/github';
+import { OrcidClient } from './core/queue/orcid';
 import { QueueService } from './core/queue/service';
 import { type QueueEnv, type QueueSettings, missingFor, readQueueSettings } from './core/queue/settings';
 import type { QueueKV } from './core/queue/kv';
@@ -152,6 +153,8 @@ function queueFor(env: Env, ctx: ExecutionContext): { service: QueueService; set
     settings,
     config: configFromEnv(env as unknown as Record<string, string | undefined>),
     github,
+    // "Verify my ORCID iD" exists only once its client id and secret are set (QueueService answers orcid_not_configured otherwise).
+    orcid: settings.orcidClientId && settings.orcidClientSecret ? new OrcidClient({ base: settings.orcidBase, clientId: settings.orcidClientId, clientSecret: settings.orcidClientSecret }) : undefined,
     defer: (work) => ctx.waitUntil(work),
     log,
   });

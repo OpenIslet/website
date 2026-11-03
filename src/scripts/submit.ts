@@ -18,6 +18,16 @@ export const doneKey = (state: string): string => `${DONE_PREFIX}${state}`;
 export const POSTED_KEY = 'openislet.submit.posted';
 /** What was typed into the form in this tab, kept so a reload, or a phone putting the tab to sleep, loses nothing. */
 export const SAVED_KEY = 'openislet.submit.saved';
+/** "Verify my ORCID iD": the secret for one ORCID check (this tab only), the proof the Worker gave back, and a note that it just did. */
+export const ORCID_BINDING_PREFIX = 'openislet.submit.orcid.';
+export const orcidBindingKey = (state: string): string => `${ORCID_BINDING_PREFIX}${state}`;
+export const ORCID_PROOF_KEY = 'openislet.submit.orcid-proof';
+export const ORCID_FRESH_KEY = 'openislet.submit.orcid-fresh';
+/**
+ * The saved files (on the connector) the form is working from, kept with the form's text, so a reload or a trip to ORCID still sends
+ * them: a connector link's saved files can hold more than the form shows, such as lab readouts.
+ */
+export const FORM_STAGED_KEY = 'openislet.submit.form-staged';
 /** How long a sign-in is kept for another tab: as long as a sign-in link lasts, and no longer. */
 export const LINGER_MS = 15 * 60 * 1000;
 /** The Worker's own limit for each file (LIMITS.max in connector/src/core/draft.ts; tests/submit-form.test.mjs checks they agree). */
@@ -100,6 +110,9 @@ function missingParts(text: string, kind: Kind): string[] {
 const pastedTwice = (text: string, kind: Kind): boolean =>
   templateGaps(parseDoc(cleanPaste(text, kind).text), TEMPLATE[kind], kind).some((g) => g.startsWith('duplicate ') || g === 'multiple title lines');
 
+/** True when a line of the file is too long to be read whole (the reader cuts it), so part of it would be lost. */
+const lineTooLong = (text: string, kind: Kind): boolean => parseDoc(cleanPaste(text, kind).text).parseIssues.includes('a line exceeds the parser limit');
+
 /** What is wrong with the draft on its own. An empty box is a problem too: it has not been added yet. */
 export function draftProblems(raw: string): Problem[] {
   const out: Problem[] = [];
@@ -111,6 +124,7 @@ export function draftProblems(raw: string): Problem[] {
   if (kind === 'review') return [...out, { field: 'draft', text: 'This looks like your blind review, not your draft. The draft is the file your AI wrote in step 3. Put the review in box 2.' }];
   if (kind === 'review-prompt') return [...out, { field: 'draft', text: 'This is the prompt for the fresh chat in step 4, not your draft. The draft is the file your AI wrote in step 3.' }];
   if (pastedTwice(draft, 'draft')) return [...out, { field: 'draft', text: 'There is more than one file in this box, or the same file twice. Clear the box and paste just the draft, once.' }];
+  if (lineTooLong(draft, 'draft')) return [...out, { field: 'draft', text: 'One line of your draft is longer than 2,000 characters, so it can’t be read whole. Split it into shorter lines.' }];
   const missing = missingParts(draft, 'draft');
   if (missing.length >= 6) out.push({ field: 'draft', text: 'This does not look like a draft yet. Paste the file your AI wrote in step 3: it starts with a title and has a “Claim in one sentence” line.' });
   else if (missing.length) out.push({ field: 'draft', text: `Your draft is missing ${listed(missing)}. Ask your AI to fill these in using the template from step 3 (it should write “Not known” for anything it does not know).` });
@@ -135,6 +149,7 @@ export function reviewProblems(raw: string): Problem[] {
     return [...out, { field: 'review', text: 'This is the prompt you paste into a brand-new chat, not the review itself. Paste it into a new chat, and paste the answer that chat gives you here: that answer is the review.' }];
   if (kind === 'draft') return [...out, { field: 'review', text: 'This looks like your draft, not the blind review. Put it in box 1, and paste the review from your fresh chat (step 4) here.' }];
   if (pastedTwice(review, 'review')) return [...out, { field: 'review', text: 'There is more than one file in this box, or the same file twice. Clear the box and paste just the blind review, once.' }];
+  if (lineTooLong(review, 'review')) return [...out, { field: 'review', text: 'One line of your review is longer than 2,000 characters, so it can’t be read whole. Split it into shorter lines.' }];
   const verdict = verdictOf(review);
   const missing = missingParts(review, 'review').filter((m) => m !== '“Verdict”' && m !== '"Verdict"');
   if (missing.length >= 6 && !verdict) return [...out, { field: 'review', text: 'This does not look like a blind review yet. Paste the answer from your fresh chat in step 4: it starts with “Review:” and has a “Verdict” line.' }];
@@ -365,7 +380,8 @@ export function postedElsewhere(now = Date.now()): boolean {
  */
 export function forgetIfPosted(): boolean {
   if (!store.get(POSTED_KEY) && !postedElsewhere()) return false;
-  for (const key of [POSTED_KEY, SAVED_KEY, STAGED_KEY]) store.remove(key);
+  // The ORCID proof goes too: on a shared computer the next person must not find someone else's iD shown as verified.
+  for (const key of [POSTED_KEY, SAVED_KEY, STAGED_KEY, ORCID_PROOF_KEY, ORCID_FRESH_KEY, FORM_STAGED_KEY]) store.remove(key);
   store.clearBindings();
   return true;
 }
@@ -385,8 +401,11 @@ const SAVED_FIELDS = ['draft', 'review', 'name', 'orcid', 'x', 'aiDraft', 'aiRev
 /** Keeps the form's text in this tab. sessionStorage goes when the tab is closed, which is right for work not yet published. */
 export function remember(v: Saved): void {
   const kept = Object.fromEntries(SAVED_FIELDS.map((k) => [k, typeof v[k] === 'string' ? v[k] : '']));
-  if (SAVED_FIELDS.every((k) => !kept[k].trim())) store.remove(SAVED_KEY);
-  else store.set(SAVED_KEY, JSON.stringify(kept));
+  // An emptied form is a fresh start: the saved files it was working from go too.
+  if (SAVED_FIELDS.every((k) => !kept[k].trim())) {
+    store.remove(SAVED_KEY);
+    store.remove(FORM_STAGED_KEY);
+  } else store.set(SAVED_KEY, JSON.stringify(kept));
 }
 
 /** What `remember` kept in this tab, or null. */
@@ -442,4 +461,54 @@ export function splitFiles(raw: string): { draft: string; review: string } | nul
     if (ka === 'review' && kb === 'draft') return { draft: cleanPaste(b, 'draft').text, review: cleanPaste(a, 'review').text };
   }
   return null;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// "Verify my ORCID iD" (docs/connector/QUEUE-API.md, "Checking an ORCID iD")
+// ---------------------------------------------------------------------------------------------------------------
+
+/** What /api/orcid/complete gave back: the iD ORCID confirmed, and the proof the submission sends with it. */
+export interface OrcidProof {
+  orcid: string;
+  proof: string;
+  expires_at: string;
+}
+
+/** The proof kept in this tab, while it has time left. The Worker checks it again; this only decides what the form shows. */
+export function keptOrcidProof(now = Date.now()): OrcidProof | null {
+  try {
+    const p = JSON.parse(store.get(ORCID_PROOF_KEY) ?? 'null') as Partial<OrcidProof> | null;
+    if (!p || typeof p.orcid !== 'string' || !orcidOk(p.orcid) || typeof p.proof !== 'string' || !p.proof || p.proof.length > 512) return null;
+    const until = typeof p.expires_at === 'string' ? Date.parse(p.expires_at) : NaN;
+    if (!(until > now)) {
+      store.remove(ORCID_PROOF_KEY);
+      return null;
+    }
+    return { orcid: p.orcid, proof: p.proof, expires_at: p.expires_at as string };
+  } catch {
+    return null;
+  }
+}
+
+/** Removes every ORCID check this tab started, so an abandoned one leaves nothing behind. */
+export function clearOrcidBindings(): void {
+  let keys: string[] = [];
+  try {
+    keys = Array.from({ length: sessionStorage.length }, (_, i) => sessionStorage.key(i)).filter((k): k is string => !!k?.startsWith(ORCID_BINDING_PREFIX));
+  } catch {
+    /* private browsing */
+  }
+  for (const key of keys) store.remove(key);
+}
+
+/**
+ * ORCID's own sign-in page. When the form talks to a Worker on this machine, also ORCID's practice site or the local stand-in
+ * (the Worker allows the same: the practice site never for the live site).
+ */
+export function orcidAuthorizeOk(url: unknown, api: string): url is string {
+  if (typeof url !== 'string') return false;
+  if (/^https:\/\/orcid\.org\/oauth\/authorize\?/.test(url)) return true;
+  const local = /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?(\/|$)/;
+  if (!local.test(api)) return false;
+  return /^https:\/\/sandbox\.orcid\.org\/oauth\/authorize\?/.test(url) || (local.test(url) && /^https?:\/\/[^/]+\/oauth\/authorize\?/.test(url));
 }

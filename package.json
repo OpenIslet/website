@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "build:live": "PUBLIC_INDEXABLE=true PUBLIC_CONNECTOR_STATUS=live PUBLIC_MCP_ENDPOINT=https://mcp.openislet.org/mcp PUBLIC_SUBMISSIONS_OPEN=true astro build",
+    "build:live": "PUBLIC_INDEXABLE=true PUBLIC_CONNECTOR_STATUS=live PUBLIC_MCP_ENDPOINT=https://mcp.openislet.org/mcp PUBLIC_SUBMISSIONS_OPEN=true PUBLIC_ORCID_VERIFY=true astro build",
     "check:live": "node scripts/check-live-build.mjs",
     "preview": "astro preview",
     "test": "node --test tests/*.test.mjs",

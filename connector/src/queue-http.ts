@@ -1,9 +1,9 @@
-// The queue's HTTP API: /api/check, /api/begin, /api/complete, /api/staged/:id and /api/stage.
+// The queue's HTTP API: /api/check, /api/begin, /api/complete, /api/staged/:id, /api/stage, and /api/orcid/begin and /api/orcid/complete.
 // The contract is docs/connector/QUEUE-API.md. This file is only the web layer: CORS, reading the body within its limit,
 // and sending each ApiResult. The rules themselves are in src/core/queue/service.ts.
 import { BundleError, type Bundle } from './core/bundle';
 import { CONTACT_EMAIL } from './core/contact';
-import { BODY_MAX_BYTES, parseBegin, parseCheck, parseComplete, parseStage } from './core/queue/input';
+import { BODY_MAX_BYTES, parseBegin, parseCheck, parseComplete, parseOrcidBegin, parseOrcidComplete, parseStage } from './core/queue/input';
 import { type QueueService, fail } from './core/queue/service';
 import type { QueueSettings } from './core/queue/settings';
 import type { ApiError, ApiResult, Caller } from './core/queue/types';
@@ -90,7 +90,7 @@ async function readJson(request: Request): Promise<Body> {
   return { ok: true, value: parsed as Record<string, unknown> };
 }
 
-const POST_ROUTES = new Set(['check', 'begin', 'complete', 'stage']);
+const POST_ROUTES = new Set(['check', 'begin', 'complete', 'stage', 'orcid/begin', 'orcid/complete']);
 
 export async function handleApi(request: Request, deps: ApiDeps): Promise<Response> {
   const url = new URL(request.url);
@@ -149,6 +149,16 @@ export async function handleApi(request: Request, deps: ApiDeps): Promise<Respon
         const input = parseBegin(body.value);
         if (!input.ok) return send(400, input.error, cors);
         return sendResult(await deps.service.begin(deps.bundle(), input.value, caller), cors);
+      }
+      case 'orcid/begin': {
+        const input = parseOrcidBegin(body.value);
+        if (!input.ok) return send(400, input.error, cors);
+        return sendResult(await deps.service.orcidBegin(input.value, caller), cors);
+      }
+      case 'orcid/complete': {
+        const input = parseOrcidComplete(body.value);
+        if (!input.ok) return send(400, input.error, cors);
+        return sendResult(await deps.service.orcidComplete(input.value), cors);
       }
       default: {
         const input = parseComplete(body.value);

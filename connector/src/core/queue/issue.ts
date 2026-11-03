@@ -185,11 +185,16 @@ export interface IssueContent {
   wetlab?: Record<string, unknown> | null;
 }
 
+/** The ORCID iD, when ORCID itself confirmed that the person on the form controls it (core/queue/orcid.ts). */
+export function verifiedLine(c: Contributor): string | null {
+  return c.orcid && c.orcid_verified === true ? `ORCID iD [${c.orcid}](https://orcid.org/${c.orcid}) (verified through ORCID)` : null;
+}
+
 /** The line about the contributor's own words. Every part is plain text they typed. */
 export function statedLine(c: Contributor): string | null {
   const parts: string[] = [];
   if (c.name) parts.push(`name ${cleanInline(c.name, 160)}`);
-  if (c.orcid) parts.push(`ORCID [${c.orcid}](https://orcid.org/${c.orcid})`);
+  if (c.orcid && c.orcid_verified !== true) parts.push(`ORCID [${c.orcid}](https://orcid.org/${c.orcid})`);
   // Not "@handle": that would mention a GitHub user who happens to share the name.
   if (c.x) parts.push(`X [x.com/${c.x}](https://x.com/${c.x})`);
   return parts.length ? `Stated by the contributor, not verified: ${parts.join(', ')}` : null;
@@ -210,10 +215,12 @@ function wetlabBlock(wetlab: Record<string, unknown>): string[] {
 
 /** Everything in the issue above the hidden marker. */
 export function issueText(i: IssueContent): string {
+  const verified = verifiedLine(i.contributor);
   const stated = statedLine(i.contributor);
   const lines = [
     `Submitted by @${i.login} (verified through GitHub)`,
     '',
+    ...(verified ? [verified, ''] : []),
     ...(stated ? [stated, ''] : []),
     `AI tools (self-reported): draft = ${i.aiTools.draft ? cleanInline(i.aiTools.draft) : 'not stated'}, review = ${i.aiTools.review ? cleanInline(i.aiTools.review) : 'not stated'}`,
     '',

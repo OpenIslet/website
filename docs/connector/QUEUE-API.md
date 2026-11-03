@@ -37,7 +37,7 @@ Three ways to send an Islet Improvement Proposal (IIP). All of them end the same
 2. **Connector, signed in.** The contributor's AI client holds an OAuth token from the connector (GitHub sign-in). `submit_proposal` posts straight away. The token can be up to a week old, so the name in "Submitted by @handle" is looked up again at that moment, by the account's numeric ID (`GET /user/{id}` as the bot): a renamed account is named as it is now, never by an old name someone else may have taken. If GitHub no longer has the account, nothing is posted (`401 github_account_gone`).
 3. **Connector, not signed in.** `submit_proposal` stages the checked draft and returns a one-click link to the web form with everything already filled in. The contributor presses the same button.
 
-Identity is **GitHub only**. ORCID iD, X handle and a display name are optional plain-text fields on the form. They are shown as "stated by the contributor", never as verified.
+Identity is **GitHub only**. ORCID iD, X handle and a display name are optional plain-text fields on the form. They are shown as "stated by the contributor", except an ORCID iD the person verifies on the form ("Verify my ORCID iD", below), which is shown as "verified through ORCID". That proves the person controlled that ORCID record at the time, not who they are: ORCID names are self-asserted.
 
 Nobody is dropped onto raw GitHub. Nothing is written to the science files: the only write is a new public issue (and one comment) in the queue repository.
 
@@ -57,8 +57,10 @@ Variables (`wrangler.jsonc` `vars`, or `.dev.vars` locally):
 | `GITHUB_WEB_BASE`, `GITHUB_API_BASE` | Override `https://github.com` and `https://api.github.com`. Used only by the local mock. | real GitHub |
 | `DAILY_LIMIT_PER_ACCOUNT` | Submissions per GitHub account per UTC day. | `5` |
 | `HOURLY_LIMIT_EVERYONE` | Submissions per clock hour from all accounts together: a ceiling on a flood from many accounts. | `30` |
+| `ORCID_CLIENT_ID` | "Verify my ORCID iD": the app's client ID at ORCID (`APP-` and sixteen characters). Without it and its secret, `/api/orcid/*` answer `503 orcid_not_configured`. | none |
+| `ORCID_BASE` | Which ORCID: `https://orcid.org`, `https://sandbox.orcid.org` (ORCID's practice site) or the local mock. The live connector must use the real one. | `https://orcid.org` |
 
-Secrets (`wrangler secret put`): `GITHUB_CLIENT_SECRET`, `GITHUB_APP_PRIVATE_KEY` (PKCS#8 PEM), `STATE_SIGNING_KEY` (random, 32 bytes or more, base64).
+Secrets (`wrangler secret put`): `GITHUB_CLIENT_SECRET`, `GITHUB_APP_PRIVATE_KEY` (PKCS#8 PEM), `STATE_SIGNING_KEY` (random, 32 bytes or more, base64), and for "Verify my ORCID iD" `ORCID_CLIENT_SECRET` (a UUID).
 
 Bindings: `BUNDLE` (R2, exists), `QUEUE_KV` (KV: staged submissions, sign-in state, idempotency, the per-address rate counters), `OAUTH_KV` (KV for the connector's own OAuth server), `QUEUE_LIMITS` (a Durable Object, `src/queue-limits.ts`: the exact posting limits, which KV cannot count atomically; the first deploy creates it through the `v1` migration in `wrangler.jsonc`).
 
@@ -89,7 +91,8 @@ Response `200`: `{ ready, door: [...], checks: [...], what_to_fix: [...], labels
 
 Starts sign-in for a submission. Validates, stores the submission, and returns the GitHub address to send the browser to.
 
-Request: `{ staged_id?, draft?, review?, ai_tools?, consent, contributor?, binding_hash }`.
+Request: `{ staged_id?, draft?, review?, ai_tools?, consent, contributor?, binding_hash, orcid_proof? }`.
+- `orcid_proof`: from `/api/orcid/complete`, when the person verified their ORCID iD. Checked after the contributor fields: not signed by this Worker, older than an hour or otherwise unreadable is `422 orcid_proof_invalid`; for a different iD from `contributor.orcid` is `422 orcid_mismatch` (an empty `contributor.orcid` takes the proven iD). Only then is the iD marked verified; nothing else can mark it (`contributor` is read for `name`, `orcid` and `x` only, and `/api/staged/:id` never returns the mark).
 - Either `staged_id` (a submission staged earlier by the connector) or `draft` + `review` (typed on the form). If both are sent, the typed values replace the staged ones.
 - `binding_hash`: lowercase hex SHA-256 of a random secret the browser keeps (see `/submit/finish` below). It ties the sign-in to the browser that started it. The secret itself never reaches the server until `/api/complete`.
 
@@ -110,6 +113,20 @@ Steps: look up `state` (single use: delete it first; `400 state_unknown` if miss
 Response `200`: `{ submitted: true, issue: { number, url }, record_id: "IIP-0042", contributor: { github: "login", name?, orcid?, x? } }`.
 Errors: `400 state_unknown | binding_mismatch`, `401 github_refused` (GitHub rejected the code), `409 in_progress` (the same IIP is being posted right now), `429 rate_limited`, `502 github_unavailable` (the staged submission is kept, so the contributor can try again; when the request to open the issue was sent and not clearly answered the body also has `outcome_unknown: true` and `queue_url`, and the message does not say that nothing was posted), `503 queue_not_open | queue_not_configured | queue_unavailable`.
 
+### `POST /api/orcid/begin`
+
+"Verify my ORCID iD": proves the person on the form controls an ORCID record, so the issue can say the iD was verified instead of stated. GitHub stays the only sign-in that posts.
+
+Request: `{ binding_hash }` (as for `/api/begin`: the SHA-256 of a secret the browser keeps, this tab only). Checks: queue open and configured, then `ORCID_CLIENT_ID` and `ORCID_CLIENT_SECRET` (`503 orcid_not_configured`), then an hourly limit per address (`orcid`, 20; `429`).
+
+Response `200`: `{ authorize_url, expires_at }`, where `authorize_url` is `<ORCID_BASE>/oauth/authorize?client_id=…&response_type=code&scope=/authenticate&redirect_uri=<SITE_ORIGIN>/submit/orcid&state=<state>`. `state` is 128 random bits, stored (by its hash) with the binding hash for 15 minutes, single use. `/authenticate` gives the iD only: no access to the record beyond that.
+
+### `POST /api/orcid/complete`
+
+Request: `{ code, state, binding }` from `/submit/orcid`. The state is marked used before anything else; then the binding must match (`400 binding_mismatch`, and the state is spent), then the code is swapped for the iD at `<ORCID_BASE>/oauth/token`, server to server with the client secret. ORCID's token is revoked straight after (best effort) and never kept or logged; the name ORCID also sends is ignored.
+
+Response `200`: `{ orcid, proof, expires_at }`. `proof` is `base64url(JSON {v:1, orcid, exp}) "." HMAC-SHA-256(STATE_SIGNING_KEY, "openislet:orcid-proof:v1:" + payload)`, good for an hour. Errors: `400 state_unknown` (unknown, used or expired), `400 orcid_refused` (ORCID did not accept the code), `502 orcid_unavailable`, `502 orcid_broken` (our client id or secret is wrong). None of them changes anything about the submission: the iD stays as stated.
+
 ### `GET /api/staged/:id`
 
 Returns a staged submission so the form can pre-fill. The id is a capability (128 random bits): anyone holding it can read it, nobody can list.
@@ -126,7 +143,7 @@ Opened as the bot (a GitHub App installation token for `QUEUE_REPO`), in this sh
 
 - Title: `[IIP] <the draft's first # heading>` (trimmed to 120 characters).
 - Labels: `submission`, `status:queued`, and the `type:*`, `test:*`, `design:*` labels that `check_draft` reports (`design:x` is new, for Design X). Labels that do not exist yet are created by GitHub.
-- Body, in this order: `Submitted by @login (verified through GitHub)`; if given, a line `Stated by the contributor, not verified: name …, ORCID …, X …`; `AI tools (self-reported): draft = …, review = …`; `Written against: <version>`; `Consent: published openly under CC BY 4.0`; the draft in `<details open>`; the blind review in `<details>`; last, one hidden marker line `<!-- openislet:submission {...json...} -->` with `v`, `idempotency_key`, `claim`, `pmids`, `via` (`web_form` | `mcp_signed_in` | `mcp_link`) and `sig`, an HMAC-SHA-256 of the other fields under `STATE_SIGNING_KEY`, so a later job can tell a bot-made marker from text pasted by a contributor.
+- Body, in this order: `Submitted by @login (verified through GitHub)`; when the iD was verified on the form, a line `ORCID iD … (verified through ORCID)`; if given, a line `Stated by the contributor, not verified: name …, ORCID …, X …` (the ORCID part only when it was not verified); `AI tools (self-reported): draft = …, review = …`; `Written against: <version>`; `Consent: published openly under CC BY 4.0`; the draft in `<details open>`; the blind review in `<details>`; last, one hidden marker line `<!-- openislet:submission {...json...} -->` with `v`, `idempotency_key`, `claim`, `pmids`, `via` (`web_form` | `mcp_signed_in` | `mcp_link`) and `sig`, an HMAC-SHA-256 of the other fields under `STATE_SIGNING_KEY`, so a later job can tell a bot-made marker from text pasted by a contributor.
 - Contributor text is data. Before it goes into the body: `@name` mentions are defanged (a zero-width space after the `@`), `#123` references are left alone, any `<!-- openislet:submission` inside the draft or review is removed, and the draft and review are never placed in a position where they could close the `<details>` blocks (escape `</details>`).
 - First comment, by the bot: the **Automatic checks** table (the same rows `check_draft` shows), headed exactly `## Automatic checks`. There are no other automatic stages: no spam-filter bot and no AI review bot. The weekly review is done by hand and published afterwards.
 - `record_id` is `IIP-` plus the issue number padded to four digits.
@@ -154,6 +171,7 @@ The connector is its own OAuth server for MCP clients, with GitHub as the upstre
 ## What the website pages do (for reference)
 
 - `/submit`: form with draft, review, AI tools, optional name / ORCID iD / X handle, consent box, a **Check my files** button (`/api/check`) and **Continue with GitHub & Submit** (`/api/begin`, then the browser goes to `authorize_url`). With `#staged=<id>` (or an older `?staged=<id>`) it takes the id out of the address bar at once, then calls `GET /api/staged/:id` to pre-fill.
+- `/submit/orcid`: ORCID sends the browser here after "Verify my ORCID iD" with `?code=…&state=…` (or `?error=access_denied`). The page posts `{ code, state, binding }` to `/api/orcid/complete`, keeps `{ orcid, proof, expires_at }` in the tab's `sessionStorage` (`openislet.submit.orcid-proof`) and goes back to `/submit`, which puts the iD in its box with "Verified with ORCID" and sends the proof with `/api/begin` while the box still holds that iD. The ORCID secret is kept in this tab only (`openislet.submit.orcid.<state>`). The button shows only in a site built with `PUBLIC_ORCID_VERIFY=true`.
 - `/submit/finish`: GitHub sends the browser here with `?code=…&state=…`. The page posts `{ code, state, binding }` to `/api/complete` and shows the link to the new public issue.
 - The browser-side secret is kept in the tab's `sessionStorage` under `openislet.submit.binding.<state>`, and a copy of the secret alone in `localStorage` under the same name, for 15 minutes, so the sign-in can also be finished in another tab of the same browser (GitHub's phone app may open one). The finish page reads the tab's copy first and removes both after use or a cancel; the form removes its tab's copies when the person is back on it; both pages sweep out expired copies. The saved-files id stays in the tab. Another browser has neither. The form also keeps what was typed in the tab's `sessionStorage` (`openislet.submit.saved`), never the consent tick, and clears it after a successful submission.
 - The API address is `PUBLIC_QUEUE_API` (default `https://mcp.openislet.org`).

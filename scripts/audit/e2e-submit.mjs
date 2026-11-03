@@ -514,6 +514,162 @@ await scenario('step 4 on Start here copies the message for the fresh chat, and 
   expect((await page.$eval('#draft', (el) => el.value)) === file, 'the form was not filled in with the draft from step 4');
 });
 
+// ---- "Verify my ORCID iD" (3 November 2026). The site must be built with PUBLIC_ORCID_VERIFY=true, and the Worker started with
+// ORCID_BASE, ORCID_CLIENT_ID and ORCID_CLIENT_SECRET pointing at the pretend ORCID in the mock (see the mock's top comment).
+const IID = '0000-0002-1825-0097';
+const mockOrcid = async () => (await fetch(`${MOCK}/_mock/orcid`)).json();
+async function verifyOrcid(page) {
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#orcid-verify')]);
+  await page.waitForFunction(() => location.pathname.startsWith('/submit') && !location.pathname.includes('orcid') && !document.getElementById('orcid-note').hidden, { timeout: 20000 });
+}
+
+await scenario('verifying the ORCID iD keeps the form, and the public IIP says the iD was verified through ORCID', async (page) => {
+  await fetch(`${MOCK}/_mock/reset`, { method: 'POST' });
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  expect(await page.$('#orcid-verify'), 'no Verify button: build the site with PUBLIC_ORCID_VERIFY=true');
+  const file = draft('E2E: verified ORCID');
+  await type(page, '#draft', file);
+  await type(page, '#review', review());
+  await type(page, '#name', 'Orcid Tester');
+  await new Promise((r) => setTimeout(r, 600));
+  await verifyOrcid(page);
+  const after = await page.evaluate(() => ({ orcid: document.getElementById('orcid').value, note: document.getElementById('orcid-note').innerText, draft: document.getElementById('draft').value, name: document.getElementById('name').value, button: document.getElementById('orcid-verify').hidden }));
+  expect(after.orcid === '0000-0002-1825-0097' && /Verified with ORCID/.test(after.note) && after.button, `after ORCID the box said: ${JSON.stringify(after).slice(0, 160)}`);
+  expect(after.draft === file && after.name === 'Orcid Tester', 'the form lost what was typed while the person was at ORCID');
+  await page.click('#consent');
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#go-btn')]);
+  await page.waitForFunction(() => /Thank you|could not|can.t finish|expired/i.test(document.getElementById('result')?.innerText ?? ''), { timeout: 20000 });
+  expect(/Thank you\. Your IIP is public/.test(await text(page, '#result')), 'the confirmation page did not confirm');
+  const [issue] = issueList(await mockIssues()).slice(-1);
+  expect(String(issue?.body ?? '').includes(`ORCID iD [${IID}](https://orcid.org/${IID}) (verified through ORCID)`), 'the issue does not say the ORCID iD was verified');
+  expect(!/Josiah Carberry/.test(String(issue?.body ?? '')), 'the name ORCID sent reached the public issue');
+  const o = await mockOrcid();
+  expect(o.issued === 1 && o.all_revoked, `the ORCID token was not let go: ${JSON.stringify(o)}`);
+});
+
+await scenario('changing the verified iD drops the mark, and the IIP shows the new one as stated', async (page) => {
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  await type(page, '#draft', draft('E2E: ORCID changed after the check'));
+  await type(page, '#review', review());
+  await new Promise((r) => setTimeout(r, 600));
+  await verifyOrcid(page);
+  await type(page, '#orcid', '0000-0001-5109-3700');
+  const note = await page.evaluate(() => ({ hidden: document.getElementById('orcid-note').hidden, button: document.getElementById('orcid-verify').hidden }));
+  expect(note.hidden && !note.button, 'the verified mark stayed after the iD was changed');
+  await page.click('#consent');
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#go-btn')]);
+  await page.waitForFunction(() => /Thank you|could not|can.t finish|expired/i.test(document.getElementById('result')?.innerText ?? ''), { timeout: 20000 });
+  const body = String(issueList(await mockIssues()).slice(-1)[0]?.body ?? '');
+  expect(body.includes('Stated by the contributor, not verified: ORCID [0000-0001-5109-3700]') && !body.includes('verified through ORCID'), 'the changed iD was not shown as stated');
+});
+
+await scenario('an ORCID check finished in another browser is refused, and nothing is verified', async (page, context) => {
+  await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+  let authorize = null;
+  await page.setRequestInterception(true);
+  const stop = (request) => {
+    if (request.url().startsWith(`${MOCK}/oauth/authorize`)) {
+      authorize = request.url();
+      request.abort();
+    } else request.continue();
+  };
+  page.on('request', stop);
+  await page.click('#orcid-verify');
+  for (let i = 0; i < 100 && !authorize; i++) await new Promise((r) => setTimeout(r, 100));
+  page.off('request', stop);
+  await page.setRequestInterception(false);
+  expect(authorize, 'the form did not send the browser to ORCID');
+  const elsewhere = await browser.createBrowserContext();
+  const other = await elsewhere.newPage();
+  await other.goto(authorize, { waitUntil: 'networkidle0' });
+  await other.waitForFunction(() => /different browser|not verified/i.test(document.getElementById('result')?.innerText ?? ''), { timeout: 15000 });
+  const said = await other.evaluate(() => ({ text: document.getElementById('result').innerText, proof: sessionStorage.getItem('openislet.submit.orcid-proof') }));
+  await elsewhere.close();
+  expect(/different browser or tab/.test(said.text) && said.proof === null, `the other browser said: ${said.text.slice(0, 120)}`);
+}, [/ERR_FAILED/]);
+
+await scenario('a connector link\'s saved files are still used after the trip to ORCID', async (page) => {
+  const staged = await (await fetch(`${WORKER}/api/stage`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ draft: draft('E2E: staged, then ORCID'), review: review(), consent: true }),
+  })).json();
+  expect(staged.staged_id && staged.form_url, 'the Worker did not stage the draft');
+  await page.goto(`${SITE}/submit${new URL(staged.form_url).hash}`, { waitUntil: 'networkidle0' });
+  await page.waitForFunction(() => document.getElementById('draft').value.length > 100, { timeout: 15000 });
+  await new Promise((r) => setTimeout(r, 600));
+  await verifyOrcid(page);
+  let sent = null;
+  page.on('request', (request) => request.url().endsWith('/api/begin') && request.method() === 'POST' && (sent = JSON.parse(request.postData() ?? '{}')));
+  await page.click('#consent');
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#go-btn')]);
+  expect(sent?.staged_id === staged.staged_id, 'the saved files were dropped after the trip to ORCID');
+  expect(typeof sent?.orcid_proof === 'string', 'the ORCID proof was not sent');
+});
+
+/** Opens a connector link's saved files on the form, and returns their id. */
+async function openStaged(page, title) {
+  const staged = await (await fetch(`${WORKER}/api/stage`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ draft: draft(title), review: review(), consent: true }),
+  })).json();
+  expect(staged.staged_id && staged.form_url, 'the Worker did not stage the draft');
+  await page.goto(`${SITE}/submit${new URL(staged.form_url).hash}`, { waitUntil: 'networkidle0' });
+  await page.waitForFunction(() => document.getElementById('draft').value.length > 100, { timeout: 15000 });
+  await new Promise((r) => setTimeout(r, 600));
+  return staged.staged_id;
+}
+/** Presses the final button and returns what the form sent to /api/begin. */
+async function sendAndCapture(page) {
+  let sent = null;
+  page.on('request', (request) => request.url().endsWith('/api/begin') && request.method() === 'POST' && (sent = JSON.parse(request.postData() ?? '{}')));
+  await page.click('#consent');
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#go-btn')]);
+  return sent;
+}
+
+await scenario('after a reload, a connector link\'s saved files are still the ones sent', async (page) => {
+  const id = await openStaged(page, 'E2E: staged, then reloaded');
+  await page.reload({ waitUntil: 'networkidle0' });
+  await new Promise((r) => setTimeout(r, 300));
+  expect(/staged, then reloaded/.test(await page.$eval('#draft', (el) => el.value)), 'the text did not come back after the reload');
+  const sent = await sendAndCapture(page);
+  expect(sent?.staged_id === id, 'the saved files were dropped after a reload');
+});
+
+await scenario('after pressing Deny at ORCID, a connector link\'s saved files are still the ones sent', async (page) => {
+  const id = await openStaged(page, 'E2E: staged, then Deny at ORCID');
+  await fetch(`${MOCK}/_mock/mode`, { method: 'POST', body: JSON.stringify({ mode: 'decline' }) });
+  try {
+    await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#orcid-verify')]);
+    await page.waitForFunction(() => /chose not to verify/.test(document.getElementById('result')?.innerText ?? ''), { timeout: 15000 });
+  } finally {
+    await fetch(`${MOCK}/_mock/mode`, { method: 'POST', body: JSON.stringify({ mode: 'ok' }) });
+  }
+  await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#result a')]);
+  await new Promise((r) => setTimeout(r, 300));
+  const sent = await sendAndCapture(page);
+  expect(sent?.staged_id === id, 'the saved files were dropped after Deny at ORCID');
+});
+
+await scenario('pressing Deny at ORCID changes nothing and says so', async (page) => {
+  await fetch(`${MOCK}/_mock/mode`, { method: 'POST', body: JSON.stringify({ mode: 'decline' }) });
+  try {
+    await page.goto(`${SITE}/submit`, { waitUntil: 'networkidle0' });
+    await type(page, '#orcid', '0000-0002-1825-0097');
+    await Promise.all([page.waitForNavigation({ waitUntil: 'networkidle0', timeout: 30000 }), page.click('#orcid-verify')]);
+    await page.waitForFunction(() => /chose not to verify/.test(document.getElementById('result')?.innerText ?? ''), { timeout: 15000 });
+    await page.click('#result a');
+    await page.waitForFunction(() => location.pathname.startsWith('/submit') && document.getElementById('orcid'), { timeout: 15000 });
+    await new Promise((r) => setTimeout(r, 300));
+    const back = await page.evaluate(() => ({ orcid: document.getElementById('orcid').value, verified: !document.getElementById('orcid-note').hidden }));
+    expect(back.orcid === '0000-0002-1825-0097' && !back.verified, `back on the form: ${JSON.stringify(back)}`);
+  } finally {
+    await fetch(`${MOCK}/_mock/mode`, { method: 'POST', body: JSON.stringify({ mode: 'ok' }) });
+  }
+});
+
 await browser.close();
 const failed = results.filter((r) => !r.ok);
 console.log(`\n${results.length - failed.length} of ${results.length} scenarios passed.`);

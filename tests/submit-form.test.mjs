@@ -12,7 +12,7 @@ async function load() {
   const result = await build({ entryPoints: [join(root, 'src/scripts/submit.ts')], bundle: true, write: false, format: 'esm', platform: 'node', logLevel: 'silent' });
   return import(`data:text/javascript;base64,${Buffer.from(result.outputFiles[0].text).toString('base64')}`);
 }
-const { MAX_TEXT, sizeOf, orcidOk, orcidClean, xHandleOk, verdictOf, quickCheck, draftProblems, reviewProblems, whatIsThis, tidy, sha256Hex, newSecret, stateOf, bindingKey, store, STAGED_KEY, shared, doneKey, postedElsewhere, LINGER_MS, SAVED_KEY, POSTED_KEY, remember, remembered, forgetIfPosted, splitFiles } = await load();
+const { MAX_TEXT, sizeOf, orcidOk, orcidClean, xHandleOk, verdictOf, quickCheck, draftProblems, reviewProblems, whatIsThis, tidy, sha256Hex, newSecret, stateOf, bindingKey, store, STAGED_KEY, shared, doneKey, postedElsewhere, LINGER_MS, SAVED_KEY, POSTED_KEY, remember, remembered, forgetIfPosted, splitFiles, keptOrcidProof, clearOrcidBindings, orcidAuthorizeOk, orcidBindingKey, ORCID_PROOF_KEY, FORM_STAGED_KEY } = await load();
 
 // Complete files, written the way the templates in src/data/prompts.ts ask (the Worker refuses anything less, so the form does too).
 const goodDraft = [
@@ -473,4 +473,74 @@ test('a title quoted further down a code block is not a place to split', () => {
   const quoted = plainDraft.replace('Swap steps one and two.', `Swap steps one and two, as this example shows:\n\n\`\`\`\nAn example of a review:\n${plainReview}\n\`\`\``);
   assert.equal(splitFiles(quoted), null);
   assert.deepEqual(splitFiles(`${plainDraft}\n\n\`\`\`\n\n${plainReview}\n\`\`\``), { draft: plainDraft, review: plainReview });
+});
+
+// ---- "Verify my ORCID iD" (3 November 2026). The Worker checks the proof itself; these only decide what the form shows and follows.
+test('a kept ORCID proof counts only while it is well formed and has time left', () => {
+  withBoth((tab) => {
+    const now = Date.UTC(2026, 10, 3, 12, 0, 0);
+    const good = { orcid: '0000-0002-1825-0097', proof: 'payload.signature', expires_at: new Date(now + 60_000).toISOString() };
+    tab.setItem(ORCID_PROOF_KEY, JSON.stringify(good));
+    assert.deepEqual(keptOrcidProof(now), good);
+    assert.equal(keptOrcidProof(now + 60_000), null);
+    assert.equal(tab.getItem(ORCID_PROOF_KEY), null, 'an expired proof is removed');
+    for (const bad of [{ ...good, orcid: '0000-0002-1825-0098' }, { ...good, proof: '' }, { ...good, expires_at: 'soon' }, 'not json']) {
+      tab.setItem(ORCID_PROOF_KEY, typeof bad === 'string' ? bad : JSON.stringify(bad));
+      assert.equal(keptOrcidProof(now), null);
+    }
+  });
+});
+
+test('once the files are posted, the ORCID proof goes with them', () => {
+  withBoth((tab) => {
+    tab.setItem(ORCID_PROOF_KEY, JSON.stringify({ orcid: '0000-0002-1825-0097', proof: 'p.s', expires_at: new Date(Date.now() + 60_000).toISOString() }));
+    tab.setItem(POSTED_KEY, '1');
+    assert.equal(forgetIfPosted(), true);
+    assert.equal(tab.getItem(ORCID_PROOF_KEY), null);
+  });
+});
+
+test('starting a new ORCID check clears only this tab\'s earlier ORCID checks', () => {
+  withBoth((tab) => {
+    tab.setItem(orcidBindingKey('AAAAAAAAAAAAAAAAAAAAAA'), 'one');
+    tab.setItem(bindingKey('AAAAAAAAAAAAAAAAAAAAAA'), 'github');
+    tab.setItem('unrelated', 'x');
+    clearOrcidBindings();
+    assert.equal(tab.getItem(orcidBindingKey('AAAAAAAAAAAAAAAAAAAAAA')), null);
+    assert.equal(tab.getItem(bindingKey('AAAAAAAAAAAAAAAAAAAAAA')), 'github');
+    assert.equal(tab.getItem('unrelated'), 'x');
+  });
+});
+
+test('the form follows only ORCID\'s own sign-in page, or the local stand-in when it talks to a local Worker', () => {
+  const live = 'https://mcp.openislet.org';
+  assert.equal(orcidAuthorizeOk('https://orcid.org/oauth/authorize?client_id=APP-X&state=s', live), true);
+  // ORCID's practice site never for the live site: anyone can make a practice account in a minute.
+  assert.equal(orcidAuthorizeOk('https://sandbox.orcid.org/oauth/authorize?client_id=APP-X', live), false);
+  assert.equal(orcidAuthorizeOk('https://sandbox.orcid.org/oauth/authorize?client_id=APP-X', 'http://127.0.0.1:8787'), true);
+  for (const url of ['https://orcid.org.example.com/oauth/authorize?x', 'http://orcid.org/oauth/authorize?x', 'https://example.com/oauth/authorize?x', 'https://orcid.org/signin?x', 'javascript:alert(1)', 'http://127.0.0.1:8788/oauth/authorize?x', 42])
+    assert.equal(orcidAuthorizeOk(url, live), false, String(url));
+  assert.equal(orcidAuthorizeOk('http://127.0.0.1:8788/oauth/authorize?x', 'http://127.0.0.1:8787'), true);
+  assert.equal(orcidAuthorizeOk('http://127.0.0.1:8788/elsewhere?x', 'http://127.0.0.1:8787'), false);
+});
+
+test('the saved files the form works from are forgotten with its text: emptied, or posted', () => {
+  withBoth((tab) => {
+    remember({ draft: 'd', review: '', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' });
+    tab.setItem(FORM_STAGED_KEY, 'AAAAAAAAAAAAAAAAAAAAAA');
+    remember({ draft: '', review: '', name: '', orcid: '', x: '', aiDraft: '', aiReview: '' });
+    assert.equal(tab.getItem(FORM_STAGED_KEY), null);
+    tab.setItem(FORM_STAGED_KEY, 'AAAAAAAAAAAAAAAAAAAAAA');
+    tab.setItem(POSTED_KEY, '1');
+    forgetIfPosted();
+    assert.equal(tab.getItem(FORM_STAGED_KEY), null);
+  });
+});
+
+test('a line too long to be read whole is named, for the draft and for the review', () => {
+  const long = `- Example paper, PMID 12345678, "${'a long quote '.repeat(170)}"`;
+  const d = draftProblems(plainDraft.replace('- Example paper, PMID 12345678, "An example quote."', long));
+  assert.match(d[0].text, /longer than 2,000 characters/);
+  const r = reviewProblems(plainReview.replace('- The example paper says so.', long));
+  assert.match(r[0].text, /longer than 2,000 characters/);
 });

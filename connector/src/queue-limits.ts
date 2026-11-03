@@ -2,9 +2,12 @@
 // named "queue". It handles one request at a time (blockConcurrencyWhile), so two posts can never both read the same count.
 // It is exported from src/worker.ts and bound as QUEUE_LIMITS in wrangler.jsonc.
 
-import { type LimitsPort, type LimitsStorage, type Outcome, type Reservation, type ReserveRequest, type Ticket, finish, reserve } from './core/queue/limits';
+import { type LimitsPort, type LimitsStorage, type Outcome, type Reservation, type ReserveRequest, type Ticket, claimOnce, finish, reserve } from './core/queue/limits';
 
-type Call = { op: 'reserve'; request: ReserveRequest } | { op: 'finish'; ticket: Ticket; outcome: Outcome; now: number };
+type Call =
+  | { op: 'reserve'; request: ReserveRequest }
+  | { op: 'finish'; ticket: Ticket; outcome: Outcome; now: number }
+  | { op: 'once'; key: string; now: number; ttlMs: number };
 
 export class QueueLimits {
   constructor(private readonly state: DurableObjectState) {}
@@ -17,6 +20,9 @@ export class QueueLimits {
       if (call.op === 'finish') {
         await finish(storage, call.ticket, call.outcome, call.now);
         return Response.json({ ok: true });
+      }
+      if (call.op === 'once' && typeof call.key === 'string' && /^[a-z:-]+[0-9a-f]{64}$/.test(call.key)) {
+        return Response.json({ first: await claimOnce(storage, call.key, call.now, call.ttlMs) });
       }
       return new Response('Unknown call', { status: 400 });
     });
@@ -36,5 +42,6 @@ export function limitsFor(namespace: DurableObjectNamespace): LimitsPort {
     finish: async (ticket, outcome, now) => {
       await call({ op: 'finish', ticket, outcome, now });
     },
+    claimOnce: async (key, now, ttlMs) => (await call<{ first: boolean }>({ op: 'once', key, now, ttlMs })).first === true,
   };
 }

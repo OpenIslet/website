@@ -52,7 +52,7 @@ Set in `wrangler.jsonc` (`vars`) or the Worker's environment. [DEPLOY.md](DEPLOY
 
 ## Queue
 
-Three ways to send an IIP, all ending as a **public GitHub issue opened by the OpenIslet bot** that names the contributor: the web form on openislet.org (`/api/*`), `submit_proposal` signed in (the connector's own GitHub sign-in), and `submit_proposal` not signed in (a link to the form with the files filled in). Identity is GitHub only. A name, an ORCID iD and an X handle are optional text, shown as stated by the contributor and never as verified. There are no spam-filter or AI-review bots: the only automatic step is the first comment on each issue (the "Automatic checks" table). The weekly review is done by hand.
+Three ways to send an IIP, all ending as a **public GitHub issue opened by the OpenIslet bot** that names the contributor: the web form on openislet.org (`/api/*`), `submit_proposal` signed in (the connector's own GitHub sign-in), and `submit_proposal` not signed in (a link to the form with the files filled in). Identity is GitHub only. A name, an ORCID iD and an X handle are optional text, shown as stated by the contributor, except an ORCID iD verified with ORCID on the form (`/api/orcid/*`). There are no spam-filter or AI-review bots: the only automatic step is the first comment on each issue (the "Automatic checks" table). The weekly review is done by hand.
 
 | Piece | Where |
 | --- | --- |

@@ -5,6 +5,7 @@
 //  - everyone together: HOURLY_LIMIT_EVERYONE posts per clock hour, so many accounts cannot flood the queue
 //  - one IIP once: the same account sending the same draft, review and wet-lab readouts again within a day gets the first answer back,
 //    so a dropped connection followed by "start again" never opens a second issue
+//  - used once: a single-use value (an ORCID check's state) is spent here, so two requests at the same moment cannot both use it
 //
 // A post first reserves its place, then settles it (posted) or releases it (GitHub said no, or the answer was lost).
 
@@ -66,6 +67,7 @@ const toNextDay = (ms: number): number => Math.max(1, Math.ceil((DAY_MS - (ms % 
 const accountKey = (account: number, day: string) => `acct:${account}:${day}`;
 const hourKey = (hour: number) => `hour:${hour}`;
 const seenKey = (fingerprint: string) => `seen:${fingerprint}`;
+const onceKey = (key: string) => `once:${key}`;
 
 /** Drops counts and memories that can no longer matter, so the store stays small. */
 async function tidy(storage: LimitsStorage, now: number): Promise<void> {
@@ -75,6 +77,7 @@ async function tidy(storage: LimitsStorage, now: number): Promise<void> {
   for (const key of (await storage.list<number>({ prefix: 'acct:' })).keys()) if (key.slice(key.lastIndexOf(':') + 1) < today) old.push(key);
   for (const key of (await storage.list<number>({ prefix: 'hour:' })).keys()) if (Number(key.slice(5)) < hour) old.push(key);
   for (const [key, seen] of await storage.list<Seen>({ prefix: 'seen:' })) if (seen.at + REMEMBER_MS <= now) old.push(key);
+  for (const [key, once] of await storage.list<{ until: number }>({ prefix: 'once:' })) if (!(once?.until > now)) old.push(key);
   // A Durable Object deletes at most 128 keys at once.
   for (let i = 0; i < old.length; i += 128) await storage.delete(old.slice(i, i + 128));
 }
@@ -118,8 +121,21 @@ export async function finish(storage: LimitsStorage, ticket: Ticket, outcome: Ou
   if (Object.keys(back).length) await storage.put(back);
 }
 
+/**
+ * Spends a single-use value: true the first time `key` is claimed, false every time after, until `ttlMs` has passed (by then the
+ * value has expired anyway). `key` is already a hash: nothing secret is kept here.
+ */
+export async function claimOnce(storage: LimitsStorage, key: string, now: number, ttlMs: number): Promise<boolean> {
+  await tidy(storage, now);
+  const held = await storage.get<{ until: number }>(onceKey(key));
+  if (held && held.until > now) return false;
+  await storage.put({ [onceKey(key)]: { until: now + ttlMs } });
+  return true;
+}
+
 /** What the queue service needs: the Durable Object from the Worker, or the same functions over memory in the tests. */
 export interface LimitsPort {
   reserve(r: ReserveRequest): Promise<Reservation>;
   finish(ticket: Ticket, outcome: Outcome, now: number): Promise<void>;
+  claimOnce(key: string, now: number, ttlMs: number): Promise<boolean>;
 }

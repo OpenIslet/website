@@ -1,0 +1,96 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { queueApi } from '../../data/site';
+
+// Where ORCID sends the browser back after "Verify my ORCID iD" (contract: docs/connector/QUEUE-API.md, "Checking an ORCID iD").
+// The page posts ?code and ?state, with the secret this tab kept, to the Worker, keeps the proof it gets back in this tab, and
+// returns to the form. A page of its own, so a person who cancels, or whose check has expired, lands somewhere that says so.
+---
+
+<Layout title="Checking your ORCID iD" description="Checking your ORCID iD for your OpenIslet submission." current="start" noindex>
+  <section class="fin">
+    <div class="container fin__inner">
+      <p class="eyebrow">Submit an IIP</p>
+      <div id="result" data-api={queueApi} aria-live="polite">
+        <h1 class="h2">Checking your ORCID iD…</h1>
+        <p class="lead">One moment, then you go back to the form.</p>
+      </div>
+      <noscript><p class="lead">This page needs JavaScript. Please turn it on and try again from the <a href="/submit">form</a>.</p></noscript>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { callApi, explain, store, orcidBindingKey, orcidOk, STORAGE_BLOCKED, ORCID_PROOF_KEY, ORCID_FRESH_KEY } from '../../scripts/submit';
+
+  const box = document.getElementById('result') as HTMLElement;
+  const api = box.dataset.api ?? '';
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+  const state = params.get('state');
+  const refused = params.get('error');
+  // Take the one-time values out of the address bar so a refresh cannot try to use them twice.
+  history.replaceState(null, '', location.pathname);
+
+  function show(heading: string, text: string) {
+    const h = document.createElement('h1');
+    h.className = 'h2';
+    h.textContent = heading;
+    const p = document.createElement('p');
+    p.className = 'lead';
+    p.textContent = text;
+    const row = document.createElement('p');
+    const a = document.createElement('a');
+    a.href = '/submit';
+    a.className = 'btn btn--primary btn--lg';
+    a.textContent = 'Back to the form';
+    row.append(a);
+    box.replaceChildren(h, p, row);
+  }
+
+  async function finish() {
+    // The secret for this check is used once, whatever happens next.
+    const binding = state ? store.get(orcidBindingKey(state)) : null;
+    if (state) store.remove(orcidBindingKey(state));
+    if (refused) {
+      return show(
+        refused === 'access_denied' ? 'You chose not to verify your ORCID iD' : 'ORCID could not check your iD',
+        'Nothing changed. Your files are still on the form, and your iD, if you added one, is shown as stated by you.',
+      );
+    }
+    if (!code || !state) return show('There is nothing to finish here', 'This page is where ORCID sends you after you press “Verify my ORCID iD” on the form.');
+    if (!binding) {
+      if (!store.works()) return show('Your browser is blocking storage', STORAGE_BLOCKED);
+      return show('We can’t finish this in a different browser or tab', 'The check has to be finished in the tab where you pressed “Verify my ORCID iD”. Go back to the form and press it again there.');
+    }
+    const result = await callApi(api, '/api/orcid/complete', { code, state, binding });
+    const d = result.data as { orcid?: unknown; proof?: unknown; expires_at?: unknown };
+    if (!result.ok || typeof d.orcid !== 'string' || !orcidOk(d.orcid) || typeof d.proof !== 'string' || typeof d.expires_at !== 'string') {
+      // The server's general error text is about submissions; here nothing was sent anywhere, so say that instead.
+      const why = !result.ok && result.data.error !== 'internal_error' ? explain(result) : 'Something went wrong on our side, so your iD was not checked. Please try again from the form.';
+      return show('Your ORCID iD was not verified', result.ok ? 'The answer from the OpenIslet server was not what we expected. Please try again from the form.' : why);
+    }
+    if (!store.set(ORCID_PROOF_KEY, JSON.stringify({ orcid: d.orcid, proof: d.proof, expires_at: d.expires_at }))) return show('Your browser is blocking storage', STORAGE_BLOCKED);
+    store.set(ORCID_FRESH_KEY, '1');
+    location.replace('/submit');
+  }
+  void finish();
+</script>
+
+<style>
+  .fin {
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+  .fin__inner {
+    max-width: 44rem;
+  }
+  #result {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  #result :global(.lead) {
+    max-width: 40rem;
+  }
+</style>

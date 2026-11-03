@@ -1,7 +1,7 @@
 // The prompt for the fresh chat, built from the draft instead of asking the first AI to copy the reviewer template word for word.
 // The reviewer gets the claim, the evidence and the proposed change exactly as the draft has them, and nothing else from it.
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { claimToTest, reviewPromptFor } from '../src/core/template';
+import { LINE_TOO_LONG, claimToTest, reviewPromptFor } from '../src/core/template';
 import { reviewTemplate } from '../../src/data/prompts';
 import { bundle, connect } from './helpers';
 
@@ -48,6 +48,12 @@ describe('the claim to test', () => {
       missing: ['Claim in one sentence', 'What I propose changing'],
     });
     expect(claimToTest(draftWith({ evidence: '' }))).toEqual({ ok: false, missing: ['Evidence'] });
+  });
+
+  it('refuses a line too long to be read whole, rather than sending part of it as if it were all', () => {
+    const long = `- Example paper, PMID 12345678, "${'a long quote '.repeat(170)}"`;
+    expect(long.length).toBeGreaterThan(2000);
+    expect(claimToTest(draftWith({ evidence: long }))).toEqual({ ok: false, missing: [LINE_TOO_LONG] });
   });
 
   it('keeps brackets and "Not known" inside a filled-in part as they came', () => {
@@ -117,6 +123,13 @@ describe('get_review_prompt', () => {
     const r = await s.call('get_review_prompt', { draft: draftWith({ proposal: 'Swap them:\n\n````\nstep two\nstep one\n````' }) });
     expect(r.text).toContain('\n`````\n');
     expect(r.structuredContent!.prompt).toContain('````\nstep two');
+  });
+
+  it('says plainly when a line is too long, and gives no prompt', async () => {
+    const r = await s.call('get_review_prompt', { draft: draftWith({ evidence: `- ${'x'.repeat(2100)}` }) });
+    expect(r.isError).toBe(true);
+    expect(r.text).toContain('longer than 2,000 characters');
+    expect(r.structuredContent!.prompt).toBeUndefined();
   });
 
   it('says which parts are missing, and gives no prompt', async () => {

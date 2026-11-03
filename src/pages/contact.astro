@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { contact, social, issuesUrl } from '../data/site';
+import { contact, social, issuesUrl, orcidVerify } from '../data/site';
 
 const mail = (subject: string) => `mailto:${contact.email}?subject=${encodeURIComponent(subject)}`;
 
@@ -133,7 +133,7 @@ const topics = [
           <ul>
             <li>The Start here guide remembers which steps you have finished, in your own browser only. If you choose to submit an IIP, the form sends it to the OpenIslet connector (mcp.openislet.org) and then takes you to GitHub to sign in.</li>
             <li>If you write to us, we use your email address only to reply. We don’t share it, and we don’t publish your message or your name without asking you first.</li>
-            <li>When IIPs can be submitted, signing in with GitHub shows us only your public profile: we ask for no email address and no access to your repositories. A name, ORCID iD or X handle is added only if you type one in, and we show it as you typed it, without checking it. Everything you submit is published openly, with your consent, under CC BY 4.0. While you sign in, your draft is held on our server for up to 24 hours so the sign-in can finish. If you do not finish, it is deleted. The optional “Check my files” button also sends your two files to our server to be checked; it posts nothing.</li>
+            <li>When IIPs can be submitted, signing in with GitHub shows us only your public profile: we ask for no email address and no access to your repositories. A name, ORCID iD or X handle is added only if you type one in, and we show it as you typed it, without checking it{orcidVerify ? ', unless you choose to verify your ORCID iD with ORCID' : ''}. Everything you submit is published openly, with your consent, under CC BY 4.0. While you sign in, your draft is held on our server for up to 24 hours so the sign-in can finish. If you do not finish, it is deleted. The optional “Check my files” button also sends your two files to our server to be checked; it posts nothing.</li>
           </ul>
         </section>
       </div>

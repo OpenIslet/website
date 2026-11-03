@@ -84,6 +84,9 @@ export const connectorStatus: 'planned' | 'live' =
  */
 export const submissionsOpen = import.meta.env.PUBLIC_SUBMISSIONS_OPEN === 'true';
 
+/** Whether the form offers "Verify my ORCID iD". Set PUBLIC_ORCID_VERIFY=true once the connector has its ORCID client id and secret. */
+export const orcidVerify = submissionsOpen && import.meta.env.PUBLIC_ORCID_VERIFY === 'true';
+
 /**
  * Photo behind the home page hero: the nuclei of an islet of Langerhans in a confocal micrograph by Masur
  * (CC BY 2.5), cropped to the nuclei panel and brightened. The footer shows the credit.

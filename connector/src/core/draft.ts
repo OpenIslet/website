@@ -11,7 +11,7 @@ import { CONTACT_EMAIL } from './contact';
 import { suggestFromIdea } from './graveyard';
 import type { ApiError, StageOutput, SubmitContext, ToolPosted, ToolSubmission } from './queue/types';
 import { clip, normalise, similarity } from './text';
-import { cleanPaste, keyOf, looksLike, parseDoc, placeholder, reviewPromptFor, templateGaps, unfence, verdictOf, type Parsed } from './template';
+import { LINE_TOO_LONG, cleanPaste, keyOf, looksLike, parseDoc, placeholder, reviewPromptFor, templateGaps, unfence, verdictOf, type Parsed } from './template';
 import type { Finding } from './types';
 
 import { normalizeWetlabReadouts, type WetlabEmpiricalReadouts } from './wetlab-readouts';
@@ -92,7 +92,15 @@ const ALLOWED_HOSTS = [
 /** A link that is fine to have: an allowed host, or OpenIslet's own repositories on GitHub (the starter pack links to them). */
 function linkAllowed(host: string, path: string): boolean {
   if (ALLOWED_HOSTS.some((a) => host === a || host.endsWith(`.${a}`))) return true;
-  return (host === 'github.com' || host === 'raw.githubusercontent.com') && /^\/openislet(?:[/?#]|$)/i.test(path);
+  if (host !== 'github.com' && host !== 'raw.githubusercontent.com') return false;
+  // The path as a browser follows it, with "..", "%2e%2e" and backslashes resolved: "/openislet/../elsewhere" is judged by where it goes.
+  let pathname: string;
+  try {
+    pathname = new URL(path || '/', 'https://link.invalid').pathname;
+  } catch {
+    return false;
+  }
+  return /^\/openislet(?:\/|$)/i.test(pathname);
 }
 const SECRET_PATTERNS: [RegExp, string][] = [
   [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, 'a private key'],
@@ -630,6 +638,11 @@ export async function checkDraft(bundle: Bundle, cfg: Config, input: DraftInput)
  */
 export async function reviewPrompt(bundle: Bundle, draft: string): Promise<Answer> {
   const p = reviewPromptFor(await bundle.text('prompts/review-template.md'), draft);
+  if (!p.ok && p.missing.includes(LINE_TOO_LONG))
+    return {
+      ...problem('One line of the draft is longer than 2,000 characters, so the prompt would cut it short.', ['Split that line into shorter ones, then ask for the prompt again.']),
+      data: { missing: p.missing },
+    };
   if (!p.ok)
     return {
       ...problem(`The draft is missing what the reviewer needs: ${p.missing.map((m) => `"${m}"`).join(', ')}.`, ['Fill those parts in the draft, then ask for the prompt again.']),

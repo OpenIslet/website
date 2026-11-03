@@ -17,6 +17,13 @@
 //   GET  /_mock/ and /_mock/issues         what it has received (page, and JSON)
 //   POST /_mock/user, /_mock/mode, /_mock/reset   choose who signs in, switch on a failure to rehearse, start again
 //
+// And a stand-in for ORCID, for "Verify my ORCID iD" (start the Worker with ORCID_BASE set to this address, and ORCID_CLIENT_ID and
+// ORCID_CLIENT_SECRET set to the two values below, ORCID_CLIENT_ID and ORCID_CLIENT_SECRET):
+//   GET  /oauth/authorize                  "signs the person in to ORCID" at once and sends the browser back with a one-time code
+//   POST /oauth/token                      swaps the code for the iD (checks the client secret and the redirect address), as ORCID does
+//   POST /oauth/revoke                     lets the token go
+//   GET  /_mock/orcid, POST /_mock/orcid   what it has done; choose the iD the next person "has" ({"orcid": "0000-…"})
+//
 // Everything is kept in memory and goes when it stops. It listens on 127.0.0.1 only.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -96,6 +103,10 @@ const CLIENT_SECRET = vars.GITHUB_CLIENT_SECRET;
 const APP_ID = vars.GITHUB_APP_ID;
 const INSTALLATION_ID = vars.GITHUB_APP_INSTALLATION_ID;
 const SITE_ORIGIN = (vars.SITE_ORIGIN ?? 'http://localhost:4321').replace(/\/+$/, '');
+// The pretend ORCID app: the same shapes ORCID uses (APP- and sixteen characters; a UUID secret), and ORCID's own example iD.
+const ORCID_CLIENT_ID = vars.ORCID_CLIENT_ID ?? 'APP-OPENISLETMOCK001';
+const ORCID_CLIENT_SECRET = vars.ORCID_CLIENT_SECRET ?? '00000000-0000-4000-8000-000000000001';
+const orcid = { next: '0000-0002-1825-0097', codes: new Map(), issued: [], revoked: [] };
 
 // The public half of the app's key, so the bot's signed token can be checked the way GitHub checks it.
 let appPublicKey = null;
@@ -251,8 +262,20 @@ async function handle(req, res) {
     if (route === 'GET /_mock/' || route === 'GET /_mock') return send(res, 200, indexPage());
     if (route === 'GET /_mock/issues') return send(res, 200, state.issues);
     if (route === 'GET /_mock/state') return send(res, 200, { user: state.user, mode: state.mode, issues: state.issues.length, recent: state.log.slice(-20) });
+    if (route === 'GET /_mock/orcid') return send(res, 200, { next: orcid.next, issued: orcid.issued.length, revoked: orcid.revoked.length, all_revoked: orcid.issued.every((t) => orcid.revoked.includes(t)) });
+    if (route === 'POST /_mock/orcid') {
+      const body = await readBody(req);
+      if (typeof body.orcid !== 'string' || !/^\d{4}-\d{4}-\d{4}-\d{3}[\dX]$/.test(body.orcid)) return send(res, 400, { error: 'orcid should look like 0000-0002-1825-0097' });
+      orcid.next = body.orcid;
+      note(`next ORCID check is ${body.orcid}`);
+      return send(res, 200, { next: orcid.next });
+    }
     if (route === 'POST /_mock/reset') {
       for (const k of ['codes', 'userTokens', 'accounts', 'installationTokens']) state[k].clear();
+      orcid.codes.clear();
+      orcid.issued.length = 0;
+      orcid.revoked.length = 0;
+      orcid.next = '0000-0002-1825-0097';
       state.issues.length = 0;
       state.mode = 'ok';
       note('reset');
@@ -285,6 +308,52 @@ async function handle(req, res) {
   if (state.mode === 'down') {
     note(`503 ${route} (mode down)`);
     return send(res, 503, { message: 'The mock is pretending GitHub is down.' });
+  }
+
+  // ---- ORCID: "Verify my ORCID iD" ----
+  if (route === 'GET /oauth/authorize') {
+    const q = url.searchParams;
+    if (q.get('client_id') !== ORCID_CLIENT_ID) return send(res, 400, page('Not found', '<h1>Invalid client</h1><p>The pretend ORCID does not know that client_id.</p>'));
+    const redirect = q.get('redirect_uri') ?? '';
+    let back;
+    try {
+      back = new URL(redirect);
+    } catch {
+      back = null;
+    }
+    const allowed = back && (redirect === `${SITE_ORIGIN}/submit/orcid` || (['localhost', '127.0.0.1'].includes(back.hostname) && back.pathname === '/submit/orcid'));
+    if (!allowed) return send(res, 400, page('Redirect problem', `<h1>Redirect URI mismatch</h1><p><code>${escapeHtml(redirect)}</code> is not registered.</p>`));
+    if (q.get('response_type') !== 'code' || q.get('scope') !== '/authenticate') return send(res, 400, page('Bad request', '<h1>Only response_type=code and scope=/authenticate</h1>'));
+    if (q.get('state')) back.searchParams.set('state', q.get('state'));
+    if (state.mode === 'decline') {
+      back.searchParams.set('error', 'access_denied');
+      note('person pressed Deny at ORCID (mode decline)');
+      return send(res, 302, '', { location: back.href });
+    }
+    const code = token('orcidcode');
+    orcid.codes.set(code, { orcid: orcid.next, redirect, used: false, at: Date.now() });
+    back.searchParams.set('code', code);
+    note(`ORCID: confirmed ${orcid.next}, sent the browser back to ${back.origin}${back.pathname}`);
+    return send(res, 302, '', { location: back.href });
+  }
+  if (route === 'POST /oauth/token' || route === 'POST /oauth/revoke') {
+    const body = await readBody(req);
+    if (body.client_id !== ORCID_CLIENT_ID || body.client_secret !== ORCID_CLIENT_SECRET) return send(res, 401, { error: 'invalid_client', error_description: 'Client not found' });
+    if (route === 'POST /oauth/revoke') {
+      orcid.revoked.push(String(body.token ?? ''));
+      note('ORCID: let a token go');
+      return send(res, 200, '');
+    }
+    const c = orcid.codes.get(body.code);
+    if (body.grant_type !== 'authorization_code' || !c || c.used || Date.now() - c.at > 10 * 60_000 || body.redirect_uri !== c.redirect) {
+      note('ORCID: refused a code (unknown, used, expired, or the wrong redirect)');
+      return send(res, 400, { error: 'invalid_grant', error_description: 'Invalid authorization code' });
+    }
+    c.used = true;
+    const t = token('orcidtoken');
+    orcid.issued.push(t);
+    note(`ORCID: gave a token for ${c.orcid}`);
+    return send(res, 200, { access_token: t, token_type: 'bearer', refresh_token: token('orcidrefresh'), expires_in: 631138518, scope: '/authenticate', name: 'Josiah Carberry', orcid: c.orcid });
   }
 
   // ---- The contributor signs in ----

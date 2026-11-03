@@ -47,9 +47,12 @@
     // The "OpenIslet Submissions" GitHub App, installed on the OpenIslet organisation. None of these is secret. Use your own (connector/DEPLOY.md).
     "GITHUB_CLIENT_ID": "Iv23liIUifspySzPZfr3",
     "GITHUB_APP_ID": "5518205",
-    "GITHUB_APP_INSTALLATION_ID": "176351972"
+    "GITHUB_APP_INSTALLATION_ID": "176351972",
+    // "Verify my ORCID iD": the "OpenIslet" public API app on orcid.org (registered 4 Nov 2026). Not secret: ORCID shows it on its
+    // sign-in page. ORCID_BASE is left unset, so this is the real ORCID (the practice site is refused for the live site).
+    "ORCID_CLIENT_ID": "APP-ZOVTCMZ4R9TM8PKR"
     // Secrets are not kept here. Set them with `wrangler secret put` (connector/DEPLOY.md, step 8):
-    //   GITHUB_CLIENT_SECRET, GITHUB_APP_PRIVATE_KEY, STATE_SIGNING_KEY
+    //   GITHUB_CLIENT_SECRET, GITHUB_APP_PRIVATE_KEY, STATE_SIGNING_KEY, and ORCID_CLIENT_SECRET for "Verify my ORCID iD"
   },
 
   // Cloudflare's automatic request log line carries the whole address, and the sign-in code and a staged draft's id are in

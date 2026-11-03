@@ -21,7 +21,7 @@ import { queueApi, issuesUrl } from '../../data/site';
 </Layout>
 
 <script>
-  import { callApi, explain, store, shared, bindingKey, doneKey, STORAGE_BLOCKED, STAGED_KEY, SAVED_KEY, POSTED_KEY } from '../../scripts/submit';
+  import { callApi, explain, store, shared, bindingKey, doneKey, STORAGE_BLOCKED, STAGED_KEY, SAVED_KEY, POSTED_KEY, ORCID_PROOF_KEY, ORCID_FRESH_KEY, FORM_STAGED_KEY } from '../../scripts/submit';
 
   const box = document.getElementById('result') as HTMLElement;
   const api = box.dataset.api ?? '';
@@ -137,6 +137,8 @@ import { queueApi, issuesUrl } from '../../data/site';
     if (result.ok && result.data.submitted === true && isGitHub(issue?.url)) {
       store.remove(STAGED_KEY);
       store.remove(SAVED_KEY);
+      // The ORCID proof too, so the next person at this computer cannot have someone else's iD shown as verified.
+      for (const key of [ORCID_PROOF_KEY, ORCID_FRESH_KEY, FORM_STAGED_KEY]) store.remove(key);
       // The form, brought back by the Back button in this tab or open in another one, then knows not to show these files again.
       store.set(POSTED_KEY, '1');
       shared.set(doneKey(state), {});

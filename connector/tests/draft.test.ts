@@ -213,6 +213,14 @@ describe('check_draft: the automatic checks', () => {
     expect((await safety('See https://github.com/OpenIsletX/website')).status).toBe('amber');
   });
 
+  it('judges a GitHub link by where a browser takes it, not by how it is written', async () => {
+    const safety = async (extra: string) =>
+      (await check({ draft: `${good().draft}\n${extra}`, review: good().review, consent: true })).structuredContent!.checks.find((c: { id: string }) => c.id === 'safety');
+    for (const link of ['https://github.com/openislet/%2e%2e/someone/repo', 'https://github.com/OpenIslet/../someone/repo', 'https://github.com/openislet/%2E%2E/%2e%2e/someone', 'https://raw.githubusercontent.com/openislet/..\\someone/x'])
+      expect((await safety(`See ${link}`)).status, link).toBe('amber');
+    expect((await safety('See https://github.com/OpenIslet/website/blob/main/README.md?plain=1#top')).status).toBe('pass');
+  });
+
   it('warns, without refusing, when a draft names no design', async () => {
     const { f, review } = good();
     const evidence = [`${f.cite}, PMID ${f.pmid}, "${f.quote}"`];
