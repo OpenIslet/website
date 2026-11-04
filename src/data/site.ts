@@ -112,9 +112,12 @@ export const showScenarioIndices = import.meta.env.PUBLIC_SHOW_SCENARIO_INDICES 
  */
 export const indexable = import.meta.env.PUBLIC_INDEXABLE === 'true';
 
-/** The picture shown when a link to the site is shared (built by social/x-profile-pack/tools/render.sh). */
+/**
+ * The picture shown when a link to the site is shared (built by social/x-profile-pack/tools/render.sh). A new look gets a new file
+ * name, because apps keep a shared picture by its address; /og.png holds the same picture for older shares.
+ */
 export const shareImage = {
-  src: '/og.png',
+  src: '/og-islet.png',
   width: 1200,
   height: 630,
   alt: 'OpenIslet: help develop an open blueprint to accelerate a cure for type 1 diabetes.',

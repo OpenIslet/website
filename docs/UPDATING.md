@@ -58,7 +58,7 @@ The website is built from data files, so most updates are one command. Nothing o
 | The roadmap: Stage 0 in full, Stages 1 to 5 as a short outline, the partner and open-source statement, and the dog study's aim | `src/data/roadmap.ts` (see "Changing the roadmap" below). The connector's `roadmap` section reads it too |
 | The pictures on the roadmap cards, the two "after the blueprint" pictures and the terrier | `src/components/roadmap/` (`StageArt0` to `StageArt5`, `StageIcon`, `WayArt`, `Terrier`). The terrier's six numbered labels must match the six items in `canine.legend` |
 | Whether the connector is live, whether IIPs can be sent, whether search engines may list the site | `PUBLIC_CONNECTOR_STATUS`, `PUBLIC_SUBMISSIONS_OPEN` and `PUBLIC_INDEXABLE` in `.env` (see `README.md` for the launch-day settings). Start here always opens on the copy-and-paste route, with "Connect with MCP" as the other choice (`/start?route=mcp` opens it); `PUBLIC_CONNECTOR_STATUS` is read by the Submit page only |
-| The picture shown when a link is shared | `social/x-profile-pack/tools/gen.mjs`, then `social/x-profile-pack/tools/render.sh` (writes `public/og.png`) |
+| The picture shown when a link is shared | `social/x-profile-pack/tools/gen.mjs`, then `social/x-profile-pack/tools/render.sh` (writes `share-card-1200x630.png`; copy it into `public/` under a new name and point `shareImage` in `src/data/site.ts` at it) |
 
 ## Changing the roadmap
 
