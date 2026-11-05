@@ -32,5 +32,18 @@
     "contributor": { "handle": "MarissaFamularo", "kind": "person", "github": "MarissaFamularo", "name": "Marissa Famularo", "orcid": "0009-0001-8032-2215", "x": "MarissaFamularo", "verified": { "github": true, "orcid": false } },
     "models": ["ChatGPT, GPT-6 Astra Pro"],
     "outcome": { "kind": "evidence", "note": "The blueprint now tests late-forming blood vessels and weaker oxygen delivery together, under both ways the cells release oxygen, and publishes the whole grid, so it shows where the oxygen margin runs out." }
+  },
+  {
+    "id": "IIP-0003",
+    "date": "2026-11-04",
+    "decided": "2026-11-05",
+    "title": "The published chance-of-working estimate does not compute the quantity it states, and omits failure modes the blueprint already documents",
+    "summary": "Asks that the odds on the Blueprint page say exactly what they measure, how the three-design figure is worked out, and which checks they leave out.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "ljschumacher", "kind": "person", "github": "ljschumacher", "name": "Linus Schumacher", "orcid": "0000-0003-0797-3406", "x": "LinusSchumacher", "verified": { "github": true, "orcid": true } },
+    "models": ["Claude Opus 5"],
+    "outcome": { "kind": "changed_blueprint", "note": "The odds now define each step as a design still in the running clearing the next hurdle, give the reason for each hurdle's three-design figure, and name the lab checks that sit outside the four hurdles, so they cannot be read as the chance of a cure." }
   }
 ]

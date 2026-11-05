@@ -10,6 +10,7 @@ import { release, longDate, pubmed, repo, repoFile, fullBlueprintUrl, technicalS
 import { rules } from '../data/graveyard';
 import { draft, cadence } from '../data/versions';
 import { stages, laterStages } from '../data/roadmap';
+import { scoresTableMarkdown } from '../data/scenarios';
 import references from '../data/references.json';
 import questions from '../../connector/data/open-questions.json';
 
@@ -25,6 +26,8 @@ const labelOf = (r: Ref) => {
 const rawSpec = spec.rawContent().replace(/^---\n[\s\S]*?\n---\n/, '');
 const cited = [...new Set([...rawSpec.matchAll(/#ref-(\d{5,9})/g)].map((m) => m[1]))];
 const specText = fillTokens(rawSpec)
+  // Table 3 is drawn on the page from the scores; here it is written out, so an AI reading the pack sees it too.
+  .replace(/^\s*<!--figure:scores-->\s*$/m, () => `\n${scoresTableMarkdown()}\n\n`)
   .replace(/^\s*<!--figure:\w+-->\s*$/gm, '')
   .replace(/^\s*<a id="[^"]+"><\/a>\s*$/gm, '')
   .replace(/<span class="sr-only">([^<]*)<\/span>/g, '$1')

@@ -5,7 +5,7 @@ export { rules, testNames } from '../../src/data/graveyard';
 export { stages, canine, afterBlueprint } from '../../src/data/roadmap';
 export { gates, testLabels, testShort } from '../../src/data/gates';
 export { scenarios, gateColumns, niche } from '../../src/data/blueprint';
-export { designScore, indices } from '../../src/data/scenarios';
+export { designScore, indices, scoresTableMarkdown } from '../../src/data/scenarios';
 export { specTokens, fillTokens } from '../../src/data/specTokens';
 export { outcomes } from '../../src/data/contributions';
 export { reviewTemplate, draftPrompt, submitPrompt, explorePrompts, checkPrompt } from '../../src/data/prompts';

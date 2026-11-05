@@ -7,7 +7,7 @@ import ChangelogArt from '../components/ChangelogArt.astro';
 import Odds from '../components/Odds.astro';
 import { scenarios, gateColumns, niche, assets, reproduce } from '../data/blueprint';
 import { pubmed, release, longDate, showScenarioIndices, startHref } from '../data/site';
-import { indices } from '../data/scenarios';
+import { indices, scoresCaption } from '../data/scenarios';
 import { testShort } from '../data/gates';
 import { fillTokens } from '../data/specTokens';
 import { draft as openDraft } from '../data/versions';
@@ -121,7 +121,7 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
         <li><a href="#drawing">Drawing</a></li>
         <li><a href="#spec">Specification</a></li>
         <li><a href="#designs">Three designs</a></li>
-        <li><a href="#odds">Chance of working</a></li>
+        <li><a href="#odds">Odds</a></li>
         <li><a href="#edits">Edit by edit</a></li>
         <li><a href="#changelog">Changelog</a></li>
         <li><a href="#data">Get the data</a></li>
@@ -197,7 +197,7 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
                         <div class="tablewrap" data-label="Scores for each design on each test">
                           <table>
                             <thead>
-                              <tr><th scope="col">Design</th><th scope="col">Rank of {n(c.designs)}</th><th scope="col">Gene edits</th><th scope="col">Model score (child profile)</th><th scope="col">Weakest test</th></tr>
+                              <tr><th scope="col">Design</th><th scope="col">Rank of {n(c.designs)} (overall score)</th><th scope="col">Gene edits</th><th scope="col">Model score (child profile)</th><th scope="col">Weakest test</th></tr>
                             </thead>
                             <tbody>
                               {indices.map((r) => (
@@ -218,7 +218,7 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
                       ) : (
                         <p class="footnote">Model scores are not shown in this version.</p>
                       )}
-                      <p class="caption"><strong>Table 3.</strong> Model scores, 0 to 1, for comparing designs with each other. They are not the chance that a treatment will work for you or your child. Reference designs are published approaches scored the same way, with the same unproven assumptions; this says nothing about how they perform in people.</p>
+                      <p class="caption"><strong>Table 3.</strong> {scoresCaption}</p>
                     </div>
                   );
                 return null;

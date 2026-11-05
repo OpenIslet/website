@@ -77,8 +77,9 @@ const log = JSON.parse(await readFile(path, 'utf8'));
 if (!Array.isArray(log) || log.some((e) => !e || typeof e !== 'object' || typeof e.version !== 'string')) {
   invalid('The existing changelog must be an array of versioned entries.');
 }
-if (log.some((e) => e.version === one.version)) {
-  console.error(`${one.version} is already in the changelog. Edit src/data/changelog.json to change it.`);
+// The open draft keeps its version while IIPs land in it, so one version can have several entries, one per change.
+if (log.some((e) => e.version === one.version && (e.contribution ?? null) === (one.contribution ?? null))) {
+  console.error(`${one.version}${one.contribution ? ` (${one.contribution})` : ''} is already in the changelog. Edit src/data/changelog.json to change it.`);
   process.exit(1);
 }
 

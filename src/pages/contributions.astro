@@ -128,7 +128,12 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                       {c.founding && <span class="chip chip--ink">Founder</span>}
                       {c.example && <span class="chip chip--warn">Example</span>}
                       {c.verified.github && <span class="chip chip--pass">GitHub ✓</span>}
-                      {c.stated.orcid && <span class="chip chip--quiet">ORCID {c.stated.orcid} · stated</span>}
+                      {c.stated.orcid &&
+                        (c.verified.orcid ? (
+                          <a class="chip chip--pass" href={`https://orcid.org/${c.stated.orcid}`} rel="noopener">ORCID {c.stated.orcid} ✓</a>
+                        ) : (
+                          <span class="chip chip--quiet">ORCID {c.stated.orcid} · stated</span>
+                        ))}
                       {c.stated.x && <span class="chip chip--quiet">@{c.stated.x} on X · stated</span>}
                     </span>
                   </span>
@@ -147,11 +152,11 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
 
                 <div class="crow__body">
                   {
-                    (c.stated.orcid || c.stated.x) && (
+                    ((c.stated.orcid && !c.verified.orcid) || c.stated.x) && (
                       <p class="crow__stated">
                         Stated by the contributor, not verified:
-                        {c.stated.orcid && <> <a href={`https://orcid.org/${c.stated.orcid}`} rel="noopener">ORCID {c.stated.orcid}</a></>}
-                        {c.stated.orcid && c.stated.x && ' ·'}
+                        {c.stated.orcid && !c.verified.orcid && <> <a href={`https://orcid.org/${c.stated.orcid}`} rel="noopener">ORCID {c.stated.orcid}</a></>}
+                        {c.stated.orcid && !c.verified.orcid && c.stated.x && ' ·'}
                         {c.stated.x && <> <a href={`https://x.com/${c.stated.x}`} rel="noopener">@{c.stated.x} on X</a></>}
                       </p>
                     )
@@ -173,7 +178,14 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                               <span>{shortDate(x.date)}</span>
                               {x.version && <span>Blueprint {x.version}</span>}
                               {x.landed_in && <span>Named in {versionName(x.landed_in)}</span>}
-                              <span class="mono">{x.id}</span>
+                              {/* A real record's number is its issue in the public queue (IIP-0042 is issue 42), so it links there. */}
+                              {x.example ? (
+                                <span class="mono">{x.id}</span>
+                              ) : (
+                                <a class="mono" href={`${issuesUrl}/${Number(x.id.slice(4))}`} rel="noopener">
+                                  {x.id} on GitHub
+                                </a>
+                              )}
                             </p>
                             <p class="citem__summary">{x.summary}</p>
                             {o && (

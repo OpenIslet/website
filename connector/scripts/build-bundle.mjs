@@ -510,6 +510,7 @@ const specRaw = fs.readFileSync(path.join(website, 'src', 'content', 'blueprint-
 const specTitle = /^title:\s*'(.*)'/m.exec(fs.readFileSync(path.join(website, 'src', 'content', 'blueprint-spec.md'), 'utf8'))?.[1] ?? 'Islet-1';
 const publicLinks = (md) =>
   md
+    .replace(/<!--figure:scores-->/, () => site.scoresTableMarkdown())
     .replace(/<!--figure:\w+-->\n?/g, '')
     .replace(/<a id="[^"]*"><\/a>\n*/g, '')
     .replace(/\]\(#ref-(\d+)\)/g, (_, id) => `](${pubmedUrl(id)})`)

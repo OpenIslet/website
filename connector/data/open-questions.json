@@ -357,5 +357,31 @@
     "status": "open",
     "added": "2026-10-25",
     "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-016",
+    "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
+    "plain": "The 21% and 37% figures are rough judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
+    "detail": "Raised in IIP-0003 (issue #3). Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, and the three-design figure depends on how strongly Designs A, B and X share failure modes at each hurdle. Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data.",
+    "tests": [
+      "1",
+      "2A",
+      "2B",
+      "3",
+      "4",
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [],
+    "settle": "Fix one clinical definition of success, write down the per-design and shared failure assumptions at each hurdle, and replace the starting judgements with measured pass rates as lab and preclinical results arrive.",
+    "source": "IIP-0003, and the full blueprint (warning 4)",
+    "status": "open",
+    "added": "2026-11-05",
+    "since": "v0.8.0"
   }
 ]

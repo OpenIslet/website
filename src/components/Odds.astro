@@ -16,7 +16,7 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
 <section class="odds" id="odds">
   <div class="container">
     <p class="eyebrow">Odds</p>
-    <h2 class="h2">Realistic chance of working: how we estimate the odds</h2>
+    <h2 class="h2">Chance of clearing four hurdles: our rough estimate</h2>
     <p class="lead odds__lead">Nobody can know yet, so we show our working instead of one confident number. We split the question into four hurdles a design has to clear, give our best estimate for each, and multiply them together.</p>
 
     <div class="odds__cards">
@@ -31,7 +31,7 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
             <h3 class="odd__t">{g.title}</h3>
             <ul class="odd__est">
               <li>
-                <span class="odd__lab">One design</span>
+                <span class="odd__lab">One design (Design A)</span>
                 <strong class="mono odd__pct">{g.singleArmPct}%</strong>
                 <span class="bar odd__bar" aria-hidden="true"><span style={`width:${g.singleArmPct}%`}></span></span>
               </li>
@@ -54,6 +54,10 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
 
     <div class="card odds__sum">
       <h3 class="h3">Putting the four hurdles together</h3>
+      <p class="odds__scope">
+        These are our judgements for four hurdles, each for a design still in the running. They assume this product’s cells work as
+        designed and pass the lab safety checks before any trial, so they are not the chance of a cure.
+      </p>
       <div class="odds__results">
         {
           results.map((r) => (
@@ -66,11 +70,11 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
           ))
         }
       </div>
-      <p class="odds__rule">Chance of getting past every hurdle = hurdle 1 × hurdle 2 × hurdle 3 × hurdle 4.</p>
+      <p class="odds__rule">Chance of getting past every hurdle = hurdle 1 × hurdle 2 × hurdle 3 × hurdle 4, each the chance that a design still in the running clears it.</p>
 
       <div class="notes">
         <p><strong>What these numbers are.</strong> Our own estimates, made by the blueprint team and informed by the published trial results. They are not lab results, and they do not say whether any one person would be cured.</p>
-        <p><strong>Why three designs.</strong> The side-by-side figure is for advancing three distinct designs in parallel.</p>
+        <p><strong>Why three designs.</strong> The side-by-side figure is for advancing three distinct designs in parallel. It rises least where they share the same approach; the reason for each hurdle is in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a> (warning 4).</p>
         <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank designs against each other. They are not percentages, and they are not these odds.</p>
         <p><strong>Updated as results arrive.</strong> We change these estimates as new human trial data and OpenIslet lab results come in. Last updated {longDate(oddsLastUpdated)}.</p>
       </div>
@@ -242,6 +246,10 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
     font-size: 0.9375rem;
     color: var(--body);
     overflow-wrap: anywhere;
+  }
+  .odds__scope {
+    margin-top: 0.5rem;
+    max-width: 46rem;
   }
   .odds__rule {
     margin-top: 0.875rem;

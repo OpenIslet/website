@@ -22,10 +22,12 @@ describe('asking about an IIP sent since the last weekly update', () => {
   it('says the queue is closed when it is, for a recent IIP after the queue has been open', async () => {
     const b = bundle();
     const real = await b.ledger();
-    const second = { ...real.records[0], id: 'IIP-0002', issue: { ...real.records[0].issue, number: 2 } };
-    const later = Object.create(b, { ledger: { value: async () => ({ ...real, records: [...real.records, second] }) } });
-    const a = await submissionStatus(later, { ...defaultConfig, submissionsOpen: false }, 'IIP-0003');
-    expect(a.data).toMatchObject({ found: false, queue_open: false, id: 'IIP-0003' });
+    // At least two records, so the queue has been open; then ask about the number after the newest one.
+    const records = real.records.length > 1 ? real.records : [...real.records, { ...real.records[0], id: 'IIP-0002', issue: { ...real.records[0].issue, number: 2 } }];
+    const later = Object.create(b, { ledger: { value: async () => ({ ...real, records }) } });
+    const next = `IIP-${String(Math.max(...records.map((r) => r.issue.number)) + 1).padStart(4, '0')}`;
+    const a = await submissionStatus(later, { ...defaultConfig, submissionsOpen: false }, next);
+    expect(a.data).toMatchObject({ found: false, queue_open: false, id: next });
   });
   it('ignores a QUEUE_REPO that is not owner/name', () => {
     expect(configFromEnv({ QUEUE_REPO: 'not a repo' }).queueIssues).toBeUndefined();

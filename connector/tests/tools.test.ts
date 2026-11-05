@@ -318,7 +318,7 @@ describe('check_against_graveyard', () => {
 describe('open questions, layers and contributions', () => {
   it('lists the open questions, and filters them', async () => {
     const all = await s.call('get_open_questions');
-    expect(all.structuredContent?.questions.length).toBe(15); // Includes the two explicit, pending Design-X qualification questions.
+    expect(all.structuredContent?.questions.length).toBe(16); // Includes the two explicit, pending Design-X qualification questions, and OQ-016 on the odds (IIP-0003).
     const t3 = await s.call('get_open_questions', { test: '3' });
     expect(t3.structuredContent?.questions.length).toBeGreaterThan(2);
     for (const q of t3.structuredContent!.questions) expect(q.tests).toContain('3');

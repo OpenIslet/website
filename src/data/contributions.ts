@@ -69,7 +69,7 @@ export interface Contribution {
     handle: string;
     kind: 'person' | 'lab';
     github?: string;
-    /** Typed in by the contributor on the submission form. Shown as stated, never as verified. */
+    /** Typed in by the contributor on the submission form. Shown as stated, except an ORCID iD with `verified.orcid` (verified through ORCID since 4 Nov 2026). */
     name?: string | null;
     orcid?: string | null;
     x?: string | null;

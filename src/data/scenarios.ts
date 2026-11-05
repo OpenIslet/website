@@ -1,6 +1,7 @@
 // Model scores, read from release.json (written by `npm run sync-data` from the OpenIslet repository).
 // They are estimates on a 0 to 1 scale, not clinical survival probabilities.
-import { release } from './site';
+import { release, showScenarioIndices } from './site';
+import { testShort } from './gates';
 
 const labels: Record<string, { name: string; sub: (edits: number, baseEdits: number) => string; reference: boolean }> = {
   A: { name: 'Design A', sub: (k) => `${k} gene edits`, reference: false },
@@ -43,3 +44,29 @@ export function xAgainstA(): { sameTests: boolean; lowerOverall: boolean } {
   const sameTests = Object.entries(a.tests).every(([test, value]) => (x.tests as Record<string, number>)[test] === value);
   return { sameTests, lowerOverall: x.composite < a.composite };
 }
+
+/** Table 3's caption, the same on the Blueprint page and in the Markdown copies. */
+export const scoresCaption =
+  'Model scores, 0 to 1, for comparing designs with each other. They are not the chance that a treatment will work for you or your child. Reference designs are published approaches scored the same way, with the same unproven assumptions; this says nothing about how they perform in people.';
+
+/** Table 3 as Markdown, for the starter pack and the connector, which cannot draw the page's table. */
+export function scoresTableMarkdown(): string {
+  if (!showScenarioIndices) return 'Model scores are not shown in this version.';
+  const rows = indices.map((r) =>
+    [
+      r.name + (r.reference ? ' (another group’s design, scored as a check on the model)' : ''),
+      r.rank,
+      r.sub.replace('reference · ', ''),
+      r.value.toFixed(4),
+      testShort[r.weakestTest],
+    ].join(' | '),
+  );
+  return [
+    `| Design | Rank of ${release.counts.designs.toLocaleString('en-US')} (overall score) | Gene edits | Model score (child profile) | Weakest test |`,
+    '|---|---|---|---|---|',
+    ...rows.map((r) => `| ${r} |`),
+    '',
+    `**Table 3.** ${scoresCaption}`,
+  ].join('\n');
+}
+

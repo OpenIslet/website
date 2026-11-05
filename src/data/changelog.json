@@ -1,6 +1,35 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-05",
+    "title": "The odds now say exactly what they measure",
+    "summary": "The rough odds on the Blueprint page now define each step, give the reason for each hurdle's three-design figure, and name the checks that sit outside the four hurdles.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Each hurdle figure is now a judgement for a design still in the running, given it cleared the earlier hurdles. The 21% and 37% are unchanged."
+      },
+      {
+        "kind": "added",
+        "text": "One reason per hurdle for its three-design figure, in the full blueprint."
+      },
+      {
+        "kind": "added",
+        "text": "A new open question, OQ-016, on how the odds are built and which success they estimate."
+      },
+      {
+        "kind": "changed",
+        "text": "Section 3 and Table 3 now say which score they show and which score the rank uses."
+      },
+      {
+        "kind": "fixed",
+        "text": "The starter pack now includes Table 3, the model scores."
+      }
+    ],
+    "contribution": "IIP-0003"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-02",
     "title": "Oxygen supply tested under late and weak blood vessels together",
     "summary": "Blood vessels that connect late and vessels that carry less oxygen than hoped are now tested together, and the whole grid is published.",

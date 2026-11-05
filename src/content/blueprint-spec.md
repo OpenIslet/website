@@ -56,7 +56,7 @@ Islet-1 aims for a third route: a personalised therapy whose cells are edited in
 
 Design A is the lead design in the model and ranks first of {{designs}}. The B family retains matched *HLA-C* as a hypothesis for engaging inhibitory NK receptors ([Lin 2023](#ref-37264229)). The selected B scoring comparator ranks {{rankB}} of {{designs}}; that number is not a prediction for the unresolved 2A-free product.
 
-**Design X is the challenger.** It scores {{scoreX}} against {{scoreA}} for Design A and ranks {{rankX}} of {{designs}}, tied with one other design. {{xCompare}} A challenger replaces the lead only if lab results show it is better, in a head-to-head comparison whose rules are written down first. The model's scores cannot settle that.
+**Design X is the challenger.** It scores {{scoreX}} against {{scoreA}} for Design A on the overall score (children and adults counted equally; Table 3 shows the children's score) and ranks {{rankX}} of {{designs}}, tied with one other design. {{xCompare}} A challenger replaces the lead only if lab results show it is better, in a head-to-head comparison whose rules are written down first. The model's scores cannot settle that.
 
 **Personalisation.** The program checks declared genotype inputs and reference edit instructions. Its population runs explore assumptions; they do not select a proven treatment for a person. A and B variants have separate product definitions and edit counts. Matched clinical products would require manufacturing, safety and regulatory evidence; no shared-platform approval or patient eligibility is established.
 
