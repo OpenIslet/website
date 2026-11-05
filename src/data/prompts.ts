@@ -5,7 +5,8 @@
 // the AI the OpenIslet starter pack (public/openislet-starter-pack.md, built by src/pages/openislet-starter-pack.md.ts) and the same
 // prompts point at it instead. The reviewer template works for both.
 //
-// Scope: reviewers test the blueprint itself, not how later lab or clinical stages would be run.
+// Scope: reviewers test the blueprint itself, not how later lab or clinical stages would be run. The one exception is an IIP about a
+// roadmap stage (Stages 1 to 5, or a missing stage): it is judged as a change to that stage.
 
 export type Route = 'mcp' | 'paste';
 
@@ -31,7 +32,7 @@ export interface ExplorePrompt {
 }
 
 const scope = 'Focus on the blueprint itself (the gene edits, the DNA, the proteins, oxygen, immune biology and the Idea Graveyard), not on how later lab or clinical stages would be run.';
-const packNote = 'The pack has the blueprint, the Idea Graveyard and the open questions, but not the studies themselves: if you cannot check a paper, say so, and never invent a quote or a PubMed ID.';
+const packNote = 'The pack has the blueprint, the Idea Graveyard, the open questions and the roadmap, but not the studies themselves: if you cannot check a paper, say so, and never invent a quote or a PubMed ID.';
 
 export const explorePrompts: ExplorePrompt[] = [
   {
@@ -40,13 +41,6 @@ export const explorePrompts: ExplorePrompt[] = [
     why: 'Ask your AI to play the sceptic.',
     text: `Read the OpenIslet blueprint using the OpenIslet MCP tools. Act as a sceptical scientist. Compare Design A, Design B and Design X (Islet-X): what is the single weakest point across the three designs, and why? Check it against the studies, and tell me which papers support or contradict your view. Explain it in plain English first, then give the detail. ${scope}`,
     pasteText: `Read the OpenIslet starter pack I pasted at the start of this chat. Act as a sceptical scientist. Compare Design A, Design B and Design X (Islet-X): what is the single weakest point across the three designs, and why? Check it against the Idea Graveyard in the pack, and tell me which papers support or contradict your view. Explain it in plain English first, then give the detail. ${scope} ${packNote}`,
-  },
-  {
-    id: 'stress',
-    title: 'Stress-test all three designs',
-    why: 'Try to break Design A, Design B and Design X across all five tests.',
-    text: `Stress-test Design A, Design B and Design X (Islet-X) against each of the five tests, one at a time. For each test, tell me how each design could fail, how likely that is, and what evidence supports your view. Use the OpenIslet studies and the Idea Graveyard, and quote the source for every claim. ${scope}`,
-    pasteText: `Using the OpenIslet starter pack I pasted at the start of this chat, stress-test Design A, Design B and Design X (Islet-X) against each of the five tests, one at a time. For each test, tell me how each design could fail, how likely that is, and what evidence supports your view. Use the Idea Graveyard in the pack, and give the source for every claim. ${scope} ${packNote}`,
   },
   {
     id: 'improve',
@@ -76,6 +70,13 @@ export const explorePrompts: ExplorePrompt[] = [
     text: 'Pick five findings from the OpenIslet studies at random. For each one, check that the paper exists and that the quoted sentence really says what the blueprint relies on. Tell me about any that do not match, and quote the sentence you checked.',
     pasteText: 'Pick five papers cited in the OpenIslet starter pack I pasted at the start of this chat. For each one, check that the paper exists (give its PubMed ID) and that it really says what the blueprint relies on. Tell me about any that do not match. If you cannot look a paper up, say so instead of guessing.',
   },
+  {
+    id: 'roadmap',
+    title: 'Improve the roadmap',
+    why: 'Spot a missing step between the blueprint and the first human trial.',
+    text: `Read the OpenIslet roadmap with the OpenIslet MCP tools, then find one concrete gap or improvement in Stages 1 to 5, backed by published evidence. For each claim, give a PubMed ID, or the document's title, publisher and link, and quote the exact sentence. Never invent a source or a quote. Explain it in plain English first, then help me prepare it as an IIP.`,
+    pasteText: `Using the OpenIslet starter pack I pasted at the start of this chat, read the roadmap (Part 4), then find one concrete gap or improvement in Stages 1 to 5, backed by published evidence. For each claim, give a PubMed ID, or the document's title, publisher and link, and quote the exact sentence. Explain it in plain English first, then help me prepare it as an IIP. ${packNote}`,
+  },
 ];
 
 /** The public reviewer template. [CLAIM] is replaced by the claim. */
@@ -90,10 +91,10 @@ CLAIM TO TEST
 
 How to review:
 1. Restate the claim in one plain-English sentence. This goes on the "Claim reviewed" line.
-2. Check it against the OpenIslet blueprint. Which of the five tests does it affect, and does it conflict with the current design (Design A, Design B or Design X)?
+2. Check it against the OpenIslet blueprint. Which of the five tests does it affect, and does it conflict with the current design (Design A, Design B or Design X)? If it is about a roadmap stage, check it against the roadmap instead.
 3. Check it against the Idea Graveyard. Has this idea, or one very like it, already been ruled out or flagged as risky?
 4. Check the evidence. Do the cited papers exist, and do the quotes say what the claim needs them to say? Do not trust any quote or number you have not checked. Look for evidence against the claim as hard as you look for evidence for it.
-5. Look for other ways it could fail in the design itself: biology, maths, physics, engineering and safety. Judge the blueprint, not how later lab or clinical stages would be run.
+5. Look for other ways it could fail in the design itself: biology, maths, physics, engineering and safety. Judge the blueprint, not how later lab or clinical stages would be run, unless the claim is about a roadmap stage: then judge it as a change to that stage.
 6. Say which single experiment or analysis would settle it most cheaply.
 
 Write your review as a Markdown document with exactly these headings:
@@ -127,12 +128,12 @@ Write my IIP as a Markdown file called openislet-iip-[short-title].md. If you ca
 **Type:** [Problem found | Improvement | Missing evidence]
 **Claim in one sentence:** [What I am claiming]
 **In plain English:** [3 to 5 sentences a person with type 1 diabetes could follow]
-**Affects test:** [1 | 2A | 2B | 3 | 4 | 5, and why]
-**Affects design:** [Design A | Design B | Design X | Two of them (say which) | All three]
+**Affects test:** [1 | 2A | 2B | 3 | 4 | 5 | None (a roadmap IIP), and why]
+**Affects design:** [Design A | Design B | Design X | Two of them (say which) | All three | A roadmap stage (say which)]
 ## Evidence
 - [Paper title, PubMed ID, and the exact quote, copied word for word]
 ## What I propose changing
-[The specific change to the blueprint, or the new Idea Graveyard entry]
+[The specific change to the blueprint or a roadmap stage, or the new Idea Graveyard entry]
 ## How this could be wrong
 [The strongest reason I might be mistaken]
 ## Cheapest way to check it
@@ -170,7 +171,7 @@ export const draftPreview = [
   { k: 'meta', t: 'Type: Problem found' },
   { k: 'meta', t: 'Claim in one sentence: …' },
   { k: 'meta', t: 'In plain English: …' },
-  { k: 'meta', t: 'Affects test: 3 · Affects design: A' },
+  { k: 'meta', t: 'Affects test: 3 · Affects design: A (or a roadmap stage)' },
   { k: 'h2', t: 'Evidence' },
   { k: 'li', t: 'Paper title, PubMed ID, exact quote' },
   { k: 'h2', t: 'What I propose changing' },

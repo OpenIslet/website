@@ -93,8 +93,11 @@ describe('get_blueprint_overview', () => {
 
   it('shows Stage 0 in full and Stages 1 to 5 as an outline for partners or open-source adopters', async () => {
     const r = await s.call('get_blueprint_overview', { section: 'roadmap' });
-    expect(r.text).toContain('Stage 3 · Animal studies and safety: canine Islet-1');
+    expect(r.text).toContain('Stage 3 · Animal studies and safety (Later)');
     expect(r.text).toContain('Australian terrier');
+    // The dog project is an optional companion that runs alongside the mouse tests and never gates the human trial.
+    expect(r.text).toContain('optional companion project');
+    expect(r.text).toContain('never holds up the human trial');
     expect(r.text).toContain('partner organisations');
     expect(r.text).toContain('open blueprint');
     expect(r.text).toContain('Stage 1 lab protocol are published with the blueprint');

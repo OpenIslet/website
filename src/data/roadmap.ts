@@ -63,12 +63,13 @@ export const afterBlueprint = {
     'Stages 1 to 5 are an outline only. They are meant to be carried out in partnership with a university lab, a research institute, an AI lab or a biotech company, or by any organisation that takes the open blueprint (CC BY 4.0) and runs with it. The Stage 0 plan and the Stage 1 lab protocol are published with the blueprint.',
 };
 
-/** The animal study in stage 3: canine Islet-1, with the aim of curing an Australian terrier with insulin-dependent diabetes.
+/** The optional dog project beside stage 3: Canine Islet-1, a dog version of Islet-1, with the aim of curing an Australian terrier with insulin-dependent diabetes.
+ *  It runs in parallel and never holds up the human trial: the mouse tests of the exact human product are the bridge to that trial.
  *  The picture on the roadmap page has six numbered labels. They are a picture legend, in the order of the picture, not a plan. */
 export const canine = {
   breed: 'Australian terrier',
   aim: 'Cure an Australian terrier with insulin-dependent diabetes, so that it no longer needs insulin injections.',
-  why: 'Dogs develop insulin-dependent diabetes naturally. Its causes are varied and are not always the same as human autoimmune type 1 diabetes. The project prefers a primate-free program; regulators still need relevant evidence for the exact human product.',
+  why: 'The project prefers a primate-free programme.',
   /** The six labels in the picture, in order. */
   legend: [
     { n: 1, text: 'Dog islet cells' },
@@ -130,9 +131,9 @@ export const stages: Stage[] = [
     id: '3',
     short: 'Animals and safety',
     state: 'Later',
-    name: 'Animal studies and safety: canine Islet-1',
-    summary: 'Before any person is treated, Islet-1 is tested in animals: in mice that carry a human immune system, using the exact human product, and in dogs, not primates. The aim is to cure an Australian terrier with insulin-dependent diabetes.',
-    why: `The first person should never be the first living body to meet the whole treatment. ${canine.why}`,
+    name: 'Animal studies and safety',
+    summary: 'Before any person is treated, the exact human product is tested in diabetic mice that carry a human immune system. Canine Islet-1, a dog version, is an optional companion project that runs alongside.',
+    why: `The first person should never be the first living body to meet the whole treatment. Regulators need evidence on the exact human product, so the mouse tests are the bridge to the human trial. ${canine.why}`,
     who: 'partners',
   },
   {
@@ -155,3 +156,6 @@ export const stages: Stage[] = [
     who: 'partners',
   },
 ];
+
+/** "Stages 1 to 5": the stages after the blueprint, numbered as the roadmap numbers them. */
+export const laterStages = `Stages ${stages[1].id} to ${stages[stages.length - 1].id}`;

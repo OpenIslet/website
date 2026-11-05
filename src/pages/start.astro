@@ -14,6 +14,7 @@ import { clients, checkedOn } from '../data/connect';
 import { checkPrompt, checkPromptPaste, explorePrompts, draftPrompt, reviewPrompt, submitPrompt, draftPreview, packLine } from '../data/prompts';
 
 const count = (n: number) => n.toLocaleString('en-US');
+const inWords = (n: number) => ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][n - 1] ?? count(n);
 
 // The guide always opens on the copy-and-paste route, which works in any AI chat. /start?route=mcp opens the MCP route.
 // Where to read about MCP.
@@ -26,7 +27,7 @@ const aiChats = [
   { name: 'Grok', href: 'https://grok.com/', mark: 'grok-build' },
   { name: 'Muse', href: 'https://muse.ai/', mark: 'muse-code' },
 ];
-// Step 2: one prompt that makes the AI lead. The six specific prompts stay underneath it.
+// Step 2: one prompt that makes the AI lead. The specific prompts stay underneath it.
 const leadAsk =
   'I would like to help improve the OpenIslet blueprint. Please lead me through it, one question at a time, and explain things in plain English. Help me find one weak spot or one improvement, check it against the evidence and the Idea Graveyard, give me the PubMed ID and the exact sentence for every claim, and tell me when we have one clear idea that is worth writing up.';
 const leadPromptPaste = `Using the OpenIslet starter pack I pasted at the start of this chat: ${leadAsk}`;
@@ -481,8 +482,8 @@ const tools: [string, string, string][] = [
           </ol>
         </div>
         <p class="expect"><span class="expect__tick" aria-hidden="true">✓</span><span><strong>You should end up with</strong> one clear idea: a problem with the blueprint, a way to improve it, or a paper we missed. Written up, that is an Islet Improvement Proposal (IIP). Step 3 does the writing up.</span></p>
-        <details class="help-details">
-          <summary>Or start with a specific job (six ready-made prompts)</summary>
+        <details class="help-details" id="ready-prompts">
+          <summary>Or start with a specific job ({inWords(explorePrompts.length)} ready-made prompts)</summary>
           <div class="grid prompts" style="--min: 24rem; --gap: 1rem" data-route-only="mcp">
             {
               explorePrompts.map((p) => (
@@ -1054,9 +1055,10 @@ const tools: [string, string, string][] = [
   );
   document.querySelectorAll('section[data-step]').forEach((s) => seen.observe(s));
 
-  // Open the reference when a link points at it.
+  // Open the reference, or the ready-made prompts, when a link points at them.
   function openReference() {
     if (location.hash === '#reference') document.querySelector('#reference details')?.setAttribute('open', '');
+    if (location.hash === '#ready-prompts') document.querySelector('#ready-prompts')?.setAttribute('open', '');
   }
   window.addEventListener('hashchange', openReference);
   openReference();
@@ -2050,6 +2052,15 @@ const tools: [string, string, string][] = [
     gap: 0.5rem;
     min-width: 0;
   }
+  /* Cards side by side line up: titles, lines and prompt boxes each start level, however long a line is. */
+  @supports (grid-template-rows: subgrid) {
+    .pcard {
+      display: grid;
+      grid-row: span 3;
+      grid-template-rows: subgrid;
+      row-gap: 0.5rem;
+    }
+  }
   .pcard h3 {
     font-size: 1.125rem;
     font-weight: 600;
@@ -2224,7 +2235,8 @@ const tools: [string, string, string][] = [
     border-block: 1px solid var(--line);
   }
   @media (max-width: 64em) {
-    .ref {
+    .ref,
+    #ready-prompts {
       scroll-margin-top: 4.5rem;
     }
   }

@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { cadence } from '../data/versions';
-import { stages, canine, afterBlueprint } from '../data/roadmap';
+import { stages, canine, afterBlueprint, laterStages } from '../data/roadmap';
 import { startHref, goal, contact } from '../data/site';
 import StageIcon from '../components/roadmap/StageIcon.astro';
 import StageArt0 from '../components/roadmap/StageArt0.astro';
@@ -182,13 +182,13 @@ const [blueprint, ...later] = stages;
                           <Terrier />
                           <figcaption>An illustration of the idea, not a result. The numbers match the list below.</figcaption>
                         </figure>
-                        <aside class="dogviz__aim" aria-label="The aim of the dog study">
-                          <p class="label">The aim</p>
+                        <aside class="dogviz__aim" aria-label="The optional dog project">
+                          <p class="label">Optional companion project</p>
                           <p class="dogviz__big">{canine.aim}</p>
                           <dl class="facts">
                             <div><dt>Patient</dt><dd>An {canine.breed} with insulin-dependent diabetes</dd></div>
                             <div><dt>Treatment</dt><dd>Canine Islet-1: islet cells made from dog stem cells, with a safety switch</dd></div>
-                            <div><dt>Instead of</dt><dd>Testing in primates</dd></div>
+                            <div><dt>The human trial</dt><dd>Tested first in mice with a human immune system. It never waits for the dogs.</dd></div>
                           </dl>
                         </aside>
                       </div>
@@ -217,6 +217,7 @@ const [blueprint, ...later] = stages;
         <h2 class="h2 fit__h">Right now, the most useful work is improving the blueprint</h2>
         <p class="lead fit__lead">
           Every weak spot found at Stage 0 saves time and effort later. If you have an AI assistant, you can help look for them.
+          {laterStages} are open to IIPs too: <a href={`${startHref}#ready-prompts`}>propose a missing step, or a better one</a>.
           If you run a research institute, an AI lab or a biotech company and would like to carry the blueprint further, we would like to hear from you.
         </p>
       </div>

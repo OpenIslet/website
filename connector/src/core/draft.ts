@@ -244,8 +244,46 @@ export function designsNamed(value: string | undefined): { letters: DesignLetter
   return { letters, neither: letters.length === 0 && /\b(?:neither|none)\b/.test(v) };
 }
 
-/** The label and the plain wording for the designs a draft names, or nothing if it names none. */
+/** The roadmap's last stage. Stage 0 is the blueprint itself, so a roadmap IIP names Stages 1 to 5 (tools.test.ts checks there are six). */
+const LAST_STAGE = 5;
+/** A run of stage numbers: "Stage 4", "Stages 2-3", "Stages 2, 3 and 4", "stages 2 through 4" (on text already lower-cased by normalise). */
+const STAGE_RUN = /\bstages?\s+\d+(?:\s*(?:,\s*(?:and|or)\s+|,|\band\b|\bor\b|\bto\b|\bthrough\b|&|-|\/)\s*\d+)*/g;
+/** A line as plain lower-case text: emphasis marks gone, dashes and spaces folded. */
+const plain = (value: string | undefined): string => normalise((value ?? '').replace(/[*_]/g, ''));
+/** Whether a line names a design in so many words ("Design A", "Designs A and B", "Islet-X"), not only "both" or "all three". */
+const mentionsDesign = (value: string | undefined): boolean => /\bdesigns?\b|\bislet-x\b|\bblueprint x\b/.test(plain(value));
+
+/**
+ * The roadmap stage a draft says it changes ("Roadmap stage 4", "Roadmap stages 2 and 3", "Roadmap (a new stage)", "Roadmap"), or null.
+ * Next to a design, "Stage 4" may mean anything (a stage of the cells, say), so there only the word "roadmap" makes it a roadmap stage.
+ */
+export function roadmapNamed(value: string | undefined): string | null {
+  const v = plain(value);
+  // The template's option copied without filling it in says nothing yet.
+  if (!v || v.includes('(say which)')) return null;
+  const saysRoadmap = /\broadmap\b/.test(v);
+  if (mentionsDesign(value) && designsNamed(value).letters.length && !saysRoadmap) return null;
+  if (/\bnew (?:roadmap )?stage(?![\w-])/.test(v)) return 'Roadmap (a new stage)';
+  const stages = [...new Set([...v.matchAll(STAGE_RUN)].flatMap((m) => m[0].match(/\d+/g) ?? []).map(Number))]
+    .filter((n) => n >= 1 && n <= LAST_STAGE)
+    .sort((a, b) => a - b);
+  if (stages.length === 1) return `Roadmap stage ${stages[0]}`;
+  if (stages.length > 1) return `Roadmap stages ${stages.slice(0, -1).join(', ')} and ${stages[stages.length - 1]}`;
+  // "Roadmap" on its own counts when the line is about it ("Roadmap", "The roadmap, because…"), not in "the roadmap is unaffected".
+  return /^(?:the |a )?roadmap\b/.test(v) ? 'Roadmap' : null;
+}
+
+/** The label and the plain wording for the designs or the roadmap stage a draft names, or nothing if it names none. */
 export function designLabels(value: string | undefined): { labels: string[]; text: string | null } {
+  const designs = designOnlyLabels(value);
+  const road = roadmapNamed(value);
+  if (!road) return designs;
+  // Beside a roadmap stage, "both" or "all three" without the word "design" are about the stages, not the designs.
+  const named = mentionsDesign(value) ? designs.labels.filter((l) => l !== 'design:neither') : [];
+  return { labels: [...named, 'design:roadmap'], text: named.length ? `${designs.text} and ${road.charAt(0).toLowerCase()}${road.slice(1)}` : road };
+}
+
+function designOnlyLabels(value: string | undefined): { labels: string[]; text: string | null } {
   const { letters, neither } = designsNamed(value);
   const key = letters.join('');
   if (neither) return { labels: ['design:neither'], text: 'Neither' };
@@ -398,19 +436,25 @@ export async function runChecks(bundle: Bundle, cfg: Config, input: DraftInput):
   const claim = draft.fields.get('claim in one sentence');
   const claimReviewed = review.fields.get('claim reviewed');
   const typeValue = optionMatch(draft.fields.get('type'), structure.draft.fields.find((f) => keyOf(f.name) === 'type')?.options);
-  const testCodes = [...new Set((draft.fields.get('affects test') ?? '').toUpperCase().match(/\b(?:2A|2B|[1-5])\b/g) ?? [])];
+  // "Stage 3" is a roadmap stage, not test 3, so stage numbers come out before the test numbers are read. A line about the
+  // roadmap ("None (a roadmap IIP)", "Roadmap, Stage 4") counts only numbers written as tests ("tests 2A/2B").
+  const testRaw = plain(draft.fields.get('affects test'));
+  const testLine = testRaw.replace(STAGE_RUN, ' ');
+  const aboutRoadmap = /\broadmap\b/.test(testRaw) && /^\W*(?:none|n\/a|roadmap|the roadmap|a roadmap)\b/.test(testRaw);
+  const testText = aboutRoadmap ? [...testLine.matchAll(/\btests?\s+((?:(?:2a|2b|[1-5])\b\s*(?:,\s*(?:and|or)\s+|,|\band\b|\bor\b|&|\/)?\s*)+)/g)].map((m) => m[1]).join(' ') : testLine;
+  const testCodes = [...new Set(testText.toUpperCase().match(/\b(?:2A|2B|[1-5])\b/g) ?? [])];
   const designValue = optionMatch(draft.fields.get('affects design'), structure.draft.fields.find((f) => keyOf(f.name) === 'affects design')?.options);
   const designRaw = draft.fields.get('affects design');
   const named = placeholder(designRaw) ? { labels: [], text: null } : designLabels(designRaw);
 
-  // The design it changes. An IIP is a problem with the blueprint or a way to improve it, so it names Design A, B or X. A person
-  // still decides, so this is a warning, not a rule.
+  // The design it changes. An IIP is a problem with the blueprint or a roadmap stage, or a way to improve one, so it names Design
+  // A, B or X, or a roadmap stage. A person still decides, so this is a warning, not a rule.
   const namesDesign = named.labels.some((l) => l !== 'design:neither');
   checks.push({
     id: 'design',
     name: 'Says which design it changes',
     status: namesDesign ? 'pass' : 'amber',
-    detail: namesDesign ? `It says it affects ${named.text}.` : 'It does not name Design A, B or X. An IIP should be a problem with a design or a way to improve one: say which on the "Affects design" line.',
+    detail: namesDesign ? `It says it affects ${named.text}.` : 'It does not name Design A, B or X, or a roadmap stage. An IIP should be a problem with a design or a stage, or a way to improve one: say which on the "Affects design" line.',
   });
 
   // AI tools named
@@ -538,7 +582,8 @@ export async function runChecks(bundle: Bundle, cfg: Config, input: DraftInput):
 
   const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   // The designs it names: one label each for A, B and X; "Both" and "All three" (also written as lists) get their own label.
-  const designLabelList = named.labels.length ? named.labels : designValue ? [`design:${slug(designValue.replace(/^design\s+/i, ''))}`] : [];
+  // An option copied without filling it in ("Two of them (say which)", "A roadmap stage (say which)") gets no label.
+  const designLabelList = named.labels.length ? named.labels : designValue && !/\(say which\)/i.test(designValue) ? [`design:${slug(designValue.replace(/^design\s+/i, ''))}`] : [];
   const labels = [
     'submission',
     ...(typeValue ? [`type:${slug(typeValue)}`] : []),

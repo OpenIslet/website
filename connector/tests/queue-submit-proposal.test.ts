@@ -502,7 +502,7 @@ describe('what the tool tells the AI', () => {
     expect(JSON.stringify(tool.inputSchema)).toContain('contributor');
     const instructions = s.client.getInstructions() ?? '';
     // The name for what a contributor submits is defined once, near the start, and used from then on.
-    expect(instructions).toMatch(/A contribution is an Islet Improvement Proposal \(IIP\): an idea to improve the blueprint, written up in a standard draft and checked by a blind review/);
+    expect(instructions).toMatch(/A contribution is an Islet Improvement Proposal \(IIP\): an idea to improve the blueprint or its roadmap, written up in a standard draft and checked by a blind review/);
     expect(instructions.indexOf('Islet Improvement Proposal (IIP)')).toBeLessThan(instructions.indexOf('submit_proposal'));
     expect(instructions).toContain('submit_proposal');
     expect(instructions).not.toMatch(/finding/i);

@@ -47,7 +47,7 @@ const versionArg = z
 
 const READ_ONLY = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false } as const;
 
-const INSTRUCTIONS = `OpenIslet is an open project to design a personalised, drug-free cure for type 1 diabetes. The blueprint, called Islet-1, compares two primary designs (A and B) alongside an emergent challenger hypothesis, Design X (Islet-X). Nothing in it has been tested in the lab yet. Its scores are model estimates, not predictions. A contribution is an Islet Improvement Proposal (IIP): an idea to improve the blueprint, written up in a standard draft and checked by a blind review.
+const INSTRUCTIONS = `OpenIslet is an open project to design a personalised, drug-free cure for type 1 diabetes. The blueprint, called Islet-1, compares two primary designs (A and B) alongside an emergent challenger hypothesis, Design X (Islet-X). Nothing in it has been tested in the lab yet. Its scores are model estimates, not predictions. A contribution is an Islet Improvement Proposal (IIP): an idea to improve the blueprint or its roadmap, written up in a standard draft and checked by a blind review.
 
 Start with get_blueprint_overview. Use search_studies and get_study to check the evidence, get_conflicting_evidence to test a claim about a gene, and check_against_graveyard to see whether an idea has already been ruled out or flagged as risky. get_open_questions lists the known weak spots.
 
