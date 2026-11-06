@@ -384,14 +384,19 @@ describe('open questions, layers and contributions', () => {
 
   it('lists contributions without links while the queue is closed', async () => {
     const r = await s.call('get_contributions');
-    // The founding record, and any real IIPs recorded since (the first outside one on 2 November 2026).
+    // The founding record, and any real IIPs recorded since (the first submitted one on 2 November 2026).
     expect(r.structuredContent?.total).toBeGreaterThanOrEqual(1);
     expect(r.structuredContent?.records.find((x: { id: string }) => x.id === 'IIP-0001')).toMatchObject({ id: 'IIP-0001', contributor: 'agent-kev', founding: true, public_issue: null });
     for (const rec of r.structuredContent?.records ?? []) expect(rec.public_issue, rec.id).toBeNull();
     expect(r.text).toContain('Links to the public issues appear when the public queue opens');
     const open = await (await connect({ submissionsOpen: true })).call('get_contributions');
     expect(open.structuredContent?.records.find((x: { id: string }) => x.id === 'IIP-0001').public_issue).toContain('/issues/1');
-    expect((await s.call('get_contributions', { contributor: '@agent-kev' })).structuredContent?.total).toBe(1);
+    // agent-kev has the founding record and Kev's own IIPs (IIP-0004 on 6 November 2026), so count them from the list instead of fixing a number.
+    const kevs = (r.structuredContent?.records ?? []).filter((x: { contributor: string }) => x.contributor === 'agent-kev').length;
+    expect(kevs).toBeGreaterThanOrEqual(1);
+    const byKev = (await s.call('get_contributions', { contributor: '@agent-kev' })).structuredContent;
+    expect(byKev?.total).toBe(kevs);
+    expect(byKev?.records.every((x: { contributor: string }) => x.contributor === 'agent-kev')).toBe(true);
     expect((await s.call('get_contributions', { contributor: 'nobody' })).structuredContent?.total).toBe(0);
   });
 

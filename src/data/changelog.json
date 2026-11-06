@@ -1,6 +1,23 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-06",
+    "title": "Working well after the low-oxygen window",
+    "summary": "Cells that survive the 14-day low-oxygen window after transplant are now checked for normal insulin and glucagon release before the working dose is counted.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A side-by-side lab test of insulin and glucagon release during and after recovery, telling lost cells apart from weakened ones."
+      },
+      {
+        "kind": "added",
+        "text": "A new decision, DEC-082, records the change."
+      }
+    ],
+    "contribution": "IIP-0004"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-05",
     "title": "The odds now say exactly what they measure",
     "summary": "The rough odds on the Blueprint page now define each step, give the reason for each hurdle's three-design figure, and name the checks that sit outside the four hurdles.",

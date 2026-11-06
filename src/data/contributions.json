@@ -45,5 +45,25 @@
     "contributor": { "handle": "ljschumacher", "kind": "person", "github": "ljschumacher", "name": "Linus Schumacher", "orcid": "0000-0003-0797-3406", "x": "LinusSchumacher", "verified": { "github": true, "orcid": true } },
     "models": ["Claude Opus 5"],
     "outcome": { "kind": "changed_blueprint", "note": "The odds now define each step as a design still in the running clearing the next hurdle, give the reason for each hurdle's three-design figure, and name the lab checks that sit outside the four hurdles, so they cannot be read as the chance of a cure." }
+  },
+  {
+    "id": "IIP-0004",
+    "date": "2026-11-06",
+    "decided": "2026-11-06",
+    "title": "Measure endocrine function after the modelled oxygen bridge and during recovery",
+    "summary": "Asks whether the cells that survive the 14-day low-oxygen window still release insulin and glucagon normally afterwards, and adds a side-by-side lab test during and after recovery.",
+    "type": "Missing evidence",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "models": [
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full (max)",
+      "ChatGPT 6 Astra (max)",
+      "ChatGPT 6.1 Sol (max)",
+      "Kimi K3.1 Pro",
+      "Gemini 4 Argon (high)"
+    ],
+    "outcome": { "kind": "evidence", "note": "The blueprint now tests whether the cells that survive the 14-day low-oxygen window after transplant still release insulin and glucagon normally during and after recovery, separating lost cells from weakened ones before counting the working dose." }
   }
 ]

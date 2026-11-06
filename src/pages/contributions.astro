@@ -211,6 +211,13 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                                 )}
                               </p>
                             )}
+                            {/* With more than one IIP, each shows its own models, so one IIP's tools are never read as another's. */}
+                            {c.contributions.length > 1 && x.models.length > 0 && (
+                              <p class="crow__models">
+                                <span>AI models used, as reported by the contributor:</span>
+                                {x.models.map((m) => <span class="mono-chip">{m}</span>)}
+                              </p>
+                            )}
                             {x.follow_ups?.length ? (
                               <div class="citem__later">
                                 <strong>Since then:</strong>
@@ -229,10 +236,12 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                       })
                     }
                   </ul>
-                  <p class="crow__models">
-                    <span>AI models used, as reported by the contributor:</span>
-                    {c.models.map((m) => <span class="mono-chip">{m}</span>)}
-                  </p>
+                  {c.contributions.length === 1 && (
+                    <p class="crow__models">
+                      <span>AI models used, as reported by the contributor:</span>
+                      {c.models.map((m) => <span class="mono-chip">{m}</span>)}
+                    </p>
+                  )}
                   {!c.example && c.handle && <a class="textlink" href={`https://github.com/${c.handle}`} rel="noopener">@{c.handle} on GitHub →</a>}
                 </div>
               </details>
