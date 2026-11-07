@@ -65,5 +65,25 @@
       "Gemini 4 Argon (high)"
     ],
     "outcome": { "kind": "evidence", "note": "The blueprint now tests whether the cells that survive the 14-day low-oxygen window after transplant still release insulin and glucagon normally during and after recovery, separating lost cells from weakened ones before counting the working dose." }
+  },
+  {
+    "id": "IIP-0005",
+    "date": "2026-11-07",
+    "decided": "2026-11-07",
+    "title": "Test whether cell-free product effluent has PD-L1-dependent functional activity",
+    "summary": "Asks whether cell-free liquid conditioned by the engineered islet cells can suppress a separately stimulated immune response through the PD-L1 brake, and adds a controlled lab screen to test it.",
+    "type": "Missing evidence",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "models": [
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full (max)",
+      "ChatGPT 6 Astra (max)",
+      "ChatGPT 6.1 Sol (max)",
+      "Kimi K3.1 Pro",
+      "Gemini 4 Argon (high)"
+    ],
+    "outcome": { "kind": "evidence", "note": "The blueprint now adds a controlled lab check of whether liquid collected from around the engineered islet cells can calm a separate immune response on its own, alongside the existing tests of how much protective protein stays on the cells and how much is shed into the liquid." }
   }
 ]

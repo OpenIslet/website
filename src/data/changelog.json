@@ -1,6 +1,23 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-07",
+    "title": "Testing whether liquid from the cells can calm immune cells",
+    "summary": "Adds a controlled lab screen to check whether protective PD-L1 protein released by the engineered islet cells into the surrounding liquid is biologically active, not just present.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A staged lab test in Readout 3A and Locus 3 (DEC-083, IIP-0005) that checks whether cell-free liquid collected from around the engineered islet cells slows down a separately triggered immune response."
+      },
+      {
+        "kind": "added",
+        "text": "Controls for filter loss and leftover inflammatory signals so a positive or negative lab result cannot be confused with lingering test chemicals or lost particles."
+      }
+    ],
+    "contribution": "IIP-0005"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-06",
     "title": "Working well after the low-oxygen window",
     "summary": "Cells that survive the 14-day low-oxygen window after transplant are now checked for normal insulin and glucagon release before the working dose is counted.",
