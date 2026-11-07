@@ -2,7 +2,7 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-07",
-    "title": "Testing cell mixes with more insulin-making cells",
+    "title": "Testing cell mixes with a bigger share of insulin-making cells",
     "summary": "Adds a staged lab comparison of cell mixes between the current 60:30:10 recipe and insulin-cells-only controls, to see whether any lowers tissue volume or oxygen need without weakening protection against low blood sugar.",
     "changes": [
       {

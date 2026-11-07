@@ -104,6 +104,6 @@
       "Kimi K3.1 Pro",
       "Gemini 4 Argon (high)"
     ],
-    "outcome": { "kind": "evidence", "note": "The blueprint now adds a staged lab comparison of a few in-between cell mixes against the current 60:30:10 recipe, to see whether slightly more insulin-making cells could mean less tissue without weakening the other islet cells' protection against low blood sugar. The 60:30:10 recipe stays unless new measurements justify a change." }
+    "outcome": { "kind": "evidence", "note": "The blueprint now adds a staged lab comparison of a few in-between cell mixes against the current 60:30:10 recipe, to see whether a slightly bigger share of insulin-making cells could mean fewer cells are needed, without weakening the other islet cells' protection against low blood sugar. The 60:30:10 recipe stays unless new measurements justify a change." }
   }
 ]
