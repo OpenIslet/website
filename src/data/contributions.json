@@ -85,5 +85,25 @@
       "Gemini 4 Argon (high)"
     ],
     "outcome": { "kind": "evidence", "note": "The blueprint now adds a controlled lab check of whether liquid collected from around the engineered islet cells can calm a separate immune response on its own, alongside the existing tests of how much protective protein stays on the cells and how much is shed into the liquid." }
+  },
+  {
+    "id": "IIP-0006",
+    "date": "2026-11-07",
+    "decided": "2026-11-07",
+    "title": "Compare intermediate endocrine mixtures at measured functional output and graft burden",
+    "summary": "Asks whether islet-cell mixes between the current 60:30:10 recipe and insulin-cells-only controls can cut tissue volume or oxygen need while keeping hormone regulation intact, and adds a staged lab comparison.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "models": [
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full (max)",
+      "ChatGPT 6 Astra (max)",
+      "ChatGPT 6.1 Sol (max)",
+      "Kimi K3.1 Pro",
+      "Gemini 4 Argon (high)"
+    ],
+    "outcome": { "kind": "evidence", "note": "The blueprint now adds a staged lab comparison of a few in-between cell mixes against the current 60:30:10 recipe, to see whether slightly more insulin-making cells could mean less tissue without weakening the other islet cells' protection against low blood sugar. The 60:30:10 recipe stays unless new measurements justify a change." }
   }
 ]

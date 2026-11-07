@@ -2,6 +2,23 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-07",
+    "title": "Testing cell mixes with more insulin-making cells",
+    "summary": "Adds a staged lab comparison of cell mixes between the current 60:30:10 recipe and insulin-cells-only controls, to see whether any lowers tissue volume or oxygen need without weakening protection against low blood sugar.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A staged lab comparison in Readout 2 and the HIP-Core protocol (DEC-084, IIP-0006) of four in-between beta:alpha:delta cell recipes (70:20:10, 70:25:5, 80:15:5 and 80:10:10) against the 60:30:10 recipe and the insulin-cells-only controls."
+      },
+      {
+        "kind": "added",
+        "text": "A rule that any candidate recipe must be confirmed in fresh batches, for both insulin shut-off and low-sugar glucagon rescue, before anyone claims a smaller implant dose. The 60:30:10 recipe stays the default unless new measurements justify a change."
+      }
+    ],
+    "contribution": "IIP-0006"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-07",
     "title": "Testing whether liquid from the cells can calm immune cells",
     "summary": "Adds a controlled lab screen to check whether protective PD-L1 protein released by the engineered islet cells into the surrounding liquid is biologically active, not just present.",
     "changes": [
