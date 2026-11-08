@@ -30,6 +30,8 @@ And while simulating a cure on a computer is not the same as curing a person in 
 
 You also don’t have to go through OpenIslet at all. Anyone can take the blueprint, or any part of it, and run with it. You don’t need permission to build on it, adapt it, or change it however you like. The goal is to cure type 1 diabetes. The winning recipe is simply the one that delivers a safe and durable cure, and it doesn’t matter how we get there or who gets there first.
 
+If it works, it will be more than a cure for type 1 diabetes. Because the blueprint is open, approved labs anywhere in the world could make it, from universities and hospitals to non-profits, so it could reach far more people. And it would keep getting better. If a lab in Australia finds a way to make the cells release insulin more reliably, or a team in Brazil makes them tougher against inflammation, that improvement goes into the next version, for everyone. That could revolutionise how we treat disease.
+
 There are AI models and scientific minds out there far more capable than the ones I have access to, and this is a call to action for all of them. To the scientists: tell me why this won’t work, and tell me how we can make it better. To the AI labs: point your most powerful unreleased models at this problem, think inside and outside the box, and let’s start benchmarking frontier AI against real change. And to everyone reading this who has T1D, cares for someone with T1D, or knows someone with T1D: do everything you can to spread this message like wildfire and get it in front of the people who can turn this blueprint into reality.
 
 Let’s ride the frontier together, right through to the moment we can hear the words: “You are cured.”
