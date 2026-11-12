@@ -86,8 +86,9 @@ const aavs1: Locus = {
     'Intended on both copies of AAVS1; expression and AP1903 killing in every graft lineage remain unmeasured.',
     'The proposed target is fewer than 1 escape per 100 million cells capable of regrowth, not an observed kill rate.',
     'The inserted HNRNPA2B1-proximal candidate is chr7:26200580-26201034; the legacy CBX3 label does not establish published-fragment identity or function.',
+    'Stage-0 tests compare four anti-silencing and orientation variants at AAVS1 while checking host-gene (PPP1R12C) splicing and DNA methylation, alongside local 3D checks across three crystal structures of the switch’s parts (PDB 1BL4, 1JXQ and 1NW9).',
   ],
-  pmids: ['23307570', '28860464', '26455413', '11242052'],
+  pmids: ['23307570', '28860464', '26455413', '11242052', '35795779', '27626039'],
 };
 
 const ciita: Locus = {
@@ -102,9 +103,10 @@ const ciita: Locus = {
   ],
   notes: [
     'Removes HLA class II, which helps T cells recognise foreign cells.',
+    'Stage-0 RNA checks verify that switching CIITA off leaves no unintended splice forms or transcripts.',
     'Does not stop the patient’s own cells passing on cell debris (rule GY-010).',
   ],
-  pmids: [],
+  pmids: ['34407395'],
 };
 
 const named: Scenario[] = [
@@ -138,9 +140,9 @@ const named: Scenario[] = [
         notes: [
           'Removes the HLA proteins T cells use to spot foreign cells.',
           'Pictured: Arm 1B, with separate opposing promoters. Arm 1A instead encodes HLA-E first, then one 22-aa GSG-P2A element and CD47.',
-          'Full-length CD47 can slow insulin release, so a version without that signalling is being compared.',
+          'Full-length CD47 can slow insulin release; the surface-anchored form was tested in non-islet immune, blood-stem-cell and endothelial models, so insulin secretion and macrophage protection in stem-cell islets are compared side by side.',
           'The HLA-E peptide is a candidate immune signal. Shared-CD94 reference contacts cannot establish NKG2A-over-NKG2C selectivity.',
-          'Open question: is the level high enough in every cell type? A lab test would settle it.',
+          'Stage-0 checks measure surface density across every cell type, track promoter DNA methylation in Arm 1B across maturation, and confirm nearby genes remain undisturbed.',
         ],
         pmids: ['38508139', '37156915', '37820008', '30778232', '28504668', '37264229'],
       },
@@ -159,10 +161,10 @@ const named: Scenario[] = [
         ],
         notes: [
           'The proposed inflammation-responsive protection retains STAT1; switching STAT1 off would conflict with this trigger.',
-          'SERPINB9 is made first, then PD-L1.',
-          'A lab test would compare this order with the reverse.',
+          'SERPINB9 is made first, then PD-L1; a lab test compares this order with the reverse while keeping the template inside one AAV6 virus.',
+          'Stage-0 tests check that nearby inflammatory genes (CXCL9 and CXCL11) and overlapping ART3 transcripts stay undisturbed, and test whether PD-L1 shed into cell-free liquid around the cells calms a separate immune response on its own.',
         ],
-        pmids: ['28526819', '30952982', '28813417'],
+        pmids: ['28526819', '30952982', '28813417', '29345283'],
       },
       aavs1,
     ],
@@ -307,7 +309,7 @@ const designX: Scenario = {
     },
     proposal: {
       title: 'The molecular proposal',
-      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals, a protective starting cell line, a dedicated outer-ring arrangement for the Fas-ligand gel, and a thinner 100 µm central oxygen layer. It does not include the insulin-gene edit. It is a written proposal: its DNA is not built yet, it has no score, and nobody knows yet how well it would work.',
+      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals, a protective starting cell line, a dedicated outer-ring arrangement for the Fas-ligand gel, and a thinner 100 µm central oxygen layer. It does not include the insulin-gene edit. Across all designs, the zinc transporter SLC30A8 (ZnT8) is kept intact and four extra candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) stay held outside core designs behind written lab pass rules. None of this is built, measured or scored yet.',
     },
   },
   proposals: [
@@ -319,12 +321,12 @@ const designX: Scenario = {
     {
       art: 'line',
       title: 'A protective stem-cell line',
-      text: 'Start from a stem-cell line that already carries a natural variant of the insulin gene linked to a lower risk of type 1 diabetes. This is a choice of starting cells, not an edit, and any protection is unproven.',
+      text: `Start from a stem-cell line that already carries a natural variant of the insulin gene linked to a lower risk of type 1 diabetes, alongside testing how a naturally protective TYK2 variant behaves across the ${release.counts.virtualPatients.toLocaleString('en-US')}-patient simulation. Choosing a starting line is not an edit, and any protection is unproven.`,
     },
     {
       art: 'gel',
       title: 'A layered gel around the graft',
-      text: 'While all three designs include clotting-control and Fas-ligand gel signals, the Stage-0 Design X proposal places the Fas-ligand particles strictly in an outer boundary ring around a thinner 100 µm central oxygen layer so they stay away from the beta cells. Each signal must pass its own safety test first.',
+      text: 'While all three designs include clotting-control and Fas-ligand gel signals, the Stage-0 Design X proposal places the Fas-ligand particles strictly in an outer boundary ring around a thinner 100 µm central oxygen layer so they stay away from the beta cells. Stage-0 tests also check immune rebound once the gel wears off and test an optional CD55 complement shield while keeping endogenous CD59 insulin release intact.',
     },
   ],
 };
@@ -332,12 +334,12 @@ const designX: Scenario = {
 export const scenarios: Scenario[] = [...named, designX];
 
 export const niche = [
-  { k: 'Cell mix', v: '60% beta, 30% alpha, 10% delta' },
-  { k: 'Cluster size', v: '120 µm or less' },
-  { k: 'Blood vessels', v: 'Proposed isogenic vascular support; perfusion and integration unmeasured' },
-  { k: 'Early oxygen support', v: 'Proposed oxygen-releasing silicone-peroxide layer with catalase; release half-life and kinetic law must be measured for each recipe' },
-  { k: 'Layer thickness', v: '350 µm is a declared model input; a safe dose, area and oxygen margin remain unvalidated' },
-  { k: 'Gel particles', v: 'Temporary clotting-control and Fas-ligand gel particles to block complement and turn away attacking T cells (placed in a separate outer ring in the Stage-0 Design X proposal); each signal must pass a safety test first' },
+  { k: 'Cell mix', v: '60% beta, 30% alpha, 10% delta by default; higher-beta mixes (70:20:10 to 80:10:10) are compared in Stage 0 and replace it only if fresh batches confirm insulin shut-off and low-sugar glucagon rescue' },
+  { k: 'Cluster size', v: '120 µm or less in the baseline model (capped at 100 µm in the thinner-core Stage-0 designs)' },
+  { k: 'Blood vessels', v: 'Proposed stem-cell-derived blood-vessel fragments; tested in the model across late-connecting and weaker vessels alongside a zero-vessel lower bound, and unmeasured in a graft' },
+  { k: 'Early oxygen support', v: 'Proposed silicone-peroxide layer with catalase; an 84-run sweep shows narrow passing windows, so each recipe’s particle size, release law and half-life, plus insulin and glucagon recovery after the 14-day low-oxygen window, must be measured' },
+  { k: 'Layer thickness', v: '350 µm total thickness (central oxygen layer about 119 µm in the scored baseline, thinned to 100 µm in Stage-0 proposals); a safe dose, area and oxygen margin remain unvalidated' },
+  { k: 'Gel particles', v: 'Temporary clotting-control and Fas-ligand gel particles (outer boundary ring in the Stage-0 Design X proposal); Stage-0 tests check beta-cell safety, immune rebound once the gel washes out, and an optional CD55 complement shield' },
 ];
 
 export const assets = assetList;

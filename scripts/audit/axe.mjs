@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 const axeSource = fs.readFileSync(require.resolve('axe-core/axe.min.js'), 'utf8');
 const BASE = process.env.BASE ?? 'http://127.0.0.1:4400';
 const CHROME = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const pages = (process.env.PAGES ?? '/,/start,/blueprint,/idea-graveyard,/roadmap,/contributions,/contact,/about,/submit,/submit/finish,/nope').split(',');
+const pages = (process.env.PAGES ?? '/,/start,/blueprint,/ceg,/idea-graveyard,/roadmap,/contributions,/contact,/about,/submit,/submit/finish,/nope').split(',');
 const viewports = [
   { name: 'desktop', width: 1280, height: 900 },
   { name: 'phone', width: 375, height: 812, mobile: true },

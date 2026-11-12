@@ -534,6 +534,19 @@ npm run build</pre>
                   <a class="btn btn--primary" href={`/downloads/${x.path}`} download>Download</a>
                 </li>
               ))}
+              {g.id === 'check' && (
+                <li class="assets__row">
+                  <div class="assets__name">
+                    <strong>Context–Evidence Graph: method paper, guide and verifier</strong>
+                    <span class="assets__what">How a Context–Evidence Graph keeps experimental groups, units and settings attached to every finding, with a plain-English guide and Python verifier for building one in any field.</span>
+                    <span class="assets__meta">Scientists, developers and AI users · Guide, PDF and Python · CC-BY-4.0 / Apache-2.0</span>
+                  </div>
+                  <div class="assets__btns">
+                    <a class="btn btn--quiet" href="/ceg">Read the guide</a>
+                    <a class="btn btn--primary" href="/ceg/context-evidence-graph.pdf" download>Download PDF</a>
+                  </div>
+                </li>
+              )}
             </ul>
           </div>
         ))
@@ -1698,6 +1711,12 @@ npm run build</pre>
   .assets__row .btn {
     min-width: 8rem;
   }
+  .assets__btns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.625rem;
+  }
   .dlnotes {
     margin-top: 2rem;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1748,6 +1767,7 @@ npm run build</pre>
     :global(header.nav),
     :global(footer),
     :global(.skip),
+    :global(.odds),
     .intro,
     .subnav,
     .drawing,
@@ -1772,6 +1792,11 @@ npm run build</pre>
     .paper {
       max-width: none;
       padding: 0;
+    }
+    .paperfig {
+      break-inside: avoid;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
     }
   }
 

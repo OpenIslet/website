@@ -5,7 +5,7 @@ import puppeteer from 'puppeteer-core';
 
 const BASE = process.env.BASE ?? 'http://127.0.0.1:4400';
 const CHROME = process.env.CHROME ?? '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const pages = (process.env.PAGES ?? '/,/blueprint,/roadmap,/start,/start?route=mcp,/contributions,/idea-graveyard,/contact,/about,/submit,/nope').split(',');
+const pages = (process.env.PAGES ?? '/,/blueprint,/ceg,/roadmap,/start,/start?route=mcp,/contributions,/idea-graveyard,/contact,/about,/submit,/nope').split(',');
 const widths = (process.env.WIDTHS ?? '390,600,820,1024,1280,1440').split(',').map(Number);
 
 const browser = await puppeteer.launch({ executablePath: CHROME, headless: true });

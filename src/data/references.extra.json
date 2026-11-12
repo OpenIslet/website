@@ -68,5 +68,205 @@
     "journal": "Int J Mol Sci",
     "year": 2022,
     "doi": "10.3390/ijms23126842"
+  },
+  "27807284": {
+    "title": "Resolving TYK2 locus genotype-to-phenotype differences in autoimmunity.",
+    "authors": [
+      "Dendrou CA",
+      "Cortes A",
+      "Shipman L",
+      "Evans HG",
+      "Attfield KE",
+      "Jostins L",
+      "Barber T",
+      "Kaur G",
+      "Kuttikkatte SB",
+      "Leach OA",
+      "Desel C",
+      "Faergeman SL",
+      "Cheeseman J",
+      "Neville MJ",
+      "Sawcer S",
+      "Compston A",
+      "Johnson AR",
+      "Everett C",
+      "Bell JI",
+      "Karpe F",
+      "Ultsch M",
+      "Eigenbrot C",
+      "McVean G",
+      "Fugger L"
+    ],
+    "journal": "Sci Transl Med",
+    "year": 2016,
+    "doi": "10.1126/scitranslmed.aag1974"
+  },
+  "29345283": {
+    "title": "Regulation of programmed-death ligand in the human head and neck squamous cell carcinoma microenvironment is mediated through matrix metalloproteinase-mediated proteolytic cleavage.",
+    "authors": [
+      "Hira-Miyazawa M",
+      "Nakamura H",
+      "Hirai M",
+      "Kobayashi Y",
+      "Kitahara H",
+      "Bou-Gharios G",
+      "Kawashiri S"
+    ],
+    "journal": "Int J Oncol",
+    "year": 2018,
+    "doi": "10.3892/ijo.2017.4221"
+  },
+  "29867165": {
+    "title": "Local immunomodulation Fas ligand-engineered biomaterials achieves allogeneic islet graft acceptance.",
+    "authors": [
+      "Headen DM",
+      "Woodward KB",
+      "Coronel MM",
+      "Shrestha P",
+      "Weaver JD",
+      "Zhao H",
+      "Tan M",
+      "Hunckler MD",
+      "Bowen WS",
+      "Johnson CT",
+      "Shea L",
+      "Yolcu ES",
+      "García AJ",
+      "Shirwan H"
+    ],
+    "journal": "Nat Mater",
+    "year": 2018,
+    "doi": "10.1038/s41563-018-0099-0"
+  },
+  "32668238": {
+    "title": "Modeling Type 1 Diabetes In Vitro Using Human Pluripotent Stem Cells.",
+    "authors": [
+      "Leite NC",
+      "Sintov E",
+      "Meissner TB",
+      "Brehm MA",
+      "Greiner DL",
+      "Harlan DM",
+      "Melton DA"
+    ],
+    "journal": "Cell Rep",
+    "year": 2020,
+    "doi": "10.1016/j.celrep.2020.107894"
+  },
+  "35559682": {
+    "title": "FasL microgels induce immune acceptance of islet allografts in nonhuman primates.",
+    "authors": [
+      "Lei J",
+      "Coronel MM",
+      "Yolcu ES",
+      "Deng H",
+      "Grimany-Nuno O",
+      "Hunckler MD",
+      "Ulker V",
+      "Yang Z",
+      "Lee KM",
+      "Zhang A",
+      "Luo H",
+      "Peters CW",
+      "Zou Z",
+      "Chen T",
+      "Wang Z",
+      "McCoy CS",
+      "Rosales IA",
+      "Markmann JF",
+      "Shirwan H",
+      "García AJ"
+    ],
+    "journal": "Sci Adv",
+    "year": 2022,
+    "doi": "10.1126/sciadv.abm9881"
+  },
+  "35666870": {
+    "title": "Alternative splicing encodes functional intracellular CD59 isoforms that mediate insulin secretion and are down-regulated in diabetic islets.",
+    "authors": [
+      "Golec E",
+      "Ekström A",
+      "Noga M",
+      "Omar-Hmeadi M",
+      "Lund PE",
+      "Villoutreix BO",
+      "Krus U",
+      "Wozniak K",
+      "Korsgren O",
+      "Renström E",
+      "Barg S",
+      "King BC",
+      "Blom AM"
+    ],
+    "journal": "Proc Natl Acad Sci U S A",
+    "year": 2022,
+    "doi": "10.1073/pnas.2120083119"
+  },
+  "38709159": {
+    "title": "Engineering Pancreatic Islets to Transiently Codisplay on Their Surface Thrombomodulin and CD47 Immunomodulatory Proteins as a Means of Mitigating Instant Blood-Mediated Inflammatory Reaction following Intraportal Transplantation.",
+    "authors": [
+      "Turan A",
+      "Tarique M",
+      "Zhang L",
+      "Kazmi S",
+      "Ulker V",
+      "Tedla MG",
+      "Badal D",
+      "Yolcu ES",
+      "Shirwan H"
+    ],
+    "journal": "J Immunol",
+    "year": 2024,
+    "doi": "10.4049/jimmunol.2300743"
+  },
+  "38867450": {
+    "title": "Thymidylate synthase disruption to limit cell proliferation in cell therapies.",
+    "authors": [
+      "Sartori-Maldonado R",
+      "Montaser H",
+      "Soppa I",
+      "Eurola S",
+      "Juutila J",
+      "Balaz M",
+      "Puttonen H",
+      "Otonkoski T",
+      "Saarimäki-Vire J",
+      "Wartiovaara K"
+    ],
+    "journal": "Mol Ther",
+    "year": 2024,
+    "doi": "10.1016/j.ymthe.2024.06.014"
+  },
+  "39169271": {
+    "title": "Regulated and adaptive in vivo insulin secretion from islets only containing β-cells.",
+    "authors": [
+      "Perez-Frances M",
+      "Bru-Tari E",
+      "Cohrs C",
+      "Abate MV",
+      "van Gurp L",
+      "Furuyama K",
+      "Speier S",
+      "Thorel F",
+      "Herrera PL"
+    ],
+    "journal": "Nat Metab",
+    "year": 2024,
+    "doi": "10.1038/s42255-024-01114-8"
+  },
+  "40404627": {
+    "title": "Improving cellular fitness of human stem cell-derived islets under hypoxia.",
+    "authors": [
+      "Wang X",
+      "Brielle S",
+      "Kenty-Ryu J",
+      "Korover N",
+      "Bavli D",
+      "Pop R",
+      "Melton DA"
+    ],
+    "journal": "Nat Commun",
+    "year": 2025,
+    "doi": "10.1038/s41467-025-59924-7"
   }
 }

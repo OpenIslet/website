@@ -91,7 +91,7 @@ export const stages: Stage[] = [
     why: 'Lab work is slow, so we find as many weak spots as we can on paper and in software before it starts. Every flaw found here saves months later.',
     who: 'project',
     points: [
-      `Read the evidence: ${n(c.studies)} studies and ${n(c.findings)} findings, each linked to the sentence it came from.`,
+      `Read the evidence: ${n(c.studies)} studies and ${n(c.findings)} findings for the scoring model, plus ${n(c.cegStudies)} primary studies and ${n(c.cegOutcomes)} structured outcomes in the Type 1 Diabetes Context–Evidence Graph, each linked to its source.`,
       `Rule out what the evidence argues against: ${c.graveyardRules} Idea Graveyard rules applied to ${n(c.designs)} designs.`,
       'Check the design at five layers: the studies, the DNA, the proteins, the graft and body, and patient matching.',
       'Score honestly: the scores show how much is still assumption.',
@@ -102,7 +102,7 @@ export const stages: Stage[] = [
     unknown: 'Nothing in the blueprint has been tested in a lab yet. The scores are model estimates on a 0 to 1 scale, not survival chances.',
     gate: `Version ${release.version} is an open computational blueprint; lab qualifications remain pending and accepted evidence can revise it.`,
     science: [
-      `Corpus: ${n(c.studies)} study records and ${n(c.findings)} extracted findings with source pointers. ${n(c.designs)} designs are scored under ${c.graveyardRules} Idea Graveyard rules.`,
+      `Corpus: ${n(c.studies)} study records and ${n(c.findings)} extracted findings in the scoring set, alongside ${n(c.cegStudies)} primary empirical studies (${n(c.cegArms)} groups, ${n(c.cegOutcomes)} structured outcomes and ${n(c.cegLinks)} blueprint links, screened from ${n(c.cegScreened)} candidate records) in the Context–Evidence Graph. ${n(c.designs)} designs are scored under ${c.graveyardRules} Idea Graveyard rules.`,
       'Five layers: the literature, the DNA (sequence and grammar checks), the proteins (AlphaFold models and experimental structures), tissue and body simulations, and a patient compiler run on synthetic patients.',
       'Direction and penalty labels in the corpus are rule-based heuristics. They have not been independently adjudicated.',
       'The first construct, cluster-density, differentiation and immune and insulin-secretion acceptance experiments are pre-registered and still pending.',

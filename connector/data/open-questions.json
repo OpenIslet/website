@@ -103,7 +103,7 @@
     "id": "OQ-005",
     "title": "Does the oxygen supply hold up under pessimistic assumptions?",
     "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In the computer model the margin inside each cluster of cells is thin, and the model uses a single 68-hour oxygen-release half-life across recipes that pack more calcium peroxide into smaller beads. With a faster or slower release, or late blood vessels, oxygen or peroxide safety can fail.",
-    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint.",
+    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint.",
     "tests": [
       "5"
     ],
@@ -118,8 +118,8 @@
       "36971050",
       "35743287"
     ],
-    "settle": "Measure crystal and microbead size distributions, oxygen-release half-life and kinetic law for each calcium-peroxide recipe in its implanted form, and measure oxygen inside real graft slabs over the first 3 days.",
-    "source": "Concise specification sections 5 and 9; IIP-0010",
+    "settle": "Measure crystal and microbead size distributions, oxygen-release half-life and kinetic law for each calcium-peroxide recipe in its implanted form, and measure oxygen inside real graft slabs over the first 3 days across delayed or weak vascular ingrowth.",
+    "source": "Concise specification sections 5 and 9; IIP-0002 and IIP-0010",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -271,7 +271,7 @@
     "id": "OQ-012",
     "title": "Can the safety switch remove almost every cell?",
     "plain": "Every cell carries a safety switch that a drug (AP1903) should trigger to remove them. The proposed target is fewer than one cell in 100 million able to regrow. Nothing has shown that yet.",
-    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches).",
+    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation variants at AAVS1 while checking host-gene (PPP1R12C) splicing and DNA methylation, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9; IIP-0011). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches).",
     "tests": [
       "5"
     ],
@@ -287,10 +287,13 @@
       "23307570",
       "28860464",
       "26455413",
-      "11242052"
+      "11242052",
+      "9724721",
+      "11734640",
+      "12620238"
     ],
-    "settle": "Give the drug to edited cultures, including at low oxygen, and count survivors.",
-    "source": "Concise specification sections 4.4 and 9",
+    "settle": "Compare the four AAVS1 anti-silencing and orientation arms across maturation, check PPP1R12C splicing and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count clonogenic survivors.",
+    "source": "Concise specification sections 4.4 and 9; IIP-0011",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -417,6 +420,93 @@
     ],
     "settle": "Keep Stage-0 Readouts 3A, 3B and 3C separate, then run a Stage-1 qualification pilot testing 48 to 72 hour background lysis, multi-lineage survival without artificial cytokine activation, and post-challenge insulin secretion recovery.",
     "source": "IIP-0007; Stage-0 execution playbook Readout 3",
+    "status": "open",
+    "added": "2026-11-12",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-018",
+    "title": "Do insulin and glucagon release recover after low oxygen, and can higher-beta mixes match the 60:30:10 default?",
+    "plain": "Surviving the first 14 days of low oxygen does not guarantee that the cells still release insulin and glucagon properly afterwards. Separately, packing more beta cells into each cluster could shrink the graft if insulin shut-off and low-sugar glucagon rescue still hold up.",
+    "detail": "Raised in IIP-0004 and IIP-0006. Surviving a 336-hour hypoxic bridge does not establish preserved glucose-regulated insulin secretion, rapid shut-off, or low-glucose glucagon rescue during and after reoxygenation (Wang 2025, PMID 40404627; Chendke 2023, PMID 37476069). Stage 0 measures hormone function after recovery before crediting functional dose, and compares intermediate beta:alpha:delta mixtures (70:20:10, 70:25:5, 80:15:5 and 80:10:10) beside the 60:30:10 default and pure beta-cell controls (Perez-Frances 2024, PMID 39169271), keeping 60:30:10 unless independent batches pass both shut-off and glucagon-rescue checks.",
+    "tests": [
+      "1",
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [
+      "40404627",
+      "37476069",
+      "39169271"
+    ],
+    "settle": "Measure dynamic insulin secretion, 3-minute shut-off and low-sugar glucagon release after recovery from the 14-day low-oxygen window, and compare intermediate beta:alpha:delta mixtures against 60:30:10 across independent differentiation batches.",
+    "source": "Concise specification sections 5 and 9; IIP-0004 and IIP-0006",
+    "status": "open",
+    "added": "2026-11-12",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-019",
+    "title": "Do the core gene insertions leave nearby genes and splicing intact, and does shed PD-L1 act in the liquid around the graft?",
+    "plain": "Inserting protective genes at B2M, CXCL10 and AAVS1 or switching off CIITA could accidentally disturb nearby genes, host-gene splicing or promoter activity over time. At CXCL10, enzymes can also clip PD-L1 off the cell surface into the surrounding liquid, where its effect on immune cells is unknown.",
+    "detail": "Raised in IIP-0005 and IIP-0011. Sequence and DNA-grammar checks cannot certify insertion or splicing safety. Stage 0 tracks promoter CpG methylation across maturation in Arm 1B at B2M, checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that nearby CXCL9, CXCL11 and overlapping ART3 isoforms stay undisturbed within the single-AAV6 packaging limit, and tests minimally processed cell-free medium conditioned by inflamed edited islets (distinct from calcium-peroxide effluent) on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283).",
+    "tests": [
+      "2A",
+      "2B",
+      "3",
+      "4",
+      "5"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [
+      "29345283",
+      "19904234",
+      "34407395"
+    ],
+    "settle": "Run targeted RNA-seq, splice-junction and bisulfite methylation assays across resting and inflamed edited islets at all four core loci, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
+    "source": "Concise specification sections 4.1 to 4.4, 6 and 9; IIP-0005 and IIP-0011",
+    "status": "open",
+    "added": "2026-11-12",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-020",
+    "title": "Do edited islets stay protected after temporary gel signals wear off, and can added CD55 help without hurting insulin release?",
+    "plain": "Temporary gel particles carrying clotting-control and Fas-ligand proteins wash out after the early transplant window, which could let the immune system rebound against the bare cells. Adding a extra complement shield (CD55) must also be tested on the exact same edited cells while keeping the cell's own CD59 insulin-release machinery intact.",
+    "detail": "Raised in IIP-0012. Prior SA-FasL microgel studies used short-course rapamycin and measured fluorescent retention rather than functional depletion half-life (Headen 2018, PMID 29867165; Lei 2022, PMID 35559682; Turan 2024, PMID 38709159). Stage 0 compares never-conditioned, conditioned-then-depleted and active-gel sibling aliquots under fresh complement and T-cell rechallenge, tests ectopic CD55(SCR1-4) on the identical edited background while preserving endogenous intracellular CD59 isoforms needed for insulin exocytosis (Golec 2022, PMID 35666870; van der Torren 2017, PMID 27787618), and holds four extra candidate edits (TYMS, NLRC5, endogenous CD274 activation and TXNIP) outside core designs behind pre-registered pass gates.",
+    "tests": [
+      "1",
+      "2A",
+      "2B",
+      "3",
+      "4"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [
+      "29867165",
+      "35559682",
+      "38709159",
+      "35666870",
+      "27787618",
+      "38867450"
+    ],
+    "settle": "Compare never-treated, gel-depleted and active-gel edited islets under fresh human serum and T-cell rechallenge, and test edited islets with and without ectopic CD55 for complement survival and glucose-stimulated insulin secretion.",
+    "source": "Concise specification sections 4.6, 5 and 9; IIP-0012",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

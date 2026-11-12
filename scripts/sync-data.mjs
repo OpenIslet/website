@@ -266,7 +266,7 @@ if (existsSync(specPath)) {
       references[pmid] = {
         pmid,
         title: d.title,
-        authors: d.authors ?? [],
+        authors: d.authors?.length ? d.authors : extra[pmid]?.authors ?? [],
         journal: d.journal,
         year: d.pub_year,
         doi: d.doi,

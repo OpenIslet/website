@@ -1,0 +1,364 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { release, startHref } from '../data/site';
+
+const n = (v: number) => v.toLocaleString('en-US');
+const c = release.counts;
+const cegRepo = 'https://github.com/openislet/ceg';
+
+const quickstart = `# clone the open repository (needs Python 3.9 or newer, zero external packages)
+git clone https://github.com/openislet/ceg.git
+cd ceg
+
+# run worked examples across antifibrotic drugs, exercise physiology and type 1 diabetes
+python3 -B domain_vignettes.py --domain both
+python3 -B domain_vignettes.py --domain t1d_islet_replacement
+
+# run the 1,931-case synthetic benchmark and the 12-study PubMed evaluation
+python3 -B ceg_synthetic_benchmark.py
+python3 -B ceg_real_text_evaluation.py`;
+---
+
+<Layout
+  title="Context–Evidence Graph"
+  description="An open method to read scientific studies with AI without losing experimental context, with a plain-English guide, methodology paper and Python verifier."
+>
+  <section class="intro">
+    <div class="container">
+      <p class="eyebrow">Open method</p>
+      <h1 class="h1 intro__h">Context–Evidence Graph <span class="nobr">(CEG)</span></h1>
+      <p class="lead intro__lead">
+        Studies on the same question often disagree because the experimental context differed, not because one paper is wrong. A Context–Evidence Graph keeps experimental groups, doses, units and settings attached to every result, so AI assistants and people can explore literature in any field without flattening real differences.
+      </p>
+
+      <div class="intro__cta">
+        <a class="btn btn--primary" href="/ceg/context-evidence-graph.pdf" download>Download the paper (PDF)</a>
+        <a class="btn btn--quiet" href={cegRepo} rel="noopener">Code and how-to guide on GitHub →</a>
+      </div>
+
+      <div class="explain">
+        <div class="explain__item">
+          <p class="explain__k">1 · Keeps the context</p>
+          <h2>Arms, units and doses stay attached</h2>
+          <p>Instead of turning a paper into one short sentence, each finding keeps its treatment and control groups, sample size, measurement unit and exact place in the paper.</p>
+        </div>
+        <div class="explain__item">
+          <p class="explain__k">2 · Shows why studies differ</p>
+          <h2>Settings are never collapsed onto one scale</h2>
+          <p>Cells in a dish, a mouse graft, donated human tissue and a clinical trial stay distinct settings. Disagreement across settings stays visible as biology, not noise.</p>
+        </div>
+        <div class="explain__item">
+          <p class="explain__k">3 · Explore freely, check at save</p>
+          <h2>Unrestricted thinking, strict verification</h2>
+          <p>An AI assistant can brainstorm, compare mechanisms and propose ideas freely in chat. Only records saved to the shared graph must pass deterministic software checks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual comparison -->
+  <section class="section section--white">
+    <div class="container">
+      <p class="eyebrow">Why flat summaries break</p>
+      <h2 class="h2 sec__h">What gets lost when papers are compressed into one-line claims</h2>
+      <p class="lead sec__lead">
+        Standard retrieval pipelines strip away experimental arms and units to fit snippets into a prompt. When two papers reach opposite conclusions under different conditions, a flat summary either averages them into mush or picks a side at random.
+      </p>
+
+      <figure class="diagram">
+        <div class="diagram__panel" data-scroll-region data-sidescroll data-label="Comparison diagram">
+          <svg viewBox="0 0 1080 390" role="img" aria-label="Comparison diagram. On the left, flat text summaries collapse Study 1 and Study 2 into a false contradiction. On the right, a Context–Evidence Graph keeps each study’s experimental setting, treatment and control arms, units and source pointer separate, revealing a context-dependent effect.">
+            <!-- Left: flat summary -->
+            <rect x="24" y="24" width="468" height="342" rx="14" fill="#13293a" stroke="rgba(255,255,255,0.16)"></rect>
+            <text x="52" y="62" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#f2a93b" letter-spacing="1.2">FLAT SUMMARY PIPELINE</text>
+            <text x="52" y="92" font-family="IBM Plex Sans, sans-serif" font-size="20" font-weight="600" fill="#ffffff">Context stripped away</text>
+
+            <rect x="52" y="118" width="412" height="62" rx="8" fill="#0b1b26" stroke="rgba(255,255,255,0.14)"></rect>
+            <text x="70" y="145" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#e6edf2">Paper A snippet: “Signal X protected the cells”</text>
+            <text x="70" y="167" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#a6b6c2">Setting, dose and assay dropped during chunking</text>
+
+            <rect x="52" y="196" width="412" height="62" rx="8" fill="#0b1b26" stroke="rgba(255,255,255,0.14)"></rect>
+            <text x="70" y="223" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#e6edf2">Paper B snippet: “Signal X impaired function”</text>
+            <text x="70" y="245" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#a6b6c2">Different isoform and 5× higher level hidden</text>
+
+            <rect x="52" y="282" width="412" height="58" rx="8" fill="rgba(242,169,59,0.14)" stroke="#f2a93b"></rect>
+            <text x="70" y="308" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#ffd596">Result: apparent contradiction or guessed average</text>
+            <text x="70" y="328" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#dbe3e9">No way to check units, arms or exact source table</text>
+
+            <!-- Right: CEG -->
+            <rect x="524" y="24" width="532" height="342" rx="14" fill="#13293a" stroke="#8ea0ff" stroke-width="1.5"></rect>
+            <text x="552" y="62" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#8ea0ff" letter-spacing="1.2">CONTEXT–EVIDENCE GRAPH</text>
+            <text x="552" y="92" font-family="IBM Plex Sans, sans-serif" font-size="20" font-weight="600" fill="#ffffff">Structured arms, settings and source pins</text>
+
+            <rect x="552" y="118" width="228" height="140" rx="8" fill="#0b1b26" stroke="#5b73ff"></rect>
+            <text x="568" y="143" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#8ea0ff">STUDY A · HUMAN DISH</text>
+            <text x="568" y="167" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Arm A1 vs A0 control</text>
+            <text x="568" y="190" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Surface-anchored isoform</text>
+            <text x="568" y="211" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Macrophage survival (%)</text>
+            <text x="568" y="238" font-family="IBM Plex Mono, monospace" font-size="12" fill="#7be0b8">Pin: Fig. 3B · verified</text>
+
+            <rect x="800" y="118" width="228" height="140" rx="8" fill="#0b1b26" stroke="#5b73ff"></rect>
+            <text x="816" y="143" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#8ea0ff">STUDY B · MOUSE GRAFT</text>
+            <text x="816" y="167" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Arm B2 vs B0 control</text>
+            <text x="816" y="190" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Full-length overexpression</text>
+            <text x="816" y="211" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Insulin release (SI ratio)</text>
+            <text x="816" y="238" font-family="IBM Plex Mono, monospace" font-size="12" fill="#7be0b8">Pin: Table 1 · verified</text>
+
+            <rect x="552" y="282" width="476" height="58" rx="8" fill="rgba(123,224,184,0.12)" stroke="#7be0b8"></rect>
+            <text x="570" y="308" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#b8f3da">Result: real trade-off stays clear and testable</text>
+            <text x="570" y="328" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#dbe3e9">Different isoforms and endpoints stay distinct; every number is auditable</text>
+          </svg>
+        </div>
+        <figcaption>How a Context–Evidence Graph preserves the experimental boundary conditions that explain why two studies point in different directions.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- How to build or use one in any field -->
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">How to use it</p>
+      <h2 class="h2 sec__h">Build or query a Context–Evidence Graph in any field</h2>
+      <p class="lead sec__lead">
+        Nothing in the method is specific to diabetes or biology. The same six-part graph works for oncology, cardiology, ecology, materials science, clinical trials or machine-learning benchmarks.
+      </p>
+
+      <div class="steps">
+        <div class="card step">
+          <span class="chip chip--ink">Step 1</span>
+          <h3>Turn each paper into groups and outcomes</h3>
+          <p class="pretty">For each primary study, list every experimental and control group separately (species, tissue or system, intervention, dose and timing), then record each measured outcome with its exact unit, sample size and figure or table pointer.</p>
+        </div>
+        <div class="card step">
+          <span class="chip chip--ink">Step 2</span>
+          <h3>Keep settings in a partial order</h3>
+          <p class="pretty">Declare which experimental settings are closer to the target question without pretending two different models can always be ranked. A human cell dish and a mouse graft answer different parts of the problem; both stay visible.</p>
+        </div>
+        <div class="card step">
+          <span class="chip chip--ink">Step 3</span>
+          <h3>Check every saved record with the verifier</h3>
+          <p class="pretty">Explore freely in an AI chat window, then pass candidate additions through <span class="mono">ceg_reference.py</span>. The verifier rejects incompatible units, orphaned arms, altered history or missing source pins before anything enters the shared ledger.</p>
+        </div>
+      </div>
+
+      <div class="quickstart">
+        <h3 class="h3">Try the standalone Python package</h3>
+        <p class="quickstart__p pretty">
+          The reference verifier (<span class="mono">ceg_reference.py</span>) uses only the Python 3 standard library. Clone the repository to run three worked examples, the 1,931-case synthetic benchmark and the 12-study PubMed evaluation, or adapt the schema and prompt templates in <span class="mono">HOW-TO-USE-CEG.md</span> to a new corpus.
+        </p>
+        <div class="code on-dark">
+          <pre data-scroll-region data-label="Commands to run the Context–Evidence Graph verifier">{quickstart}</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Working example + resources -->
+  <section class="section section--white">
+    <div class="container">
+      <p class="eyebrow">In practice</p>
+      <h2 class="h2 sec__h">Paper, open code and a {n(c.cegStudies)}-study working example</h2>
+      <div class="pair">
+        <div class="card pair__card">
+          <p class="kicker">Method paper &amp; reference code</p>
+          <h3 class="h3">Context–Evidence Graph (CEG): In-Context Multi-Study Scientific Synthesis with Large Language Models</h3>
+          <p class="pretty">
+            Defines the six-tuple typed hypergraph, partially ordered context lattice, unit-compatibility checks, append-only ledger rules, synthetic and PubMed benchmarks, and an explore-freely / verify-at-commit workflow for long-context language models.
+          </p>
+          <p class="pair__meta">Manuscript &amp; data: CC BY 4.0 · Reference verifier &amp; scripts: Apache 2.0</p>
+          <div class="pair__links">
+            <a class="btn btn--primary" href="/ceg/context-evidence-graph.pdf" download>Download PDF</a>
+            <a class="textlink" href={cegRepo} rel="noopener">Open github.com/openislet/ceg →</a>
+          </div>
+        </div>
+
+        <div class="card pair__card">
+          <p class="kicker">Live corpus in type 1 diabetes</p>
+          <h3 class="h3">{n(c.cegStudies)} primary studies mapped for the Islet-1 blueprint</h3>
+          <p class="pretty">
+            OpenIslet’s Type 1 Diabetes Context–Evidence Graph maps {n(c.cegStudies)} primary empirical studies, {n(c.cegArms)} experimental and control groups, {n(c.cegOutcomes)} structured outcomes and {n(c.cegLinks)} links to blueprint checkpoints, screened from {n(c.cegScreened)} candidate records. Anyone can query it through an AI assistant or download the full JSON file.
+          </p>
+          <p class="pair__meta">Open data: CC BY 4.0 · Blueprint {release.version}</p>
+          <div class="pair__links">
+            <a class="btn btn--quiet" href="/blueprint#data">Download the T1D graph</a>
+            <a class="textlink" href={startHref}>Connect an AI assistant →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .intro {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(3rem, 6vw, 4.5rem);
+  }
+  .intro__h {
+    margin-top: 0.75rem;
+    max-width: 52rem;
+  }
+  .intro__lead {
+    margin-top: 1.125rem;
+    max-width: 48rem;
+  }
+  .intro__cta {
+    margin-top: 1.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+  }
+
+  /* Three across, then one, so the row is never two and one. */
+  .explain {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 56em) {
+    .explain {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .explain__item {
+    padding-top: 0.25rem;
+    border-top: 3px solid var(--ink);
+  }
+  .explain__k {
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .explain__item h2 {
+    margin-top: 0.25rem;
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .explain__item p:last-child {
+    margin-top: 0.5rem;
+    font-size: 0.96875rem;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  .sec__h {
+    margin-top: 0.75rem;
+    max-width: 48rem;
+  }
+  .sec__lead {
+    margin-top: 1rem;
+    max-width: 46rem;
+  }
+
+  .diagram {
+    margin: 2.25rem 0 0;
+  }
+  .diagram__panel {
+    padding: 0.75rem;
+    border-radius: 0.875rem;
+    background: var(--ink);
+    overflow-x: auto;
+  }
+  .diagram__panel svg {
+    display: block;
+    width: 100%;
+    min-width: 44rem;
+    height: auto;
+  }
+  .diagram figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .steps {
+    margin-top: 2.25rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 56em) {
+    .steps {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .step h3 {
+    font-size: 1.1875rem;
+    line-height: 1.25;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .step p {
+    font-size: 0.96875rem;
+    color: var(--body);
+  }
+
+  .quickstart {
+    margin-top: 2.5rem;
+  }
+  .quickstart__p {
+    margin-top: 0.5rem;
+    max-width: 48rem;
+    font-size: 0.96875rem;
+    color: var(--body);
+  }
+  .code {
+    margin-top: 1rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    background: var(--ink);
+    border-radius: 0.75rem;
+    color: var(--dark-text);
+  }
+  .code pre {
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .pair {
+    margin-top: 2.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  @media (max-width: 56em) {
+    .pair {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .pair__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .pair__card p {
+    font-size: 0.96875rem;
+    color: var(--body);
+  }
+  .pair__meta {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    font-size: 0.8125rem !important;
+    color: var(--muted) !important;
+  }
+  .pair__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    padding-top: 0.25rem;
+  }
+</style>
