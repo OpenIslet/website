@@ -1,5 +1,5 @@
 {
-  "source_manifest_sha256": "a53f4f345fc693451d56b661be1f86437e8072bde224187f059d363a6a752286",
+  "source_manifest_sha256": "c7ccede26a7b5e61ffe23a5c43a11368b3cdeac87b7f2313544c340a2abf7775",
   "source_ranking_sha256": "15b30b6988f396fdbcee66cc12b0ec40aab3dc2bdeeb87fff7bcc44de0ae13eb",
   "champion_challenger_portfolio": {
     "slots": {
@@ -215,10 +215,10 @@
     "feasible": 480,
     "blocked": 1680,
     "graveyardRules": 10,
-    "pinnedFiles": 1355,
+    "pinnedFiles": 1358,
     "constructs": 4,
     "dnaChanges": null,
-    "experimentalStructures": 10,
+    "experimentalStructures": 13,
     "predictedStructures": 2,
     "proteinPairs": 4,
     "guides": 5,
