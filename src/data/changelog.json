@@ -2,6 +2,22 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-12",
+    "title": "Evidence base expanded to 1,151 studies in the Context–Evidence Graph",
+    "summary": "Publishes the 1,151-study Type 1 Diabetes Context–Evidence Graph (7,659 groups, 14,105 structured outcomes and 2,447 blueprint links) across the website, downloads and MCP connector while keeping the 563-study scoring baseline explicit.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "Published the Type 1 Diabetes Context–Evidence Graph (1,151 primary empirical studies, 7,659 experimental and control groups, 14,105 structured outcomes and 2,447 blueprint links, screened from 3,922 candidate records; DEC-089) as an open CC BY 4.0 download and as the new 'evidence' layer in get_layer_atlas."
+      },
+      {
+        "kind": "changed",
+        "text": "Documented the explicit separation between the 1,151-study Context–Evidence Graph and the 563-study design-scoring baseline so adding structured literature does not silently shift model scores."
+      }
+    ]
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-12",
     "title": "Oxygen-release half-life tested across each peroxide recipe",
     "summary": "Reclassifies the 68-hour oxygen-release half-life as an unvalidated per-recipe target and publishes an 84-run sensitivity sweep across both peroxide microbead recipes.",
     "changes": [

@@ -71,6 +71,7 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
         md.h(2, 'What the evidence is') +
         md.bullets([
           `${c.studies.toLocaleString('en-GB')} study records and ${c.findings.toLocaleString('en-GB')} findings, each tied to the place in the paper it comes from.`,
+          `${typeof c.cegStudies === 'number' ? c.cegStudies.toLocaleString('en-GB') : '1,151'} primary empirical studies, ${typeof c.cegArms === 'number' ? c.cegArms.toLocaleString('en-GB') : '7,659'} experimental and control groups, ${typeof c.cegOutcomes === 'number' ? c.cegOutcomes.toLocaleString('en-GB') : '14,105'} structured outcomes and ${typeof c.cegLinks === 'number' ? c.cegLinks.toLocaleString('en-GB') : '2,447'} blueprint links in the Type 1 Diabetes Context–Evidence Graph (screened from ${typeof c.cegScreened === 'number' ? c.cegScreened.toLocaleString('en-GB') : '3,922'} candidate records).`,
           `${c.graveyardRules} Idea Graveyard rules: ideas the evidence argues against, or that carry a risk.`,
           `${c.designs.toLocaleString('en-GB')} designs checked against those rules: ${c.blocked.toLocaleString('en-GB')} were ruled out and ${c.feasible} remained.`,
           'Checks at five layers: the studies, the DNA, the proteins, the graft and body, and patient matching.',

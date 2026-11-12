@@ -494,6 +494,7 @@ put('graveyard/modules.json', {
 // The five layers (atlases) and the construct sequences
 // ---------------------------------------------------------------------------------------------------------------
 const layerFiles = {
+  evidence: 'layer1_context_evidence_graph_atlas.json',
   dna: 'layer2_regulatory_and_perturbation_atlas.json',
   proteins: 'layer3_structural_verification_atlas.json',
   tissue: 'layer4_tissue_and_metabolic_twin_atlas.json',

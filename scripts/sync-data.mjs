@@ -86,6 +86,7 @@ console.log('staged the Idea Graveyard rules');
 const assets = await readJson(join(root, 'src/data/assets.json'));
 const extraLayerDownloads = [
   'data/constructs/islet1_scenario_a_constructs_v0.7.0.fasta',
+  'data/extracted/layer1_context_evidence_graph_atlas.json',
   'data/extracted/layer2_regulatory_and_perturbation_atlas.json',
   'data/extracted/layer3_structural_verification_atlas.json',
   'data/extracted/layer4_tissue_and_metabolic_twin_atlas.json',
@@ -208,6 +209,11 @@ const release = {
     studies: manifest.counts.extracted_studies_total,
     arms: manifest.counts.extracted_arms_total,
     findings: manifest.counts.extracted_atomic_effects_total,
+    cegScreened: manifest.counts.ceg_screened_records_total,
+    cegStudies: manifest.counts.ceg_studies_total,
+    cegArms: manifest.counts.ceg_arms_total,
+    cegOutcomes: manifest.counts.ceg_outcomes_total,
+    cegLinks: manifest.counts.ceg_blueprint_links_total,
     designs: rankings.total_valid_combinatorial_stacks_evaluated,
     feasible: rankings.total_feasible_unblocked_stacks,
     blocked: rankings.total_graveyard_blocked_stacks,

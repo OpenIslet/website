@@ -1,12 +1,17 @@
-// The four computed layers that sit under the studies: DNA, proteins, tissue and patient. Each is an atlas of results.
+// The five layers: the Context–Evidence Graph plus DNA, proteins, tissue and patient. Each is an atlas of results.
 import { type Answer, type Config, md, problem } from './answer';
 import type { Bundle } from './bundle';
 import { clip, tidy } from './text';
 
-export const LAYERS = ['dna', 'proteins', 'tissue', 'patient'] as const;
+export const LAYERS = ['evidence', 'dna', 'proteins', 'tissue', 'patient'] as const;
 export type Layer = (typeof LAYERS)[number];
 
 const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | null>) => string }> = {
+  evidence: {
+    name: 'The evidence layer (layer 1 of 5)',
+    plain: (c) =>
+      `Maps ${typeof c.cegStudies === 'number' ? c.cegStudies.toLocaleString('en-GB') : '1,151'} primary empirical studies, ${typeof c.cegArms === 'number' ? c.cegArms.toLocaleString('en-GB') : '7,659'} experimental and control groups, ${typeof c.cegOutcomes === 'number' ? c.cegOutcomes.toLocaleString('en-GB') : '14,105'} structured outcomes and ${typeof c.cegLinks === 'number' ? c.cegLinks.toLocaleString('en-GB') : '2,447'} blueprint links in the Type 1 Diabetes Context–Evidence Graph (screened from ${typeof c.cegScreened === 'number' ? c.cegScreened.toLocaleString('en-GB') : '3,922'} candidate records), alongside the ${typeof c.studies === 'number' ? c.studies.toLocaleString('en-GB') : '563'}-study scoring baseline.`,
+  },
   dna: {
     name: 'The DNA layer (layer 2 of 5)',
     plain: (c) =>

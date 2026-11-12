@@ -330,8 +330,11 @@ describe('open questions, layers and contributions', () => {
   });
 
   it('gives an outline of each layer and the detail of an item', async () => {
-    for (const layer of ['dna', 'proteins', 'tissue', 'patient']) {
+    for (const layer of ['evidence', 'dna', 'proteins', 'tissue', 'patient']) {
       const r = await s.call('get_layer_atlas', { layer });
+      if (layer === 'evidence') {
+        expect(r.text).toContain('1,151');
+      }
       if (layer === 'dna') {
         expect(release.counts.dnaChanges).toBeNull();
         expect(r.text).not.toContain('3,118 possible DNA changes');

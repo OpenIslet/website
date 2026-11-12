@@ -19,6 +19,15 @@
   },
   {
     "group": "check",
+    "title": "Context–Evidence Graph (1,151 studies)",
+    "path": "data/extracted/context_evidence_graph_v1.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "1,151 primary empirical studies, 7,659 experimental and control groups, 14,105 structured outcomes and 2,447 links to blueprint checkpoints, screened from 3,922 candidate records.",
+    "for": "Scientists and developers"
+  },
+  {
+    "group": "check",
     "title": "All findings",
     "path": "data/extracted/ring1_atomic_effects_v0.5.jsonl",
     "license": "CC-BY-4.0",

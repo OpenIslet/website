@@ -1,5 +1,5 @@
 {
-  "source_manifest_sha256": "8741eeac18f7848b38cc193b6087fc8cc66f95f3d62853d033f3e03055b3c968",
+  "source_manifest_sha256": "a53f4f345fc693451d56b661be1f86437e8072bde224187f059d363a6a752286",
   "source_ranking_sha256": "15b30b6988f396fdbcee66cc12b0ec40aab3dc2bdeeb87fff7bcc44de0ae13eb",
   "champion_challenger_portfolio": {
     "slots": {
@@ -206,11 +206,16 @@
     "studies": 563,
     "arms": 596,
     "findings": 3093,
+    "cegScreened": 3922,
+    "cegStudies": 1151,
+    "cegArms": 7659,
+    "cegOutcomes": 14105,
+    "cegLinks": 2447,
     "designs": 2160,
     "feasible": 480,
     "blocked": 1680,
     "graveyardRules": 10,
-    "pinnedFiles": 1351,
+    "pinnedFiles": 1355,
     "constructs": 4,
     "dnaChanges": null,
     "experimentalStructures": 10,

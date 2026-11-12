@@ -21,7 +21,8 @@ const layers = [
     Visual: Layer1,
     name: 'Read the evidence',
     tag: 'The studies',
-    text: `We read ${n(c.studies)} studies and pulled out ${n(c.findings)} findings, each linked to the sentence it came from. Ideas the evidence argues against went into the Idea Graveyard, and ${n(c.designs)} designs were scored.`,
+    text: `We read ${n(c.studies)} studies (${n(c.findings)} findings) for the scoring model and mapped ${n(c.cegStudies)} primary studies (${n(c.cegOutcomes)} structured outcomes and ${n(c.cegLinks)} blueprint links, screened from ${n(c.cegScreened)} candidate records) in the Type 1 Diabetes Context–Evidence Graph. Ideas the evidence argues against went into the Idea Graveyard, and ${n(c.designs)} designs were scored.`,
+    sci: `The ${n(c.cegStudies)}-study Context–Evidence Graph (${n(c.cegArms)} arms, ${n(c.cegOutcomes)} outcomes) sits beside the ${n(c.studies)}-study scoring set without silently shifting prior-anchored scores.`,
   },
   {
     Visual: Layer2,

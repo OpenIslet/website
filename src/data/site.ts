@@ -46,6 +46,7 @@ export const fullBlueprintUrl = repoFile('ISLET-1-BLUEPRINT.md');
  * file, or a person who has to hand it over, is never left guessing the name or where it lives.
  */
 export const technicalSources = [
+  { part: 'The Context–Evidence Graph', section: '9.0', data: 'data/extracted/context_evidence_graph_v1.json', code: 'scripts/build_context_evidence_graph.py' },
   { part: 'The DNA edits', section: '9.1', data: 'data/extracted/layer2_regulatory_and_perturbation_atlas.json', code: 'scripts/run_layer2_perturbation_and_regulatory_plane.py' },
   { part: 'The proteins', section: '9.2', data: 'data/extracted/layer3_structural_verification_atlas.json', code: 'scripts/run_layer3_structural_binder_plane.py' },
   { part: 'Oxygen and tissue', section: '9.3', data: 'data/extracted/layer4_tissue_and_metabolic_twin_atlas.json', code: 'scripts/run_layer4_tissue_and_metabolic_twin.py' },

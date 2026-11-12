@@ -30,7 +30,7 @@ npm run mock-github   # a stand-in for GitHub, to try the submission queue (see 
 | `get_conflicting_evidence` | For a gene: findings where changing it improved the outcome beside those where it impaired it |
 | `check_against_graveyard` | `exact`: a design from named modules, same rules as the scoring program. `suggest`: an idea in words, labelled as suggestions. `list`: every module |
 | `get_open_questions` | Known weak spots, each with how it could be settled |
-| `get_layer_atlas` | The DNA, protein, tissue and patient layers |
+| `get_layer_atlas` | The evidence, DNA, protein, tissue and patient layers |
 | `get_contributions` | Who has contributed, and what each IIP changed, in words. No scores or rankings |
 | `get_submission_status` | Where a submission is. Public, so no sign-in |
 | `get_review_prompt` | The prompt for the blind review, built from the draft, to paste into a fresh chat |

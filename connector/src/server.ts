@@ -385,7 +385,7 @@ export function createConnectorServer(deps: ServerDeps): McpServer {
     {
       title: 'The computed layers',
       description:
-        'Read one of the four computed layers under the studies: "dna" (the edits checked against the real genome), "proteins" (3D structures and fits), "tissue" (oxygen and blood-sugar simulations) or "patient" (the patient-matching simulation). Without an item it gives an outline. With an item (a name from the outline, with dots to go deeper) it gives that part. These are computer analyses and none has been tested in the lab. Matching your own genotype is not offered yet.',
+        'Read one of the five blueprint layers: "evidence" (the 1,151-study Type 1 Diabetes Context–Evidence Graph), "dna" (the edits checked against the real genome), "proteins" (3D structures and fits), "tissue" (oxygen and blood-sugar simulations) or "patient" (the patient-matching simulation). Without an item it gives an outline. With an item (a name from the outline, with dots to go deeper) it gives that part. These are computer analyses and none has been tested in the lab. Matching your own genotype is not offered yet.',
       inputSchema: z.object({
         layer: z.enum(LAYERS).describe('Which layer.'),
         item: z.string().max(200).optional().describe('A part of the layer, for example "summary". Use dots to go deeper.'),
