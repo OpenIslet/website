@@ -34,8 +34,8 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
         (x ? `\n*Who it is for:* ${x.for_whom}\n\n*Main risk:* ${x.main_risk}\n` : '') +
         md.h(2, 'Two things are meant by Design X') +
         md.bullets([
-          '**The scored challenger (K=4, B=1).** Design A\'s four edits plus one base edit in the insulin gene. The module checker and the scores cover this one only.',
-          '**The proposed upgrades (K=4, B=0).** A new switch for the HLA-E and CD47 signals (HLA-E stays unchanged by default; a small change to stop the CD8 helper protein gripping it is an optional side test), a stem-cell line chosen for a protective insulin-gene variant, and a layered gel around the graft. They do not include the insulin-gene edit. This is a written proposal: its DNA is not built yet. The upgrades have no score, and nothing in them has been built or measured.',
+          '**The scored challenger (K=4, B=1).** Design A\'s four edits plus one base edit in the insulin gene, evaluated on the shared baseline 119 µm oxygen layer. The module checker and the scores cover this one only.',
+          '**The proposed upgrades (K=4, B=0).** A new switch for the HLA-E and CD47 signals (HLA-E stays unchanged by default; a small change to stop the CD8 helper protein gripping it is an optional side test), a stem-cell line chosen for a protective insulin-gene variant, a dedicated outer-ring arrangement for the Fas-ligand gel, and a thinner 100 µm central oxygen layer. They do not include the insulin-gene edit. This is a written proposal: its DNA is not built yet. The upgrades have no score, and nothing in them has been built or measured.',
         ]) +
         (proposals.length ? '\n' + md.h(2, 'Still on paper') + md.bullets(proposals.map((p) => `**${p.title}.** ${p.text}`)) : '') +
         '\nA challenger replaces the lead design only if lab results show it is better in a head-to-head comparison whose rules are written down first. Empirical calibration alone cannot authorise promotion. The porosity sweep in the tissue layer is a conditional sensitivity, not a buildable pouch specification.\n' +

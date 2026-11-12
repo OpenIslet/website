@@ -54,6 +54,9 @@ describe('the design labels', () => {
     ['Design B (Stage 6 cells)', ['design:b'], 'Design B'],
     ['Design B with a new stage-specific promoter', ['design:b'], 'Design B'],
     ['Design A only; the roadmap is unaffected', ['design:a'], 'Design A'],
+    ['Design A and Design X (not Design B)', ['design:a', 'design:x'], 'Design A and Design X'],
+    ['Design A and Design X, excluding Design B', ['design:a', 'design:x'], 'Design A and Design X'],
+    ['Design A rather than Design B', ['design:a'], 'Design A'],
   ])('reads "%s" as %j', async (written, labels, wording) => {
     const r = await check(written);
     expect(designOf(r.labels), written).toEqual(labels);

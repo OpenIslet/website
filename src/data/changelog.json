@@ -1,6 +1,78 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-12",
+    "title": "Oxygen-release half-life tested across each peroxide recipe",
+    "summary": "Reclassifies the 68-hour oxygen-release half-life as an unvalidated per-recipe target and publishes an 84-run sensitivity sweep across both peroxide microbead recipes.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Labelled the 68.0-hour oxygen-release half-life as a formulation-specific reference target rather than a fixed material constant, and added particle-size placeholders and Stage-0 qualification gates for each CaO2:PDMS recipe (DEC-088, IIP-0010)."
+      },
+      {
+        "kind": "added",
+        "text": "An 84-run fixed-inventory sensitivity sweep across half-lives from 24 to 130 hours, three release laws and two blood-vessel connection times for both the 31.25 wt% and 46.39 wt% recipes."
+      },
+      {
+        "kind": "fixed",
+        "text": "Stopped DOIs with long digit strings from triggering a false phone-number warning in the submission checker."
+      }
+    ],
+    "contribution": "IIP-0010"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-12",
+    "title": "Design X's scored edit and Stage-0 upgrades mapped clearly apart",
+    "summary": "Marks every Design X mention across the blueprint, tissue simulations and open questions as either the scored insulin-gene edit or the unscored Stage-0 upgrade bundle.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Added an explicit mapping in Layer 4, the blueprint and the connector (DEC-087, IIP-0009) distinguishing the scored Design X grid row (119 µm oxygen layer) from the unscored Stage-0 upgrade bundle (100 µm oxygen layer and outer-ring Fas-ligand gel)."
+      },
+      {
+        "kind": "changed",
+        "text": "Widened open question OQ-015 across Designs A, B and X because all three share the 119 µm baseline oxygen layer in the scored grid."
+      },
+      {
+        "kind": "fixed",
+        "text": "Stopped negated design names such as '(not Design B)' from adding extra design labels in the submission checker."
+      }
+    ],
+    "contribution": "IIP-0009"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-12",
+    "title": "CD47 study models and density threshold separated accurately",
+    "summary": "Reclassifies Xu 2024 to its actual non-islet models, removes it from rule GY-009, and separates Hu 2023's primary human islet CD47 threshold from its stem-cell islet counts.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Reclassified Xu 2024 (PMID 38508139) from stem-cell islets to four non-islet immune, blood-stem-cell and endothelial models at Tier 2B (DEC-086, IIP-0008), moving Design A's overall score from 0.1085 to 0.1084."
+      },
+      {
+        "kind": "fixed",
+        "text": "Removed Xu 2024 from Idea Graveyard rule GY-009 and added a separate primary human islet arm to Hu 2023 (PMID 37156915) for the 180,000 to 220,000 CD47 molecules-per-cell transition measured with clone CC2C6 and Quantibrite beads."
+      }
+    ],
+    "contribution": "IIP-0008"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-12",
+    "title": "Open question on combined human immune–islet testing at Stage 1",
+    "summary": "Adds open question OQ-017 on whether a combined human immune and islet co-culture at Stage 1 can catch cross-talk between immune cell types that split Stage-0 tests miss.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "Open question OQ-017 and a Stage-1 qualification note beside Readout 3 (DEC-085, IIP-0007), while keeping split Stage-0 Readouts 3A, 3B and 3C separate and mandatory."
+      }
+    ],
+    "contribution": "IIP-0007"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-07",
     "title": "Testing cell mixes with a bigger share of insulin-making cells",
     "summary": "Adds a staged lab comparison of cell mixes between the current 60:30:10 recipe and insulin-cells-only controls, to see whether any lowers tissue volume or oxygen need without weakening protection against low blood sugar.",

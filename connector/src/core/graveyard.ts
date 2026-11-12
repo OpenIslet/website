@@ -112,7 +112,7 @@ const RULES: RuleSpec[] = [
     logitDelta: -0.2,
     targetGate: 'Gate3_Innate_NK_Macrophage_and_IBMIR_Shield',
     reason: () =>
-      'Requires QuantiBRITE Hour-0 verification that resting endogenous B2M promoter achieves inhibitory HLA-E and CD47 surface density on Stage 7 beta-cells and iECs (Han 2019 PMID:31040209; Hu 2023 PMID:37156915; Xu 2024 PMID:38508139; Lin 2023 PMID:37264229).',
+      'Requires QuantiBRITE Hour-0 verification that resting endogenous B2M promoter achieves inhibitory HLA-E and CD47 surface density on Stage 7 beta-cells and iECs (Han 2019 PMID:31040209; Hu 2023 PMID:37156915; Lin 2023 PMID:37264229).',
   },
   {
     id: 'GRAVEYARD_010_MHC_NULL_INDIRECT_APC_BYSTANDER_BLINDSPOT',

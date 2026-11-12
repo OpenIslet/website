@@ -105,5 +105,57 @@
       "Gemini 4 Argon (high)"
     ],
     "outcome": { "kind": "evidence", "note": "The blueprint now adds a staged lab comparison of a few in-between cell mixes against the current 60:30:10 recipe, to see whether a slightly bigger share of insulin-making cells could mean fewer cells are needed, without weakening the other islet cells' protection against low blood sugar. The 60:30:10 recipe stays unless new measurements justify a change." }
+  },
+  {
+    "id": "IIP-0007",
+    "date": "2026-11-08",
+    "decided": "2026-11-12",
+    "title": "A human immune model in each well to evaluate islet graft responses",
+    "summary": "Asks whether a combined human immune and islet co-culture at Stage 1 could catch failure modes between immune cell types that split Stage-0 tests miss.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "kmorris-islet", "kind": "person", "github": "kmorris-islet", "name": "K Morris", "verified": { "github": true, "orcid": false } },
+    "models": ["GPT-6 Astra"],
+    "outcome": { "kind": "open_question", "note": "Adds open question OQ-017 and a Stage-1 note beside Readout 3 asking whether a combined human immune and islet co-culture can catch cross-talk between immune cell types that split Stage-0 tests miss, once donor-mismatch background and cluster recovery from the gel are qualified." }
+  },
+  {
+    "id": "IIP-0008",
+    "date": "2026-11-10",
+    "decided": "2026-11-12",
+    "title": "Two factual errors in the evidence records behind OQ-008 and GY-009",
+    "summary": "Points out that Xu 2024 tested surface-anchored CD47 in non-islet models rather than stem-cell islets, and separates Hu 2023's primary human islet CD47 threshold from its stem-cell islet counts.",
+    "type": "Problem found",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
+    "models": ["Claude Opus 5"],
+    "outcome": { "kind": "changed_blueprint", "note": "Reclassifies Xu 2024 from stem-cell islets to its actual non-islet immune, blood-stem-cell and endothelial models (nudging Design A's overall score from 0.1085 to 0.1084), removes Xu 2024 from Idea Graveyard rule GY-009, and separates Hu 2023's primary human islet CD47 threshold arm from its engineered stem-cell islet counts." }
+  },
+  {
+    "id": "IIP-0009",
+    "date": "2026-11-11",
+    "decided": "2026-11-12",
+    "title": "Design X is scored under one name but specified as two products",
+    "summary": "Asks that every mention of Design X across the blueprint, tissue simulations and open questions state whether it refers to the scored insulin-gene edit or the unscored Stage-0 upgrade bundle.",
+    "type": "Problem found",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
+    "models": ["Claude Opus 5"],
+    "outcome": { "kind": "changed_blueprint", "note": "Maps each blueprint table, tissue simulation and open question explicitly to either the scored Design X grid comparison (Design A plus one insulin-gene base edit on the 119 µm oxygen layer) or the unscored Stage-0 Design X upgrade bundle (100 µm oxygen layer and outer-ring Fas-ligand gel), and widens OQ-015 across Designs A, B and X." }
+  },
+  {
+    "id": "IIP-0010",
+    "date": "2026-11-11",
+    "decided": "2026-11-12",
+    "title": "Carrying the 68-hour oxygen-release half-life across a reformulated source lamina",
+    "summary": "Points out that the 68-hour oxygen-release half-life comes from a 25 wt% silicone disk and may shift in denser 31.25 wt% and 46.39 wt% microbeads, requiring per-recipe testing and sensitivity bounds.",
+    "type": "Problem found",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
+    "models": ["Claude Opus 5"],
+    "outcome": { "kind": "changed_blueprint", "note": "Reclassifies the 68-hour oxygen-release half-life as an unvalidated per-recipe target rather than a fixed material constant, publishes an 84-run sensitivity sweep showing the safe half-life window for both the 31.25 wt% and 46.39 wt% peroxide recipes, and requires Stage-0 particle-size and release-rate measurements for each recipe." }
   }
 ]

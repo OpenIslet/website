@@ -303,11 +303,11 @@ const designX: Scenario = {
     title: 'Two separate ideas share the name Design X',
     scored: {
       title: 'The scored comparison',
-      text: `Design A plus one small insulin-gene edit. ${xScoreWords}The edit is meant to make the graft’s own insulin a harder target for the immune system. It cannot hide the other targets of the attack, and its effects are unmeasured.`,
+      text: `Design A plus one small insulin-gene edit, evaluated on the shared baseline 119 µm oxygen layer. ${xScoreWords}The edit is meant to make the graft’s own insulin a harder target for the immune system. It cannot hide the other targets of the attack, and its effects are unmeasured.`,
     },
     proposal: {
       title: 'The molecular proposal',
-      text: 'A separate version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals, a protective starting cell line, and a layered gel. It does not include the insulin-gene edit. It is a written proposal: its DNA is not built yet, it has no score, and nobody knows yet how well it would work.',
+      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals, a protective starting cell line, a dedicated outer-ring arrangement for the Fas-ligand gel, and a thinner 100 µm central oxygen layer. It does not include the insulin-gene edit. It is a written proposal: its DNA is not built yet, it has no score, and nobody knows yet how well it would work.',
     },
   },
   proposals: [
@@ -324,7 +324,7 @@ const designX: Scenario = {
     {
       art: 'gel',
       title: 'A layered gel around the graft',
-      text: 'Gel particles that calm clotting and block complement in the middle of the graft, and a Fas-ligand layer, meant to turn away attacking T cells, only in an outer ring where it stays away from the beta cells. Each layer must pass a safety test first.',
+      text: 'While all three designs include clotting-control and Fas-ligand gel signals, the Stage-0 Design X proposal places the Fas-ligand particles strictly in an outer boundary ring around a thinner 100 µm central oxygen layer so they stay away from the beta cells. Each signal must pass its own safety test first.',
     },
   ],
 };
@@ -335,9 +335,9 @@ export const niche = [
   { k: 'Cell mix', v: '60% beta, 30% alpha, 10% delta' },
   { k: 'Cluster size', v: '120 µm or less' },
   { k: 'Blood vessels', v: 'Proposed isogenic vascular support; perfusion and integration unmeasured' },
-  { k: 'Early oxygen support', v: 'Proposed oxygen-releasing material with catalase; release kinetics need measurement' },
+  { k: 'Early oxygen support', v: 'Proposed oxygen-releasing silicone-peroxide layer with catalase; release half-life and kinetic law must be measured for each recipe' },
   { k: 'Layer thickness', v: '350 µm is a declared model input; a safe dose, area and oxygen margin remain unvalidated' },
-  { k: 'Gel particles', v: 'Temporary particles that calm clotting and block complement, with an outer Fas-ligand layer to turn away attacking T cells. Each layer must pass a safety test first' },
+  { k: 'Gel particles', v: 'Temporary clotting-control and Fas-ligand gel particles to block complement and turn away attacking T cells (placed in a separate outer ring in the Stage-0 Design X proposal); each signal must pass a safety test first' },
 ];
 
 export const assets = assetList;

@@ -223,25 +223,37 @@ type DesignLetter = 'a' | 'b' | 'x';
  * (older drafts say "Both", "Neither" and "None"), and people (and AIs) also write lists such as "Design A and Design B" or "Designs A, B and X".
  */
 export function designsNamed(value: string | undefined): { letters: DesignLetter[]; neither: boolean } {
-  const raw = (value ?? '').normalize('NFKC');
-  const v = normalise(raw);
+  // Strip negated clauses ("not Design B", "excluding Design B", "(not B)") before reading positive design mentions (IIP-0008).
+  const word = '(?:design|Design|DESIGN)s?';
+  const stripped = (value ?? '')
+    .normalize('NFKC')
+    .replace(/\(\s*(?:not|excluding|except|without|neither)\b[^)]*\)/gi, ' ')
+    .replace(
+      new RegExp(
+        `\\b(?:not|excluding|except|without|other\\s+than|rather\\s+than|neither|nor)\\s+(?:${word}\\s+[ABXabx](?:\\s*(?:,|and|or|nor|&|\\/)\\s*(?:${word}\\s+)?[ABXabx])*|islet-x|blueprint\\s+x)\\b`,
+        'gi',
+      ),
+      ' ',
+    );
+  const v = normalise(stripped);
   const found = new Set<DesignLetter>();
   if (/\ball three\b/.test(v)) for (const l of ['a', 'b', 'x'] as const) found.add(l);
-  if (/\bboth\b/.test(v)) {
-    found.add('a');
-    found.add('b');
-  }
   // "Design A", "Designs A, B and X", "Design A / Design B". After the first one, a bare letter must be a capital, so an
   // ordinary "a" (as in "Design B and a new promoter") is not taken for Design A.
-  const word = '(?:design|Design|DESIGN)s?';
   const list = new RegExp(`\\b${word}\\s+([ABXabx])\\b((?:\\s*(?:,|and|And|AND|&|\\/|\\+|or|Or|OR)\\s*(?:${word}\\s+[ABXabx]|[ABX])\\b)*)`, 'g');
-  for (const m of raw.matchAll(list)) {
+  for (const m of stripped.matchAll(list)) {
     found.add(m[1].toLowerCase() as DesignLetter);
     for (const more of m[2].matchAll(new RegExp(`${word}\\s+([ABXabx])\\b|\\b([ABX])\\b`, 'g'))) found.add((more[1] ?? more[2]).toLowerCase() as DesignLetter);
   }
   if (/\b(?:islet-x|blueprint x)\b/.test(v)) found.add('x');
+  // Legacy bare "Both" (from when there were only Designs A and B) applies only when no explicit design letters were named,
+  // so "Design A and Design X — both share..." resolves to A and X rather than A, B and X (IIP-0008).
+  if (found.size === 0 && /\bboth\b/.test(v)) {
+    found.add('a');
+    found.add('b');
+  }
   const letters = (['a', 'b', 'x'] as const).filter((l) => found.has(l));
-  return { letters, neither: letters.length === 0 && /\b(?:neither|none)\b/.test(v) };
+  return { letters, neither: letters.length === 0 && /\b(?:neither|none)\b/.test(normalise((value ?? '').normalize('NFKC'))) };
 }
 
 /** The roadmap's last stage. Stage 0 is the blueprint itself, so a roadmap IIP names Stages 1 to 5 (tools.test.ts checks there are six). */
@@ -555,9 +567,16 @@ export async function runChecks(bundle: Bundle, cfg: Config, input: DraftInput):
     path: m[2],
   }));
   const odd = [...new Set(links.filter((l) => !linkAllowed(l.host, l.path)).map((l) => l.host))];
+  // Strip URLs, DOIs (10.xxxx/...), ORCIDs, PMC IDs and 5-9 digit PMIDs before checking for phone numbers (IIP-0010).
+  const phoneScrubbed = `${draftText}\n${reviewText}`
+    .replace(/https?:\/\/[^\s<>()[\]"'`]+/gi, ' ')
+    .replace(/\b10\.\d{4,9}\/[^\s<>()[\]"'`]+/gi, ' ')
+    .replace(/\b\d{4}-\d{4}-\d{4}-\d{3}[\dX]\b/gi, ' ')
+    .replace(/\bPMC\d{5,9}\b/gi, ' ')
+    .replace(/\b\d{5,9}\b/g, ' ');
   const personal = [
     hasEmail(`${draftText}\n${reviewText}`) ? 'an email address' : null,
-    /(?<!\d)(?:\+?\d[\s().-]?){9,14}\d(?!\d)/.test(`${draftText}\n${reviewText}`.replace(/\b\d{5,9}\b/g, '')) ? 'what may be a phone number' : null,
+    /(?<!\d)(?:\+?\d[\s().-]?){9,14}\d(?!\d)/.test(phoneScrubbed) ? 'what may be a phone number' : null,
   ].filter(Boolean);
   checks.push({
     id: 'safety',

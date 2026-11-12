@@ -26,5 +26,47 @@
     "journal": "Nature",
     "year": 2019,
     "doi": "10.1038/s41586-018-0858-8"
+  },
+  "22371586": {
+    "title": "Preventing hypoxia-induced cell death in beta cells and islets via hydrolytically activated, oxygen-generating biomaterials.",
+    "authors": [
+      "Pedraza E",
+      "Coronel MM",
+      "Fraker CA",
+      "Ricordi C",
+      "Stabler CL"
+    ],
+    "journal": "Proc Natl Acad Sci U S A",
+    "year": 2012,
+    "doi": "10.1073/pnas.1113560109"
+  },
+  "36971050": {
+    "title": "Engineering Modular, Oxygen-Generating Microbeads for the In Situ Mitigation of Cellular Hypoxia.",
+    "authors": [
+      "Accolla RP",
+      "Liang JP",
+      "Lansberry TR",
+      "Miravet IL",
+      "Loaisiga M",
+      "Sardi BL",
+      "Stabler CL"
+    ],
+    "journal": "Adv Healthc Mater",
+    "year": 2023,
+    "doi": "10.1002/adhm.202300239"
+  },
+  "35743287": {
+    "title": "Release Kinetics and In Vitro Characterization of Sodium Percarbonate and Calcium Peroxide to Oxygenate Bioprinted Tissue Models.",
+    "authors": [
+      "Ke D",
+      "Kengla C",
+      "Lee SJ",
+      "Yoo JJ",
+      "Zhu X",
+      "Murphy SV"
+    ],
+    "journal": "Int J Mol Sci",
+    "year": 2022,
+    "doi": "10.3390/ijms23126842"
   }
 }

@@ -219,6 +219,7 @@ describe('check_draft: the automatic checks', () => {
     for (const link of ['https://github.com/openislet/%2e%2e/someone/repo', 'https://github.com/OpenIslet/../someone/repo', 'https://github.com/openislet/%2E%2E/%2e%2e/someone', 'https://raw.githubusercontent.com/openislet/..\\someone/x'])
       expect((await safety(`See ${link}`)).status, link).toBe('amber');
     expect((await safety('See https://github.com/OpenIslet/website/blob/main/README.md?plain=1#top')).status).toBe('pass');
+    expect((await safety('DOI 10.1021/acsomega.6c05828 and https://doi.org/10.1021/acsomega.6c05828')).status).toBe('pass');
   });
 
   it('warns, without refusing, when a draft names no design', async () => {

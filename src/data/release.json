@@ -1,6 +1,6 @@
 {
-  "source_manifest_sha256": "01e5f8b19b943207ea684f7705b8c97dd0a9ea68670381c2ed954efbde241c9c",
-  "source_ranking_sha256": "57fdefeb8790d4a9276f452ee50b093b549492ffd1c28cabb7993e5a41302fb6",
+  "source_manifest_sha256": "8741eeac18f7848b38cc193b6087fc8cc66f95f3d62853d033f3e03055b3c968",
+  "source_ranking_sha256": "15b30b6988f396fdbcee66cc12b0ec40aab3dc2bdeeb87fff7bcc44de0ae13eb",
   "champion_challenger_portfolio": {
     "slots": {
       "A": {
@@ -11,7 +11,7 @@
         "global_rank": 1,
         "K": 4,
         "B": 0,
-        "composite_series_system_utility": 0.1085,
+        "composite_series_system_utility": 0.1084,
         "stage0_product_variant_ids": [
           "ISLET1_A4_ARM1B",
           "ISLET1_A_STAR_4LOCUS",
@@ -21,7 +21,7 @@
       "B": {
         "slot_id": "B",
         "architecture_id": "ISLET1_CHASSIS_B_HLA_C_RETAINED_6LOCUS_HYPOTHESIS",
-        "role": "HLA-C-Retained KIR-Matched Superdonor Comparator (Scored Grid #25: K=6, B=1 ISLET1_B1_6LOCUS_TYK2_KO_INS [0.0673] + K=5, B=1 ISLET1_B2_5LOCUS_TYK2_PE counterfactual [0.0782 complexity-discount sensitivity with gate logits held fixed; 0.0724 dropping +0.25 Gate-2B INS credit; 0.0569 full AUTO_NONE with TYK2-KO Gate-1 penalty or 0.0629 with TYK2 P1104A WT-yield]; Promoted Unscored Stage-0 Molecular Plan B'-SCT: K=4, B=0 ISLET1_B_SCT_C1_CIITA / ISLET1_B_SCT_C2_CIITA / ISLET1_B_SCT_C1C2_CIITA [counterfactual 0.1085])",
+        "role": "HLA-C-Retained KIR-Matched Superdonor Comparator (Scored Grid #25: K=6, B=1 ISLET1_B1_6LOCUS_TYK2_KO_INS [0.0673] + K=5, B=1 ISLET1_B2_5LOCUS_TYK2_PE counterfactual [0.0782 complexity-discount sensitivity with gate logits held fixed; 0.0724 dropping +0.25 Gate-2B INS credit; 0.0569 full AUTO_NONE with TYK2-KO Gate-1 penalty or 0.0629 with TYK2 P1104A WT-yield]; Promoted Unscored Stage-0 Molecular Plan B'-SCT: K=4, B=0 ISLET1_B_SCT_C1_CIITA / ISLET1_B_SCT_C2_CIITA / ISLET1_B_SCT_C1C2_CIITA [counterfactual 0.1084])",
         "matched_combinatorial_search_id": "ALLO_HLA_C_RETAINED_SUPERDONOR_PLUS_TYK2_KO__AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
         "global_rank": 25,
         "K": 6,
@@ -42,7 +42,7 @@
         "slot_id": "X",
         "architecture_id": "ISLET1_CHASSIS_X_EMERGENT_CHALLENGER",
         "grid_alias": "X-grid (ISLET1_CHASSIS_X_CONSERVATIVE_BASE_EDIT_CHALLENGER)",
-        "role": "Highest-ranked feasible non-A/non-B grid challenger (K=4, B=1 conservative prime/base-edit challenger; exact utility tie at #2/#3 between #2 AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT + ER_NONE [K=4, B=1, discount = 0.9650] and #3 AUTO_NONE + ER_IAPP_PRAMLINTIDE_RNLS_WT [K=4, B=1, discount = 0.9650] at 0.10467791551016123 exact unrounded composite utility [0.10467792 8-dec; 0.1047 direct 4-dec; 0.1046 displayed via IEEE-754 binary64 cohort-rounded average round((0.1032 + 0.1061)/2, 4) = round(0.10464999999999999, 4) = 0.1046 (coinciding with exact-decimal half-even 0.10465 -> 0.1046, whereas literal binary64 round(0.10465, 4) = 0.1047)], resolved to #2 under reverse=True sort by the Gate-2B T1D autoantigen stealth priority tie-breaker for AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT while #3 ER_IAPP_PRAMLINTIDE_RNLS_WT serves as the Gate-4 ER/amyloid Pareto watchlist challenger, whereas K=5, B=0 AUTO_NONE + ER_RNLS_KO [discount = exp(-0.15) = 0.860708] ranks #9 at 0.08192907 [0.0819]); strictly distinct from off-grid Stage-0 molecular/biophysical Design X (K=4, B=0: ISLET1_A4_X_MOL_RNLS_WT, ISLET1_A4_DXS_ARM1C_L4CD47, ISLET1_A4_L3_BFB_BASALFLOOR, ISLET1_COMP_R4_X_BFB_DXB_LOWLOAD1500; L1B-F1 & L1B-F2)",
+        "role": "Highest-ranked feasible non-A/non-B grid challenger (K=4, B=1 conservative prime/base-edit challenger inheriting the categorical NICHE_TRIHORMONAL_120UM_MVF_CAO2 120 um lamina / <=150 um cluster-cap indicator on the 2,160-stack grid; exact utility tie at #2/#3 between #2 AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT + ER_NONE [K=4, B=1, discount = 0.9650] and #3 AUTO_NONE + ER_IAPP_PRAMLINTIDE_RNLS_WT [K=4, B=1, discount = 0.9650] at 0.10463976892871349 exact unrounded composite utility [0.10463977 8-dec; 0.1046 both direct 4-dec and IEEE-754 binary64 cohort-rounded average round((0.1032 + 0.1061)/2, 4) = round(0.10464999999999999, 4) = 0.1046], resolved to #2 under reverse=True sort by the Gate-2B T1D autoantigen stealth priority tie-breaker for AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT while #3 ER_IAPP_PRAMLINTIDE_RNLS_WT serves as the Gate-4 ER/amyloid Pareto watchlist challenger, whereas K=5, B=0 AUTO_NONE + ER_RNLS_KO [discount = exp(-0.15) = 0.860708] ranks #9 at 0.08189922 [0.0819]); strictly distinct from unscored off-grid Stage-0 molecular/biophysical Design X (K=4, B=0, 100 um PDMS-CaO2 lamina / 125 um cell bands / 46.39 wt% CaO2 / <=100 um cluster cap + spatial boundary-ring microgel geometry evaluated in dedicated Layer-4 PDE scenarios: ISLET1_A4_X_MOL_RNLS_WT, ISLET1_A4_DXS_ARM1C_L4CD47, ISLET1_A4_L3_BFB_BASALFLOOR, ISLET1_COMP_R4_X_BFB_DXB_LOWLOAD1500; L1B-F1, L1B-F2 & IIP-0009 / DEC-087)",
         "evaluation_scope": "COMBINATORIAL_GRID_ONLY",
         "molecular_proposal_included_in_score": false,
         "matched_combinatorial_search_id": "ALLO_B2M_HLAE_CD47_SWAP_CIITA_KO__AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
@@ -65,7 +65,7 @@
             "evaluator_logit_delta": -0.2,
             "evaluator_target_gate": "Gate3_Innate_NK_Macrophage_and_IBMIR_Shield",
             "evaluator_disposition_rule": "Applies -0.20 logit discount in Gate 3 + requires Decision Experiment #1 QuantiBRITE gate",
-            "reason": "Requires QuantiBRITE Hour-0 verification that resting endogenous B2M promoter achieves inhibitory HLA-E and CD47 surface density on Stage 7 beta-cells and iECs (Han 2019 PMID:31040209; Hu 2023 PMID:37156915; Xu 2024 PMID:38508139; Lin 2023 PMID:37264229)."
+            "reason": "Requires QuantiBRITE Hour-0 verification that resting endogenous B2M promoter achieves inhibitory HLA-E and CD47 surface density on Stage 7 beta-cells and iECs (Han 2019 PMID:31040209; Hu 2023 PMID:37156915; Lin 2023 PMID:37264229)."
           },
           {
             "graveyard_id": "GRAVEYARD_010_MHC_NULL_INDIRECT_APC_BYSTANDER_BLINDSPOT",
@@ -107,18 +107,18 @@
       "composite_series_system_utility": null,
       "off_grid_molecular_design_x_locus1_and_lamina_counterfactual_projection": {
         "computation_mode": "LIVE_EVALUATOR_DERIVED",
-        "grid_champion_a_gate3_pediatric": 0.6364,
-        "grid_champion_a_composite_utility": 0.1085,
-        "off_grid_design_x_constitutive_hlae_gate3_pediatric_projection": 0.6813,
-        "off_grid_design_x_constitutive_hlae_composite_utility_projection": 0.1162,
+        "grid_champion_a_gate3_pediatric": 0.6363,
+        "grid_champion_a_composite_utility": 0.1084,
+        "off_grid_design_x_constitutive_hlae_gate3_pediatric_projection": 0.6812,
+        "off_grid_design_x_constitutive_hlae_composite_utility_projection": 0.116,
         "off_grid_design_x_constitutive_hlae_composite_utility_projection_exact_unrounded_inputs": 0.1161,
-        "unconditional_composite_utility_if_graveyard_009_retained": 0.1085,
+        "unconditional_composite_utility_if_graveyard_009_retained": 0.1084,
         "off_grid_projection_conditionality_status": "CONDITIONAL_ON_HOUR0_HLAE_15000_MOLECULES_PER_CELL_GATE_REMOVING_GRAVEYARD_009_MINUS_0P20_LOGIT",
         "relative_composite_gain_over_champion_a_pct": 7.06,
         "legacy_rounded_relative_composite_gain_pct_reference": 7.07,
         "relative_composite_gain_over_champion_a_exact_unrounded_inputs_pct": 7.06,
         "relative_composite_gain_from_4dec_gate3_ratio_pct": 7.06,
-        "derivation_note": "While the 2,160-stack grid evaluates fixed locus indicators (where X-grid = ISLET1_CHASSIS_X_CONSERVATIVE_BASE_EDIT_CHALLENGER has K=4, B=1, utility = 0.1046 [0.10467791551016123 exact unrounded / 0.10467792 8-dec / 0.1047 direct 4-dec; displayed as 0.1046 via IEEE-754 binary64 cohort-rounded average round((0.1032 + 0.1061)/2, 4) = round(0.10464999999999999, 4) = 0.1046 (coinciding with exact-decimal half-even 0.10465 -> 0.1046, whereas literal binary64 round(0.10465, 4) = 0.1047)]), off-grid molecular Design X (K=4, B=0, discount = 1.0000) replaces Arm 1B's resting-attenuated Syn_5xISRE_minP promoter (10,890 molecules/cell at Hour 0 [< 15,000 NKG2A threshold; 0.6050x WT 18,000], incurring the -0.20 resting NK vulnerability penalty on Gate 3) with constitutive HLA-E expression (Arm 1C promoter-trapped B2M::HLA-E SCT in DX-S or Arm 1A-lite EEF1A1_core) plus AAVS1::iCasp9-GSG-P2A-CD47-IgV-GPI and the 100 um PDMS-CaO2 lamina (eps = 0.42, <=100 um clusters). Removing the -0.20 Hour-0 resting HLA-E discount (GRAVEYARD_009; sigma(0.5598637 + 0.20) = 0.681324 vs 0.636421 while GRAVEYARD_010's -0.25 stays) increases Gate 3 pediatric survival from 0.6364 to 0.6813 (+4.49 pp) and lifts projected off-grid K=4, B=0 composite utility from 0.1085 (0.10847452 unrounded) to 0.1162 (0.1085 * 0.6813 / 0.6364 = 0.116155 from displayed 4-decimal inputs; 0.1161 [0.11612802] from exact unrounded evaluator inputs; exact relative gain is +7.06% [7.0556% unrounded / 7.0553% from 0.6813/0.6364; legacy +7.07% retained in legacy_rounded_relative_composite_gain_pct_reference]; strictly conditional on passing Decision Experiment #1 Hour-0 HLA-E >= 15,000 molecules/cell; unconditional baseline equals 0.1085; AUDIT-REF, D1-02, Q2-X4, AUDIT-REF, AUDIT-REF, AUDIT-REF, AUDIT-REF, AUDIT-REF, AUDIT-REF & L1B-F2)."
+        "derivation_note": "While the 2,160-stack grid evaluates fixed locus indicators (where X-grid = ISLET1_CHASSIS_X_CONSERVATIVE_BASE_EDIT_CHALLENGER has K=4, B=1, utility = 0.1046 [0.10463976892871349 exact unrounded / 0.10463977 8-dec / 0.1046 both direct 4-dec and IEEE-754 binary64 cohort-rounded average round((0.1032 + 0.1061)/2, 4) = round(0.10464999999999999, 4) = 0.1046], inheriting the shared categorical NICHE_TRIHORMONAL_120UM_MVF_CAO2 indicator), unscored off-grid Stage-0 molecular/biophysical Design X (K=4, B=0, discount = 1.0000; IIP-0009 / DEC-087) replaces Arm 1B's resting-attenuated Syn_5xISRE_minP promoter (10,890 molecules/cell at Hour 0 [< 15,000 NKG2A threshold; 0.6050x WT 18,000], incurring the -0.20 resting NK vulnerability penalty on Gate 3) with constitutive HLA-E expression (Arm 1C promoter-trapped B2M::HLA-E SCT in DX-S or Arm 1A-lite EEF1A1_core) plus AAVS1::iCasp9-GSG-P2A-CD47-IgV-GPI and the 100 um PDMS-CaO2 lamina (125 um cell bands, 46.39 wt% CaO2, eps = 0.42, <=100 um clusters; evaluated in dedicated Layer-4 PDE scenarios without altering the 2,160-stack Gate 5 prior). Removing the -0.20 Hour-0 resting HLA-E discount (GRAVEYARD_009; sigma(0.5594227 + 0.20) = 0.681228 vs 0.636319 while GRAVEYARD_010's -0.25 stays) increases Gate 3 pediatric survival from 0.6363 to 0.6812 (+4.49 pp) and lifts projected off-grid K=4, B=0 composite utility from 0.1084 (0.10843499 unrounded) to 0.1160 (0.1084 * 0.6812 / 0.6363 = 0.116050 from displayed 4-decimal inputs; 0.1161 [0.11608800] from exact unrounded evaluator inputs; exact relative gain is +7.06% [7.0577% unrounded / 7.0564% from 0.6812/0.6363; legacy +7.07% retained in legacy_rounded_relative_composite_gain_pct_reference]; strictly conditional on passing Decision Experiment #1 Hour-0 HLA-E >= 15,000 molecules/cell; unconditional baseline equals 0.1084; AUDIT-REF, D1-02, Q2-X4, L1B-F2, IIP-0008 & IIP-0009)."
       },
       "genomic_budget": "Proposed K=4, B=0; utility discount 1 is not measured manufacturing yield",
       "locus1_arm_1x_challenger": "Proposed bidirectional synthetic-promoter HLA-E/CD47 cassette with WT alpha3 Asp227/Thr228 conditional default (W_D = -1 in the 8-run 2^3 Stage-0 factorial) vs optional HLA-E mature-heavy-chain D227K/T228A CD8-null satellite coupon (W_D = +1; activated only if Gate 0A-NK SPR CD8 K_D > 1,000 uM, CD94/NKG2A K_D <= 2.5 uM, 0/6 CMV+ UL40 CTL donors > 5.0% lysis, and >= 80% CD8+ Treg suppression retention all pass) and CD47 mature-IgV C15G substitution. No exact Arm 1X donor ledger, structural qualification or expression measurement is available. CD8-null and improved surface-density function remain hypotheses.",
@@ -204,7 +204,7 @@
   "date": "2026-11-01",
   "counts": {
     "studies": 563,
-    "arms": 592,
+    "arms": 596,
     "findings": 3093,
     "designs": 2160,
     "feasible": 480,
@@ -225,16 +225,16 @@
       "rank": 1,
       "edits": 4,
       "baseEdits": 0,
-      "composite": 0.1085,
-      "children": 0.107,
-      "adults": 0.11,
+      "composite": 0.1084,
+      "children": 0.1069,
+      "adults": 0.1099,
       "weakestTest": "3",
       "tests": {
         "1": 0.7011,
-        "3": 0.6364,
+        "3": 0.6363,
         "4": 0.698,
         "5": 0.7269,
-        "2A": 0.6646,
+        "2A": 0.6645,
         "2B": 0.7108
       }
     },
@@ -249,10 +249,10 @@
       "weakestTest": "3",
       "tests": {
         "1": 0.7011,
-        "3": 0.6364,
+        "3": 0.6363,
         "4": 0.698,
         "5": 0.7269,
-        "2A": 0.6646,
+        "2A": 0.6645,
         "2B": 0.7108
       }
     },
@@ -285,11 +285,11 @@
       "weakestTest": "5",
       "tests": {
         "1": 0.5921,
-        "3": 0.6228,
+        "3": 0.6227,
         "4": 0.3659,
         "5": 0.2994,
-        "2A": 0.6237,
-        "2B": 0.6271
+        "2A": 0.6236,
+        "2B": 0.627
       }
     },
     {
@@ -307,7 +307,7 @@
         "4": 0.5671,
         "5": 0.2227,
         "2A": 0.505,
-        "2B": 0.6271
+        "2B": 0.627
       }
     },
     {
@@ -330,8 +330,8 @@
     }
   ],
   "variance": {
-    "assumptions": 97.16,
-    "overlap": 2.7,
+    "assumptions": 97.17,
+    "overlap": 2.69,
     "findings": 0.14
   }
 }

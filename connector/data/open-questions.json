@@ -102,8 +102,8 @@
   {
     "id": "OQ-005",
     "title": "Does the oxygen supply hold up under pessimistic assumptions?",
-    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In the computer model the margin inside each cluster of cells is thin: with a few unfavourable assumptions the oxygen drops below the safe level.",
-    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, which cannot establish oxygen inside discrete 120 micrometre clusters. In the two-zone cluster model, the conservative gel-only core oxygen is 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), and none of these computational outputs is an experimentally established safety margin.",
+    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In the computer model the margin inside each cluster of cells is thin, and the model uses a single 68-hour oxygen-release half-life across recipes that pack more calcium peroxide into smaller beads. With a faster or slower release, or late blood vessels, oxygen or peroxide safety can fail.",
+    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint.",
     "tests": [
       "5"
     ],
@@ -113,9 +113,13 @@
       "X"
     ],
     "rules": [],
-    "pmids": [],
-    "settle": "Measure oxygen inside real graft slabs over the first 3 days and compare it with the model.",
-    "source": "Concise specification sections 5 and 9",
+    "pmids": [
+      "22371586",
+      "36971050",
+      "35743287"
+    ],
+    "settle": "Measure crystal and microbead size distributions, oxygen-release half-life and kinetic law for each calcium-peroxide recipe in its implanted form, and measure oxygen inside real graft slabs over the first 3 days.",
+    "source": "Concise specification sections 5 and 9; IIP-0010",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -175,7 +179,7 @@
     "id": "OQ-008",
     "title": "Which form of CD47 is best: the full-length protein or a surface-anchored form?",
     "plain": "CD47 tells macrophages not to eat the cell. The full-length version also sends signals inside the cell that can blunt insulin release. A shorter, surface-anchored version leaves out the inside signals and keeps the macrophage signal. Whether insulin release is spared is not yet tested, so the two are being compared.",
-    "detail": "Full-length CD47 can blunt glucose-stimulated insulin secretion (Ghimire 2023, PMID 37820008) and block new blood vessels, while an IgV-GPI form keeps the macrophage signal without cell death or blocked blood-vessel growth in other cell types (Xu 2024, PMID 38508139); insulin release with it is untested.",
+    "detail": "Full-length CD47 can blunt glucose-stimulated insulin secretion (Ghimire 2023, PMID 37820008) and block new blood vessels. An IgV-GPI form kept the macrophage signal without cell death or blocked blood-vessel growth in non-islet immune, blood-stem-cell and endothelial models (Jurkat, A20, mouse LSK cells and EA.hy926 endothelial plugs; Xu 2024, PMID 38508139, Tier 2B), while the 180,000 to 220,000 molecules-per-cell protection transition in Hu 2023 (PMID 37156915) comes from virus-titrated primary human islets measured with clone CC2C6 and Quantibrite beads (engineered HIP cells reached over 600,000; IIP-0008). Insulin release and macrophage protection with IgV-GPI in stem-cell islets remain untested.",
     "tests": [
       "1",
       "3"
@@ -190,8 +194,8 @@
       "38508139",
       "37156915"
     ],
-    "settle": "Compare insulin release and macrophage protection side by side for each CD47 form in the same cells.",
-    "source": "Concise specification section 4.1",
+    "settle": "Compare insulin release and macrophage protection side by side for each CD47 form in stem-cell islets, cross-calibrating clone B6H12 and clone CC2C6 Quantibrite surface counts.",
+    "source": "Concise specification section 4.1; IIP-0008",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -318,8 +322,8 @@
   {
     "id": "OQ-014",
     "title": "X is two different candidates, not one verified product",
-    "plain": "The scored grid candidate adds an INS edit to A and is tied for second place with another candidate. The separate molecular proposal changes the promoter and proteins at K=4, B=0; it has no materialized donor or measured performance.",
-    "detail": "The scored grid candidate adds an INS edit to A and is tied for second place with another candidate. The separate molecular proposal changes the promoter and proteins at K=4, B=0; it has no materialized donor or measured performance.",
+    "plain": "The name Design X covers two separate things: a scored comparison on the 2,160-design grid (Design A plus one insulin-gene base edit, using the baseline 119 micrometre oxygen layer) and an unscored Stage-0 upgrade proposal (new B2M switch and CD47 variant, a protective insulin-gene cell line, an outer-ring Fas-ligand gel layout and a 100 micrometre oxygen layer, with no insulin-gene edit). Neither is built or tested.",
+    "detail": "Clarified in IIP-0009. The scored grid candidate (ISLET1_CHASSIS_X_EMERGENT_CHALLENGER, K=4, B=1) adds an INS base edit to Design A on the baseline 119 micrometre Layout B oxygen layer and is tied for second place on the grid. The separate Stage-0 molecular and pouch proposal (K=4, B=0) changes the B2M promoter and CD47 sequence, selects an INS-VNTR Class III starting line, arranges SA-FasL microgels in an outer boundary ring around a 100 micrometre central oxygen layer, and has no score or built DNA.",
     "tests": [
       "1",
       "2A",
@@ -334,7 +338,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Keep separate identities, provide the exact donor and protein ledger, and qualify each product before any promotion.",
-    "source": "Concise specification section 4.6",
+    "source": "Concise specification sections 3 and 4.6; IIP-0009",
     "status": "open",
     "added": "2026-10-25",
     "since": "v0.8.0"
@@ -342,18 +346,20 @@
   {
     "id": "OQ-015",
     "title": "Does the proposed outer-band pouch physically fit?",
-    "plain": "The scored baseline leaves two outer bands of 115.5 micrometres, a little narrower than its 120 micrometre clusters. Design X thins the central layer to 100 micrometres, which leaves 125 micrometre bands and caps clusters at 100 micrometres, so on paper they fit. Nothing has been built or measured yet.",
-    "detail": "Changing source-lamina porosity while holding oxygen inventory fixed is only a sensitivity. In the scored baseline, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to fully contain 120 micrometre spheres. Design X and Embodiment A* (the Stage-0 version of Design A) use a 100 micrometre lamina, 125 micrometre outer bands and clusters of at most 100 micrometres, which fit on paper. Whether the pouch can be built and packed to that geometry is untested.",
+    "plain": "In the baseline geometry used for the scores across Designs A, B and X, a 350 micrometre slab with a 119 micrometre central oxygen layer leaves two outer bands of 115.5 micrometres, slightly narrower than 120 micrometre cell clusters. The Stage-0 versions of Design A and Design X thin the central layer to 100 micrometres, leaving 125 micrometre outer bands and capping clusters at 100 micrometres so they fit on paper. Nothing has been built or measured yet.",
+    "detail": "Clarified in IIP-0009. Changing source-lamina porosity while holding oxygen inventory fixed is a conditional sensitivity, not a scored design input. In the scored Layout B baseline shared by the grid rows for Designs A, B and X, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to contain 120 micrometre spheres without compression. Stage-0 Embodiment A* and Stage-0 Design X thin the central lamina to 100 micrometres (125 micrometre outer bands, clusters at most 100 micrometres), which fits on paper but raises solid CaO2 loading to 46.39 wt% (23.45 vol%) and remains unbuilt.",
     "tests": [
       "5"
     ],
     "designs": [
+      "A",
+      "B",
       "X"
     ],
     "rules": [],
     "pmids": [],
     "settle": "Reconcile local cell packing, bead inventory, source geometry and cluster dimensions in one physical design before claiming an oxygen improvement.",
-    "source": "Concise specification section 5",
+    "source": "Concise specification section 5; IIP-0009",
     "status": "open",
     "added": "2026-10-25",
     "since": "v0.8.0"
@@ -382,6 +388,37 @@
     "source": "IIP-0003, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
+    "since": "v0.8.0"
+  },
+  {
+    "id": "OQ-017",
+    "title": "Can a Stage-1 multi-lineage immune–islet co-culture catch cross-talk missed by split assays without hiding which edit failed?",
+    "plain": "Stage 0 tests T cells, natural killer cell subsets and macrophages in separate wells so each gene edit gets a clear pass or fail. In the body those immune cells act together and amplify one another's signals. A combined human immune–islet test in Stage 1 might catch failure modes that split tests miss, provided background donor mismatch and gel recovery do not blur the readout.",
+    "detail": "Raised in IIP-0007 (issue #7). Stage-0 Readouts 3A, 3B and 3C stay separate and mandatory for clean per-edit attribution. Before adding a supplementary combined human PBMC, antigen-presenting-cell, natural-killer and macrophage co-culture with microgel-embedded stem-cell islets in Stage 1, three technical checks have to pass: separating non-specific donor mismatch from autoimmune attack over 48 to 72 hours, keeping every immune cell type alive in islet medium without artificial cytokine-activated killer effects, and recovering intact clusters from the gel to measure glucose-triggered insulin and glucagon release afterwards (comparing modular human immune co-cultures in Higbee 2009 PMID 19807200, Byers 2009 PMID 19272794 and Ma 2010 PMID 20331478 with autologous stem-cell-islet immune co-culture in Leite 2020 PMID 32668238).",
+    "tests": [
+      "1",
+      "2A",
+      "2B",
+      "3",
+      "4"
+    ],
+    "designs": [
+      "A",
+      "B",
+      "X"
+    ],
+    "rules": [],
+    "pmids": [
+      "19807200",
+      "20331478",
+      "19272794",
+      "32668238",
+      "32814902"
+    ],
+    "settle": "Keep Stage-0 Readouts 3A, 3B and 3C separate, then run a Stage-1 qualification pilot testing 48 to 72 hour background lysis, multi-lineage survival without artificial cytokine activation, and post-challenge insulin secretion recovery.",
+    "source": "IIP-0007; Stage-0 execution playbook Readout 3",
+    "status": "open",
+    "added": "2026-11-12",
     "since": "v0.8.0"
   }
 ]
