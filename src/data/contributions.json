@@ -175,5 +175,23 @@
       "ChatGPT 6.1 Sol (max)"
     ],
     "outcome": { "kind": "changed_blueprint", "note": "The blueprint now checks nearby genes, host-gene splicing and anti-silencing switches around its core DNA edits, holds off deleting the zinc transporter ZnT8 until stem-cell yield and insulin output are proved, audits three crystal structures of the safety switch, and tests how a naturally protective TYK2 donor cell line affects the 10,000-patient simulation." }
+  },
+  {
+    "id": "IIP-0012",
+    "date": "2026-11-12",
+    "decided": "2026-11-12",
+    "title": "Add post-adjunct depletion assays, ectopic CD55 complement gates and held Stage-0 challenger falsifiers",
+    "summary": "Adds lab tests to check whether islet grafts stay protected after their temporary immune-calming gel proteins wear off, isolates any benefit of added CD55 without harming insulin release, and holds four candidate gene edits behind strict proof gates.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "models": [
+      "Gemini 4 Argon (high)",
+      "Claude 5.5 Sonnet (max)",
+      "ChatGPT 6 Astra (max)",
+      "ChatGPT 6.1 Sol (max)"
+    ],
+    "outcome": { "kind": "changed_blueprint", "note": "The Stage-0 lab contract now tests never-treated, gel-depleted and active grafts side by side once immune-calming gel proteins wear off, checks added CD55 on the exact same edited graft without disturbing endogenous CD59 insulin release, and holds four candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) outside core designs behind strict pass rules." }
   }
 ]
