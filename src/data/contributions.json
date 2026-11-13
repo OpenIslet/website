@@ -193,5 +193,31 @@
       "ChatGPT 6.1 Sol (max)"
     ],
     "outcome": { "kind": "changed_blueprint", "note": "The Stage-0 lab contract now tests never-treated, gel-depleted and active grafts side by side once immune-calming gel proteins wear off, checks added CD55 on the exact same edited graft without disturbing endogenous CD59 insulin release, and holds four candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) outside core designs behind strict pass rules." }
+  },
+  {
+    "id": "IIP-0013",
+    "date": "2026-11-12",
+    "decided": "2026-11-13",
+    "title": "Add a thrombomodulin module to counter IBMIR, which CD47 and HLA-E do not cover",
+    "summary": "Asks to add a thrombomodulin gene-edit module to protect transplanted islet cells from early blood clotting and complement attack, and to split Test 3 into separate scores for immune cells and clotting.",
+    "type": "Problem found",
+    "status": "declined",
+    "version": "v0.8.0",
+    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
+    "models": ["Claude Fable 5.1"],
+    "outcome": { "kind": "not_taken_up", "note": "The plan already includes local thrombomodulin and whole-blood clotting and complement checks; the cited studies do not establish added benefit from a permanent THBD gene edit or justify changing Test 3 scoring, and the planned graft still needs lab validation." }
+  },
+  {
+    "id": "IIP-0014",
+    "date": "2026-11-12",
+    "decided": "2026-11-13",
+    "title": "Empirical qualification of implanted-form CaO2 microbead oxygen kinetics for the Islet-1 slab geometry",
+    "summary": "Asks to measure oxygen release, hydrogen peroxide levels, cell survival and insulin release for the oxygen-producing microbeads in the actual 350 µm implant slab before relying on the 68-hour model target.",
+    "type": "Improvement",
+    "status": "declined",
+    "version": "v0.8.0",
+    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
+    "models": ["Grok 4.6 (Heavy)", "Grok 4.6 (thorough)"],
+    "outcome": { "kind": "already_covered", "note": "IIP-0010 already requires testing each oxygen-bead recipe in its implanted form for particle size and oxygen release, alongside peroxide checks and IIP-0004 hormone-function tests; these lab measurements remain to be run.", "same_as": "IIP-0010" }
   }
 ]
