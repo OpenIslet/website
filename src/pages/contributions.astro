@@ -4,7 +4,7 @@ import CellField from '../components/CellField.astro';
 import Decides from '../components/credit/Decides.astro';
 import Named from '../components/credit/Named.astro';
 import Grows from '../components/credit/Grows.astro';
-import { contributors, outcomes, outcomeKinds, showExamples, standingOf, standingsShown, type Standing } from '../data/contributions';
+import { contributors, outcomes, outcomeKinds, quietOutcomes, showExamples, standingOf, standingsShown, type Standing } from '../data/contributions';
 import { issuesUrl, longDate, social, startHref } from '../data/site';
 import { draft, planned } from '../data/versions';
 
@@ -19,6 +19,8 @@ const standingName: Record<Standing['key'], string> = {
   withdrawn: 'Withdrawn',
 };
 const credited = outcomeKinds.filter((k) => outcomes[k].credited);
+// The closed row and the filter name what an IIP added. "Not taken up" and "Already covered" stay on the IIP itself, inside the opened row.
+const quiet = new Set<Standing['key']>(quietOutcomes);
 const shownWithReason = outcomeKinds.filter((k) => !outcomes[k].credited);
 const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
 ---
@@ -94,7 +96,7 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
           <span>Outcome</span>
           <select id="outcome">
             <option value="all">All</option>
-            {standingsShown.map((key) => <option value={key}>{standingName[key]}</option>)}
+            {standingsShown.filter((key) => !quiet.has(key)).map((key) => <option value={key}>{standingName[key]}</option>)}
           </select>
         </label>
         <label>
@@ -138,7 +140,7 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                     </span>
                   </span>
                   <span class="crow__did">
-                    {c.did.map((d) => (
+                    {c.did.filter((d) => !quiet.has(d.key)).map((d) => (
                       <span>
                         {d.label}
                         {d.n > 1 && <b> × {d.n}</b>}

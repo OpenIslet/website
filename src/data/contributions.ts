@@ -26,6 +26,11 @@ export const outcomes: Record<OutcomeKind, { label: string; meaning: string; cre
   already_covered: { label: 'Already covered', meaning: 'The blueprint or an earlier IIP already had it.', credited: false, why: 'Where it was already' },
 };
 export const outcomeKinds = Object.keys(outcomes) as OutcomeKind[];
+/**
+ * Outcomes that are not listed beside a contributor's name on the closed row, and are not offered in the Outcome filter.
+ * Each one still shows, with its reason, on the IIP itself once the row is opened, and on GitHub.
+ */
+export const quietOutcomes: OutcomeKind[] = ['not_taken_up', 'already_covered'];
 
 export interface Outcome {
   kind: OutcomeKind;
