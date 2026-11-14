@@ -169,6 +169,7 @@
     "version": "v0.8.0",
     "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
     "models": [
+      "AlphaGenome 2",
       "Gemini 4 Argon (high)",
       "Claude 5.5 Sonnet (max)",
       "ChatGPT 6 Astra (max)",
@@ -187,6 +188,7 @@
     "version": "v0.8.0",
     "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
     "models": [
+      "AlphaGenome 2",
       "Gemini 4 Argon (high)",
       "Claude 5.5 Sonnet (max)",
       "ChatGPT 6 Astra (max)",
@@ -231,6 +233,7 @@
     "version": "v0.8.0",
     "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
     "models": [
+      "AlphaGenome 2",
       "Gemini 4 Carbon (high)",
       "ChatGPT 6.1 Sol (max)",
       "ChatGPT 6 Astra (max)",
