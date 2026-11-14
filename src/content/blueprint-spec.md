@@ -167,4 +167,4 @@ Each design gets a score from 0 to 1 on each test. Because the tests run in seri
 
 ## 10. What happens next
 
-This is Stage 0 of 6: the blueprint itself. Lab testing, animal studies and a first human trial come later. We expect partner organisations, or anyone who takes the open blueprint, to carry them out. See the [roadmap](/roadmap). The blueprint is open to challenge. If you find a mistake or a better idea, the [Start here guide](/start) shows how to submit it, and accepted changes are recorded in the changelog above.
+This is Stage 0 of 7: the blueprint itself. Lab testing, animal studies, clinical-grade cell manufacturing and a first human trial come later. We expect partner organisations, or anyone who takes the open blueprint, to carry them out. See the [roadmap](/roadmap). The blueprint is open to challenge. If you find a mistake or a better idea, the [Start here guide](/start) shows how to submit it, and accepted changes are recorded in the changelog above.

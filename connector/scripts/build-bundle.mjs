@@ -595,7 +595,7 @@ put('blueprint/overview.json', {
   designs,
   champion_challenger_portfolio: release.champion_challenger_portfolio ?? null,
   environment: site.niche.map((n) => ({ what: n.k, detail: n.v })),
-  // Stage 0 is shown in full. Stages 1 to 5 are an outline only: no steps, numbers or pass/stop lines.
+  // Stage 0 is shown in full. Stages 1 to 6 are an outline only: no steps, numbers or pass/stop lines.
   roadmap: site.stages.map((s) => ({
     id: s.id,
     name: s.name,

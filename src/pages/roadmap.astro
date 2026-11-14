@@ -9,20 +9,21 @@ import StageArt1 from '../components/roadmap/StageArt1.astro';
 import StageArt2 from '../components/roadmap/StageArt2.astro';
 import StageArt4 from '../components/roadmap/StageArt4.astro';
 import StageArt5 from '../components/roadmap/StageArt5.astro';
+import StageArt6 from '../components/roadmap/StageArt6.astro';
 import WayArt from '../components/roadmap/WayArt.astro';
 import Terrier from '../components/roadmap/Terrier.astro';
 
 // The small picture on each card. Stage 3 has the big terrier picture instead.
-const art: Record<string, any> = { '0': StageArt0, '1': StageArt1, '2': StageArt2, '4': StageArt4, '5': StageArt5 };
+const art: Record<string, any> = { '0': StageArt0, '1': StageArt1, '2': StageArt2, '4': StageArt4, '5': StageArt5, '6': StageArt6 };
 const stateLabel = (s: { state: string }) => (s.state === 'Now' ? 'We are here' : 'Later');
 
-// Stage 0 is shown in full. Stages 1 to 5 are an outline only.
+// Stage 0 is shown in full. Stages 1 to 6 are an outline only.
 const [blueprint, ...later] = stages;
 ---
 
 <Layout
   title="Roadmap"
-  description={`The six stages from blueprint to patients. OpenIslet works in the open on Stage 0, the blueprint. Stages 1 to 5 are an outline, meant for partner organisations or for anyone who takes the open blueprint. Our goal: ${goal.short}.`}
+  description={`The seven stages from blueprint to patients. OpenIslet works in the open on Stage 0, the blueprint. ${laterStages} are an outline, meant for partner organisations or for anyone who takes the open blueprint. Our goal: ${goal.short}.`}
   current="roadmap"
   share="roadmap"
 >
@@ -31,8 +32,8 @@ const [blueprint, ...later] = stages;
       <p class="eyebrow">Roadmap</p>
       <h1 class="h1 intro__h">The path to patients</h1>
       <p class="lead intro__lead">
-        Six stages, from the blueprint to patients. We are at Stage 0, the blueprint, which OpenIslet builds in the open and which you can help with today.
-        Stages 1 to 5 are an outline: we expect partner organisations, or anyone who takes the open blueprint, to carry them out.
+        Seven stages, from the blueprint to patients. We are at Stage 0, the blueprint, which OpenIslet builds in the open and which you can help with today.
+        {laterStages} are an outline: we expect partner organisations, or anyone who takes the open blueprint, to carry them out.
       </p>
 
       <div class="goalbar">
@@ -47,7 +48,7 @@ const [blueprint, ...later] = stages;
         <a class="textlink" href="/blueprint#versions">See the version plan →</a>
       </div>
 
-      <nav aria-label="The six stages">
+      <nav aria-label="The seven stages">
         <ol class="path">
           {
             stages.map((s) => (
@@ -298,14 +299,14 @@ const [blueprint, ...later] = stages;
     font-size: 1rem;
     color: var(--body);
   }
-  /* the route: six links, one per stage, as plain columns under a rule (amber for the stage we are at) */
+  /* the route: seven links, one per stage, as plain columns under a rule (amber for the stage we are at) */
   .path {
     list-style: none;
     padding: 0;
     margin: 2rem 0 0;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 1.5rem 1.25rem;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 1.5rem 1rem;
   }
   .path__item {
     position: relative;
@@ -374,14 +375,45 @@ const [blueprint, ...later] = stages;
   .step__s--now {
     color: var(--warn);
   }
+  /* Seven stages cannot make even rows of two or three, so below the width where seven fit side by side they are a list:
+     one stage per row, with its number, icon and name on a line and where it stands at the end. */
   @media (max-width: 62em) {
     .path {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
     }
-  }
-  @media (max-width: 36em) {
-    .path {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .step {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      min-height: 3.25rem;
+      padding-block: 0.5rem;
+      border-top-width: 1px;
+      border-top-color: var(--line);
+    }
+    .path__item--now .step {
+      border-top-color: var(--line);
+    }
+    .step__top {
+      display: contents;
+    }
+    .step__n {
+      order: 0;
+      flex: none;
+    }
+    .step__icon {
+      order: 1;
+      flex: none;
+    }
+    .step__t {
+      order: 2;
+      flex: 1;
+      font-size: 1rem;
+    }
+    .step__s {
+      order: 3;
+      flex: none;
     }
   }
 

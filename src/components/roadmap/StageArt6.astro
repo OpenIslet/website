@@ -1,0 +1,33 @@
+---
+// Stage 6: tailored treatment. A person's gene tiles on the left, matching tiles on the cells on the right, joined by dotted lines.
+// The tiles are labelled generically: the project keeps the detail of Stages 1 to 6 off the site.
+const tiles = [
+  { c: '#f2a93b', t: 'gene 1' },
+  { c: '#8ea0ff', t: 'gene 2' },
+  { c: '#e6edf2', t: 'gene 3' },
+];
+---
+
+<svg viewBox="0 0 280 176" role="img" aria-label="A person with three gene tiles joined by dotted lines to cells carrying matching tiles, to show a treatment matched to the person.">
+  <circle cx="52" cy="40" r="14" fill="#e6edf2" stroke="#0b1b26" stroke-width="2.5"></circle>
+  <path d="M24 100 v-10 a28 28 0 0 1 56 0 v10 z" fill="#e6edf2" stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round"></path>
+  <g stroke="#0b1b26" stroke-width="2.4">
+    <circle cx="214" cy="38" r="17" fill="#5b73ff"></circle>
+    <circle cx="238" cy="62" r="14" fill="#5b73ff"></circle>
+    <circle cx="192" cy="64" r="13" fill="#5b73ff"></circle>
+    <circle cx="214" cy="66" r="15" fill="#e6edf2"></circle>
+  </g>
+  {
+    tiles.map((t, i) => (
+      <g>
+        <rect x={20 + i * 34} y="104" width="28" height="28" rx="7" fill={t.c} stroke="#0b1b26" stroke-width="2.4"></rect>
+        <rect x={172 + i * 34} y="104" width="28" height="28" rx="7" fill={t.c} stroke="#0b1b26" stroke-width="2.4"></rect>
+        <path d={`M${34 + i * 34} 136 V${142 + i * 5} H${186 + i * 34} V136`} fill="none" stroke={t.c} stroke-width="2.2" stroke-dasharray="2 5" stroke-linecap="round"></path>
+        <text x={34 + i * 34} y="170" font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">{t.t}</text>
+      </g>
+    ))
+  }
+  <path d="M112 118 H160" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round"></path>
+  <circle cx="136" cy="118" r="11" fill="#13293a" stroke="#8ea0ff" stroke-width="2.4"></circle>
+  <path d="M130.5 118 l4 4 l7 -8" fill="none" stroke="#f2a93b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+</svg>

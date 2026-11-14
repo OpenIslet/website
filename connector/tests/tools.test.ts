@@ -91,9 +91,13 @@ describe('get_blueprint_overview', () => {
     expect(plain.text).toContain('Insulin');
   });
 
-  it('shows Stage 0 in full and Stages 1 to 5 as an outline for partners or open-source adopters', async () => {
+  it('shows Stage 0 in full and Stages 1 to 6 as an outline for partners or open-source adopters', async () => {
     const r = await s.call('get_blueprint_overview', { section: 'roadmap' });
     expect(r.text).toContain('Stage 3 · Animal studies and safety (Later)');
+    // Making and qualifying the clinical-grade cells is a stage of its own, before the first human trial.
+    expect(r.text).toContain('Stage 4 · Clinical-grade cells and regulator checks (Later)');
+    expect(r.text).toContain('Stage 5 · First human trial (Later)');
+    expect(r.text).toContain('Stage 6 · Tailored treatment (Later)');
     expect(r.text).toContain('Australian terrier');
     // The dog project is an optional companion that runs alongside the mouse tests and never gates the human trial.
     expect(r.text).toContain('optional companion project');
@@ -105,12 +109,12 @@ describe('get_blueprint_overview', () => {
     for (const label of ['A pass looks like:', 'We stop or change the plan if:', 'Not known yet:', 'Where it stands:']) {
       expect(r.text.split(label).length - 1, label).toBe(1);
     }
-    expect(r.text.split('Why this stage:').length - 1).toBe(6);
-    expect(r.text.split('Carried out by:').length - 1).toBe(5);
+    expect(r.text.split('Why this stage:').length - 1).toBe(7);
+    expect(r.text.split('Carried out by:').length - 1).toBe(6);
     // The detailed dog plan and the lab protocol numbers stay off the site.
     for (const gone of ['Give the dog the implant', '36 runs', '36-run', 'sentinel', '120 µm']) expect(r.text, gone).not.toContain(gone);
     const stages = (r.structuredContent as any).stages; // eslint-disable-line @typescript-eslint/no-explicit-any
-    expect(stages).toHaveLength(6);
+    expect(stages).toHaveLength(7);
     expect(stages[0].points).toHaveLength(5);
     for (const later of stages.slice(1)) expect(later.points, later.name).toBeUndefined();
     const after = (r.structuredContent as any).after_the_blueprint; // eslint-disable-line @typescript-eslint/no-explicit-any

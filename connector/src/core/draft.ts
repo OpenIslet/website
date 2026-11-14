@@ -256,8 +256,8 @@ export function designsNamed(value: string | undefined): { letters: DesignLetter
   return { letters, neither: letters.length === 0 && /\b(?:neither|none)\b/.test(normalise((value ?? '').normalize('NFKC'))) };
 }
 
-/** The roadmap's last stage. Stage 0 is the blueprint itself, so a roadmap IIP names Stages 1 to 5 (tools.test.ts checks there are six). */
-const LAST_STAGE = 5;
+/** The roadmap's last stage. Stage 0 is the blueprint itself, so a roadmap IIP names Stages 1 to 6 (tools.test.ts checks there are seven). */
+const LAST_STAGE = 6;
 /** A run of stage numbers: "Stage 4", "Stages 2-3", "Stages 2, 3 and 4", "stages 2 through 4" (on text already lower-cased by normalise). */
 const STAGE_RUN = /\bstages?\s+\d+(?:\s*(?:,\s*(?:and|or)\s+|,|\band\b|\bor\b|\bto\b|\bthrough\b|&|-|\/)\s*\d+)*/g;
 /** A line as plain lower-case text: emphasis marks gone, dashes and spaces folded. */

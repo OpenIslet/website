@@ -6,7 +6,7 @@
 // prompts point at it instead. The reviewer template works for both.
 //
 // Scope: reviewers test the blueprint itself, not how later lab or clinical stages would be run. The one exception is an IIP about a
-// roadmap stage (Stages 1 to 5, or a missing stage): it is judged as a change to that stage.
+// roadmap stage (Stages 1 to 6, or a missing stage): it is judged as a change to that stage.
 
 export type Route = 'mcp' | 'paste';
 
@@ -74,8 +74,8 @@ export const explorePrompts: ExplorePrompt[] = [
     id: 'roadmap',
     title: 'Improve the roadmap',
     why: 'Spot a missing step between the blueprint and the first human trial.',
-    text: `Read the OpenIslet roadmap with the OpenIslet MCP tools, then find one concrete gap or improvement in Stages 1 to 5, backed by published evidence. For each claim, give a PubMed ID, or the document's title, publisher and link, and quote the exact sentence. Never invent a source or a quote. Explain it in plain English first, then help me prepare it as an IIP.`,
-    pasteText: `Using the OpenIslet starter pack I pasted at the start of this chat, read the roadmap (Part 4), then find one concrete gap or improvement in Stages 1 to 5, backed by published evidence. For each claim, give a PubMed ID, or the document's title, publisher and link, and quote the exact sentence. Explain it in plain English first, then help me prepare it as an IIP. ${packNote}`,
+    text: `Read the OpenIslet roadmap with the OpenIslet MCP tools, then find one concrete gap or improvement in Stages 1 to 6, backed by published evidence. For each claim, give a PubMed ID, or the document's title, publisher and link, and quote the exact sentence. Never invent a source or a quote. Explain it in plain English first, then help me prepare it as an IIP.`,
+    pasteText: `Using the OpenIslet starter pack I pasted at the start of this chat, read the roadmap (Part 4), then find one concrete gap or improvement in Stages 1 to 6, backed by published evidence. For each claim, give a PubMed ID, or the document's title, publisher and link, and quote the exact sentence. Explain it in plain English first, then help me prepare it as an IIP. ${packNote}`,
   },
 ];
 

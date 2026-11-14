@@ -141,7 +141,7 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
       break;
     }
     case 'roadmap': {
-      summary = 'The roadmap has six stages. Stage 0, the blueprint, is where the project is now and is shown in full. Stages 1 to 5 are an outline only: they are meant to be carried out with partner organisations, or by any organisation that takes the open blueprint. Stage 3 is animal studies: the exact human product is tested in mice that carry a human immune system, while an optional companion project, Canine Islet-1, runs alongside with the aim of curing an Australian terrier with insulin-dependent diabetes, and never holds up the human trial.';
+      summary = 'The roadmap has seven stages. Stage 0, the blueprint, is where the project is now and is shown in full. Stages 1 to 6 are an outline only: they are meant to be carried out with partner organisations, or by any organisation that takes the open blueprint. Stage 3 is animal studies: the exact human product is tested in mice that carry a human immune system, while an optional companion project, Canine Islet-1, runs alongside with the aim of curing an Australian terrier with insulin-dependent diabetes, and never holds up the human trial.';
       const detailed = (s: any) => // eslint-disable-line @typescript-eslint/no-explicit-any
         `${md.h(2, `Stage ${s.id} · ${s.name} (${s.state})`)}${s.summary}\n\n*Why this stage:* ${s.why}\n\n${md.numbered(s.points)}\n` +
         `*A pass looks like:* ${s.a_pass_looks_like}\n\n*We stop or change the plan if:* ${s.we_stop_or_change_the_plan_if}\n\n*Not known yet:* ${s.not_known_yet}\n\n*Where it stands:* ${s.where_it_stands}\n` +

@@ -1,33 +1,30 @@
 ---
-// Stage 5: tailored treatment. A person's gene tiles on the left, matching tiles on the cells on the right, joined by dotted lines.
-// The tiles are labelled generically: the project keeps the detail of Stages 1 to 5 off the site.
-const tiles = [
-  { c: '#f2a93b', t: 'gene 1' },
-  { c: '#8ea0ff', t: 'gene 2' },
-  { c: '#e6edf2', t: 'gene 3' },
-];
+// Stage 5: the first human trial. A small removable patch on the forearm, then a dose that steps up, with a regulator's tick.
+// No percentages here: the project keeps the detail of Stages 1 to 6 off the site.
 ---
 
-<svg viewBox="0 0 280 176" role="img" aria-label="A person with three gene tiles joined by dotted lines to cells carrying matching tiles, to show a treatment matched to the person.">
-  <circle cx="52" cy="40" r="14" fill="#e6edf2" stroke="#0b1b26" stroke-width="2.5"></circle>
-  <path d="M24 100 v-10 a28 28 0 0 1 56 0 v10 z" fill="#e6edf2" stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round"></path>
-  <g stroke="#0b1b26" stroke-width="2.4">
-    <circle cx="214" cy="38" r="17" fill="#5b73ff"></circle>
-    <circle cx="238" cy="62" r="14" fill="#5b73ff"></circle>
-    <circle cx="192" cy="64" r="13" fill="#5b73ff"></circle>
-    <circle cx="214" cy="66" r="15" fill="#e6edf2"></circle>
+<svg viewBox="0 0 280 176" role="img" aria-label="A forearm and hand with a small removable patch of cells on the forearm. Beside it, three bars show the dose stepping up from a small first dose to a full dose. A shield with a tick stands for a regulator's approval.">
+  <g stroke="#0b1b26" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M14 108 C 40 98, 84 92, 122 94 L124 136 C 84 138, 40 142, 14 150 Z" fill="#e6edf2"></path>
+    <path d="M122 94 C 134 86, 152 84, 164 90 C 170 82, 176 82, 180 90 L182 112 C 182 124, 176 132, 164 134 C 150 138, 136 138, 124 136 Z" fill="#e6edf2"></path>
+    <path d="M164 90 L176 108 M168 116 L180 114" fill="none" stroke-width="2.2"></path>
+    <path d="M122 94 L124 136" fill="none" stroke="#a6b6c2" stroke-width="2.2"></path>
   </g>
-  {
-    tiles.map((t, i) => (
-      <g>
-        <rect x={20 + i * 34} y="104" width="28" height="28" rx="7" fill={t.c} stroke="#0b1b26" stroke-width="2.4"></rect>
-        <rect x={172 + i * 34} y="104" width="28" height="28" rx="7" fill={t.c} stroke="#0b1b26" stroke-width="2.4"></rect>
-        <path d={`M${34 + i * 34} 136 V${142 + i * 5} H${186 + i * 34} V136`} fill="none" stroke={t.c} stroke-width="2.2" stroke-dasharray="2 5" stroke-linecap="round"></path>
-        <text x={34 + i * 34} y="170" font-family="IBM Plex Sans, sans-serif" font-size="10.5" font-weight="600" fill="#a6b6c2" text-anchor="middle">{t.t}</text>
-      </g>
-    ))
-  }
-  <path d="M112 118 H160" stroke="#8ea0ff" stroke-width="2.5" stroke-dasharray="2 6" stroke-linecap="round"></path>
-  <circle cx="136" cy="118" r="11" fill="#13293a" stroke="#8ea0ff" stroke-width="2.4"></circle>
-  <path d="M130.5 118 l4 4 l7 -8" fill="none" stroke="#f2a93b" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>
+  <g transform="translate(70 118) rotate(-3)">
+    <rect x="-26" y="-14" width="52" height="28" rx="9" fill="#8ea0ff" fill-opacity="0.45" stroke="#0b1b26" stroke-width="2.5" stroke-dasharray="5 3"></rect>
+    <g stroke="#0b1b26" stroke-width="1.6" fill="#5b73ff">
+      <circle cx="-13" cy="-3" r="5.2"></circle><circle cx="0" cy="-6" r="5.2"></circle><circle cx="12" cy="-1" r="5.2"></circle><circle cx="-5" cy="6" r="5.2"></circle><circle cx="8" cy="7" r="4.6"></circle>
+    </g>
+  </g>
+  <g stroke="#0b1b26" stroke-width="2.5" stroke-linejoin="round">
+    <rect x="198" y="128" width="20" height="22" rx="3" fill="#f2a93b"></rect>
+    <rect x="226" y="96" width="20" height="54" rx="3" fill="#8ea0ff" fill-opacity="0.75"></rect>
+    <rect x="254" y="58" width="20" height="92" rx="3" fill="#8ea0ff"></rect>
+  </g>
+  <g font-family="IBM Plex Sans, sans-serif" font-size="11.5" font-weight="600" fill="#e6edf2">
+    <text x="208" y="122" text-anchor="middle" fill="#f2a93b">first</text>
+    <text x="264" y="52" text-anchor="middle">full</text>
+  </g>
+  <path d="M26 18 L46 11 L66 18 V36 C66 48 56 56 46 60 C36 56 26 48 26 36 Z" fill="#13293a" stroke="#8ea0ff" stroke-width="2.5" stroke-linejoin="round"></path>
+  <path d="M36 35 l7 7 l12 -14" fill="none" stroke="#f2a93b" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"></path>
 </svg>

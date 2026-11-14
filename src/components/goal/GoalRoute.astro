@@ -1,20 +1,24 @@
 ---
-// The route from today to the goal: the roadmap's six stages, with the flag at the first human trial.
+// The route from today to the goal: the roadmap's seven stages, with the flag at the first human trial.
 // A drawing when the panel is wide, and a plain list when it is narrow, so the words stay readable on a phone.
 // (The panel's width decides which one shows, using a container query set in GoalSection.)
 import { goal } from '../../data/site';
 
 const y = 190;
 const nodes = [
-  { x: 52, n: '0', lines: ['Blueprint'] },
-  { x: 143, n: '1', lines: ['Lab', 'testing'] },
-  { x: 235, n: '2', lines: ['Blood supply', 'and oxygen'] },
-  { x: 326, n: '3', lines: ['Animals', 'and safety'] },
-  { x: 417, n: '4', lines: ['First human', 'trial'] },
-  { x: 508, n: '5', lines: ['Tailored', 'treatment'] },
+  { x: 50, n: '0', lines: ['Blueprint'] },
+  { x: 128, n: '1', lines: ['Lab', 'testing'] },
+  { x: 205, n: '2', lines: ['Blood supply', 'and oxygen'] },
+  { x: 283, n: '3', lines: ['Animals', 'and safety'] },
+  { x: 361, n: '4', lines: ['Clinical-', 'grade cells'] },
+  { x: 438, n: '5', lines: ['First human', 'trial'] },
+  { x: 516, n: '6', lines: ['Tailored', 'treatment'] },
 ];
-const flagX = nodes[4].x;
-const label = `The route to the goal. We are at stage 0, the blueprint. Then lab testing, blood supply and oxygen, animal studies and safety, and the first human trial, where the goal is to cure the first person by ${goal.year}. Tailored treatment for each patient comes after.`;
+// The flag stands on the first human trial, and the one stage after it is drawn fainter.
+const GOAL = 5;
+const AFTER = 6;
+const flagX = nodes[GOAL].x;
+const label = `The route to the goal. We are at stage 0, the blueprint. Then lab testing, blood supply and oxygen, animal studies and safety, clinical-grade cells, and the first human trial, where the goal is to cure the first person by ${goal.year}. Tailored treatment for each patient comes after.`;
 ---
 
 <div class="route">
@@ -22,19 +26,19 @@ const label = `The route to the goal. We are at stage 0, the blueprint. Then lab
     <text x="24" y="44" font-size="16" font-weight="600" fill="#8ea0ff">The route to the first cure</text>
 
     <path d={`M${nodes[0].x} ${y} H${flagX}`} stroke="#8ea0ff" stroke-opacity="0.65" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"></path>
-    <path d={`M${flagX} ${y} H${nodes[5].x}`} stroke="#8ea0ff" stroke-opacity="0.28" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"></path>
+    <path d={`M${flagX} ${y} H${nodes[AFTER].x}`} stroke="#8ea0ff" stroke-opacity="0.28" stroke-width="3" stroke-linecap="round" stroke-dasharray="1 9" fill="none"></path>
 
     <path d={`M${flagX} ${y - 16} V30`} stroke="#e6edf2" stroke-width="3" stroke-linecap="round" fill="none"></path>
-    <path d={`M${flagX} 30 H526 L510 54 L526 78 H${flagX} Z`} fill="#f2a93b"></path>
+    <path d={`M${flagX} 30 H548 L532 54 L548 78 H${flagX} Z`} fill="#f2a93b"></path>
     <text x={flagX + 14} y="64" font-size="30" font-weight="700" fill="#0b1b26">{goal.year}</text>
     <text text-anchor="end" font-size="16" font-weight="600" fill="#fff">
       <tspan x={flagX - 14} y="50">First person</tspan>
       <tspan x={flagX - 14} y="69">cured</tspan>
     </text>
 
-    <rect x="8" y="118" width="88" height="26" rx="13" fill="#f2a93b"></rect>
-    <text x="52" y="136" text-anchor="middle" font-size="13" font-weight="600" fill="#0b1b26">We are here</text>
-    <path d="M44 144 L52 154 L60 144 Z" fill="#f2a93b"></path>
+    <rect x="6" y="118" width="88" height="26" rx="13" fill="#f2a93b"></rect>
+    <text x="50" y="136" text-anchor="middle" font-size="13" font-weight="600" fill="#0b1b26">We are here</text>
+    <path d="M42 144 L50 154 L58 144 Z" fill="#f2a93b"></path>
 
     {
       nodes.map((n, i) => (
@@ -45,9 +49,9 @@ const label = `The route to the goal. We are at stage 0, the blueprint. Then lab
             cy={y}
             r="15"
             fill={i === 0 ? '#8ea0ff' : '#102a3b'}
-            stroke={i === 4 ? '#f2a93b' : '#8ea0ff'}
+            stroke={i === GOAL ? '#f2a93b' : '#8ea0ff'}
             stroke-width="2"
-            stroke-opacity={i === 5 ? 0.45 : 1}
+            stroke-opacity={i === AFTER ? 0.45 : 1}
           ></circle>
           <text
             x={n.x}
@@ -55,14 +59,14 @@ const label = `The route to the goal. We are at stage 0, the blueprint. Then lab
             text-anchor="middle"
             font-size="15"
             font-weight="600"
-            fill={i === 0 ? '#0b1b26' : i === 4 ? '#f2a93b' : '#c9d3ff'}
-            fill-opacity={i === 5 ? 0.6 : 1}
+            fill={i === 0 ? '#0b1b26' : i === GOAL ? '#f2a93b' : '#c9d3ff'}
+            fill-opacity={i === AFTER ? 0.6 : 1}
           >
             {n.n}
           </text>
-          <text text-anchor="middle" font-size="13.5" fill={i === 5 ? '#8fa3b1' : '#d5dee5'}>
+          <text text-anchor="middle" font-size="12.5" fill={i === AFTER ? '#8fa3b1' : '#d5dee5'}>
             {n.lines.map((l, j) => (
-              <tspan x={n.x} y={y + 37 + j * 17}>{l}</tspan>
+              <tspan x={n.x} y={y + 37 + j * 16}>{l}</tspan>
             ))}
           </text>
         </g>
@@ -75,11 +79,12 @@ const label = `The route to the goal. We are at stage 0, the blueprint. Then lab
     <ol class="stops">
       {
         nodes.map((n, i) => (
-          <li class:list={['stop', { 'stop--now': i === 0, 'stop--goal': i === 4, 'stop--after': i === 5 }]}>
+          <li class:list={['stop', { 'stop--now': i === 0, 'stop--goal': i === GOAL, 'stop--after': i === AFTER }]}>
             <span class="stop__n">{n.n}</span>
-            <span class="stop__t">{n.lines.join(' ')}</span>
+            {/* A name broken at its hyphen in the drawing ("Clinical-", "grade cells") is one word again here. */}
+            <span class="stop__t">{n.lines.join(' ').replace('- ', '-')}</span>
             {i === 0 && <span class="stop__tag">We are here</span>}
-            {i === 4 && (
+            {i === GOAL && (
               <span class="stop__flag">
                 <b>{goal.year}</b> First person cured
               </span>

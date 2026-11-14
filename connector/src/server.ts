@@ -121,7 +121,7 @@ export function createConnectorServer(deps: ServerDeps): McpServer {
     {
       title: 'Read the blueprint',
       description:
-        'Read the OpenIslet blueprint (Islet-1) in plain English. Start here. Sections: summary (what it is), tests (the five tests a design must pass), designs (Design A, Design B, and the challenger Design X / Islet-X), roadmap (the six stages), versions (draft and locked versions), help (how to contribute). Set detail to "full" to add the technical text from the concise specification.',
+        'Read the OpenIslet blueprint (Islet-1) in plain English. Start here. Sections: summary (what it is), tests (the five tests a design must pass), designs (Design A, Design B, and the challenger Design X / Islet-X), roadmap (the seven stages), versions (draft and locked versions), help (how to contribute). Set detail to "full" to add the technical text from the concise specification.',
       inputSchema: z.object({
         section: z.enum(SECTIONS).optional().describe('Which part to read. Default: summary.'),
         design: z.enum(['A', 'B', 'X']).optional().describe('Read one design. X separates the scored grid challenger from the unmaterialized molecular proposal.'),

@@ -1,8 +1,8 @@
-// The six stages from blueprint to patients. Plain English first; the detail for scientists sits underneath.
+// The seven stages from blueprint to patients. Plain English first; the detail for scientists sits underneath.
 // The numbers come from release.json and the dates from versions.ts, so this file only holds the words.
 //
 // Decided on 25 October 2026: OpenIslet's own work is Stage 0, the blueprint, and it is shown in full.
-// Stages 1 to 5 are a simple outline only. They are meant to be carried out in partnership with a research institute,
+// Stages 1 to 6 are a simple outline only. They are meant to be carried out in partnership with a research institute,
 // an AI lab or a biotech company, or by any organisation that takes the open blueprint and runs with it. Do not add
 // protocols, step lists, sizes, schedules or pass/stop numbers for those stages here: the Stage 0 plan and the Stage 1 lab protocol are published with the blueprint, and the later stages are left to whoever carries them out.
 //
@@ -44,7 +44,7 @@ const day = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en
 /** What comes after the blueprint, and who is expected to do it. The roadmap page and the connector both show this. */
 export const afterBlueprint = {
   heading: 'After the blueprint: how it moves forward',
-  lead: 'OpenIslet’s own work is Stage 0, the open blueprint. Stages 1 to 5 are the steps after it, and the blueprint can move forward in two ways.',
+  lead: 'OpenIslet’s own work is Stage 0, the open blueprint. Stages 1 to 6 are the steps after it, and the blueprint can move forward in two ways.',
   ways: [
     {
       id: 'partner',
@@ -60,7 +60,7 @@ export const afterBlueprint = {
   note: 'The later stages below are an outline. The Stage 0 plan and the Stage 1 lab protocol are published with the blueprint; whoever carries out the later stages writes their own plans with their regulators.',
   /** The same idea in a few sentences, for the connector. */
   oneLine:
-    'Stages 1 to 5 are an outline only. They are meant to be carried out in partnership with a university lab, a research institute, an AI lab or a biotech company, or by any organisation that takes the open blueprint (CC BY 4.0) and runs with it. The Stage 0 plan and the Stage 1 lab protocol are published with the blueprint.',
+    'Stages 1 to 6 are an outline only. They are meant to be carried out in partnership with a university lab, a research institute, an AI lab or a biotech company, or by any organisation that takes the open blueprint (CC BY 4.0) and runs with it. The Stage 0 plan and the Stage 1 lab protocol are published with the blueprint.',
 };
 
 /** The optional dog project beside stage 3: Canine Islet-1, a dog version of Islet-1, with the aim of curing an Australian terrier with insulin-dependent diabetes.
@@ -138,16 +138,25 @@ export const stages: Stage[] = [
   },
   {
     id: '4',
+    short: 'Clinical-grade cells',
+    state: 'Later',
+    name: 'Clinical-grade cells and regulator checks',
+    summary: 'Make the cells to the standard needed for use in people. That means frozen master and working cell banks that every batch is grown from, one locked recipe for turning stem cells into islet cells, and an agreed test of how well each batch works.',
+    why: 'A regulator will not allow a first trial until formal safety studies show that each batch matches the last, that the cells keep their DNA stable and do not form tumours, and where the cells go in the body.',
+    who: 'partners',
+  },
+  {
+    id: '5',
     short: 'First human trial',
     state: 'Later',
     name: 'First human trial',
-    summary: 'Make clinical-grade cells and try them first in a very small, removable patch, once a regulator agrees.',
+    summary: 'Try the clinical-grade cells first in a very small, removable patch, once a regulator agrees.',
     why: 'Only a trial in people can show whether it works in people.',
     who: 'partners',
     timing: `Our goal: ${goal.short}.`,
   },
   {
-    id: '5',
+    id: '6',
     short: 'Tailored treatment',
     state: 'Later',
     name: 'Tailored treatment',
@@ -157,5 +166,5 @@ export const stages: Stage[] = [
   },
 ];
 
-/** "Stages 1 to 5": the stages after the blueprint, numbered as the roadmap numbers them. */
+/** "Stages 1 to 6": the stages after the blueprint, numbered as the roadmap numbers them. */
 export const laterStages = `Stages ${stages[1].id} to ${stages[stages.length - 1].id}`;

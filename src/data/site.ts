@@ -132,7 +132,7 @@ export const pageShareImages = {
   ceg: { src: '/og/ceg.jpg', alt: 'OpenIslet, open method. Context–Evidence Graph (CEG): an open method to read studies with AI without losing the experimental context.' },
   blueprint: { src: '/og/blueprint.jpg', alt: 'OpenIslet, Blueprint. The Islet-1 blueprint: three designs for a personalised type 1 diabetes cure, as a drawing, a specification and open data.' },
   'idea-graveyard': { src: '/og/idea-graveyard.jpg', alt: 'OpenIslet, Idea Graveyard. Ideas ruled out on paper, or flagged as risky: a public list, so nobody repeats a dead end.' },
-  roadmap: { src: '/og/roadmap.jpg', alt: 'OpenIslet, Roadmap. The path to patients: six stages, from the open blueprint to the first person cured. The goal: 2030.' },
+  roadmap: { src: '/og/roadmap-v2.jpg', alt: 'OpenIslet, Roadmap. The path to patients: seven stages, from the open blueprint to the first person cured. The goal: 2030.' },
   contributions: { src: '/og/contributions.jpg', alt: 'OpenIslet, Contributions. Who has helped, and what they did: every Islet Improvement Proposal, what it changed, and who sent it.' },
   start: { src: '/og/start.jpg', alt: 'OpenIslet, Start here. Help in six steps: give any AI chat the blueprint, and it leads, one question at a time.' },
 } as const;

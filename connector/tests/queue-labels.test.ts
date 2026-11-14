@@ -38,6 +38,11 @@ describe('the design labels', () => {
     ['A roadmap stage: Stage 4', ['design:roadmap'], 'Roadmap stage 4'],
     ['Roadmap stage 2', ['design:roadmap'], 'Roadmap stage 2'],
     ['Stage 5', ['design:roadmap'], 'Roadmap stage 5'],
+    // The roadmap has seven stages (0 to 6) since 14 November 2026, so Stage 6 is a roadmap stage and Stage 7 is not.
+    ['Stage 6', ['design:roadmap'], 'Roadmap stage 6'],
+    ['Roadmap stage 6', ['design:roadmap'], 'Roadmap stage 6'],
+    ['Roadmap, Stages 5-6', ['design:roadmap'], 'Roadmap stages 5 and 6'],
+    ['Roadmap stage 7', ['design:roadmap'], 'Roadmap'],
     ['**Stage** 4', ['design:roadmap'], 'Roadmap stage 4'],
     ['Roadmap · Stage 2', ['design:roadmap'], 'Roadmap stage 2'],
     ['Roadmap, Stages 2-3', ['design:roadmap'], 'Roadmap stages 2 and 3'],
