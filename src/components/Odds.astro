@@ -3,7 +3,10 @@
 // per-hurdle wording live in src/data/success-probability.json, so an update there changes the whole section.
 import { oddsGates, oddsSingle, oddsThree, oddsLastUpdated, wholePercent } from '../data/successProbability';
 import { longDate, pubmed, release } from '../data/site';
+import changelog from '../data/changelog.json';
 import OddsArt from './odds/OddsArt.astro';
+
+const latestBlueprintDate = changelog[0]?.date ?? release.date;
 
 const formula = (key: 'singleArmPct' | 'threeArmPct') => oddsGates.map((g) => `${g[key]}%`).join(' × ');
 const results = [
@@ -76,7 +79,7 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
         <p><strong>What these numbers are.</strong> Our own estimates, made by the blueprint team and informed by the published trial results. They are not lab results, and they do not say whether any one person would be cured.</p>
         <p><strong>Why three designs.</strong> The side-by-side figure is for advancing three distinct designs in parallel. It rises least where they share the same approach; the reason for each hurdle is in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a> (warning 4).</p>
         <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank designs against each other. They are not percentages, and they are not these odds.</p>
-        <p><strong>Updated as results arrive.</strong> We change these percentages as new human trial data and OpenIslet lab results come in. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(release.date)} blueprint.</p>
+        <p><strong>Updated as results arrive.</strong> We change these percentages as new human trial data and OpenIslet lab results come in. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
       </div>
     </div>
   </div>
