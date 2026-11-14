@@ -1,0 +1,313 @@
+---
+// The same two made-up studies, read two ways. Both sides use one layout and share their rows, so what a one-line summary
+// drops is visible at a glance: the left side shows empty slots where the right side shows the detail.
+// The example is illustrative: "Signal X" is not a real signal, and the two studies are made up.
+const rows = [
+  { k: 'Tested in', a: 'Human cells in a dish', b: 'Graft in a mouse', wa: 78, wb: 60 },
+  { k: 'Version of X', a: 'Surface-anchored', b: 'Full-length, at a 5× higher level', wa: 58, wb: 86 },
+  { k: 'Measured', a: 'Cell survival (%)', b: 'Insulin release (ratio)', wa: 66, wb: 74 },
+  { k: 'Source', a: 'Fig. 3B', b: 'Table 1', wa: 38, wb: 42, pin: true },
+];
+
+const sides = [
+  {
+    id: 'flat',
+    keeps: false,
+    k: 'One-line summaries',
+    t: 'The details are dropped',
+    label: 'What a one-line summary keeps from each study',
+    verdict: 'Looks like a contradiction',
+    detail: 'With nothing else to go on, an AI averages the two or picks a side.',
+  },
+  {
+    id: 'ceg',
+    keeps: true,
+    k: 'Context–Evidence Graph',
+    t: 'Every detail stays attached',
+    label: 'What a Context–Evidence Graph keeps from each study',
+    verdict: 'Both results hold',
+    detail: 'A different setting, version and measurement. Every number can be traced to its figure or table.',
+  },
+];
+---
+
+<figure class="cmp">
+  <div class="cmp__panel">
+    {
+      sides.map((s) => (
+        <div class={`side side--${s.id}`}>
+          <div class="side__head">
+            <p class="side__k">{s.k}</p>
+            <h3 class="side__t">{s.t}</h3>
+          </div>
+
+          <div class="rec" role="table" aria-label={s.label}>
+            <div class="row row--head" role="row">
+              <span role="columnheader"><span class="sr-only">Detail</span></span>
+              {['Study A', 'Study B'].map((name) => (
+                <span class="study" role="columnheader">
+                  <svg viewBox="0 0 14 16" aria-hidden="true" focusable="false"><path d="M2 1.5h6.5L12 5v9.5H2zM8.5 1.5V5H12" /></svg>
+                  {name}
+                </span>
+              ))}
+            </div>
+            <div class="row row--find" role="row">
+              <span class="row__k" role="rowheader">Finding</span>
+              <span class="find find--up" role="cell">
+                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 16.5V4.5M4.5 9.5 10 4l5.5 5.5" /></svg>
+                <span>“Signal X protected the cells”</span>
+              </span>
+              <span class="find find--down" role="cell">
+                <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M10 3.5v12M4.5 10.5 10 16l5.5-5.5" /></svg>
+                <span>“Signal X impaired function”</span>
+              </span>
+            </div>
+            {
+              rows.map((r) => (
+                <div class="row" role="row">
+                  <span class="row__k" role="rowheader">{r.k}</span>
+                  {s.keeps ? (
+                    <>
+                      <span class:list={['val', { 'val--pin': r.pin }]} role="cell">{r.a}</span>
+                      <span class:list={['val', { 'val--pin': r.pin }]} role="cell">{r.b}</span>
+                    </>
+                  ) : (
+                    <>
+                      <span role="cell"><span class="gone" style={`--w:${r.wa}%`} /><span class="sr-only">Dropped</span></span>
+                      <span role="cell"><span class="gone" style={`--w:${r.wb}%`} /><span class="sr-only">Dropped</span></span>
+                    </>
+                  )}
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="verdict">
+            {s.keeps ? (
+              <svg viewBox="0 0 76 48" aria-hidden="true" focusable="false">
+                <rect x="2" y="2" width="72" height="44" rx="9" fill="rgba(123,224,184,0.1)" stroke="#7be0b8" stroke-width="2" />
+                <line x1="38" y1="8" x2="38" y2="40" stroke="#7be0b8" stroke-opacity="0.6" stroke-width="2" stroke-dasharray="3 4" />
+                <path d="M20 34V15M13 21.5 20 14l7 7.5" fill="none" stroke="#7be0b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M56 14v19M49 26.5 56 34l7-7.5" fill="none" stroke="#f2a93b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 76 48" aria-hidden="true" focusable="false">
+                <rect x="2" y="2" width="72" height="44" rx="9" fill="rgba(242,169,59,0.1)" stroke="#f2a93b" stroke-width="2" stroke-dasharray="4 4" />
+                <path d="M19 34V15M12 21.5 19 14l7 7.5" fill="none" stroke="#a6b6c2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M31 14v19M24 26.5 31 34l7-7.5" fill="none" stroke="#a6b6c2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                <text x="56" y="34" font-family="IBM Plex Sans, sans-serif" font-size="28" font-weight="600" fill="#f2a93b" text-anchor="middle">?</text>
+              </svg>
+            )}
+            <div>
+              <p class="verdict__t">{s.verdict}</p>
+              <p class="verdict__d">{s.detail}</p>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+  <figcaption>
+    Standard retrieval pipelines strip experimental groups and units to fit snippets into a prompt. A Context–Evidence Graph stores them as fields on every record.
+  </figcaption>
+</figure>
+
+<style>
+  .cmp {
+    margin: 2.25rem 0 0;
+  }
+
+  /* One grid for both sides. Each side takes the same eight rows (subgrid), so a row on the left lines up with its row on the right. */
+  .cmp__panel {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+    border-radius: 0.875rem;
+    background: var(--ink);
+    color: var(--dark-text);
+  }
+  .side {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 8;
+    min-width: 0;
+    padding: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  /* The graph's side is one tone lighter: the same panel in two tones, not a box inside a box. */
+  .side--ceg {
+    background: var(--ink-2);
+  }
+
+  .side__k {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--threat);
+  }
+  .side--ceg .side__k {
+    color: var(--accent-lt);
+  }
+  .side__t {
+    margin-top: 0.125rem;
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+
+  .rec {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 6;
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 5.25rem minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 1rem;
+    align-items: start;
+    padding-block: 0.6875rem;
+    border-top: 1px solid var(--dark-line);
+  }
+  .row--head {
+    padding-block: 0 0.5rem;
+    border-top: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--dark-muted);
+  }
+  .study {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+  .study svg {
+    flex: none;
+    width: 0.875rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+  }
+  .row__k {
+    padding-top: 0.0625rem;
+    font-size: 0.8125rem;
+    color: var(--dark-muted);
+  }
+
+  .find {
+    display: flex;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: #fff;
+    text-wrap: pretty;
+  }
+  .find svg {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.0625rem;
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .find--up svg {
+    stroke: #7be0b8;
+  }
+  .find--down svg {
+    stroke: var(--threat);
+  }
+
+  .val {
+    color: var(--dark-text);
+    text-wrap: pretty;
+  }
+  /* The source keeps a green tick: it is the pointer that lets anyone check the number. */
+  .val--pin {
+    padding-left: 1.375rem;
+    color: #b8f3da;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%237be0b8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 8.5 6 12l7.5-8'/%3E%3C/svg%3E") no-repeat 0 0.1875rem / 0.9375rem;
+  }
+
+  /* An empty slot where a detail used to be. */
+  .gone {
+    display: block;
+    width: var(--w, 70%);
+    height: 0.75rem;
+    margin-top: 0.3125rem;
+    border: 1.5px dashed rgba(255, 255, 255, 0.32);
+    border-radius: 999px;
+  }
+
+  /* The outcome of each side: a bar beside the words, not another box. */
+  .verdict {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--threat);
+  }
+  .side--ceg .verdict {
+    border-left-color: #7be0b8;
+  }
+  .verdict svg {
+    flex: none;
+    width: 4.75rem;
+    height: 3rem;
+  }
+  .verdict__t {
+    font-size: 1.125rem;
+    line-height: 1.25;
+    font-weight: 600;
+    color: #ffd596;
+  }
+  .side--ceg .verdict__t {
+    color: #b8f3da;
+  }
+  .verdict__d {
+    margin-top: 0.25rem;
+    font-size: 0.9375rem;
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+
+  .cmp figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  /* Below this width the two sides stack: summaries first, then the graph. */
+  @media (max-width: 56em) {
+    .cmp__panel {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  /* On a phone the row's name sits above its two values, so each study gets half the width. */
+  @media (max-width: 30em) {
+    .row {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      row-gap: 0.25rem;
+    }
+    .row__k {
+      grid-column: 1 / -1;
+    }
+    .row--head > :first-child {
+      grid-column: 1 / -1;
+    }
+    .row--head {
+      row-gap: 0;
+    }
+    .verdict svg {
+      width: 3.75rem;
+      height: 2.375rem;
+    }
+  }
+</style>

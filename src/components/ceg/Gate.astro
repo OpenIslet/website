@@ -1,0 +1,38 @@
+---
+// Explore freely, check at save: ideas flow out of the chat, and only a record that passes the check joins the shared graph.
+---
+
+<svg viewBox="0 0 240 110" role="img" aria-label="A chat bubble on the left, a checkpoint in the middle and a graph of linked records on the right. One record passes the check and joins the graph. Another is turned back.">
+  <!-- the chat -->
+  <path d="M20 20 H68 a10 10 0 0 1 10 10 V56 a10 10 0 0 1 -10 10 H38 L24 78 V66 H20 a10 10 0 0 1 -10 -10 V30 a10 10 0 0 1 10 -10 Z" fill="#13293a" stroke="#8ea0ff" stroke-width="2" stroke-linejoin="round"></path>
+  <rect x="22" y="32" width="44" height="4.5" rx="2.25" fill="#e6edf2"></rect>
+  <rect x="22" y="41" width="32" height="4.5" rx="2.25" fill="#e6edf2" fill-opacity="0.7"></rect>
+  <rect x="22" y="50" width="38" height="4.5" rx="2.25" fill="#e6edf2" fill-opacity="0.45"></rect>
+
+  <!-- to the checkpoint -->
+  <path d="M84 43 H102" stroke="#e6edf2" stroke-width="2.5" stroke-dasharray="3 5" fill="none" stroke-linecap="round"></path>
+
+  <!-- the checkpoint -->
+  <rect x="114" y="10" width="12" height="90" rx="6" fill="#0b1b26" stroke="#8ea0ff" stroke-width="2"></rect>
+  <circle cx="120" cy="43" r="14" fill="#7be0b8" stroke="#0b1b26" stroke-width="2.5"></circle>
+  <path d="M113.5 43.5 L118.5 48.5 L127 38.5" stroke="#0b1b26" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+
+  <!-- a record that is turned back -->
+  <path d="M110 70 C104 76, 100 80, 97 84" stroke="#f2a93b" stroke-width="2.5" stroke-dasharray="3 5" fill="none" stroke-linecap="round"></path>
+  <rect x="74" y="80" width="20" height="24" rx="4" fill="#13293a" stroke="#f2a93b" stroke-width="2"></rect>
+  <path d="M79.5 87.5 L88.5 96.5 M88.5 87.5 L79.5 96.5" stroke="#f2a93b" stroke-width="2.5" stroke-linecap="round"></path>
+
+  <!-- the shared graph -->
+  <path d="M138 43 H152" stroke="#7be0b8" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+  <g stroke="#8ea0ff" stroke-width="2" fill="none">
+    <path d="M168 43 L200 24"></path>
+    <path d="M168 43 L212 60"></path>
+    <path d="M168 43 L184 86"></path>
+    <path d="M212 60 L184 86"></path>
+    <path d="M200 24 L212 60"></path>
+  </g>
+  <circle cx="200" cy="24" r="8" fill="#5b73ff" stroke="#0b1b26" stroke-width="2.5"></circle>
+  <circle cx="212" cy="60" r="8" fill="#e6edf2" stroke="#0b1b26" stroke-width="2.5"></circle>
+  <circle cx="184" cy="86" r="8" fill="#5b73ff" stroke="#0b1b26" stroke-width="2.5"></circle>
+  <circle cx="168" cy="43" r="10" fill="#5b73ff" stroke="#7be0b8" stroke-width="3"></circle>
+</svg>

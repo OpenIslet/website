@@ -1,10 +1,36 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { release, startHref } from '../data/site';
+import Compare from '../components/ceg/Compare.astro';
+import Keep from '../components/ceg/Keep.astro';
+import Lanes from '../components/ceg/Lanes.astro';
+import Gate from '../components/ceg/Gate.astro';
 
 const n = (v: number) => v.toLocaleString('en-US');
 const c = release.counts;
 const cegRepo = 'https://github.com/openislet/ceg';
+
+// What the method gives a reader, each with a small picture. Plain words first; the method's own terms follow in the text.
+const benefits = [
+  {
+    Visual: Keep,
+    k: '1 · Keeps the details',
+    t: 'Groups, doses and units stay attached',
+    d: 'Instead of turning a paper into one short sentence, each finding keeps its treatment and control groups, sample size, measurement unit and exact place in the paper.',
+  },
+  {
+    Visual: Lanes,
+    k: '2 · Shows why studies differ',
+    t: 'Different settings stay separate',
+    d: 'Cells in a dish, a mouse graft, donated human tissue and a clinical trial are never collapsed onto one scale. Disagreement across settings stays visible as biology, not noise.',
+  },
+  {
+    Visual: Gate,
+    k: '3 · Explore freely, check at save',
+    t: 'Free thinking, strict checking',
+    d: 'An AI assistant can brainstorm, compare mechanisms and propose ideas freely in chat. Only records saved to the shared graph must pass deterministic software checks.',
+  },
+];
 
 const quickstart = `# clone the open repository (needs Python 3.9 or newer, zero external packages)
 git clone https://github.com/openislet/ceg.git
@@ -28,7 +54,7 @@ python3 -B ceg_real_text_evaluation.py`;
       <p class="eyebrow">Open method</p>
       <h1 class="h1 intro__h">Context–Evidence Graph <span class="nobr">(CEG)</span></h1>
       <p class="lead intro__lead">
-        Studies on the same question often disagree because the experimental context differed, not because one paper is wrong. A Context–Evidence Graph keeps experimental groups, doses, units and settings attached to every result, so AI assistants and people can explore literature in any field without flattening real differences.
+        Two studies can reach opposite results and both be right, because the dose, the setting or the measurement was different. A Context–Evidence Graph keeps those details attached to every result, so AI assistants and people can explore the research in any field without flattening real differences.
       </p>
 
       <div class="intro__cta">
@@ -36,81 +62,31 @@ python3 -B ceg_real_text_evaluation.py`;
         <a class="btn btn--quiet" href={cegRepo} rel="noopener">Code and how-to guide on GitHub →</a>
       </div>
 
-      <div class="explain">
-        <div class="explain__item">
-          <p class="explain__k">1 · Keeps the context</p>
-          <h2>Arms, units and doses stay attached</h2>
-          <p>Instead of turning a paper into one short sentence, each finding keeps its treatment and control groups, sample size, measurement unit and exact place in the paper.</p>
-        </div>
-        <div class="explain__item">
-          <p class="explain__k">2 · Shows why studies differ</p>
-          <h2>Settings are never collapsed onto one scale</h2>
-          <p>Cells in a dish, a mouse graft, donated human tissue and a clinical trial stay distinct settings. Disagreement across settings stays visible as biology, not noise.</p>
-        </div>
-        <div class="explain__item">
-          <p class="explain__k">3 · Explore freely, check at save</p>
-          <h2>Unrestricted thinking, strict verification</h2>
-          <p>An AI assistant can brainstorm, compare mechanisms and propose ideas freely in chat. Only records saved to the shared graph must pass deterministic software checks.</p>
-        </div>
-      </div>
+      <ul class="explain">
+        {
+          benefits.map(({ Visual, k, t, d }) => (
+            <li class="explain__item">
+              <div class="vis"><Visual /></div>
+              <p class="explain__k">{k}</p>
+              <h2>{t}</h2>
+              <p>{d}</p>
+            </li>
+          ))
+        }
+      </ul>
     </div>
   </section>
 
-  <!-- Visual comparison -->
+  <!-- The same two studies, read two ways -->
   <section class="section section--white">
     <div class="container">
-      <p class="eyebrow">Why flat summaries break</p>
-      <h2 class="h2 sec__h">What gets lost when papers are compressed into one-line claims</h2>
+      <p class="eyebrow">An example</p>
+      <h2 class="h2 sec__h">Two studies that seem to disagree</h2>
       <p class="lead sec__lead">
-        Standard retrieval pipelines strip away experimental arms and units to fit snippets into a prompt. When two papers reach opposite conclusions under different conditions, a flat summary either averages them into mush or picks a side at random.
+        Take two made-up studies of a signal called X. One reports that it protected the cells, the other that it impaired their function. A one-line summary keeps only those two sentences.
       </p>
 
-      <figure class="diagram">
-        <div class="diagram__panel" data-scroll-region data-sidescroll data-label="Comparison diagram">
-          <svg viewBox="0 0 1080 390" role="img" aria-label="Comparison diagram. On the left, flat text summaries collapse Study 1 and Study 2 into a false contradiction. On the right, a Context–Evidence Graph keeps each study’s experimental setting, treatment and control arms, units and source pointer separate, revealing a context-dependent effect.">
-            <!-- Left: flat summary -->
-            <rect x="24" y="24" width="468" height="342" rx="14" fill="#13293a" stroke="rgba(255,255,255,0.16)"></rect>
-            <text x="52" y="62" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#f2a93b" letter-spacing="1.2">FLAT SUMMARY PIPELINE</text>
-            <text x="52" y="92" font-family="IBM Plex Sans, sans-serif" font-size="20" font-weight="600" fill="#ffffff">Context stripped away</text>
-
-            <rect x="52" y="118" width="412" height="62" rx="8" fill="#0b1b26" stroke="rgba(255,255,255,0.14)"></rect>
-            <text x="70" y="145" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#e6edf2">Paper A snippet: “Signal X protected the cells”</text>
-            <text x="70" y="167" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#a6b6c2">Setting, dose and assay dropped during chunking</text>
-
-            <rect x="52" y="196" width="412" height="62" rx="8" fill="#0b1b26" stroke="rgba(255,255,255,0.14)"></rect>
-            <text x="70" y="223" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#e6edf2">Paper B snippet: “Signal X impaired function”</text>
-            <text x="70" y="245" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#a6b6c2">Different isoform and 5× higher level hidden</text>
-
-            <rect x="52" y="282" width="412" height="58" rx="8" fill="rgba(242,169,59,0.14)" stroke="#f2a93b"></rect>
-            <text x="70" y="308" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#ffd596">Result: apparent contradiction or guessed average</text>
-            <text x="70" y="328" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#dbe3e9">No way to check units, arms or exact source table</text>
-
-            <!-- Right: CEG -->
-            <rect x="524" y="24" width="532" height="342" rx="14" fill="#13293a" stroke="#8ea0ff" stroke-width="1.5"></rect>
-            <text x="552" y="62" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600" fill="#8ea0ff" letter-spacing="1.2">CONTEXT–EVIDENCE GRAPH</text>
-            <text x="552" y="92" font-family="IBM Plex Sans, sans-serif" font-size="20" font-weight="600" fill="#ffffff">Structured arms, settings and source pins</text>
-
-            <rect x="552" y="118" width="228" height="140" rx="8" fill="#0b1b26" stroke="#5b73ff"></rect>
-            <text x="568" y="143" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#8ea0ff">STUDY A · HUMAN DISH</text>
-            <text x="568" y="167" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Arm A1 vs A0 control</text>
-            <text x="568" y="190" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Surface-anchored isoform</text>
-            <text x="568" y="211" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Macrophage survival (%)</text>
-            <text x="568" y="238" font-family="IBM Plex Mono, monospace" font-size="12" fill="#7be0b8">Pin: Fig. 3B · verified</text>
-
-            <rect x="800" y="118" width="228" height="140" rx="8" fill="#0b1b26" stroke="#5b73ff"></rect>
-            <text x="816" y="143" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600" fill="#8ea0ff">STUDY B · MOUSE GRAFT</text>
-            <text x="816" y="167" font-family="IBM Plex Sans, sans-serif" font-size="14" font-weight="600" fill="#ffffff">Arm B2 vs B0 control</text>
-            <text x="816" y="190" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Full-length overexpression</text>
-            <text x="816" y="211" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#c5d1da">• Insulin release (SI ratio)</text>
-            <text x="816" y="238" font-family="IBM Plex Mono, monospace" font-size="12" fill="#7be0b8">Pin: Table 1 · verified</text>
-
-            <rect x="552" y="282" width="476" height="58" rx="8" fill="rgba(123,224,184,0.12)" stroke="#7be0b8"></rect>
-            <text x="570" y="308" font-family="IBM Plex Sans, sans-serif" font-size="15" font-weight="600" fill="#b8f3da">Result: real trade-off stays clear and testable</text>
-            <text x="570" y="328" font-family="IBM Plex Sans, sans-serif" font-size="13" fill="#dbe3e9">Different isoforms and endpoints stay distinct; every number is auditable</text>
-          </svg>
-        </div>
-        <figcaption>How a Context–Evidence Graph preserves the experimental boundary conditions that explain why two studies point in different directions.</figcaption>
-      </figure>
+      <Compare />
     </div>
   </section>
 
@@ -209,24 +185,33 @@ python3 -B ceg_real_text_evaluation.py`;
     gap: 0.75rem 1rem;
   }
 
-  /* Three across, then one, so the row is never two and one. */
+  /* Three across, then one, so the row is never two and one. Each item leads with its picture. */
   .explain {
-    margin-top: 2.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 2.5rem 0 0;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
+    gap: 1.5rem 2rem;
   }
   @media (max-width: 56em) {
     .explain {
       grid-template-columns: minmax(0, 1fr);
     }
   }
-  .explain__item {
-    padding-top: 0.25rem;
-    border-top: 3px solid var(--ink);
+  .vis {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    background: var(--ink-2);
+  }
+  .vis :global(svg) {
+    display: block;
+    width: 100%;
+    max-height: 8rem;
+    height: auto;
   }
   .explain__k {
-    margin-top: 0.875rem;
+    margin-top: 1rem;
     font-size: 0.9375rem;
     font-weight: 600;
     color: var(--accent);
@@ -252,28 +237,6 @@ python3 -B ceg_real_text_evaluation.py`;
   .sec__lead {
     margin-top: 1rem;
     max-width: 46rem;
-  }
-
-  .diagram {
-    margin: 2.25rem 0 0;
-  }
-  .diagram__panel {
-    padding: 0.75rem;
-    border-radius: 0.875rem;
-    background: var(--ink);
-    overflow-x: auto;
-  }
-  .diagram__panel svg {
-    display: block;
-    width: 100%;
-    min-width: 44rem;
-    height: auto;
-  }
-  .diagram figcaption {
-    margin-top: 0.75rem;
-    font-size: 0.875rem;
-    color: var(--muted);
-    text-wrap: pretty;
   }
 
   .steps {
