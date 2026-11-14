@@ -1,11 +1,11 @@
 # Updating the website
 
-The website is built from data files, so most updates are one command. Nothing on the site needs retyping when the blueprint changes.
+The website's numbers, design scores and downloads come from data files via `npm run sync-data`, so no number is typed twice. Plain-English blueprint explanations, per-edit notes, odds and open questions live in the hand-written files listed in Step 3 and in the table below: check all eight surfaces whenever an IIP changes the blueprint.
 
-## When the blueprint changes (a new version)
+## When the blueprint changes (a new version or merged IIP)
 
 1. Update the blueprint in the OpenIslet repository (`../OpenIslet`) as usual.
-2. Refresh the website's numbers:
+2. Refresh the website's numbers and downloads:
 
    ```bash
    npm run sync-data
@@ -13,7 +13,9 @@ The website is built from data files, so most updates are one command. Nothing o
 
    This copies the data files, and rewrites `src/data/release.json` (version, date, counts, design scores) and `src/data/references.json` (citations for the specification). Every number on the site is read from those files.
 
-3. Record the change in the changelog. **Only after release.** The changelog starts when the open draft opens on 1 November 2026, and nothing done before then is reported, so `src/data/changelog.json` is empty until that day and the script refuses entries dated earlier. From 1 November:
+3. Walk all **eight hand-written website surfaces** so prose never lags behind the data: `/blueprint#drawing` (`src/components/BlueprintFigure.astro`), `/blueprint#spec` (`src/content/blueprint-spec.md` + `src/data/references.extra.json`, then re-run `npm run sync-data` if a new citation was added), `/blueprint#designs` & `#edits` (`src/data/blueprint.ts`), `/blueprint#odds` (`src/data/success-probability.json`), open questions (`connector/data/open-questions.json`), `/idea-graveyard` (`src/data/graveyard.json`), Home tests & layers (`src/data/gates.ts`, `src/components/BuildLayers.astro`, `connector/src/core/layers.ts`), and `/roadmap` (`src/data/roadmap.ts`).
+
+4. Record the contribution in `src/data/contributions.json` and the change in the changelog. **Only after release.** The changelog starts when the open draft opens on 1 November 2026, and nothing done before then is reported, so `src/data/changelog.json` is empty until that day and the script refuses entries dated earlier. From 1 November:
 
    ```bash
    npm run changelog -- \
@@ -26,7 +28,7 @@ The website is built from data files, so most updates are one command. Nothing o
 
    Use `--added`, `--changed`, `--fixed` and `--removed` as many times as you need. The date defaults to today.
 
-4. Rebuild the connector's data bundle, so the connector gives the same numbers as the site:
+5. Rebuild the connector's data bundle (after any edits to `blueprint-spec.md`, `open-questions.json`, `graveyard.json` or `roadmap.ts`), so the connector and `/openislet-starter-pack.md` match the site:
 
    ```bash
    npm --prefix connector run export    # copies the public blueprint files from the sibling folder OpenIslet (or OPENISLET_REPO)
@@ -34,7 +36,7 @@ The website is built from data files, so most updates are one command. Nothing o
    npm --prefix connector test          # checks that every number the connector gives equals the site's
    ```
 
-5. Check the site: `npm run dev`, then `npm run build`.
+6. Check the site: `npm test`, `npm run build:live`, `npm run check:live`.
 
 ## Where each thing lives
 

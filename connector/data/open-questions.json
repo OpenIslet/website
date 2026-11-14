@@ -271,7 +271,7 @@
     "id": "OQ-012",
     "title": "Can the safety switch remove almost every cell?",
     "plain": "Every cell carries a safety switch that a drug (AP1903) should trigger to remove them. The proposed target is fewer than one cell in 100 million able to regrow. Nothing has shown that yet.",
-    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation variants at AAVS1 while checking host-gene (PPP1R12C) splicing and DNA methylation, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9; IIP-0011). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches).",
+    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9; IIP-0011 and IIP-0015). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches).",
     "tests": [
       "5"
     ],
@@ -287,13 +287,14 @@
       "23307570",
       "28860464",
       "26455413",
+      "22696657",
       "11242052",
       "9724721",
       "11734640",
       "12620238"
     ],
-    "settle": "Compare the four AAVS1 anti-silencing and orientation arms across maturation, check PPP1R12C splicing and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count clonogenic survivors.",
-    "source": "Concise specification sections 4.4 and 9; IIP-0011",
+    "settle": "Compare the AAVS1 anti-silencing, orientation and splice-cleaned arms across maturation with calibrated minigene and UMI junction sequencing, check PPP1R12C splicing, double-stranded RNA stress and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count clonogenic survivors.",
+    "source": "Concise specification sections 4.4 and 9; IIP-0011 and IIP-0015",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -453,8 +454,8 @@
   {
     "id": "OQ-019",
     "title": "Do the core gene insertions leave nearby genes and splicing intact, and does shed PD-L1 act in the liquid around the graft?",
-    "plain": "Inserting protective genes at B2M, CXCL10 and AAVS1 or switching off CIITA could accidentally disturb nearby genes, host-gene splicing or promoter activity over time. At CXCL10, enzymes can also clip PD-L1 off the cell surface into the surrounding liquid, where its effect on immune cells is unknown.",
-    "detail": "Raised in IIP-0005 and IIP-0011. Sequence and DNA-grammar checks cannot certify insertion or splicing safety. Stage 0 tracks promoter CpG methylation across maturation in Arm 1B at B2M, checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that nearby CXCL9, CXCL11 and overlapping ART3 isoforms stay undisturbed within the single-AAV6 packaging limit, and tests minimally processed cell-free medium conditioned by inflamed edited islets (distinct from calcium-peroxide effluent) on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283).",
+    "plain": "Inserting protective genes at B2M, CXCL10 and AAVS1 or switching off CIITA could accidentally disturb nearby genes, splice in either direction into surrounding host exons, form repeated hairpins in AAV6 templates, or lose promoter activity over time. At CXCL10, enzymes can also clip PD-L1 off the cell surface into the surrounding liquid, where its effect on immune cells is unknown.",
+    "detail": "Raised in IIP-0005, IIP-0011 and IIP-0015. Sequence, two-strand splice-motif and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation and tests a silent HLA-E stop-seam comparator at B2M against splicing into B2M exon 2 (32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene and clonal UMI junction sequencing (at least 3,700 UMIs) across Loci 1, 3 and 4, and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283).",
     "tests": [
       "2A",
       "2B",
@@ -471,10 +472,13 @@
     "pmids": [
       "29345283",
       "19904234",
-      "34407395"
+      "34407395",
+      "22696657",
+      "28462820",
+      "32053646"
     ],
-    "settle": "Run targeted RNA-seq, splice-junction and bisulfite methylation assays across resting and inflamed edited islets at all four core loci, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
-    "source": "Concise specification sections 4.1 to 4.4, 6 and 9; IIP-0005 and IIP-0011",
+    "settle": "Run calibrated host-context minigene assays, clonal UMI splice-junction sequencing (at least 3,700 UMIs), host-mRNA equivalence checks and bisulfite methylation assays across resting and inflamed edited islets alongside the one-factor-at-a-time Stage-0 comparators, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
+    "source": "Concise specification sections 4.1 to 4.4, 6 and 9; IIP-0005, IIP-0011 and IIP-0015",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

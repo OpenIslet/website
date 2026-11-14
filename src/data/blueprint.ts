@@ -86,9 +86,9 @@ const aavs1: Locus = {
     'Intended on both copies of AAVS1; expression and AP1903 killing in every graft lineage remain unmeasured.',
     'The proposed target is fewer than 1 escape per 100 million cells capable of regrowth, not an observed kill rate.',
     'The inserted HNRNPA2B1-proximal candidate is chr7:26200580-26201034; the legacy CBX3 label does not establish published-fragment identity or function.',
-    'Stage-0 tests compare four anti-silencing and orientation variants at AAVS1 while checking host-gene (PPP1R12C) splicing and DNA methylation, alongside local 3D checks across three crystal structures of the switch’s parts (PDB 1BL4, 1JXQ and 1NW9).',
+    'Stage-0 tests compare four anti-silencing and orientation arms plus matched two-strand splice-cleaned comparators alongside the untouched reference donor (leaving out intron-blocking stop signals inside PPP1R12C), checking host-gene splicing, calibrated UMI RNA junctions, double-stranded RNA stress and DNA methylation beside local 3D checks across three crystal structures (PDB 1BL4, 1JXQ and 1NW9).',
   ],
-  pmids: ['23307570', '28860464', '26455413', '11242052', '35795779', '27626039'],
+  pmids: ['23307570', '28860464', '26455413', '22696657', '11242052', '35795779', '27626039'],
 };
 
 const ciita: Locus = {
@@ -142,7 +142,7 @@ const named: Scenario[] = [
           'Pictured: Arm 1B, with separate opposing promoters. Arm 1A instead encodes HLA-E first, then one 22-aa GSG-P2A element and CD47.',
           'Full-length CD47 can slow insulin release; the surface-anchored form was tested in non-islet immune, blood-stem-cell and endothelial models, so insulin secretion and macrophage protection in stem-cell islets are compared side by side.',
           'The HLA-E peptide is a candidate immune signal. Shared-CD94 reference contacts cannot establish NKG2A-over-NKG2C selectivity.',
-          'Stage-0 checks measure surface density across every cell type, track promoter DNA methylation in Arm 1B across maturation, and confirm nearby genes remain undisturbed.',
+          'Stage-0 checks measure surface density across every cell type, track promoter DNA methylation in Arm 1B across maturation, confirm nearby genes remain undisturbed, and test a silent HLA-E stop-signal adjustment alongside the untouched reference donor to rule out splicing into leftover B2M exon 2 (which would add a 32-amino-acid foreign protein tail).',
         ],
         pmids: ['38508139', '37156915', '37820008', '30778232', '28504668', '37264229'],
       },
@@ -162,9 +162,9 @@ const named: Scenario[] = [
         notes: [
           'The proposed inflammation-responsive protection retains STAT1; switching STAT1 off would conflict with this trigger.',
           'SERPINB9 is made first, then PD-L1; a lab test compares this order with the reverse while keeping the template inside one AAV6 virus.',
-          'Stage-0 tests check that nearby inflammatory genes (CXCL9 and CXCL11) and overlapping ART3 transcripts stay undisturbed, and test whether PD-L1 shed into cell-free liquid around the cells calms a separate immune response on its own.',
+          'Stage-0 tests check that nearby inflammatory genes (CXCL9 and CXCL11) and opposite-strand ART3 transcripts stay undisturbed—comparing one-change-at-a-time silent PD-L1 variants, a 3′-end cleavage check and an optional single-sided 80-bp boundary element alongside the untouched reference donor without adding hairpin repeats to the AAV6 virus—and test whether PD-L1 shed into cell-free liquid around the cells calms a separate immune response on its own.',
         ],
-        pmids: ['28526819', '30952982', '28813417', '29345283'],
+        pmids: ['28526819', '30952982', '28813417', '28462820', '29345283'],
       },
       aavs1,
     ],

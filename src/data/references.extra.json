@@ -268,5 +268,50 @@
     "journal": "Nat Commun",
     "year": 2025,
     "doi": "10.1038/s41467-025-59924-7"
+  },
+  "22696657": {
+    "title": "Safer, silencing-resistant lentiviral vectors: optimization of the ubiquitous chromatin-opening element through elimination of aberrant splicing.",
+    "authors": [
+      "Knight S",
+      "Zhang F",
+      "Mueller-Kuller U",
+      "Bokhoven M",
+      "Gupta A",
+      "Broughton T",
+      "Sha S",
+      "Antoniou MN",
+      "Brendel C",
+      "Grez M",
+      "Thrasher AJ",
+      "Collins M",
+      "Takeuchi Y"
+    ],
+    "journal": "J Virol",
+    "year": 2012,
+    "doi": "10.1128/JVI.00485-12"
+  },
+  "28462820": {
+    "title": "Short DNA Hairpins Compromise Recombinant Adeno-Associated Virus Genome Homogeneity.",
+    "authors": [
+      "Xie J",
+      "Mao Q",
+      "Tai PWL",
+      "He R",
+      "Ai J",
+      "Su Q",
+      "Zhu Y",
+      "Ma H",
+      "Li J",
+      "Gong S",
+      "Wang D",
+      "Gao Z",
+      "Li M",
+      "Zhong L",
+      "Zhou H",
+      "Gao G"
+    ],
+    "journal": "Mol Ther",
+    "year": 2017,
+    "doi": "10.1016/j.ymthe.2017.03.028"
   }
 }

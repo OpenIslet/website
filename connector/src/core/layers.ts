@@ -15,7 +15,7 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   dna: {
     name: 'The DNA layer (layer 2 of 5)',
     plain: (c) =>
-      `Holds ${c.constructs ?? 'unavailable'} genomic reference constructs and their sequence, translation and grammar checks. AlphaGenome variant-impact scores are neither published nor used as evidence here (its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release), and no such score establishes insertion or splicing safety.`,
+      `Holds ${c.constructs ?? 'unavailable'} genomic reference constructs, their sequence, translation, two-strand splice-motif and repeat checks, and pre-registered Stage-0 donor comparators. AlphaGenome variant-impact scores are neither published nor used as evidence here (its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release), and no computational grammar check establishes insertion or splicing safety.`,
   },
   proteins: {
     name: 'The protein layer (layer 3 of 5)',

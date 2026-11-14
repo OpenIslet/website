@@ -44,7 +44,7 @@
       "threeArmPct": 72,
       "badge": "Computer model only",
       "badgeKind": "unknown",
-      "plain": "A new graft has no blood vessels at first, so the design brings its own oxygen: a layer that releases it for the first three days while pre-built vessels link up. The blueprint’s computer model of the first 14 days suggests this can work, but with only a thin margin if our assumptions are pessimistic.",
+      "plain": "A new graft has no blood vessels at first, so the design brings its own oxygen: a layer that releases it for the first three days while pre-built vessels link up. The blueprint’s computer model of the first 14 days suggests this can work, though sensitivity runs show a narrow passing window if oxygen release shifts or blood vessels connect late, and normal insulin and glucagon recovery afterwards still has to be measured.",
       "evidence": "From the blueprint’s own tissue model. None of its oxygen values has been measured in the lab.",
       "pmid": "",
       "next": "Next: blood supply and oxygen tests (Stage 2)."

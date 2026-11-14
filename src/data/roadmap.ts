@@ -103,7 +103,7 @@ export const stages: Stage[] = [
     gate: `Version ${release.version} is an open computational blueprint; lab qualifications remain pending and accepted evidence can revise it.`,
     science: [
       `Corpus: ${n(c.studies)} study records and ${n(c.findings)} extracted findings in the scoring set, alongside ${n(c.cegStudies)} primary empirical studies (${n(c.cegArms)} groups, ${n(c.cegOutcomes)} structured outcomes and ${n(c.cegLinks)} blueprint links, screened from ${n(c.cegScreened)} candidate records) in the Context–Evidence Graph. ${n(c.designs)} designs are scored under ${c.graveyardRules} Idea Graveyard rules.`,
-      'Five layers: the literature, the DNA (sequence and grammar checks), the proteins (AlphaFold models and experimental structures), tissue and body simulations, and a patient compiler run on synthetic patients.',
+      'Five layers: the literature, the DNA (sequence, two-strand splicing and grammar checks), the proteins (AlphaFold models and experimental structures), tissue and body simulations, and a patient compiler run on synthetic patients.',
       'Direction and penalty labels in the corpus are rule-based heuristics. They have not been independently adjudicated.',
       'The first construct, cluster-density, differentiation and immune and insulin-secretion acceptance experiments are pre-registered and still pending.',
     ],
