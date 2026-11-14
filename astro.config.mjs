@@ -12,6 +12,8 @@ export default defineConfig({
   // Astro 7 squeezes the HTML by default and drops the space between a sentence and a link or tag
   // that starts on the next line ("in the open.Our goal"). Keeping the HTML as written keeps every space.
   compressHTML: false,
+  // A page is fetched when a visitor points at, or starts to tap, a link to it, so it opens at once.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   // After each build, writes the security headers (a strict Content-Security-Policy and friends) next to the pages.
   integrations: [securityHeaders()],
   // The connector, the X pack and the source assets are not part of the site. Keeping them out of the dev

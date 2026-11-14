@@ -53,6 +53,33 @@ test('valid contributor handles cannot collide with Object prototype properties'
   }
 });
 
+test('the home page’s latest changes are the newest credited IIPs, and never a quiet, founding or undecided one', async () => {
+  const row = (id, date, outcome, extra = {}) => ({
+    id, date, title:`Title ${id}`, summary:`Summary ${id}`, type:'test', status:'merged',
+    contributor:{handle:'someone',kind:'person',verified:{github:false,orcid:false}}, models:[],
+    outcome: outcome ? {kind:outcome,note:'fixture'} : null, ...extra,
+  });
+  const rows = [
+    row('IIP-0001', '2026-11-01', 'changed_blueprint', { founding: true }),
+    row('IIP-0002', '2026-11-02', 'changed_blueprint'),
+    row('IIP-0003', '2026-11-03', 'evidence'),
+    row('IIP-0004', '2026-11-04', 'not_taken_up'),
+    row('IIP-0005', '2026-11-04', 'already_covered'),
+    row('IIP-0006', '2026-11-05', 'later'),
+    row('IIP-0007', '2026-11-06', null, { status: 'open' }),
+    row('IIP-0008', '2026-11-03', 'open_question'),
+    row('IIP-0009', '2026-11-03', 'dead_end'),
+  ];
+  const { latestCredited, quietOutcomes } = await loadTs('src/data/contributions.ts', {
+    './contributions.json': `export default ${JSON.stringify(rows)};`,
+    './specTokens': 'export const fillTokens = x => x;',
+  });
+  // Newest first; on the same day, the higher number first. The founding record, quiet outcomes, "later" and undecided stay out.
+  assert.deepEqual(latestCredited(3).map(x => x.id), ['IIP-0009', 'IIP-0008', 'IIP-0003']);
+  assert.deepEqual(latestCredited(10).map(x => x.id), ['IIP-0009', 'IIP-0008', 'IIP-0003', 'IIP-0002']);
+  assert.deepEqual(quietOutcomes, ['not_taken_up', 'already_covered']);
+});
+
 test('graveyard shorthand must resolve to exactly one source rule', async () => {
   const entry = {id:'GY-1',source:'GRAVEYARD_001_',title:'fixture',added:'2026-10-25',version:'v0.8.0'};
   const source = {graveyard_id:'GRAVEYARD_001_A',severity_level:'WARN',curation_status:'corroborated',evidence_basis_class:'direct_islet_empirical',supporting_pmids:[]};

@@ -7,6 +7,8 @@ import BuildLayers from '../components/BuildLayers.astro';
 import Designs from '../components/Designs.astro';
 import HelpSection from '../components/HelpSection.astro';
 import GoalSection from '../components/GoalSection.astro';
+import Doors from '../components/Doors.astro';
+import LatestIips from '../components/LatestIips.astro';
 import Pillar1 from '../components/pillars/Pillar1.astro';
 import Pillar2 from '../components/pillars/Pillar2.astro';
 import Pillar3 from '../components/pillars/Pillar3.astro';
@@ -123,9 +125,15 @@ const pillars = [
     </div>
   </section>
 
+  <Doors />
+
   <GoalSection />
 
   <ProblemSection />
+
+  {/* The invitation comes as soon as a visitor knows what the cure is, with the newest changes above it as proof of life. */}
+  <LatestIips />
+  <HelpSection />
 
   <!-- How it works -->
   <section class="pillars">
@@ -154,10 +162,43 @@ const pillars = [
 
   <FiveTests />
   <Designs />
-  <HelpSection />
+
+  <section class="closing">
+    <div class="container closing__row">
+      <h2 class="closing__h">Help improve the blueprint</h2>
+      <div class="closing__cta">
+        <a class="btn btn--primary btn--lg" href={`${startHref}#step-1`}>Start here</a>
+        <a class="textlink" href="/contributions">See who has contributed →</a>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
+  .closing {
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+    background: var(--tint);
+  }
+  .closing__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+  }
+  .closing__h {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    line-height: 1.15;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .closing__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+  }
+
   /* hero */
   .hero {
     position: relative;

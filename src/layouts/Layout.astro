@@ -6,9 +6,12 @@ import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
 import '@fontsource/ibm-plex-mono/600.css';
 import '../styles/global.css';
+// The two text weights every page opens with are fetched early, so the words do not change shape a moment after they appear.
+import sans400 from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url';
+import sans600 from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-600-normal.woff2?url';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { social, indexable, shareImage } from '../data/site';
+import { social, indexable, shareImage, pageShareImages } from '../data/site';
 
 interface Props {
   title: string;
@@ -16,14 +19,17 @@ interface Props {
   current?: string;
   /** Keeps one page out of search results even when the site is public (the 404 page). */
   noindex?: boolean;
+  /** This page's own share picture (see pageShareImages). Without it, the page uses the site's share picture. */
+  share?: keyof typeof pageShareImages;
 }
-const { title, description, current, noindex = false } = Astro.props;
+const { title, description, current, noindex = false, share } = Astro.props;
+const card = share ? pageShareImages[share] : shareImage;
 const fullTitle = title === 'OpenIslet' ? 'OpenIslet' : `${title} · OpenIslet`;
 const hidden = noindex || !indexable;
 // The canonical address has no trailing slash, except for the home page.
 const path = Astro.url.pathname.replace(/(.)\/$/, '$1');
 const canonical = new URL(path, Astro.site).href;
-const image = new URL(shareImage.src, Astro.site).href;
+const image = new URL(card.src, Astro.site).href;
 // Search engines read the site's name and logo from the home page.
 const home = new URL('/', Astro.site).href;
 const siteSchema = {
@@ -44,6 +50,8 @@ const siteSchema = {
     <meta name="format-detection" content="telephone=no" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="description" content={description} />
+    <link rel="preload" as="font" type="font/woff2" href={sans400} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sans600} crossorigin />
     {/* Until the site is public, keep it out of search indexes (see PUBLIC_INDEXABLE in .env.example). */}
     {hidden && <meta name="robots" content="noindex, nofollow" />}
     {!hidden && <link rel="canonical" href={canonical} />}
@@ -56,13 +64,13 @@ const siteSchema = {
     <meta property="og:image" content={image} />
     <meta property="og:image:width" content={String(shareImage.width)} />
     <meta property="og:image:height" content={String(shareImage.height)} />
-    <meta property="og:image:alt" content={shareImage.alt} />
+    <meta property="og:image:alt" content={card.alt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content={social.x.handle} />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
-    <meta name="twitter:image:alt" content={shareImage.alt} />
+    <meta name="twitter:image:alt" content={card.alt} />
     <link rel="me" href={social.x.url} />
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -83,6 +91,7 @@ const siteSchema = {
     <script>
       import '../scripts/scrollregions';
       import '../scripts/sidescroll';
+      import '../scripts/slider';
     </script>
   </body>
 </html>

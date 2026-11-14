@@ -43,6 +43,7 @@ const first = paths[0].id;
             </ol>
           </div>
 
+          <div class="steps__scroll" data-scroll-region data-slider="Step" data-label="The six steps">
           <ol class="steps">
             {p.steps.map((s, i) => {
               const Visual = visuals[i];
@@ -60,6 +61,7 @@ const first = paths[0].id;
               );
             })}
           </ol>
+          </div>
         </div>
       ))
     }
@@ -230,6 +232,28 @@ const first = paths[0].id;
     flex-direction: column;
     gap: 0.5rem;
   }
+  /* On a phone the six steps sit side by side in a row that slides, one step at a time, with the next peeking in. */
+  @media (max-width: 38em) {
+    .steps__scroll {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--gutter) * -1);
+      scroll-padding-inline: var(--gutter);
+      padding-bottom: 0.5rem;
+    }
+    .steps__scroll .steps {
+      width: max-content;
+      padding-inline: var(--gutter);
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: min(80vw, 22rem);
+      gap: 0 1.25rem;
+      align-items: start;
+    }
+    .step {
+      scroll-snap-align: start;
+    }
+  }
   .vis {
     margin-bottom: 0.75rem;
     padding: 0.5rem 0.75rem;
@@ -279,5 +303,12 @@ const first = paths[0].id;
     align-items: center;
     gap: 0.75rem 1.5rem;
     margin-top: 2rem;
+  }
+  /* Where the button and the two links do not fit on one row, each takes a row of its own: never two and one. */
+  @media (max-width: 50em) {
+    .help__cta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 </style>

@@ -1,0 +1,113 @@
+---
+// Three ways in, right under the opening picture: one for each kind of visitor. Each is one line and one link.
+import { startHref } from '../data/site';
+
+const doors = [
+  { icon: 'person', who: 'Living with type 1 diabetes?', go: 'See the path to patients', href: '/roadmap' },
+  { icon: 'chat', who: 'Want to help build it?', go: 'Start with any AI chat', href: `${startHref}#step-1` },
+  { icon: 'lab', who: 'Work in a lab or a biotech?', go: 'See how partners take it forward', href: '/roadmap#after-blueprint' },
+];
+---
+
+<nav class="doors" aria-label="Where to start">
+  <ul class="container doors__row">
+    {
+      doors.map((d) => (
+        <li>
+          <a class="door" href={d.href}>
+            <span class="door__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                {d.icon === 'person' && (
+                  <>
+                    <circle cx="12" cy="8" r="3.5" />
+                    <path d="M5 20v-1.5a7 7 0 0 1 14 0V20" />
+                  </>
+                )}
+                {d.icon === 'chat' && (
+                  <>
+                    <path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4.5 3.5V17H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+                    <path d="M12 8.25l.9 1.85 1.85.9-1.85.9-.9 1.85-.9-1.85-1.85-.9 1.85-.9Z" />
+                  </>
+                )}
+                {d.icon === 'lab' && (
+                  <>
+                    <path d="M9.5 3.5h5M10.5 3.5v5.2L5.6 17.6a2 2 0 0 0 1.75 2.9h9.3a2 2 0 0 0 1.75-2.9L13.5 8.7V3.5" />
+                    <path d="M8 14.5h8" />
+                  </>
+                )}
+              </svg>
+            </span>
+            <span class="door__text">
+              <span class="door__who">{d.who}</span>
+              <span class="door__go">{d.go} →</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .doors {
+    background: #fff;
+    border-bottom: 1px solid var(--line);
+  }
+  /* Three across, then one per row with a hairline between: never two and one. */
+  .doors__row {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 2rem;
+  }
+  .door {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    min-height: 5rem;
+    padding-block: 1rem;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .door__icon {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--accent-lt);
+  }
+  .door__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+  .door__who {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .door__go {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .door:hover .door__go {
+    text-decoration: underline;
+  }
+  @media (max-width: 56em) {
+    .doors__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .doors__row li + li {
+      border-top: 1px solid var(--line-soft);
+    }
+    .door {
+      min-height: 4.25rem;
+      padding-block: 0.75rem;
+    }
+  }
+</style>

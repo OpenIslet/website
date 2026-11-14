@@ -95,7 +95,7 @@ const explainers = [
     <h2 class="h2 head">Three designs to compare</h2>
     <p class="lead head__lead">Rather than bet on one idea, the blueprint carries three. Design A is the lead. Lab tests will show which one, or which parts of each, to keep.</p>
 
-    <div class="designs__cards">
+    <div class="designs__cards" data-scroll-region data-slider="Design" data-label="The three designs">
       {
         designs.map((d) => (
           <article class="scen">
@@ -156,37 +156,42 @@ const explainers = [
                 ? 'Design X scores the same as Design A on each test, and a little lower overall because the model charges a small manufacturing penalty for the extra base edit.'
                 : 'Design X’s test scores differ from Design A’s. The model also charges a small manufacturing penalty for the extra base edit.'}
             </p>
-            <div class="why">
-              <div class="why__text">
-                <h4>Why is Design A only {a.children.toFixed(3)}?</h4>
-                <p class="pretty">The model gives each design a score on six checks, and a design has to pass every one, so the six scores are multiplied. Design A scores between {lowest}% and {highest}% on each check. Multiply six numbers like that and the answer is {a.children.toFixed(3)}: multiplying always shrinks the total, and even six scores of 80% would come to 0.26.</p>
-                <p class="pretty">So {a.children.toFixed(3)} is not a 10% chance of anything. What counts is the order: it compares designs inside the model, not how they would do in people.</p>
-              </div>
-              <figure class="six">
-                <figcaption>Design A’s six checks, each from 0% to 100%</figcaption>
-                <ul class="six__rows">
-                  {aTests.map((t) => (
-                    <li>
-                      <span class="six__lab">{t.name}</span>
-                      <span class="bar six__bar" aria-hidden="true"><span style={`width:${(t.value * 100).toFixed(1)}%`}></span></span>
-                      <strong class="mono six__val">{Math.round(t.value * 100)}%</strong>
-                    </li>
-                  ))}
-                </ul>
-                <p class="six__total"><span>All six multiplied together</span> <strong class="mono">{a.children.toFixed(3)}</strong></p>
-              </figure>
-            </div>
           </>
         ) : (
           <p class="index__withheld">Model scores are not shown in this version.</p>
         )
       }
-      <div class="evidence">
-        <h4>What the scores rest on</h4>
-        <p class="pretty">The gene choices and the Idea Graveyard rules are built from the {n(release.counts.studies)} scoring studies ({n(release.counts.findings)} findings), backed by an open <a href="/ceg">Context–Evidence Graph</a> of {n(release.counts.cegStudies)} primary studies ({n(release.counts.cegOutcomes)} structured outcomes). Those studies mostly test one or two edits at a time.</p>
-        <p class="pretty">What nobody has measured yet is how all the edits in a design behave together inside one cell. No lab tests have been run so far, so the model fills the gap with starting assumptions, and lab results will replace them.</p>
-        <p class="footnote evidence__foot">Scores compare {n(release.counts.designs)} gene combinations on the five tests. {n(release.counts.blocked)} were ruled out because they include an idea our rules block. <a href="/blueprint#odds">See how we estimate the real-world odds →</a></p>
-      </div>
+      <details class="fold">
+        <summary>Why the scores are so low, and what they rest on</summary>
+        {showScenarioIndices && (
+          <div class="why">
+            <div class="why__text">
+              <h4>Why is Design A only {a.children.toFixed(3)}?</h4>
+              <p class="pretty">The model gives each design a score on six checks, and a design has to pass every one, so the six scores are multiplied. Design A scores between {lowest}% and {highest}% on each check. Multiply six numbers like that and the answer is {a.children.toFixed(3)}: multiplying always shrinks the total, and even six scores of 80% would come to 0.26.</p>
+              <p class="pretty">So {a.children.toFixed(3)} is not a 10% chance of anything. What counts is the order: it compares designs inside the model, not how they would do in people.</p>
+            </div>
+            <figure class="six">
+              <figcaption>Design A’s six checks, each from 0% to 100%</figcaption>
+              <ul class="six__rows">
+                {aTests.map((t) => (
+                  <li>
+                    <span class="six__lab">{t.name}</span>
+                    <span class="bar six__bar" aria-hidden="true"><span style={`width:${(t.value * 100).toFixed(1)}%`}></span></span>
+                    <strong class="mono six__val">{Math.round(t.value * 100)}%</strong>
+                  </li>
+                ))}
+              </ul>
+              <p class="six__total"><span>All six multiplied together</span> <strong class="mono">{a.children.toFixed(3)}</strong></p>
+            </figure>
+          </div>
+        )}
+        <div class="evidence">
+          <h4>What the scores rest on</h4>
+          <p class="pretty">The gene choices and the Idea Graveyard rules are built from the {n(release.counts.studies)} scoring studies ({n(release.counts.findings)} findings), backed by an open <a href="/ceg">Context–Evidence Graph</a> of {n(release.counts.cegStudies)} primary studies ({n(release.counts.cegOutcomes)} structured outcomes). Those studies mostly test one or two edits at a time.</p>
+          <p class="pretty">What nobody has measured yet is how all the edits in a design behave together inside one cell. No lab tests have been run so far, so the model fills the gap with starting assumptions, and lab results will replace them.</p>
+          <p class="footnote evidence__foot">Scores compare {n(release.counts.designs)} gene combinations on the five tests. {n(release.counts.blocked)} were ruled out because they include an idea our rules block. <a href="/blueprint#odds">See how we estimate the real-world odds →</a></p>
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -211,6 +216,61 @@ const explainers = [
     .designs__cards {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+  }
+  /* Narrower than that, the three designs sit side by side in a row that slides, one design at a time, with the next one
+     peeking in. Nothing stacks three screens deep, and nothing is removed. */
+  @media (max-width: 63.99em) {
+    .designs__cards {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: min(84%, 27rem);
+      gap: 1.25rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      scroll-padding-inline: var(--gutter);
+      padding-bottom: 0.75rem;
+      /* Each design keeps its own height here; lining the last lines up only matters when all three show at once. */
+      align-items: start;
+    }
+    .scen {
+      scroll-snap-align: start;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .designs__cards {
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* The fold under the ranking: a plain row that opens, like the help rows on Start here. */
+  .fold {
+    margin-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .fold > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 3.25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    list-style: none;
+  }
+  .fold > summary::-webkit-details-marker {
+    display: none;
+  }
+  .fold > summary::after {
+    content: '+';
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  .fold[open] > summary::after {
+    content: '−';
   }
   .scen {
     display: flex;

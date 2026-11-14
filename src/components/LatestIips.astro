@@ -1,0 +1,101 @@
+---
+// The newest Islet Improvement Proposals that changed the blueprint, with their dates: a sign of life that keeps itself current,
+// because it is built from the same records as the Contributions page. Each shows the record's own plain summary, word for word
+// and in full (never cut short, so no qualifier can be lost), with what it added in words: no score, no rank.
+import { latestCredited, outcomes } from '../data/contributions';
+
+const shortDate = (iso: string) =>
+  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+
+const latest = latestCredited(3);
+---
+
+{
+  latest.length === 3 && (
+    <section class="latest" aria-labelledby="latest-h">
+      <div class="container">
+        <div class="latest__head">
+          <h2 class="latest__h" id="latest-h">Latest changes to the blueprint</h2>
+          <a class="textlink" href="/contributions">All contributions →</a>
+        </div>
+        <ol class="latest__row">
+          {latest.map((x) => (
+            <li class="fact latest__item">
+              <p class="latest__meta">
+                <time datetime={x.date}>{shortDate(x.date as string)}</time>
+                <span class="chip chip--pass">{outcomes[x.outcome!.kind].label}</span>
+              </p>
+              <p class="latest__t">{x.summary}</p>
+              <p class="latest__by">
+                <a href={`/contributions#${x.id.toLowerCase()}`}><span class="mono">{x.id}</span><span class="sr-only">: {x.title}</span></a> · @{x.contributor.handle}
+              </p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .latest {
+    padding-block: clamp(2.25rem, 4.5vw, 3.25rem);
+    background: #fff;
+    border-block: 1px solid var(--line);
+  }
+  .latest__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+  }
+  .latest__h {
+    font-size: 1.375rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  /* Three across, then one per row: never two and one. */
+  .latest__row {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem 2rem;
+  }
+  @media (max-width: 56em) {
+    .latest__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .latest__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .latest__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+  .latest__t {
+    font-size: 1rem;
+    line-height: 1.45;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .latest__by {
+    margin-top: auto;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .latest__by a {
+    font-weight: 600;
+  }
+</style>

@@ -29,6 +29,7 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
   title="Contributions"
   description="Who has helped improve the OpenIslet blueprint, what each of their IIPs changed, and how credit works."
   current="contributions"
+  share="contributions"
 >
   <header class="top on-dark">
     <div class="top__bg" aria-hidden="true"><CellField seed={21} count={46} /></div>
@@ -132,7 +133,7 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                       {c.verified.github && <span class="chip chip--pass">GitHub ✓</span>}
                       {c.stated.orcid &&
                         (c.verified.orcid ? (
-                          <a class="chip chip--pass" href={`https://orcid.org/${c.stated.orcid}`} rel="noopener">ORCID {c.stated.orcid} ✓</a>
+                          <span class="chip chip--pass">ORCID {c.stated.orcid} ✓</span>
                         ) : (
                           <span class="chip chip--quiet">ORCID {c.stated.orcid} · stated</span>
                         ))}
@@ -153,6 +154,11 @@ const versionName = (id: string) => id.replace(/^islet-/, 'Islet-');
                 </summary>
 
                 <div class="crow__body">
+                  {c.stated.orcid && c.verified.orcid && (
+                    <p class="crow__stated">
+                      Verified through ORCID: <a href={`https://orcid.org/${c.stated.orcid}`} rel="noopener">ORCID {c.stated.orcid}</a>
+                    </p>
+                  )}
                   {
                     ((c.stated.orcid && !c.verified.orcid) || c.stated.x) && (
                       <p class="crow__stated">

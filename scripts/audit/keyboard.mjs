@@ -26,7 +26,24 @@ for (const path of pages) {
       const cs = getComputedStyle(el);
       const name = (el.getAttribute('aria-label') || el.innerText || el.getAttribute('title') || el.getAttribute('alt') || el.getAttribute('href') || el.tagName).trim().replace(/\s+/g, ' ').slice(0, 40);
       // What a keyboard user sees: an outline, a shadow, or a changed border or background.
-      const indicator = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 ? 'outline' : cs.boxShadow !== 'none' ? 'shadow' : 'none';
+      let indicator = cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) > 0 ? 'outline' : cs.boxShadow !== 'none' ? 'shadow' : 'none';
+      // A link inside a drawing (the rings on the home page, the pins on the Blueprint drawing) has no outline of its own: focus
+      // redraws its parts instead (a thicker ring, a filled tag, a white dot). That counts if the parts really look different
+      // with focus than without it.
+      if (indicator === 'none' && el.querySelector('*')) {
+        const look = () =>
+          [...el.querySelectorAll('*')]
+            .map((n) => {
+              const c = getComputedStyle(n);
+              return [c.fill, c.stroke, c.strokeWidth, c.strokeOpacity, c.fillOpacity, c.opacity, c.backgroundColor, c.outlineWidth].join(',');
+            })
+            .join('|');
+        const focused = look();
+        el.blur();
+        const plain = look();
+        el.focus();
+        if (focused !== plain) indicator = 'restyle';
+      }
       return {
         tag: el.tagName.toLowerCase(), cls: String(el.className?.baseVal ?? el.className).split(' ')[0], name, indicator,
         top: Math.round(r.top), left: Math.round(r.left), w: Math.round(r.width), h: Math.round(r.height),

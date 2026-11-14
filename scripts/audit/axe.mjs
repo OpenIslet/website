@@ -55,12 +55,20 @@ for (const vp of viewports) {
     // Everything behind "details" and toggles, so hidden content is checked too.
     await page.evaluate(() => document.querySelectorAll('details').forEach((d) => (d.open = true)));
     await runAxe(page, `${label} + details open`);
-    const toggles = await page.$$('button[data-client], button[data-guidepath], button[data-guideroute], button[data-scen], .path__item button, button[data-design], [role="tab"]');
+    // The tabs include the five tests on the home page (one shows at a time), and the menu button is the phone menu.
+    const toggles = await page.$$('button[data-client], button[data-guidepath], button[data-guideroute], button[data-scen], .path__item button, button[data-design], [role="tab"], button.nav__toggle');
     for (const t of toggles) {
       try {
         await t.click({ delay: 0 });
         // Let the page react (for example the scroll-box helper, which runs after a panel is shown) before checking.
         await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        // A panel that fades in is measured once the fade is over: half-way through, its text reads as low contrast.
+        await page.evaluate(() => {
+          const finite = document.getAnimations().filter((a) => a.effect && a.effect.getComputedTiming().iterations !== Infinity);
+          const done = Promise.all(finite.map((a) => a.finished.then(() => null, () => null)));
+          const limit = new Promise((resolve) => setTimeout(resolve, 1000));
+          return Promise.race([done, limit]);
+        });
         await runAxe(page, `${label} + toggle`);
       } catch {
         /* not clickable at this width */

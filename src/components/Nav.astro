@@ -15,7 +15,7 @@ const { current } = Astro.props;
       <span>OpenIslet</span>
     </a>
     <div class="nav__right">
-      <nav aria-label="Primary" class="nav__links" data-sidescroll>
+      <nav aria-label="Primary" class="nav__links" id="nav-links" data-sidescroll>
         {
           navItems.map((item) => (
             <a
@@ -27,8 +27,21 @@ const { current } = Astro.props;
             </a>
           ))
         }
+        {/* In the phone menu the X link is a row of words, not an icon in the bar. */}
+        <a class="nav__link nav__link--x" href={social.x.url} target="_blank" rel="noopener me">
+          Follow {social.x.handle} on X<span class="sr-only"> (opens in a new tab)</span>
+        </a>
       </nav>
       <a class="btn btn--primary nav__cta" href={startHref} aria-current={current === 'start' ? 'page' : undefined}>Start here</a>
+      {/* Phones and tablets: one button opens all the links. Hidden until the script is running, so without scripts the links
+          stay as a row that swipes sideways. */}
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-links" hidden>
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path class="nav__bars" d="M4 7h16M4 12h16M4 17h16"></path>
+          <path class="nav__cross" d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+        <span class="nav__toggle-t">Menu</span>
+      </button>
       <a class="nav__social" href={social.x.url} target="_blank" rel="noopener me" aria-label={`Follow ${social.x.handle} on X and spread the word (opens in a new tab)`}>
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
           <path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path>
@@ -38,6 +51,34 @@ const { current } = Astro.props;
     </div>
   </div>
 </header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
+  const links = document.getElementById('nav-links');
+  if (toggle && links) {
+    const wide = matchMedia('(min-width: 66.01em)');
+    toggle.hidden = false;
+    document.documentElement.classList.add('has-menu');
+    const set = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      links.classList.toggle('is-open', open);
+    };
+    toggle.addEventListener('click', () => set(toggle.getAttribute('aria-expanded') !== 'true'));
+    // Escape closes it and puts the keyboard back on the button; choosing a link, or a click elsewhere, closes it too.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || toggle.getAttribute('aria-expanded') !== 'true') return;
+      set(false);
+      toggle.focus();
+    });
+    links.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) set(false);
+    });
+    document.addEventListener('click', (e) => {
+      if (!(e.target as HTMLElement).closest('.nav')) set(false);
+    });
+    wide.addEventListener('change', () => set(false));
+  }
+</script>
 
 <style>
   .nav {
@@ -182,6 +223,86 @@ const { current } = Astro.props;
     }
     .nav__links::-webkit-scrollbar {
       display: none;
+    }
+  }
+
+  /* ---- the menu button (phones and tablets, once the script is running) ---- */
+  .nav__toggle,
+  .nav__link--x {
+    display: none;
+  }
+  @media (max-width: 66em) {
+    :global(.has-menu) .nav__inner {
+      grid-template-columns: 1fr auto auto;
+      padding-block: 0.25rem;
+    }
+    :global(.has-menu) .nav__toggle {
+      grid-column: 3;
+      grid-row: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      min-height: 2.75rem;
+      padding: 0 0.75rem;
+      border: 1px solid var(--line-strong);
+      border-radius: 0.5rem;
+      background: #fff;
+      color: var(--ink);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .nav__cross,
+    .nav__toggle[aria-expanded='true'] .nav__bars {
+      display: none;
+    }
+    .nav__toggle[aria-expanded='true'] .nav__cross {
+      display: inline;
+    }
+    :global(.has-menu) .nav__social {
+      display: none;
+    }
+    /* Closed: the links are out of sight. Open: one link per row, full width, under the bar. */
+    :global(.has-menu) .nav__links {
+      display: none;
+    }
+    :global(.has-menu) .nav__links.is-open {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      overflow: visible;
+      margin: 0.25rem 0 0;
+      padding: 0.25rem 0 0.5rem;
+      border-top: 1px solid var(--line);
+    }
+    :global(.has-menu) .nav__links.is-open .nav__link {
+      min-height: 3rem;
+      padding: 0 0.25rem;
+      font-size: 1.0625rem;
+      white-space: normal;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    :global(.has-menu) .nav__links.is-open .nav__link:last-child {
+      border-bottom: 0;
+    }
+    :global(.has-menu) .nav__links.is-open .nav__link[aria-current='page'] {
+      box-shadow: inset 3px 0 0 var(--accent);
+      padding-left: 0.875rem;
+    }
+    :global(.has-menu) .nav__links.is-open .nav__link--x {
+      display: flex;
+      color: var(--accent);
+    }
+  }
+  /* The narrowest phones: the button is its icon only, so the bar never wraps. */
+  @media (max-width: 24em) {
+    .nav__toggle-t {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 </style>

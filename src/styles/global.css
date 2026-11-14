@@ -175,6 +175,45 @@ textarea::placeholder {
   box-shadow: 8px 0 8px -8px rgba(11, 27, 38, 0.28);
 }
 
+/* The dots under a row of cards that slides sideways (src/scripts/slider.ts adds them). Each is a full-size button with a small
+   mark inside, and the current card's mark is a wider bar. */
+.slider-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.slider-dots button {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.slider-dots button::before {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--line-strong);
+  transition: width 0.15s ease, background-color 0.15s ease;
+}
+
+.slider-dots button[aria-current='true']::before {
+  width: 1.5rem;
+  background: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slider-dots button::before {
+    transition: none;
+  }
+}
+
 /* ---------- type ---------- */
 
 .eyebrow {

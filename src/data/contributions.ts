@@ -217,4 +217,16 @@ export const contributors: Contributor[] = Object.values(
 /** The standings that occur on the page, in order, for the filter. */
 export const standingsShown = standingOrder.filter((key) => key !== 'founding' && ledger.some((c) => standingOf(c).key === key));
 
+/**
+ * The newest IIPs that added something to the blueprint (a credited outcome), newest first, for the "Latest changes" row on the
+ * home page. The founding record, layout examples, undecided IIPs and the quiet outcomes are never in it.
+ */
+export function latestCredited(n: number): Contribution[] {
+  return ledger
+    .filter((c) => !c.founding && !c.example && c.date && c.outcome && outcomes[c.outcome.kind].credited)
+    .sort((x, y) => (y.date ?? '').localeCompare(x.date ?? '') || y.id.localeCompare(x.id))
+    .slice(0, n);
+}
+
+
 export const realCount = ledger.filter((c) => !c.example).length;

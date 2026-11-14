@@ -25,12 +25,25 @@ const captions = [
     <h2 class="h2 head">Every transplanted cell must pass five tests</h2>
     <p class="lead head__lead">Fail one and the graft fails. Here is what each test asks, and what it looks like.</p>
 
-    <ol class="tests__list">
+    {/* With scripts on, the five tests share one space: a row of tabs, and one test showing at a time. Nothing is removed:
+        without scripts every test shows, one under the other. */}
+    <div class="tests__tabs" role="tablist" aria-label="The five tests" hidden data-tests-tabs>
+      {
+        gates.map((g, i) => (
+          <button class="tab" type="button" role="tab" id={`tab-test-${g.n}`} aria-controls={`test-${g.n}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-test={g.n}>
+            <span class="tab__n" aria-hidden="true">{g.n}</span>
+            <span class="tab__t"><span class="sr-only">Test {g.n}: </span>{g.short}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="tests__list" data-tests>
       {
         gates.map((g, i) => {
           const Visual = visuals[i];
           return (
-            <li class="test" id={`test-${g.n}`}>
+            <div class="test" id={`test-${g.n}`} data-panel={g.n}>
               <div class="test__rail">
                 <span class="test__num" aria-hidden="true">{g.n}</span>
               </div>
@@ -77,13 +90,81 @@ const captions = [
                   <figcaption>{captions[i]}</figcaption>
                 )}
               </figure>
-            </li>
+            </div>
           );
         })
       }
-    </ol>
+    </div>
+
+    <div class="tests__step" hidden data-tests-step>
+      <button class="btn btn--quiet" type="button" data-step="-1"><span aria-hidden="true">←</span><span data-step-label></span></button>
+      <span class="tests__pos" aria-hidden="true" data-tests-pos></span>
+      <button class="btn btn--quiet" type="button" data-step="1"><span data-step-label></span><span aria-hidden="true">→</span></button>
+    </div>
   </div>
 </section>
+
+<script>
+  const tablist = document.querySelector<HTMLElement>('[data-tests-tabs]');
+  const list = document.querySelector<HTMLElement>('[data-tests]');
+  const step = document.querySelector<HTMLElement>('[data-tests-step]');
+  if (tablist && list && step) {
+    const tabs = Array.from(tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(list.querySelectorAll<HTMLElement>('[data-panel]'));
+    const names = tabs.map((t) => t.querySelector('.tab__t')?.lastChild?.textContent?.trim() ?? '');
+    const [prev, next] = Array.from(step.querySelectorAll<HTMLButtonElement>('[data-step]'));
+    const pos = step.querySelector<HTMLElement>('[data-tests-pos]');
+    let at = 0;
+
+    // Tabs on: the panels become tab panels, and only one shows.
+    list.classList.add('is-tabs');
+    tablist.hidden = false;
+    step.hidden = false;
+    panels.forEach((p, i) => {
+      p.setAttribute('role', 'tabpanel');
+      p.setAttribute('aria-labelledby', tabs[i].id);
+      p.tabIndex = 0;
+    });
+
+    function show(i: number, opts: { focus?: boolean; scroll?: boolean } = {}) {
+      at = (i + tabs.length) % tabs.length;
+      tabs.forEach((t, k) => {
+        t.setAttribute('aria-selected', k === at ? 'true' : 'false');
+        t.tabIndex = k === at ? 0 : -1;
+      });
+      panels.forEach((p, k) => (p.hidden = k !== at));
+      prev.hidden = at === 0;
+      next.hidden = at === tabs.length - 1;
+      if (!prev.hidden) prev.querySelector('[data-step-label]')!.textContent = `Test ${at}: ${names[at - 1]}`;
+      if (!next.hidden) next.querySelector('[data-step-label]')!.textContent = `Test ${at + 2}: ${names[at + 1]}`;
+      if (pos) pos.textContent = `${at + 1} of ${tabs.length}`;
+      if (opts.focus) tabs[at].focus();
+      if (opts.scroll) tablist!.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+
+    tabs.forEach((t, i) => t.addEventListener('click', () => show(i)));
+    tablist.addEventListener('keydown', (e) => {
+      const move = { ArrowRight: at + 1, ArrowLeft: at - 1, Home: 0, End: tabs.length - 1 }[e.key];
+      if (move === undefined) return;
+      e.preventDefault();
+      show(move, { focus: true });
+    });
+    prev.addEventListener('click', () => show(at - 1, { scroll: true }));
+    next.addEventListener('click', () => show(at + 1, { scroll: true }));
+
+    // A link to one test (the rings in the picture at the top of the page, or /#test-3 from anywhere) opens that test.
+    function fromHash(scroll: boolean) {
+      const m = location.hash.match(/^#test-(\d)$/);
+      if (!m) return false;
+      const i = Number(m[1]) - 1;
+      if (i < 0 || i >= tabs.length) return false;
+      show(i, { scroll });
+      return true;
+    }
+    if (!fromHash(true)) show(0);
+    window.addEventListener('hashchange', () => fromHash(true));
+  }
+</script>
 
 <style>
   .head {
@@ -96,12 +177,118 @@ const captions = [
   }
 
   .tests__list {
-    list-style: none;
-    padding: 0;
     margin: 3.25rem 0 0;
     display: flex;
     flex-direction: column;
     gap: 3.5rem;
+  }
+
+  /* ---- tabs: five across, the chosen one filled ---- */
+  .tests__tabs {
+    margin-top: 2.25rem;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.5rem;
+    scroll-margin-top: 1rem;
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 3.5rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.75rem;
+    background: #fff;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: left;
+    cursor: pointer;
+  }
+  .tab:hover {
+    border-color: var(--accent);
+  }
+  .tab__n {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--neutral-bg);
+    color: var(--ink);
+    font-size: 1rem;
+  }
+  .tab[aria-selected='true'] {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: #fff;
+  }
+  .tab[aria-selected='true'] .tab__n {
+    background: var(--accent-lt);
+    color: var(--ink);
+  }
+  @media (max-width: 62em) {
+    /* Narrow screens: the five numbers only. The chosen test's name is the first line of its panel. */
+    .tests__tabs {
+      gap: 0.375rem;
+    }
+    .tab {
+      justify-content: center;
+      min-height: 3rem;
+      padding: 0.375rem;
+    }
+    .tab__t {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+
+  /* One test at a time: no rail, no number column (the tab carries the number), and a short fade as it changes. */
+  .tests__list.is-tabs {
+    margin-top: 1.75rem;
+    display: block;
+  }
+  .tests__list.is-tabs .test {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.18fr);
+    animation: test-in 0.22s ease-out;
+  }
+  .tests__list.is-tabs .test__rail {
+    display: none;
+  }
+  @keyframes test-in {
+    from {
+      opacity: 0;
+      transform: translateX(0.75rem);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tests__list.is-tabs .test {
+      animation: none;
+    }
+  }
+  .tests__step {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .tests__step .btn {
+    gap: 0.5rem;
+  }
+  .tests__step [data-step='1'] {
+    margin-left: auto;
+  }
+  .tests__pos {
+    font-size: 0.875rem;
+    color: var(--muted);
   }
   .test {
     display: grid;
@@ -279,6 +466,22 @@ const captions = [
     .test__text,
     .test__visual {
       grid-column: 2;
+    }
+  }
+  @media (max-width: 62em) {
+    .tests__list.is-tabs .test {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tests__list.is-tabs .test__text,
+    .tests__list.is-tabs .test__visual {
+      grid-column: 1;
+    }
+    .tests__step .btn {
+      min-height: 2.75rem;
+      font-size: 0.875rem;
+    }
+    .tests__pos {
+      display: none;
     }
   }
 </style>
