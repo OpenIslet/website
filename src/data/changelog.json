@@ -1,6 +1,27 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-14",
+    "title": "Two-strand RNA splicing checks and Stage-0 donor comparators",
+    "summary": "Adds a reproducible two-strand RNA-splicing and DNA-repeat scanner across the inserted donor sequences, registers shielded Stage-0 challenger comparators for Loci 1, 3 and 4, and enforces calibrated RNA recovery and host-gene boundary gates.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A reproducible two-strand splice-motif, stop-seam, neo-site and overlapping/disjoint repeat census across all materialised donor templates, plus full-polypeptide reconciliation of the 326 Class-I and 112 Class-II boundary peptide windows (DEC-092, IIP-0015)."
+      },
+      {
+        "kind": "added",
+        "text": "Synthesis-ready PAM/seed-shielded and unshielded Stage-0 challenger comparators across Locus 3 (synonymous PD-L1 recoding, bGH 3′-end check and optional single-sided 5′ cHS4 FII), Locus 4 (matched 2×2 orientation × A72T/C73A AAVS1 controls alongside retained SV40 poly(A) 3′-end checks) and Locus 1 (separated 505-aa Embodiment A* and 500-aa Arm 1B/1C stop-seam edits), leaving all canonical reference FASTAs unchanged."
+      },
+      {
+        "kind": "added",
+        "text": "Executable Stage-0 lab contract rules requiring calibrated RNA recovery standards, host-context EndoC-βH1 minigene screening, two-one-sided host-mRNA equivalence bounds with below-quantification holds, and non-pooled clonal UMI junction sequencing alongside intact Tier 6A/6B iCasp9 safety gates."
+      }
+    ],
+    "contribution": "IIP-0015"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-12",
     "title": "Post-gel immune rechallenge, CD55 complement check and held candidate gates",
     "summary": "Adds Stage-0 immune rechallenge tests after gel proteins wear off, an unconfounded ectopic CD55 complement satellite, and strict hold gates for four proposed gene edits.",
