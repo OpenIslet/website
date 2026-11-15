@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-15",
+    "title": "Species-separated proteome peptide census, Design B2 TYK2 P1104A HLA-C gate and AlphaMissense v3 provenance",
+    "summary": "Adds a 22-species human-Swiss-Prot-subtracted peptide census and IEDB T2A/P2A audit in Layer 2, enforces a stratified Stage-0 HLA-C neoantigen OR-hold gate for Design B2 (TYK2 P1104A), and records non-gating CC-BY-4.0 AlphaMissense v3 provenance in Layers 3 and 5.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A deterministic human-Swiss-Prot-subtracted sequence-window census across 22 molecular species (659 unique unmatched 8–11-mers across 768 flank contexts), separating mature polypeptides from precursors, readthrough fusions and cryptic-splice tails, comparing canonical P2A against existing 2A-free Locus-3 donors, and recording live-verified IEDB T2A vs untested P2A provenance (PMID 23698740; DEC-095, IIP-0017)."
+      },
+      {
+        "kind": "added",
+        "text": "A 32-row MHCflurry v2.3.0 HLA-C/HLA-E presentation ledger for TYK2 p.Pro1104Ala (SAPTKFLEL) annotated with IPD-IMGT/HLA SP-1C/SP-2C/SP-3C leader classes (PMID 37264229, distinct from HLA-B -21M/-21T in PMID 29302013), paired with a fail-closed Stage-0 OR-hold gate across unpooled G/G, G/C and C/C recipient strata on islet and vascular compartments."
+      },
+      {
+        "kind": "added",
+        "text": "Non-gating CC-BY-4.0 AlphaMissense v3 provenance (DOI 10.5281/zenodo.10813168, PMID 37733863) across 27 master-cell-bank priority genes and 96 exonic TYK2 missense SNVs alongside unchanged >= 63,000x duplex-sequencing and Tier 6A/6B iCasp9 clonogenic safety gates."
+      }
+    ],
+    "contribution": "IIP-0017"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-15",
     "title": "HLA-E NKG2A/NKG2C selectivity reconciliation and 20-construct Stage-0 comparator panel",
     "summary": "Reconciles soluble HLA-E*01:03 leader-peptide affinities and 13 peptide-bound crystal structures in Layer 3, registers a 20-construct splice-hardened Stage-0 HLA-E comparator panel in Layer 2, and hardens Stage-0 Switch S10 lab release gates.",
     "changes": [

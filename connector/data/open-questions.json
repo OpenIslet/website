@@ -56,7 +56,7 @@
     "id": "OQ-003",
     "title": "Can the patient's own immune cells restart the attack using debris from the graft?",
     "plain": "Cells with no HLA flags are hard for T cells to see directly. But the patient's own immune cells can pick up debris from the graft and show it to T cells, which can restart the attack that caused the diabetes.",
-    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). The design responds with small clusters, pre-built vessels and protection that switches on with inflammation, but this is not yet measured.",
+    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). The design responds with small clusters, pre-built vessels, Stage-0 host-APC testing and protection that switches on with inflammation, but this is not yet measured.",
     "tests": [
       "2B"
     ],
@@ -68,18 +68,20 @@
     "rules": [
       "GY-010"
     ],
-    "pmids": [],
-    "settle": "Mix the patient's immune cells with debris from flag-free islets, and look for T-cell activation and cell damage.",
-    "source": "Concise specification sections 4.2 and 9; rule GY-010",
+    "pmids": [
+      "23698740"
+    ],
+    "settle": "Mix the patient's antigen-presenting and T cells with debris from flag-free islets (comparing canonical P2A against 2A-free CXCL10 test templates across HLA-DQ2.5/DQ8/DR3/DR4 donors), and look for T-cell activation and cell damage.",
+    "source": "Concise specification sections 4.2, 4.5 and 9; rule GY-010; IIP-0017",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
   },
   {
     "id": "OQ-004",
-    "title": "Does one kept HLA-C gene calm natural killer cells enough?",
-    "plain": "Design B keeps one matched HLA-C gene so that natural killer cells see the cells as the patient's own. It is not yet known whether a single copy gives enough of that calming signal.",
-    "detail": "After HLA-A and HLA-B deletion, a single retained HLA-C allele must supply enough leader peptide to stabilise surface HLA-E (rule GY-005). It also requires choosing the right HLA-C haplotype.",
+    "title": "Does one kept HLA-C gene calm natural killer cells without displaying a new target?",
+    "plain": "Design B keeps one matched HLA-C gene so that natural killer cells see the cells as the patient's own. It is not yet known whether a single copy gives enough calming signal, or whether Design B2's optional TYK2 P1104A edit displays a foreign-looking peptide on that kept HLA-C.",
+    "detail": "After HLA-A and HLA-B deletion, a single retained HLA-C allele must supply enough leader peptide to stabilise surface HLA-E (tracked across IPD-IMGT/HLA SP-1C, SP-2C and SP-3C leader classes in Lin 2023, kept distinct from the HLA-B -21M/-21T leader split in Ramsuran 2018; rule GY-005). In Design B2, installing TYK2 P1104A replaces position-2 proline with an HLA-C-favoured alanine anchor (SPPTKFLEL to SAPTKFLEL; Rasmussen 2014, O'Donnell 2020), while over 90% of recipients carry wild-type TYK2 on both copies; IIP-0017 therefore enforces a fail-closed Stage-0 OR-hold gate across separate G/G, G/C and C/C recipient groups and HLA-C alleles on both islet and vascular cells.",
     "tests": [
       "3",
       "2A"
@@ -93,10 +95,14 @@
     "pmids": [
       "30853558",
       "29302013",
-      "37264229"
+      "37264229",
+      "27807284",
+      "30578352",
+      "32711842",
+      "25311805"
     ],
-    "settle": "Measure surface HLA-E and natural killer cell response in cells that keep a single HLA-C allele after HLA-A and HLA-B are switched off.",
-    "source": "Concise specification sections 4.5 and 9; rule GY-005",
+    "settle": "Measure surface HLA-E and natural killer cell response in cells keeping a single HLA-C allele, and test Design B2's TYK2 P1104A SAPTKFLEL peptide by heavy-standard immunopeptidomics and human CD8+ T-cell killing and ELISPOT across separate G/G, G/C and C/C recipient strata on islet and vascular cells.",
+    "source": "Concise specification sections 4.5 and 9; rule GY-005; IIP-0017",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -130,7 +136,7 @@
     "id": "OQ-006",
     "title": "Do many gene edits at once cause DNA rearrangements?",
     "plain": "Each extra edit is another chance for the cell's DNA to be rearranged by mistake, and cells with cancer-linked changes could take over. This is why the scoring model penalises extra edits.",
-    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Manufacturing would need deep sequencing checks for cancer-linked changes.",
+    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Open-license CC-BY-4.0 AlphaMissense v3 annotations (Cheng 2023, PMID 37733863) are attached strictly as descriptive context across 27 priority genes and the TYK2 prime-edit window, because 30x whole-genome sequencing misses ~21.5% of 5%-allele-fraction clones and cannot replace >= 63,000x duplex sequencing or manufacturing-scale structural checks (IIP-0017).",
     "tests": [
       "5"
     ],
@@ -143,10 +149,11 @@
       "GY-006"
     ],
     "pmids": [
-      "39529170"
+      "39529170",
+      "37733863"
     ],
-    "settle": "Deep sequencing of edited cell lines for rearrangements and cancer-linked changes, with the same checks repeated at manufacturing scale.",
-    "source": "Concise specification sections 4.5 and 9; rule GY-006",
+    "settle": "Deep duplex sequencing (>= 63,000x) and long-read phasing of edited cell lines for rearrangements and cancer-linked changes, with the same checks repeated at manufacturing scale.",
+    "source": "Concise specification sections 4.5, 6 and 9; rule GY-006; IIP-0017",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -252,7 +259,7 @@
     "id": "OQ-011",
     "title": "Does a sequence in Design B's CXCL10 edit act as an unintended switch?",
     "plain": "Design B drops one linking sequence at the CXCL10 spot to avoid leaving a piece that the kept HLA-C gene could show to T cells as foreign. In exchange, a piece of the design might switch genes on at the wrong time. That has to be ruled out.",
-    "detail": "Design B uses a 2A-free layout at the CXCL10 locus. An internal promoter or eIF4G leader sequence can have cryptic promoter activity (PMID 12370285).",
+    "detail": "Design B uses a 2A-free layout at the CXCL10 locus, which trims reference-unmatched 8-to-11-mers from 205 to 83 in wild-type-TYK2 Design B and from 243 to 121 in Design B2 (IIP-0017). However, an internal promoter or eIF4G leader sequence can have cryptic promoter activity (PMID 12370285).",
     "tests": [
       "4"
     ],

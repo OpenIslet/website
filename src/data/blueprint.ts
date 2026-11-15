@@ -199,11 +199,11 @@ const named: Scenario[] = [
         ],
         notes: [
           'Tests whether retained, matched HLA-C can engage inhibitory NK receptors; this is not established protection.',
-          'Risk: one HLA-C gene may not give enough of the signal that calms natural killer cells (GY-005).',
+          'Risk: one HLA-C gene may not give enough leader peptide (tracked per SP-1C, SP-2C and SP-3C leader class, kept distinct from HLA-B −21M/−21T) to calm natural killer cells (GY-005).',
           'Risk: cutting HLA-A and HLA-B at the same time can delete or flip the stretch of DNA between them (about 1.4 million letters), including HLA-E and the HLA-C copy that Design B keeps. The two edits have to be made one after the other, with checks in between, or with editors that do not cut both strands of the DNA.',
           'This has to be measured in the lab.',
         ],
-        pmids: ['30853558', '37264229', '34407395'],
+        pmids: ['30853558', '37264229', '29302013', '34407395'],
       },
       ciita,
       {
@@ -219,8 +219,9 @@ const named: Scenario[] = [
         notes: [
           'In the model it helps against donor-cell rejection, autoimmune attack and early immune attack.',
           'Differentiation penalties for switching off TYK2 are literature-anchored priors, not measured yields of this multi-edit product.',
+          'If Design B2 installs TYK2 P1104A alongside kept HLA-C, the resulting SAPTKFLEL peptide gains a favoured HLA-C anchor and could look foreign to recipients carrying wild-type TYK2, so Stage-0 checks enforce a fail-closed hold across separate G/G, G/C and C/C recipient groups on both islet and blood-vessel cells.',
         ],
-        pmids: ['36289205'],
+        pmids: ['36289205', '27807284', '30578352', '32711842', '25311805'],
       },
       {
         id: 'cxcl10',

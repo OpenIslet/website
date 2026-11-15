@@ -464,5 +464,35 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now reconciles all six human leader peptides in Lin 2023 on HLA-E*01:03 (0/6 reaching the static 4.0× NKG2C/NKG2A ratio, kept separate from HLA-E*01:01 monomer datasets), ships a 20-construct two-strand splice-hardened Stage-0 HLA-E comparator FASTA alongside the untouched reference designs, and binds Stage-0 Switch S10 to paired NK subset, UL40 T-cell and Treg lab gates."
     }
+  },
+  {
+    "id": "IIP-0017",
+    "date": "2026-11-15",
+    "decided": "2026-11-15",
+    "title": "Add human-proteome peptide census, Design B2 TYK2 P1104A HLA-C gate and AlphaMissense provenance",
+    "summary": "Adds a species-separated human-proteome-subtracted synthetic-peptide census across Design A and Design B constructs, enforces a recipient-genotype-stratified Stage-0 HLA-C neoantigen hold gate for Design B2 (TYK2 P1104A), and records open-license AlphaMissense v3 variant provenance.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now runs a species-separated human-Swiss-Prot peptide census across 22 molecular species (comparing canonical P2A against existing 2A-free Locus-3 donors), enforces a fail-closed Stage-0 OR-hold gate on Design B2's TYK2 P1104A SAPTKFLEL peptide across genotyped G/G, G/C and C/C recipients and HLA-C alleles, and records non-gating CC-BY-4.0 AlphaMissense v3 provenance."
+    }
   }
 ]
