@@ -56,7 +56,7 @@
     "id": "OQ-003",
     "title": "Can the patient's own immune cells restart the attack using debris from the graft?",
     "plain": "Cells with no HLA flags are hard for T cells to see directly. But the patient's own immune cells can pick up debris from the graft and show it to T cells, which can restart the attack that caused the diabetes.",
-    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). The design responds with small clusters, pre-built vessels, Stage-0 host-APC testing and protection that switches on with inflammation, but this is not yet measured.",
+    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). For cytokine and death-receptor bystander killing triggered by indirect presentation and Day 0–7 SA-FasL microgels, IIP-0018 pre-registers a held 6-arm Locus-3 Multi-miR(IL1R1 + FAS) synthetic-intron Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5; Amen 2022, Fellmann 2013) plus seven standalone zero-bystander FAS/IL1R1 cytosine-base-editor stop comparators, while blocking CASP8/FADD deletion (Kaiser 2011) and retiring soluble endothelial IL1R2 decoys (Thomas 2012); none is yet measured.",
     "tests": [
       "2B"
     ],
@@ -69,10 +69,14 @@
       "GY-010"
     ],
     "pmids": [
-      "23698740"
+      "23698740",
+      "35880017",
+      "24332856",
+      "21368762",
+      "22426547"
     ],
-    "settle": "Mix the patient's antigen-presenting and T cells with debris from flag-free islets (comparing canonical P2A against 2A-free CXCL10 test templates across HLA-DQ2.5/DQ8/DR3/DR4 donors), and look for T-cell activation and cell damage.",
-    "source": "Concise specification sections 4.2, 4.5 and 9; rule GY-010; IIP-0017",
+    "settle": "Mix the patient's antigen-presenting and T cells with debris from flag-free islets (comparing canonical P2A, 2A-free CXCL10 test templates, the 6-arm Locus-3 Multi-miR(IL1R1 + FAS) challenger suite and standalone FAS/IL1R1 stop comparators across HLA-DQ2.5/DQ8/DR3/DR4 donors), and look for T-cell activation and bystander cell damage.",
+    "source": "Concise specification sections 4.2, 4.3, 4.5 and 9; rule GY-010; IIP-0017 and IIP-0018",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -234,7 +238,7 @@
     "id": "OQ-010",
     "title": "At CXCL10, does it matter which protective gene comes first?",
     "plain": "The design adds two protective genes at one spot, SERPINB9 and PD-L1, so they switch on only when inflammation appears. The current order is SERPINB9 first. A lab test would compare it with the reverse order.",
-    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1. It is compared with CXCL10::PD-L1-GSG-P2A-SERPINB9 in a planned decision experiment.",
+    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1, compared head-to-head with CXCL10::PD-L1-GSG-P2A-SERPINB9 and with a held 6-arm 5'-UTR synthetic-intron Multi-miR(IL1R1 + FAS) Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6; IIP-0018) gated on calibrated UMI splicing, >= 85% retained SERPINB9/PD-L1 induction, >= 90% miR-375 AGO2 occupancy (Poy 2004), unblunted postprandial IL-1beta-amplified GSIS (Dror 2017) and >= 99.99% AP1903 iCasp9 kill.",
     "tests": [
       "4",
       "2B"
@@ -247,10 +251,13 @@
     "pmids": [
       "28526819",
       "30952982",
-      "28813417"
+      "28813417",
+      "35880017",
+      "15538371",
+      "28092375"
     ],
-    "settle": "Edit cells with each order and compare survival under inflammation and killer-cell attack.",
-    "source": "Concise specification section 4.3",
+    "settle": "Edit cells with each order and with the 6-arm Multi-miR(IL1R1 + FAS) synthetic-intron challenger panel, comparing SERPINB9/PD-L1 levels, splicing fidelity, miR-375 loading, insulin secretion and survival under inflammation and killer-cell attack.",
+    "source": "Concise specification section 4.3; IIP-0018",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"

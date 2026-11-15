@@ -494,5 +494,36 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now runs a species-separated human-Swiss-Prot peptide census across 22 molecular species (comparing canonical P2A against existing 2A-free Locus-3 donors), enforces a fail-closed Stage-0 OR-hold gate on Design B2's TYK2 P1104A SAPTKFLEL peptide across genotyped G/G, G/C and C/C recipients and HLA-C alleles, and records non-gating CC-BY-4.0 AlphaMissense v3 provenance."
     }
+  },
+  {
+    "id": "IIP-0018",
+    "date": "2026-11-15",
+    "decided": "2026-11-15",
+    "title": "Add Locus-3 Multi-miR(IL1R1+FAS) 6-arm challenger suite and GRCh38 zero-bystander CBE stop needles",
+    "summary": "Pre-registers a 6-arm two-strand splice- and seed-hardened Locus-3 intronic Multi-miR(IL1R1 + FAS) Stage-0 challenger suite inside the single-AAV6 cap alongside seven standalone zero-bystander FAS and IL1R1 base-editor stop comparators, and retires soluble endothelial decoy-receptor alternatives.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now ships a held 6-arm Locus-3 Multi-miR(IL1R1+FAS) synthetic-intron Stage-0 challenger FASTA (inside the 4,700-bp single-AAV6 cap, adding zero foreign peptides in primary ARM5) plus seven standalone zero-bystander FAS/IL1R1 base-editor stop comparators, retires soluble endothelial IL1R2 decoys, and gates promotion on splicing, miR-375 AGO2, GSIS and iCasp9 checks."
+    }
   }
 ]

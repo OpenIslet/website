@@ -13,6 +13,43 @@
     "year": 1999,
     "doi": "10.1093/emboj/18.15.4250"
   },
+  "15538371": {
+    "pmid": "15538371",
+    "title": "A pancreatic islet-specific microRNA regulates insulin secretion.",
+    "authors": [
+      "Poy MN",
+      "Eliasson L",
+      "Krutzfeldt J",
+      "Kuwajima S",
+      "Ma X",
+      "Macdonald PE",
+      "Pfeffer S",
+      "Tuschl T",
+      "Rajewsky N",
+      "Rorsman P",
+      "Stoffel M"
+    ],
+    "journal": "Nature",
+    "year": 2004,
+    "doi": "10.1038/nature03076"
+  },
+  "21368762": {
+    "pmid": "21368762",
+    "title": "RIP3 mediates the embryonic lethality of caspase-8-deficient mice.",
+    "authors": [
+      "Kaiser WJ",
+      "Upton JW",
+      "Long AB",
+      "Livingston-Rosanoff D",
+      "Daley-Bauer LP",
+      "Hakem R",
+      "Caspary T",
+      "Mocarski ES"
+    ],
+    "journal": "Nature",
+    "year": 2011,
+    "doi": "10.1038/nature09857"
+  },
   "22371586": {
     "pmid": "22371586",
     "title": "Preventing hypoxia-induced cell death in beta cells and islets via hydrolytically activated, oxygen-generating biomaterials.",
@@ -26,6 +63,18 @@
     "journal": "Proc Natl Acad Sci U S A",
     "year": 2012,
     "doi": "10.1073/pnas.1113560109"
+  },
+  "22426547": {
+    "pmid": "22426547",
+    "title": "Structure of the activating IL-1 receptor signaling complex.",
+    "authors": [
+      "Thomas C",
+      "Bazan JF",
+      "Garcia KC"
+    ],
+    "journal": "Nat Struct Mol Biol",
+    "year": 2012,
+    "doi": "10.1038/nsmb.2260"
   },
   "22696657": {
     "pmid": "22696657",
@@ -64,6 +113,27 @@
     "journal": "Gene Ther",
     "year": 2013,
     "doi": "10.1038/gt.2013.25"
+  },
+  "24332856": {
+    "pmid": "24332856",
+    "title": "An optimized microRNA backbone for effective single-copy RNAi.",
+    "authors": [
+      "Fellmann C",
+      "Hoffmann T",
+      "Sridhar V",
+      "Hopfgartner B",
+      "Muhar M",
+      "Roth M",
+      "Lai DY",
+      "Barbosa IA",
+      "Kwon JS",
+      "Guan Y",
+      "Sinha N",
+      "Zuber J"
+    ],
+    "journal": "Cell Rep",
+    "year": 2013,
+    "doi": "10.1016/j.celrep.2013.11.020"
   },
   "25311805": {
     "pmid": "25311805",
@@ -136,6 +206,35 @@
     "journal": "Sci Transl Med",
     "year": 2016,
     "doi": "10.1126/scitranslmed.aag1974"
+  },
+  "28092375": {
+    "pmid": "28092375",
+    "title": "Postprandial macrophage-derived IL-1β stimulates insulin, and both synergistically promote glucose disposal and inflammation.",
+    "authors": [
+      "Dror E",
+      "Dalmas E",
+      "Meier DT",
+      "Wueest S",
+      "Thévenet J",
+      "Thienel C",
+      "Timper K",
+      "Nordmann TM",
+      "Traub S",
+      "Schulze F",
+      "Item F",
+      "Vallois D",
+      "Pattou F",
+      "Kerr-Conte J",
+      "Lavallard V",
+      "Berney T",
+      "Thorens B",
+      "Konrad D",
+      "Böni-Schnetzler M",
+      "Donath MY"
+    ],
+    "journal": "Nat Immunol",
+    "year": 2017,
+    "doi": "10.1038/ni.3659"
   },
   "28263308": {
     "pmid": "28263308",
@@ -495,6 +594,25 @@
     "journal": "Molecular therapy. Methods & clinical development",
     "year": 2022,
     "doi": "10.1016/j.omtm.2022.05.011"
+  },
+  "35880017": {
+    "pmid": "35880017",
+    "title": "Endogenous spacing enables co-processing of microRNAs and efficient combinatorial RNAi.",
+    "authors": [
+      "Amen AM",
+      "Loughran RM",
+      "Huang CH",
+      "Lew RJ",
+      "Ravi A",
+      "Guan Y",
+      "Schatoff EM",
+      "Dow LE",
+      "Emerling BM",
+      "Fellmann C"
+    ],
+    "journal": "Cell Rep Methods",
+    "year": 2022,
+    "doi": "10.1016/j.crmeth.2022.100239"
   },
   "36055241": {
     "pmid": "36055241",

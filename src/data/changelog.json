@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-15",
+    "title": "Locus-3 Multi-miR(IL1R1+FAS) 6-arm Stage-0 challenger suite and zero-bystander CBE stop comparators",
+    "summary": "Registers a 6-arm two-strand splice- and seed-hardened Locus-3 intronic Multi-miR(IL1R1 + FAS) Stage-0 challenger FASTA and seven standalone GRCh38 zero-bystander FAS/IL1R1 base-editor stop comparators in Layer 2, reconciles IL-1R1/IL-1RAcP and FasL/DcR3 compartment geometry in Layer 3, and binds promotion to fail-closed Stage-0 RNA, AGO2, GSIS and iCasp9 gates.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A 6-arm Mode-B Stage-0 Locus-3 Multi-miR(IL1R1 + FAS) comparator FASTA (4,398-bp donor / 4,688-bp packaged single-AAV6 with 12-bp ITR margin; ARM1 parent, ARM2 scramble, ARM3/ARM4 single-hairpin factorial arms, primary WT-SERPINB9 ARM5 with zero novel peptides and exploratory SERPINB9 C341S ARM6) verified on isolated and chr4-integrated (+/- 300 bp) two-strand splice grammar while keeping canonical Scenario-A FASTAs unchanged (PMID 35880017, PMID 24332856; DEC-096, IIP-0018)."
+      },
+      {
+        "kind": "added",
+        "text": "Seven live-verified GRCh38 zero-bystander ([4..8]) FAS and IL1R1 cytosine-base-editor stop-needle comparators (9 SpCas9-CBE / SpG-CBE guides, separated from germline IFIH1 p.Ile923Val and TYK2 p.Pro1104Ala missense benchmarks), plus Layer-3 crystal-interface and cis/trans compartment reconciliation (PDB 4DEP, 3O4O, 4MSV, 4J6G) retiring soluble endothelial IL1R2 decoys and blocking CASP8/FADD deletion (PMID 22426547, PMID 21368762)."
+      },
+      {
+        "kind": "added",
+        "text": "Fail-closed Stage-0 wet-lab contract gates requiring calibrated UMI 5′/3′-RACE (N_UMI_eff >= 3,689, k = 0 aberrant junctions, host ART3 90% TOST [0.80, 1.25]), small-RNA 5′-seed fidelity (>= 85%), AGO2-RIP miR-375 occupancy (>= 90%; PMID 15538371), >= 85% IFN-gamma-induced SERPINB9/PD-L1 retention, >= 70% IL1R1/FAS knockdown, unblunted postprandial IL-1beta perifusion GSIS (PMID 28092375) and >= 99.99% AP1903 iCasp9 kill."
+      }
+    ],
+    "contribution": "IIP-0018"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-15",
     "title": "Species-separated proteome peptide census, Design B2 TYK2 P1104A HLA-C gate and AlphaMissense v3 provenance",
     "summary": "Adds a 22-species human-Swiss-Prot-subtracted peptide census and IEDB T2A/P2A audit in Layer 2, enforces a stratified Stage-0 HLA-C neoantigen OR-hold gate for Design B2 (TYK2 P1104A), and records non-gating CC-BY-4.0 AlphaMissense v3 provenance in Layers 3 and 5.",
     "changes": [
