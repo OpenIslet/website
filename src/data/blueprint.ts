@@ -141,10 +141,10 @@ const named: Scenario[] = [
           'Removes the HLA proteins T cells use to spot foreign cells.',
           'Pictured: Arm 1B, with separate opposing promoters. Arm 1A instead encodes HLA-E first, then one 22-aa GSG-P2A element and CD47.',
           'Full-length CD47 can slow insulin release; the surface-anchored form was tested in non-islet immune, blood-stem-cell and endothelial models, so insulin secretion and macrophage protection in stem-cell islets are compared side by side.',
-          'The HLA-E peptide is a candidate immune signal. Shared-CD94 reference contacts cannot establish NKG2A-over-NKG2C selectivity.',
-          'Stage-0 checks measure surface density across every cell type, track promoter DNA methylation in Arm 1B across maturation, confirm nearby genes remain undisturbed, and test a silent HLA-E stop-signal adjustment alongside the untouched reference donor to rule out splicing into leftover B2M exon 2 (which would add a 32-amino-acid foreign protein tail).',
+          'The HLA-E peptide is a candidate immune signal: on soluble HLA-E*01:03 none of the six human leader peptides in Lin 2023 reaches a fourfold NKG2C-over-NKG2A affinity gap on its own (kept separate from older HLA-E*01:01 monomer assays), and VMAPRTLFL acts as an activating NKG2C control.',
+          'Stage-0 checks measure surface density across every cell type, track promoter DNA methylation in Arm 1B across maturation, confirm nearby genes remain undisturbed, and compare a 20-construct two-strand splice-cleaned HLA-E panel (peptides, linkers, an optional D227K/T228A CD8-blocking control and the silent B2M exon-2 stop-signal adjustment) alongside the untouched reference donor across paired resting and interferon-stimulated NK subsets, UL40-reactive killer T cells and regulatory CD8+ T cells.',
         ],
-        pmids: ['38508139', '37156915', '37820008', '30778232', '28504668', '37264229'],
+        pmids: ['38508139', '37156915', '37820008', '30778232', '28504668', '37264229', '26382247', '10428963'],
       },
       ciita,
       {
@@ -316,7 +316,7 @@ const designX: Scenario = {
     {
       art: 'signals',
       title: 'Redesigned “don’t attack me” signals',
-      text: 'A new DNA switch and a slightly changed CD47 protein, to be tested for more protective signal in the first hours. HLA-E stays unchanged unless an optional side test shows that a small change stops killer T cells’ helper protein (CD8) gripping it. A written proposal: its DNA is not built yet. Not scored or tested.',
+      text: 'A new DNA switch and a slightly changed CD47 protein, to be tested for more protective signal in the first hours. HLA-E stays unchanged unless an optional side test (D227K/T228A) curbs viral-reactive killer T cells without weakening regulatory CD8+ T cells. A written proposal: its full Design X cassette is not built yet. Not scored or tested.',
     },
     {
       art: 'line',

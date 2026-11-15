@@ -501,8 +501,13 @@ const layerFiles = {
   patient: 'layer5_personalized_patient_and_crispr_atlas.json',
 };
 for (const [layer, file] of Object.entries(layerFiles)) put(`layers/${layer}.json`, readJson(`data/extracted/${file}`), { pretty: false });
-const fastaName = fs.readdirSync(path.join(opts.export, 'data', 'constructs')).find((f) => f.endsWith('.fasta'));
+const fastaFiles = fs
+  .readdirSync(path.join(opts.export, 'data', 'constructs'))
+  .filter((f) => f.endsWith('.fasta'))
+  .sort();
+const fastaName = fastaFiles.find((f) => f.includes('scenario_a_constructs')) ?? fastaFiles[0];
 if (fastaName) put('constructs/constructs.fasta', readExport(`data/constructs/${fastaName}`));
+for (const f of fastaFiles) put(`constructs/${f}`, readExport(`data/constructs/${f}`));
 
 // ---------------------------------------------------------------------------------------------------------------
 // The blueprint in plain English

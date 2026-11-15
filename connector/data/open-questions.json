@@ -3,7 +3,7 @@
     "id": "OQ-001",
     "title": "Is there enough CD47 and HLA-E on the cells in the first hours?",
     "plain": "Two signals tell the immune system's natural killer cells and macrophages to leave the new cells alone. If the cells carry too little of either signal in the first hours, those attackers can destroy them before the other protections matter.",
-    "detail": "In Design A (Arm 1B), an internal EEF1A1 promoter drives CD47 constitutively (238,004 molecules per cell computational prior; Stage-0 gate at least 200,000) and an internal 5xISRE promoter drives HLA-E (release gate at least 15,000 molecules per cell, while the proposed Design X signal aims for 25,000; 10,890 computational resting prior). Endogenous B2M read-through is not credited as productive HLA-E expression, and resting surface density on stage 7 beta cells and endothelial cells is unmeasured (rule GY-009).",
+    "detail": "In Design A (Arm 1B), an internal EEF1A1 promoter drives CD47 constitutively (238,004 molecules per cell computational prior; Stage-0 gate at least 200,000) and an internal 5xISRE promoter drives HLA-E (release gate at least 15,000 molecules per cell, while the proposed Design X signal aims for 25,000; 10,890 computational resting prior). Endogenous B2M read-through is not credited as productive HLA-E expression, and resting surface density on stage 7 beta cells and endothelial cells is unmeasured (rule GY-009). On soluble HLA-E*01:03, none of the six functional human leader peptides in Lin 2023 reaches a 4.0-fold NKG2C-over-NKG2A affinity gap on its own (kept separate from older HLA-E*01:01 monomer assays such as Valés-Gómez 1999), while VMAPRTLFL acts as a tight activating NKG2C control (Lauterbach 2015), so IIP-0016 adds a 20-construct Stage-0 HLA-E comparator panel gated on paired resting and 24-h IFN-gamma NK subset, UL40 CD8+ T-cell and regulatory T-cell assays.",
     "tests": [
       "3",
       "2A"
@@ -21,10 +21,12 @@
       "37820008",
       "30778232",
       "28504668",
-      "37264229"
+      "37264229",
+      "26382247",
+      "10428963"
     ],
-    "settle": "Count CD47 and HLA-E molecules on the surface of edited cells at hour zero with calibrated flow cytometry (the rule names QuantiBRITE beads), and compare with the target.",
-    "source": "Concise specification section 9; rule GY-009",
+    "settle": "Count CD47 and HLA-E molecules on the surface of edited cells at hour zero with calibrated flow cytometry (QuantiBRITE beads), and run the 20-construct Stage-0 HLA-E comparator panel across paired resting and 24-h IFN-gamma sorted NKG2A+/NKG2C- and adaptive NKG2C+/NKG2A- NK cells, UL40-reactive CD8+ T cells and regulatory CD8+ T cells.",
+    "source": "Concise specification sections 4.1 and 9; rule GY-009; IIP-0016",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -455,7 +457,7 @@
     "id": "OQ-019",
     "title": "Do the core gene insertions leave nearby genes and splicing intact, and does shed PD-L1 act in the liquid around the graft?",
     "plain": "Inserting protective genes at B2M, CXCL10 and AAVS1 or switching off CIITA could accidentally disturb nearby genes, splice in either direction into surrounding host exons, form repeated hairpins in AAV6 templates, or lose promoter activity over time. At CXCL10, enzymes can also clip PD-L1 off the cell surface into the surrounding liquid, where its effect on immune cells is unknown.",
-    "detail": "Raised in IIP-0005, IIP-0011 and IIP-0015. Sequence, two-strand splice-motif and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation and tests a silent HLA-E stop-seam comparator at B2M against splicing into B2M exon 2 (32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene and clonal UMI junction sequencing (at least 3,700 UMIs) across Loci 1, 3 and 4, and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283).",
+    "detail": "Raised in IIP-0005, IIP-0011, IIP-0015 and IIP-0016. Sequence, two-strand splice-motif and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation, ships a 20-construct two-strand splice-hardened HLA-E comparator panel at B2M (0 created splice donors or new acceptor coordinates, alongside the silent stop-seam check against splicing into B2M exon 2's 32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene, 5'/3'-RACE and clonal UMI junction sequencing (at least 3,700 UMIs) across Loci 1, 3 and 4, and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283).",
     "tests": [
       "2A",
       "2B",
@@ -475,10 +477,11 @@
       "34407395",
       "22696657",
       "28462820",
-      "32053646"
+      "32053646",
+      "37264229"
     ],
-    "settle": "Run calibrated host-context minigene assays, clonal UMI splice-junction sequencing (at least 3,700 UMIs), host-mRNA equivalence checks and bisulfite methylation assays across resting and inflamed edited islets alongside the one-factor-at-a-time Stage-0 comparators, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
-    "source": "Concise specification sections 4.1 to 4.4, 6 and 9; IIP-0005, IIP-0011 and IIP-0015",
+    "settle": "Run calibrated host-context minigene assays, 5'/3'-RACE, clonal UMI splice-junction sequencing (at least 3,700 UMIs), host-mRNA equivalence checks and bisulfite methylation assays across resting and inflamed edited islets alongside the one-factor-at-a-time Stage-0 comparators, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
+    "source": "Concise specification sections 4.1 to 4.4, 6 and 9; IIP-0005, IIP-0011, IIP-0015 and IIP-0016",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

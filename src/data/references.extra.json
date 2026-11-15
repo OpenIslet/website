@@ -313,5 +313,31 @@
     "journal": "Mol Ther",
     "year": 2017,
     "doi": "10.1016/j.ymthe.2017.03.028"
+  },
+  "26382247": {
+    "title": "HLA-E regulates NKG2C+ natural killer cell function through presentation of a restricted peptide repertoire.",
+    "authors": [
+      "Lauterbach N",
+      "Wieten L",
+      "Popeijus HE",
+      "Voorter CE",
+      "Tilanus MG"
+    ],
+    "journal": "Hum Immunol",
+    "year": 2015,
+    "doi": "10.1016/j.humimm.2015.09.003"
+  },
+  "10428963": {
+    "title": "Kinetics and peptide dependency of the binding of the inhibitory NK receptor CD94/NKG2-A and the activating receptor CD94/NKG2-C to HLA-E.",
+    "authors": [
+      "Valés-Gómez M",
+      "Reyburn HT",
+      "Erskine RA",
+      "López-Botet M",
+      "Strominger JL"
+    ],
+    "journal": "EMBO J",
+    "year": 1999,
+    "doi": "10.1093/emboj/18.15.4250"
   }
 }

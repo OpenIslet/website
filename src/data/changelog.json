@@ -1,6 +1,27 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-15",
+    "title": "HLA-E NKG2A/NKG2C selectivity reconciliation and 20-construct Stage-0 comparator panel",
+    "summary": "Reconciles soluble HLA-E*01:03 leader-peptide affinities and 13 peptide-bound crystal structures in Layer 3, registers a 20-construct splice-hardened Stage-0 HLA-E comparator panel in Layer 2, and hardens Stage-0 Switch S10 lab release gates.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Reconciled all six functional human leader peptides in Lin 2023 (PMID 37264229) on soluble HLA-E*01:03 (0/6 reaching K_C/K_A >= 4.0; VMAPRTLFL acts as a tight NKG2C agonist control), separated from historical HLA-E*01:01 monomer SPR datasets (PMID 10428963, PMID 18448674) and paired with a 13-structure peptide-bound PDB audit excluding unliganded 3BDW (DEC-094, IIP-0016)."
+      },
+      {
+        "kind": "added",
+        "text": "A 20-construct Mode-B Stage-0 Locus-1 HLA-E comparator panel (10 arms across Embodiment A* 4,143 bp and Arm 1B 3,974 bp) with two-strand CTC/CTT splice hardening (0 created splice donors or new acceptor coordinates) while keeping all canonical Scenario-A FASTAs unchanged."
+      },
+      {
+        "kind": "changed",
+        "text": "Hardened the executable Stage-0 Switch S10 contract (C1–C4): unmeasured extended NK inputs stay marked unmeasured, one-sided 95% confidence bounds govern adaptive NK lysis, calibration controls (VMAPRTLFL, Hsp60 QMRPVSRVL) are hard-blocked from promotion, and challenger advancement requires paired resting and 24-h IFN-gamma sorted NK subset, UL40 CD8+ CTL, regulatory T-cell and 5′/3′-RACE clearance."
+      }
+    ],
+    "contribution": "IIP-0016"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-14",
     "title": "Two-strand RNA splicing checks and Stage-0 donor comparators",
     "summary": "Adds a reproducible two-strand RNA-splicing and DNA-repeat scanner across the inserted donor sequences, registers shielded Stage-0 challenger comparators for Loci 1, 3 and 4, and enforces calibrated RNA recovery and host-gene boundary gates.",

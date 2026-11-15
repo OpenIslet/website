@@ -84,8 +84,12 @@ await copyFrom(publicBundleDir, 'data/graveyard/idea_graveyard_v0.5.json', join(
 console.log('staged the Idea Graveyard rules');
 
 const assets = await readJson(join(root, 'src/data/assets.json'));
+const extraConstructDownloads = (manifest.public_export_file_inventory ?? []).filter(
+  (p) => p.startsWith('data/constructs/') && p.endsWith('.fasta'),
+);
 const extraLayerDownloads = [
   'data/constructs/islet1_scenario_a_constructs_v0.7.0.fasta',
+  ...extraConstructDownloads,
   'data/extracted/layer1_context_evidence_graph_atlas.json',
   'data/extracted/layer2_regulatory_and_perturbation_atlas.json',
   'data/extracted/layer3_structural_verification_atlas.json',

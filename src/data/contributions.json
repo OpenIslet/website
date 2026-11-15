@@ -8,7 +8,15 @@
     "status": "merged",
     "version": "v0.8.0",
     "founding": true,
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "Gemini 4 Argon (high)",
       "ChatGPT 6 Astra (max & ultracode)",
@@ -29,9 +37,25 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "MarissaFamularo", "kind": "person", "github": "MarissaFamularo", "name": "Marissa Famularo", "orcid": "0009-0001-8032-2215", "x": "MarissaFamularo", "verified": { "github": true, "orcid": false } },
-    "models": ["ChatGPT, GPT-6 Astra Pro"],
-    "outcome": { "kind": "evidence", "note": "The blueprint now tests late-forming blood vessels and weaker oxygen delivery together, under both ways the cells release oxygen, and publishes the whole grid, so it shows where the oxygen margin runs out." }
+    "contributor": {
+      "handle": "MarissaFamularo",
+      "kind": "person",
+      "github": "MarissaFamularo",
+      "name": "Marissa Famularo",
+      "orcid": "0009-0001-8032-2215",
+      "x": "MarissaFamularo",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "ChatGPT, GPT-6 Astra Pro"
+    ],
+    "outcome": {
+      "kind": "evidence",
+      "note": "The blueprint now tests late-forming blood vessels and weaker oxygen delivery together, under both ways the cells release oxygen, and publishes the whole grid, so it shows where the oxygen margin runs out."
+    }
   },
   {
     "id": "IIP-0003",
@@ -42,9 +66,25 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "ljschumacher", "kind": "person", "github": "ljschumacher", "name": "Linus Schumacher", "orcid": "0000-0003-0797-3406", "x": "LinusSchumacher", "verified": { "github": true, "orcid": true } },
-    "models": ["Claude Opus 5"],
-    "outcome": { "kind": "changed_blueprint", "note": "The odds now define each step as a design still in the running clearing the next hurdle, give the reason for each hurdle's three-design figure, and name the lab checks that sit outside the four hurdles, so they cannot be read as the chance of a cure." }
+    "contributor": {
+      "handle": "ljschumacher",
+      "kind": "person",
+      "github": "ljschumacher",
+      "name": "Linus Schumacher",
+      "orcid": "0000-0003-0797-3406",
+      "x": "LinusSchumacher",
+      "verified": {
+        "github": true,
+        "orcid": true
+      }
+    },
+    "models": [
+      "Claude Opus 5"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The odds now define each step as a design still in the running clearing the next hurdle, give the reason for each hurdle's three-design figure, and name the lab checks that sit outside the four hurdles, so they cannot be read as the chance of a cure."
+    }
   },
   {
     "id": "IIP-0004",
@@ -55,7 +95,15 @@
     "type": "Missing evidence",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "Claude 5.5 Sonnet (max)",
       "Muse Wonder Full (max)",
@@ -64,7 +112,10 @@
       "Kimi K3.1 Pro",
       "Gemini 4 Argon (high)"
     ],
-    "outcome": { "kind": "evidence", "note": "The blueprint now tests whether the cells that survive the 14-day low-oxygen window after transplant still release insulin and glucagon normally during and after recovery, separating lost cells from weakened ones before counting the working dose." }
+    "outcome": {
+      "kind": "evidence",
+      "note": "The blueprint now tests whether the cells that survive the 14-day low-oxygen window after transplant still release insulin and glucagon normally during and after recovery, separating lost cells from weakened ones before counting the working dose."
+    }
   },
   {
     "id": "IIP-0005",
@@ -75,7 +126,15 @@
     "type": "Missing evidence",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "Claude 5.5 Sonnet (max)",
       "Muse Wonder Full (max)",
@@ -84,7 +143,10 @@
       "Kimi K3.1 Pro",
       "Gemini 4 Argon (high)"
     ],
-    "outcome": { "kind": "evidence", "note": "The blueprint now adds a controlled lab check of whether liquid collected from around the engineered islet cells can calm a separate immune response on its own, alongside the existing tests of how much protective protein stays on the cells and how much is shed into the liquid." }
+    "outcome": {
+      "kind": "evidence",
+      "note": "The blueprint now adds a controlled lab check of whether liquid collected from around the engineered islet cells can calm a separate immune response on its own, alongside the existing tests of how much protective protein stays on the cells and how much is shed into the liquid."
+    }
   },
   {
     "id": "IIP-0006",
@@ -95,7 +157,15 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "Claude 5.5 Sonnet (max)",
       "Muse Wonder Full (max)",
@@ -104,7 +174,10 @@
       "Kimi K3.1 Pro",
       "Gemini 4 Argon (high)"
     ],
-    "outcome": { "kind": "evidence", "note": "The blueprint now adds a staged lab comparison of a few in-between cell mixes against the current 60:30:10 recipe, to see whether a slightly bigger share of insulin-making cells could mean fewer cells are needed, without weakening the other islet cells' protection against low blood sugar. The 60:30:10 recipe stays unless new measurements justify a change." }
+    "outcome": {
+      "kind": "evidence",
+      "note": "The blueprint now adds a staged lab comparison of a few in-between cell mixes against the current 60:30:10 recipe, to see whether a slightly bigger share of insulin-making cells could mean fewer cells are needed, without weakening the other islet cells' protection against low blood sugar. The 60:30:10 recipe stays unless new measurements justify a change."
+    }
   },
   {
     "id": "IIP-0007",
@@ -115,9 +188,23 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "kmorris-islet", "kind": "person", "github": "kmorris-islet", "name": "K Morris", "verified": { "github": true, "orcid": false } },
-    "models": ["GPT-6 Astra"],
-    "outcome": { "kind": "open_question", "note": "Adds open question OQ-017 and a Stage-1 note beside Readout 3 asking whether a combined human immune and islet co-culture can catch cross-talk between immune cell types that split Stage-0 tests miss, once donor-mismatch background and cluster recovery from the gel are qualified." }
+    "contributor": {
+      "handle": "kmorris-islet",
+      "kind": "person",
+      "github": "kmorris-islet",
+      "name": "K Morris",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "GPT-6 Astra"
+    ],
+    "outcome": {
+      "kind": "open_question",
+      "note": "Adds open question OQ-017 and a Stage-1 note beside Readout 3 asking whether a combined human immune and islet co-culture can catch cross-talk between immune cell types that split Stage-0 tests miss, once donor-mismatch background and cluster recovery from the gel are qualified."
+    }
   },
   {
     "id": "IIP-0008",
@@ -128,9 +215,23 @@
     "type": "Problem found",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
-    "models": ["Claude Opus 5"],
-    "outcome": { "kind": "changed_blueprint", "note": "Reclassifies Xu 2024 from stem-cell islets to its actual non-islet immune, blood-stem-cell and endothelial models (nudging Design A's overall score from 0.1085 to 0.1084), removes Xu 2024 from Idea Graveyard rule GY-009, and separates Hu 2023's primary human islet CD47 threshold arm from its engineered stem-cell islet counts." }
+    "contributor": {
+      "handle": "frafra013",
+      "kind": "person",
+      "github": "frafra013",
+      "name": "giufra",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Claude Opus 5"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "Reclassifies Xu 2024 from stem-cell islets to its actual non-islet immune, blood-stem-cell and endothelial models (nudging Design A's overall score from 0.1085 to 0.1084), removes Xu 2024 from Idea Graveyard rule GY-009, and separates Hu 2023's primary human islet CD47 threshold arm from its engineered stem-cell islet counts."
+    }
   },
   {
     "id": "IIP-0009",
@@ -141,9 +242,23 @@
     "type": "Problem found",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
-    "models": ["Claude Opus 5"],
-    "outcome": { "kind": "changed_blueprint", "note": "Maps each blueprint table, tissue simulation and open question explicitly to either the scored Design X grid comparison (Design A plus one insulin-gene base edit on the 119 µm oxygen layer) or the unscored Stage-0 Design X upgrade bundle (100 µm oxygen layer and outer-ring Fas-ligand gel), and widens OQ-015 across Designs A, B and X." }
+    "contributor": {
+      "handle": "frafra013",
+      "kind": "person",
+      "github": "frafra013",
+      "name": "giufra",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Claude Opus 5"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "Maps each blueprint table, tissue simulation and open question explicitly to either the scored Design X grid comparison (Design A plus one insulin-gene base edit on the 119 µm oxygen layer) or the unscored Stage-0 Design X upgrade bundle (100 µm oxygen layer and outer-ring Fas-ligand gel), and widens OQ-015 across Designs A, B and X."
+    }
   },
   {
     "id": "IIP-0010",
@@ -154,9 +269,23 @@
     "type": "Problem found",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
-    "models": ["Claude Opus 5"],
-    "outcome": { "kind": "changed_blueprint", "note": "Reclassifies the 68-hour oxygen-release half-life as an unvalidated per-recipe target rather than a fixed material constant, publishes an 84-run sensitivity sweep showing the safe half-life window for both the 31.25 wt% and 46.39 wt% peroxide recipes, and requires Stage-0 particle-size and release-rate measurements for each recipe." }
+    "contributor": {
+      "handle": "frafra013",
+      "kind": "person",
+      "github": "frafra013",
+      "name": "giufra",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Claude Opus 5"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "Reclassifies the 68-hour oxygen-release half-life as an unvalidated per-recipe target rather than a fixed material constant, publishes an 84-run sensitivity sweep showing the safe half-life window for both the 31.25 wt% and 46.39 wt% peroxide recipes, and requires Stage-0 particle-size and release-rate measurements for each recipe."
+    }
   },
   {
     "id": "IIP-0011",
@@ -167,7 +296,15 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "AlphaGenome 2",
       "Gemini 4 Argon (high)",
@@ -175,7 +312,10 @@
       "ChatGPT 6 Astra (max)",
       "ChatGPT 6.1 Sol (max)"
     ],
-    "outcome": { "kind": "changed_blueprint", "note": "The blueprint now checks nearby genes, host-gene splicing and anti-silencing switches around its core DNA edits, holds off deleting the zinc transporter ZnT8 until stem-cell yield and insulin output are proved, audits three crystal structures of the safety switch, and tests how a naturally protective TYK2 donor cell line affects the 10,000-patient simulation." }
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now checks nearby genes, host-gene splicing and anti-silencing switches around its core DNA edits, holds off deleting the zinc transporter ZnT8 until stem-cell yield and insulin output are proved, audits three crystal structures of the safety switch, and tests how a naturally protective TYK2 donor cell line affects the 10,000-patient simulation."
+    }
   },
   {
     "id": "IIP-0012",
@@ -186,7 +326,15 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "AlphaGenome 2",
       "Gemini 4 Argon (high)",
@@ -194,7 +342,10 @@
       "ChatGPT 6 Astra (max)",
       "ChatGPT 6.1 Sol (max)"
     ],
-    "outcome": { "kind": "changed_blueprint", "note": "The Stage-0 lab contract now tests never-treated, gel-depleted and active grafts side by side once immune-calming gel proteins wear off, checks added CD55 on the exact same edited graft without disturbing endogenous CD59 insulin release, and holds four candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) outside core designs behind strict pass rules." }
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The Stage-0 lab contract now tests never-treated, gel-depleted and active grafts side by side once immune-calming gel proteins wear off, checks added CD55 on the exact same edited graft without disturbing endogenous CD59 insulin release, and holds four candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) outside core designs behind strict pass rules."
+    }
   },
   {
     "id": "IIP-0013",
@@ -205,9 +356,23 @@
     "type": "Problem found",
     "status": "declined",
     "version": "v0.8.0",
-    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
-    "models": ["Claude Fable 5.1"],
-    "outcome": { "kind": "not_taken_up", "note": "The plan already includes local thrombomodulin and whole-blood clotting and complement checks; the cited studies do not establish added benefit from a permanent THBD gene edit or justify changing Test 3 scoring, and the planned graft still needs lab validation." }
+    "contributor": {
+      "handle": "frafra013",
+      "kind": "person",
+      "github": "frafra013",
+      "name": "giufra",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Claude Fable 5.1"
+    ],
+    "outcome": {
+      "kind": "not_taken_up",
+      "note": "The plan already includes local thrombomodulin and whole-blood clotting and complement checks; the cited studies do not establish added benefit from a permanent THBD gene edit or justify changing Test 3 scoring, and the planned graft still needs lab validation."
+    }
   },
   {
     "id": "IIP-0014",
@@ -218,9 +383,25 @@
     "type": "Improvement",
     "status": "declined",
     "version": "v0.8.0",
-    "contributor": { "handle": "frafra013", "kind": "person", "github": "frafra013", "name": "giufra", "verified": { "github": true, "orcid": false } },
-    "models": ["Grok 4.6 (Heavy)", "Grok 4.6 (thorough)"],
-    "outcome": { "kind": "already_covered", "note": "IIP-0010 already requires testing each oxygen-bead recipe in its implanted form for particle size and oxygen release, alongside peroxide checks and IIP-0004 hormone-function tests; these lab measurements remain to be run.", "same_as": "IIP-0010" }
+    "contributor": {
+      "handle": "frafra013",
+      "kind": "person",
+      "github": "frafra013",
+      "name": "giufra",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Grok 4.6 (Heavy)",
+      "Grok 4.6 (thorough)"
+    ],
+    "outcome": {
+      "kind": "already_covered",
+      "note": "IIP-0010 already requires testing each oxygen-bead recipe in its implanted form for particle size and oxygen release, alongside peroxide checks and IIP-0004 hormone-function tests; these lab measurements remain to be run.",
+      "same_as": "IIP-0010"
+    }
   },
   {
     "id": "IIP-0015",
@@ -231,7 +412,15 @@
     "type": "Improvement",
     "status": "merged",
     "version": "v0.8.0",
-    "contributor": { "handle": "agent-kev", "kind": "person", "github": "agent-kev", "verified": { "github": false, "orcid": false } },
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
     "models": [
       "AlphaGenome 2",
       "Gemini 4 Carbon (high)",
@@ -240,6 +429,40 @@
       "Claude 5.5 Sonnet (max)",
       "ChatGPT-6.1 Sol (Ultra)"
     ],
-    "outcome": { "kind": "changed_blueprint", "note": "The blueprint now scans inserted DNA in both directions for unintended RNA splicing and repeated sequences, registers synthesis-ready one-change-at-a-time Stage-0 challenger sequences alongside the untouched reference donors across Loci 1, 3 and 4, and requires calibrated RNA recovery, host-gene 3′-end and orientation controls before any sequence change advances." }
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now scans inserted DNA in both directions for unintended RNA splicing and repeated sequences, registers synthesis-ready one-change-at-a-time Stage-0 challenger sequences alongside the untouched reference donors across Loci 1, 3 and 4, and requires calibrated RNA recovery, host-gene 3′-end and orientation controls before any sequence change advances."
+    }
+  },
+  {
+    "id": "IIP-0016",
+    "date": "2026-11-15",
+    "decided": "2026-11-15",
+    "title": "Reconcile HLA-E*01:03 NKG2A/NKG2C selectivity audit and register 20-construct Mode-B S10 comparator panel",
+    "summary": "Reconciles the six human leader-peptide affinities on HLA-E*01:03, registers 20 two-strand splice-hardened Stage-0 HLA-E comparator sequences alongside the untouched reference DNA, and tightens the adaptive natural-killer and T-cell lab gates.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now reconciles all six human leader peptides in Lin 2023 on HLA-E*01:03 (0/6 reaching the static 4.0× NKG2C/NKG2A ratio, kept separate from HLA-E*01:01 monomer datasets), ships a 20-construct two-strand splice-hardened Stage-0 HLA-E comparator FASTA alongside the untouched reference designs, and binds Stage-0 Switch S10 to paired NK subset, UL40 T-cell and Treg lab gates."
+    }
   }
 ]

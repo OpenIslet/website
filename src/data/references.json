@@ -1,4 +1,18 @@
 {
+  "10428963": {
+    "pmid": "10428963",
+    "title": "Kinetics and peptide dependency of the binding of the inhibitory NK receptor CD94/NKG2-A and the activating receptor CD94/NKG2-C to HLA-E.",
+    "authors": [
+      "Valés-Gómez M",
+      "Reyburn HT",
+      "Erskine RA",
+      "López-Botet M",
+      "Strominger JL"
+    ],
+    "journal": "EMBO J",
+    "year": 1999,
+    "doi": "10.1093/emboj/18.15.4250"
+  },
   "22371586": {
     "pmid": "22371586",
     "title": "Preventing hypoxia-induced cell death in beta cells and islets via hydrolytically activated, oxygen-generating biomaterials.",
@@ -34,6 +48,20 @@
     "journal": "J Virol",
     "year": 2012,
     "doi": "10.1128/JVI.00485-12"
+  },
+  "26382247": {
+    "pmid": "26382247",
+    "title": "HLA-E regulates NKG2C+ natural killer cell function through presentation of a restricted peptide repertoire.",
+    "authors": [
+      "Lauterbach N",
+      "Wieten L",
+      "Popeijus HE",
+      "Voorter CE",
+      "Tilanus MG"
+    ],
+    "journal": "Hum Immunol",
+    "year": 2015,
+    "doi": "10.1016/j.humimm.2015.09.003"
   },
   "27626039": {
     "pmid": "27626039",
