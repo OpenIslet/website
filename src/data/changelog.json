@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-15",
+    "title": "Layer-4 explicit-3D clumping, microbead-H2O2 barrier and Design-Z micro-optode gates",
+    "summary": "Adds a Gate-3D-V-verified explicit-3D finite-volume reaction-diffusion audit in Layer 4 quantifying lateral SC-islet clumping, discrete edge-bead peroxide hotspots and 140 µm bead-free pre-vascularized boundary thresholds, and binds Stage-0 Rule S6, Gate P05 and Design Z promotion to fail-closed physical qualification gates.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A Gate-3D-V-verified pure-NumPy 3D finite-volume reaction-diffusion audit in Layer 4 (reconciled against both optimistic Dirichlet and coupled Wigner–Seitz spherical closures), quantifying 40.0–60.0% unpatterned 100 µm cluster hypoxia across 160 random-sequential-adsorption clusters at 1,500 IEQ/cm² under 15 µm physical collagen (45 µm hydrogel-equivalent standoff) versus ordered microwells and dose-matched 80 µm spacing at 142.22/152.83 µm pitch (PMID 35241836; DEC-097, IIP-0019)."
+      },
+      {
+        "kind": "added",
+        "text": "A discrete-microbead 3D H2O2 plume and cross-section audit (791.5 mg conserved CaO2 inventory) showing uncoated edge-touching beads reach 6.88–19.49 µM and qualifying wet-sieved d_99 <= 50 µm beads paired with >= 20 µm cell-free catalase-immobilized barrier films (~105,429 IU post-cure active load on 333.3 cm² to retain 73,800 IU at >= 70% 7-day retention and hold 24-h burst to 1.13 µM <= 2.5 µM across expanded 390 µm or 350 µm geometries while preserving full 336-h Gate P05; PMID 8720919, PMID 27729543, PMID 36971050)."
+      },
+      {
+        "kind": "added",
+        "text": "Fourteen synchronized Stage-0 wet-lab endpoints, three unpooled metadata keys and five persisted boolean flags enforcing dose-matched S6 spacing, Gate P05 barrier-film peroxide/washout clearance, and two-stage Design Z qualification (5-site 14-day empty-lumen micro-optode thresholds plus loaded closed-state pO2, pimonidazole/injury and perifusion GSIS SI >= 3.0 confirmation; PMID 38993891, PMID 25893782, PMID 37476069)."
+      }
+    ],
+    "contribution": "IIP-0019"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-15",
     "title": "Locus-3 Multi-miR(IL1R1+FAS) 6-arm Stage-0 challenger suite and zero-bystander CBE stop comparators",
     "summary": "Registers a 6-arm two-strand splice- and seed-hardened Locus-3 intronic Multi-miR(IL1R1 + FAS) Stage-0 challenger FASTA and seven standalone GRCh38 zero-bystander FAS/IL1R1 base-editor stop comparators in Layer 2, reconciles IL-1R1/IL-1RAcP and FasL/DcR3 compartment geometry in Layer 3, and binds promotion to fail-closed Stage-0 RNA, AGO2, GSIS and iCasp9 gates.",
     "changes": [

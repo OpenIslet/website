@@ -337,10 +337,10 @@ export const scenarios: Scenario[] = [...named, designX];
 
 export const niche = [
   { k: 'Cell mix', v: '60% beta, 30% alpha, 10% delta by default; higher-beta mixes (70:20:10 to 80:10:10) are compared in Stage 0 and replace it only if fresh batches confirm insulin shut-off and low-sugar glucagon rescue' },
-  { k: 'Cluster size', v: '120 µm or less in the baseline model (capped at 100 µm in the thinner-core Stage-0 designs)' },
+  { k: 'Cluster size', v: '120 µm or less in the baseline model (capped at 100 µm in the thinner-core Stage-0 designs, with Stage-0 microwell spacing and dose-matched 80 µm comparisons against 3D cluster crowding)' },
   { k: 'Blood vessels', v: 'Proposed stem-cell-derived blood-vessel fragments; tested in the model across late-connecting and weaker vessels alongside a zero-vessel lower bound, and unmeasured in a graft' },
-  { k: 'Early oxygen support', v: 'Proposed silicone-peroxide layer with catalase; an 84-run sweep shows narrow passing windows, so each recipe’s particle size, release law and half-life, plus insulin and glucagon recovery after the 14-day low-oxygen window, must be measured' },
-  { k: 'Layer thickness', v: '350 µm total thickness (central oxygen layer about 119 µm in the scored baseline, thinned to 100 µm in Stage-0 proposals); a safe dose, area and oxygen margin remain unvalidated' },
+  { k: 'Early oxygen support', v: 'Proposed silicone-peroxide layer with catalase; Stage-0 tests measure each recipe’s wet-sieved bead size, release law, half-life, 20 µm catalase barrier films against local peroxide plumes, and hormone recovery after the 14-day low-oxygen window' },
+  { k: 'Layer thickness', v: '350 µm total thickness (central oxygen layer about 119 µm in the scored baseline, thinned to 100 µm in Stage-0 proposals, with 390 µm or 2 × 105 µm outer-band barrier-film geometries and a 140 µm bead-free pre-vascularized comparator tested in Stage 0); a safe dose, area and oxygen margin remain unvalidated' },
   { k: 'Gel particles', v: 'Temporary clotting-control and Fas-ligand gel particles (outer boundary ring in the Stage-0 Design X proposal); Stage-0 tests check beta-cell safety, immune rebound once the gel washes out, and an optional CD55 complement shield' },
 ];
 

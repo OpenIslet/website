@@ -1,4 +1,16 @@
 {
+  "8720919": {
+    "pmid": "8720919",
+    "title": "Low antioxidant enzyme gene expression in pancreatic islets compared with various other mouse tissues.",
+    "authors": [
+      "Lenzen S",
+      "Drinkgern J",
+      "Tiedge M"
+    ],
+    "journal": "Free Radic Biol Med",
+    "year": 1996,
+    "doi": "10.1016/0891-5849(96)02051-5"
+  },
   "10428963": {
     "pmid": "10428963",
     "title": "Kinetics and peptide dependency of the binding of the inhibitory NK receptor CD94/NKG2-A and the activating receptor CD94/NKG2-C to HLA-E.",
@@ -49,6 +61,17 @@
     "journal": "Nature",
     "year": 2011,
     "doi": "10.1038/nature09857"
+  },
+  "21788581": {
+    "pmid": "21788581",
+    "title": "A low-oxygenated subpopulation of pancreatic islets constitutes a functional reserve of endocrine cells.",
+    "authors": [
+      "Olsson R",
+      "Carlsson PO"
+    ],
+    "journal": "Diabetes",
+    "year": 2011,
+    "doi": "10.2337/db09-0877"
   },
   "22371586": {
     "pmid": "22371586",
@@ -114,6 +137,19 @@
     "year": 2013,
     "doi": "10.1038/gt.2013.25"
   },
+  "24065585": {
+    "pmid": "24065585",
+    "title": "Variation in diffusion of gases through PDMS due to plasma surface treatment and storage conditions.",
+    "authors": [
+      "Markov DA",
+      "Lillie EM",
+      "Garbett SP",
+      "McCawley LJ"
+    ],
+    "journal": "Biomed Microdevices",
+    "year": 2014,
+    "doi": "10.1007/s10544-013-9808-2"
+  },
   "24332856": {
     "pmid": "24332856",
     "title": "An optimized microRNA backbone for effective single-copy RNAi.",
@@ -152,6 +188,21 @@
     "year": 2014,
     "doi": "10.4049/jimmunol.1401689"
   },
+  "25893782": {
+    "pmid": "25893782",
+    "title": "A prevascularized subcutaneous device-less site for islet and cellular transplantation.",
+    "authors": [
+      "Pepper AR",
+      "Gala-Lopez B",
+      "Pawlick R",
+      "Merani S",
+      "Kin T",
+      "Shapiro AM"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2015,
+    "doi": "10.1038/nbt.3211"
+  },
   "26382247": {
     "pmid": "26382247",
     "title": "HLA-E regulates NKG2C+ natural killer cell function through presentation of a restricted peptide repertoire.",
@@ -173,6 +224,24 @@
     "journal": "Molecular therapy. Methods & clinical development",
     "year": 2016,
     "doi": "10.1038/mtm.2016.3"
+  },
+  "27729543": {
+    "pmid": "27729543",
+    "title": "Real-time imaging of intracellular hydrogen peroxide in pancreatic islets.",
+    "authors": [
+      "Neal A",
+      "Rountree A",
+      "Kernan K",
+      "Van Yserloo B",
+      "Zhang H",
+      "Reed BJ",
+      "Osborne W",
+      "Wang W",
+      "Sweet IR"
+    ],
+    "journal": "Biochem J",
+    "year": 2016,
+    "doi": "10.1042/BCJ20160481"
   },
   "27807284": {
     "pmid": "27807284",
@@ -521,6 +590,40 @@
     "year": 2021,
     "doi": "10.1016/j.stem.2021.08.001"
   },
+  "35241836": {
+    "pmid": "35241836",
+    "title": "Functional, metabolic and transcriptional maturation of human pancreatic islets derived from stem cells.",
+    "authors": [
+      "Balboa D",
+      "Barsby T",
+      "Lithovius V",
+      "Saarimäki-Vire J",
+      "Omar-Hmeadi M",
+      "Dyachok O",
+      "Montaser H",
+      "Lund PE",
+      "Yang M",
+      "Ibrahim H",
+      "Näätänen A",
+      "Chandra V",
+      "Vihinen H",
+      "Jokitalo E",
+      "Kvist J",
+      "Ustinov J",
+      "Nieminen AI",
+      "Kuuluvainen E",
+      "Hietakangas V",
+      "Katajisto P",
+      "Lau J",
+      "Carlsson PO",
+      "Barg S",
+      "Tengholm A",
+      "Otonkoski T"
+    ],
+    "journal": "Nature biotechnology",
+    "year": 2022,
+    "doi": "10.1038/s41587-022-01219-z"
+  },
   "35559682": {
     "pmid": "35559682",
     "title": "FasL microgels induce immune acceptance of islet allografts in nonhuman primates.",
@@ -704,6 +807,23 @@
     "year": 2023,
     "doi": "10.1038/s41590-023-01523-z"
   },
+  "37476069": {
+    "pmid": "37476069",
+    "title": "Replenishable prevascularized cell encapsulation devices increase graft survival and function in the subcutaneous space.",
+    "authors": [
+      "Chendke GS",
+      "Kharbikar BN",
+      "Ashe S",
+      "Faleo G",
+      "Sneddon JB",
+      "Tang Q",
+      "Hebrok M",
+      "Desai TA"
+    ],
+    "journal": "Bioeng Transl Med",
+    "year": 2023,
+    "doi": "10.1002/btm2.10520"
+  },
   "37733863": {
     "pmid": "37733863",
     "title": "Accurate proteome-wide missense variant effect prediction with AlphaMissense.",
@@ -799,6 +919,29 @@
     "journal": "Molecular therapy : the journal of the American Society of Gene Therapy",
     "year": 2024,
     "doi": "10.1016/j.ymthe.2024.06.014"
+  },
+  "38993891": {
+    "pmid": "38993891",
+    "title": "Hypoxia within subcutaneously implanted macroencapsulation devices limits the viability and functionality of densely loaded islets.",
+    "authors": [
+      "Einstein SA",
+      "Steyn LV",
+      "Weegman BP",
+      "Suszynski TM",
+      "Sambanis A",
+      "O'Brien TD",
+      "Avgoustiniatos ES",
+      "Firpo MT",
+      "Graham ML",
+      "Janecek J",
+      "Eberly LE",
+      "Garwood M",
+      "Putnam CW",
+      "Papas KK"
+    ],
+    "journal": "Front Transplant",
+    "year": 2023,
+    "doi": "10.3389/frtra.2023.1257029"
   },
   "39169271": {
     "pmid": "39169271",

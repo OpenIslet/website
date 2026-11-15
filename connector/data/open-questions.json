@@ -115,7 +115,7 @@
     "id": "OQ-005",
     "title": "Does the oxygen supply hold up under pessimistic assumptions?",
     "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In the computer model the margin inside each cluster of cells is thin, and the model uses a single 68-hour oxygen-release half-life across recipes that pack more calcium peroxide into smaller beads. With a faster or slower release, or late blood vessels, oxygen or peroxide safety can fail.",
-    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint.",
+    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint. Resolving discrete clusters and beads in 3D (IIP-0019) adds three local transport gates: unpatterned pouring at 1,500 IEQ/cm^2 (15 um physical collagen = 45 um hydrogel-equivalent standoff) pushes 40-60% of 100 um clusters below 15 mmHg (vs ordered microwells or dose-matched 80 um clusters at 142.22/152.83 um pitch, distinct from 768 IEQ/cm^2 pitch-held derating); an uncoated edge-touching CaO2 bead creates a 6.9-19.5 uM peroxide plume requiring wet-sieved d_99 <= 50 um beads plus >= 20 um catalase barrier films (~105,429 IU post-cure active load on 333.3 cm^2 to retain 73,800 IU and hold 24-hour burst <= 2.5 uM across expanded 390 um or 350 um cross-sections); and any 140 um bead-free Design Z pouch must pass both 5-site 14-day empty-lumen micro-optode thresholds (Einstein 2023, PMID 38993891) and loaded closed-state confirmation.",
     "tests": [
       "5"
     ],
@@ -128,10 +128,18 @@
     "pmids": [
       "22371586",
       "36971050",
-      "35743287"
+      "35743287",
+      "38993891",
+      "25893782",
+      "37476069",
+      "8720919",
+      "27729543",
+      "35241836",
+      "24065585",
+      "21788581"
     ],
-    "settle": "Measure crystal and microbead size distributions, oxygen-release half-life and kinetic law for each calcium-peroxide recipe in its implanted form, and measure oxygen inside real graft slabs over the first 3 days across delayed or weak vascular ingrowth.",
-    "source": "Concise specification sections 5 and 9; IIP-0002 and IIP-0010",
+    "settle": "Measure crystal and wet-sieved microbead size distributions, oxygen-release half-life, kinetic law, >= 20 um catalase barrier-film peroxide clearance and 7-day washout retention in implanted form; compare unpatterned vs microwell-spaced 100 um and dose-matched 80 um clusters; and require both empty-lumen micro-optode and loaded closed-state oxygen and hormone confirmation over 14 days.",
+    "source": "Concise specification sections 5 and 9; IIP-0002, IIP-0010 and IIP-0019",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"

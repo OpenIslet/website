@@ -525,5 +525,36 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now ships a held 6-arm Locus-3 Multi-miR(IL1R1+FAS) synthetic-intron Stage-0 challenger FASTA (inside the 4,700-bp single-AAV6 cap, adding zero foreign peptides in primary ARM5) plus seven standalone zero-bystander FAS/IL1R1 base-editor stop comparators, retires soluble endothelial IL1R2 decoys, and gates promotion on splicing, miR-375 AGO2, GSIS and iCasp9 checks."
     }
+  },
+  {
+    "id": "IIP-0019",
+    "date": "2026-11-15",
+    "decided": "2026-11-15",
+    "title": "Add Layer-4 explicit-3D clumping, microbead-H2O2 barrier and Design-Z micro-optode gates",
+    "summary": "Adds a Gate-3D-V-verified explicit-3D tissue-transport audit quantifying lateral SC-islet clumping, discrete edge-bead peroxide plumes and 140 µm bead-free boundary thresholds in Layer 4, and enforces fail-closed Stage-0 physical qualification gates for Rule S6 spacing, Gate P05 catalase barrier films and two-stage Design Z oxygen checks.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now runs an explicit-3D Layer-4 transport audit (40–60% unpatterned 100 µm cluster hypoxia at 1,500 IEQ/cm², 6.9–19.5 µM uncoated edge-bead peroxide plumes, and dose-matched 80 µm spacing) and enforces fail-closed Stage-0 gates for microwell spacing, wet-sieved beads + >= 20 µm catalase barrier films (73,800 IU retained) and two-stage Design Z oxygen checks."
+    }
   }
 ]
