@@ -1,14 +1,16 @@
 {
-  "lastUpdated": "2026-11-05",
+  "lastUpdated": "2026-11-15",
   "gates": [
     {
       "id": "people",
       "title": "Do lab-grown islet cells work as a treatment in people?",
       "singleArmPct": 88,
+      "designBPct": 88,
+      "designXPct": 88,
       "threeArmPct": 88,
       "badge": "Shown in people",
       "badgeKind": "shown",
-      "plain": "Yes, once they survive. In Vertex’s trial, all 12 people given the full dose reached their blood-sugar targets, and 10 of the 12 no longer needed insulin injections after a year. The catch is that they all take anti-rejection drugs, which is the problem Islet-1 is designed to remove.",
+      "plain": "Yes, once they survive. In Vertex’s trial, all 12 people given the full dose reached their blood-sugar targets, and 10 of the 12 no longer needed insulin injections after a year. They all take anti-rejection drugs, which Islet-1 is designed to remove, and layering Islet-1’s extra gene edits on top still has to be checked in the lab so normal insulin and glucagon control holds.",
       "evidence": "Vertex VX-880 (zimislecel). Reichman and colleagues, New England Journal of Medicine, 2025.",
       "pmid": "40544428",
       "next": ""
@@ -17,37 +19,43 @@
       "id": "cloak",
       "title": "Does the genetic cloak stop rejection without anti-rejection drugs?",
       "singleArmPct": 78,
-      "threeArmPct": 82,
+      "designBPct": 79,
+      "designXPct": 81,
+      "threeArmPct": 87,
       "badge": "Seen in one person",
       "badgeKind": "partial",
-      "plain": "It has worked once. In one person, donor islet cells edited to hide from the immune system were left alone for more than a year, with no anti-rejection drugs. That was a small safety study with a different set of edits, so it shows the idea can work, not that Islet-1’s cloak will.",
-      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025, with longer follow-up reported since.",
+      "plain": "It has worked once: in one person, edited donor islet cells were left alone for more than a year with no anti-rejection drugs. Rather than bet all three blueprints on one identical cloak, Design A uses the standard HLA-E and CD47 cloak, Design B keeps one matched HLA-C gene checked against a 22-species foreign-peptide scan, and Design X screens a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells.",
+      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025, plus Islet-1’s HLA-E and HLA-C sequence models (IIP-0016, IIP-0017).",
       "pmid": "40757665",
-      "next": "Next: show it holds for stem-cell islets with Islet-1’s edits (Stage 1, lab testing)."
+      "next": "Next: test all three cloaks head to head on stem-cell islets (Stage 1, lab testing)."
     },
     {
       "id": "attack",
       "title": "Can the cells survive the autoimmune attack that caused the diabetes?",
-      "singleArmPct": 50,
-      "threeArmPct": 72,
+      "singleArmPct": 56,
+      "designBPct": 64,
+      "designXPct": 70,
+      "threeArmPct": 85,
       "badge": "Biggest unknown",
       "badgeKind": "unknown",
-      "plain": "This is the hardest question, and it is only partly answered. People with type 1 diabetes already carry immune cells that remember how to attack beta cells. The one person given edited donor cells (hurdle 2) has type 1 diabetes, and the cells were left alone for more than a year, which is encouraging, but it was a small graft in a muscle, not a treatment. Design A adds a shield that switches on only when inflammation appears. Designs B and X keep that shield and change other parts of the design.",
-      "evidence": "The one human result so far (Sana UP421, above) used donor islets in a small dose. Nothing yet shows this for stem-cell islets at treatment size.",
+      "plain": "This is the hardest step. People with type 1 diabetes carry immune cells that remember beta cells, plus inflammatory signals (IL-1 and Fas ligand) that can kill nearby cells even when MHC flags are hidden. Design A pairs scar-free SERPINB9 with a transient Fas-ligand gel, Design B dampens interferon signalling via a protective TYK2 variant, and Design X dials down the cell’s own IL-1 and Fas death receptors.",
+      "evidence": "Anchored to the single human autoimmune graft follow-up (Sana UP421, above) and Islet-1’s receptor-shield and TYK2 models (IIP-0012, IIP-0017, IIP-0018).",
       "pmid": "",
-      "next": "Next: the first lab tests (Stage 1, lab testing)."
+      "next": "Next: head-to-head cytokine and T-cell stress tests (Stage 1, lab testing)."
     },
     {
       "id": "oxygen",
       "title": "Does the oxygen layer keep the graft alive until blood vessels grow in?",
-      "singleArmPct": 60,
-      "threeArmPct": 72,
+      "singleArmPct": 68,
+      "designBPct": 70,
+      "designXPct": 68,
+      "threeArmPct": 79,
       "badge": "Computer model only",
       "badgeKind": "unknown",
-      "plain": "A new graft has no blood vessels at first, so the design brings its own oxygen: a layer that releases it for the first three days while pre-built vessels link up. The blueprint’s computer model of the first 14 days suggests this can work, though sensitivity runs show a narrow passing window if oxygen release shifts or blood vessels connect late, and normal insulin and glucagon recovery afterwards still has to be measured.",
-      "evidence": "From the blueprint’s own tissue model. None of its oxygen values has been measured in the lab.",
+      "plain": "A new graft has no blood vessels at first. Explicit 3D physics simulations caught two hidden hazards—cell clusters clumping together and peroxide spikes next to oxygen-releasing beads—so Designs A and X add ordered microwells, wet-sieved beads of 50 µm or less and a catalase barrier film at least 20 µm thick, while Design B tests an independent 140 µm bead-free pre-vascularized sheet with no peroxide chemistry.",
+      "evidence": "From Islet-1’s 3D finite-volume oxygen and peroxide simulations (IIP-0019). None of these values has been measured in the lab yet.",
       "pmid": "",
-      "next": "Next: blood supply and oxygen tests (Stage 2)."
+      "next": "Next: microwell, peroxide-barrier and blood-vessel tests (Stage 2)."
     }
   ]
 }

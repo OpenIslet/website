@@ -1,6 +1,6 @@
 // The "realistic chance of working" estimates on the Blueprint page (src/data/success-probability.json and
-// src/data/successProbability.ts). The percentages are the team's own estimates and are meant to be edited by hand, so these tests
-// check that the combined figures always follow from them, and that a slip in the file stops the build instead of reaching the page.
+// src/data/successProbability.ts). The percentages are the team's own computational estimates and are meant to be edited by hand, so these
+// tests check that the combined figures always follow from them, and that a slip in the file stops the build instead of reaching the page.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { build } from 'esbuild';
@@ -38,10 +38,12 @@ async function load(json) {
 const file = JSON.parse(await readFile(join(root, 'src/data/success-probability.json'), 'utf8'));
 const odds = await load();
 
-test('there are four hurdles, each with two percentages from 0 to 100 and the words the page needs', () => {
+test('there are four hurdles, each with percentages for A, B, X and three side by side from 0 to 100 and the words the page needs', () => {
   assert.equal(odds.oddsGates.length, 4);
   for (const g of odds.oddsGates) {
-    for (const key of ['singleArmPct', 'threeArmPct']) assert.ok(g[key] >= 0 && g[key] <= 100, `${g.id} ${key}`);
+    for (const key of ['singleArmPct', 'designBPct', 'designXPct', 'threeArmPct']) {
+      assert.ok(g[key] >= 0 && g[key] <= 100, `${g.id} ${key}`);
+    }
     for (const key of ['title', 'badge', 'plain', 'evidence']) assert.ok(g[key].trim().length > 0, `${g.id} ${key}`);
     assert.ok(['shown', 'partial', 'unknown'].includes(g.badgeKind), g.id);
   }
@@ -55,17 +57,25 @@ test('the combined figures are the hurdles multiplied together, and shown as who
   assert.equal(odds.combine([50, 0, 90]), 0);
   const product = (key) => odds.oddsGates.reduce((total, g) => (total * g[key]) / 100, 100);
   assert.ok(Math.abs(odds.oddsSingle - product('singleArmPct')) < 1e-9);
+  assert.ok(Math.abs(odds.oddsDesignA - product('singleArmPct')) < 1e-9);
+  assert.ok(Math.abs(odds.oddsDesignB - product('designBPct')) < 1e-9);
+  assert.ok(Math.abs(odds.oddsDesignX - product('designXPct')) < 1e-9);
   assert.ok(Math.abs(odds.oddsThree - product('threeArmPct')) < 1e-9);
   assert.equal(odds.wholePercent(20.592), 21);
   assert.equal(odds.wholePercent(37.4), 37);
-  // The figures at the time of writing: 88 x 78 x 50 x 60 and 88 x 82 x 72 x 72.
-  assert.equal(odds.wholePercent(odds.oddsSingle), 21);
-  assert.equal(odds.wholePercent(odds.oddsThree), 37);
+  // Current 2026-11-15 figures across Designs A, B, X and three side by side:
+  assert.equal(odds.wholePercent(odds.oddsDesignA), 26);
+  assert.equal(odds.wholePercent(odds.oddsDesignB), 31);
+  assert.equal(odds.wholePercent(odds.oddsDesignX), 34);
+  assert.equal(odds.wholePercent(odds.oddsThree), 51);
 });
 
-test('testing three designs never lowers a hurdle, and never makes the whole more likely than any one hurdle', () => {
-  for (const g of odds.oddsGates) assert.ok(g.threeArmPct >= g.singleArmPct, `${g.id}: three side by side should be at least as likely as one`);
-  assert.ok(odds.oddsThree >= odds.oddsSingle);
+test('testing three designs never lowers a hurdle below any single design, and never makes the whole more likely than any one hurdle', () => {
+  for (const g of odds.oddsGates) {
+    const bestSingle = Math.max(g.singleArmPct, g.designBPct, g.designXPct);
+    assert.ok(g.threeArmPct >= bestSingle, `${g.id}: three side by side should be at least as likely as each single design`);
+  }
+  assert.ok(odds.oddsThree >= Math.max(odds.oddsDesignA, odds.oddsDesignB, odds.oddsDesignX));
   assert.ok(odds.oddsThree <= Math.min(...odds.oddsGates.map((g) => g.threeArmPct)));
 });
 
@@ -79,21 +89,29 @@ test('a hurdle links to PubMed only where its evidence is a paper, and the PubMe
 test('a slip in the file stops the build with a clear message', async () => {
   const gate = file.gates[0];
   await assert.rejects(load({ ...file, gates: [{ ...gate, singleArmPct: 120 }] }), /singleArmPct must be a number from 0 to 100/);
+  await assert.rejects(load({ ...file, gates: [{ ...gate, designBPct: -5 }] }), /designBPct must be a number from 0 to 100/);
+  await assert.rejects(load({ ...file, gates: [{ ...gate, designXPct: '81' }] }), /designXPct must be a number from 0 to 100/);
   await assert.rejects(load({ ...file, gates: [{ ...gate, threeArmPct: '88' }] }), /threeArmPct must be a number from 0 to 100/);
   await assert.rejects(load({ ...file, gates: [{ ...gate, badgeKind: 'proven' }] }), /badgeKind must be one of/);
   await assert.rejects(load({ ...file, gates: [{ ...gate, plain: '  ' }] }), /plain must be text and cannot be empty/);
   await assert.rejects(load({ ...file, lastUpdated: 'yesterday' }), /lastUpdated must be a date/);
   await assert.rejects(load({ ...file, gates: [] }), /at least one hurdle/);
   // ...and a good file with a changed percentage works through to the totals.
-  const changed = await load({ ...file, gates: file.gates.map((g) => ({ ...g, singleArmPct: 100, threeArmPct: 100 })) });
+  const changed = await load({
+    ...file,
+    gates: file.gates.map((g) => ({ ...g, singleArmPct: 100, designBPct: 100, designXPct: 100, threeArmPct: 100 })),
+  });
   assert.equal(changed.wholePercent(changed.oddsSingle), 100);
+  assert.equal(changed.wholePercent(changed.oddsDesignX), 100);
 });
 
 test('the page takes its numbers from the file, so none of the figures is typed into the page', async () => {
   const section = await readFile(join(root, 'src/components/Odds.astro'), 'utf8');
   const markup = section.slice(0, section.indexOf('<style>'));
-  assert.ok(!/\b(21|37)\s*%/.test(markup), 'a combined figure is written into the section instead of being worked out');
+  assert.ok(!/\b(21|26|31|34|37|51)\s*%/.test(markup), 'a combined figure is written into the section instead of being worked out');
   for (const g of odds.oddsGates) {
-    for (const key of ['singleArmPct', 'threeArmPct']) assert.ok(!markup.includes(`>${g[key]}%<`), `${g.id} ${key} is written into the section`);
+    for (const key of ['singleArmPct', 'designBPct', 'designXPct', 'threeArmPct']) {
+      assert.ok(!markup.includes(`>${g[key]}%<`), `${g.id} ${key} is written into the section`);
+    }
   }
 });

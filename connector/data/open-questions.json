@@ -350,8 +350,8 @@
   {
     "id": "OQ-014",
     "title": "X is two different candidates, not one verified product",
-    "plain": "The name Design X covers two separate things: a scored comparison on the 2,160-design grid (Design A plus one insulin-gene base edit, using the baseline 119 micrometre oxygen layer) and an unscored Stage-0 upgrade proposal (new B2M switch and CD47 variant, a protective insulin-gene cell line, an outer-ring Fas-ligand gel layout and a 100 micrometre oxygen layer, with no insulin-gene edit). Neither is built or tested.",
-    "detail": "Clarified in IIP-0009. The scored grid candidate (ISLET1_CHASSIS_X_EMERGENT_CHALLENGER, K=4, B=1) adds an INS base edit to Design A on the baseline 119 micrometre Layout B oxygen layer and is tied for second place on the grid. The separate Stage-0 molecular and pouch proposal (K=4, B=0) changes the B2M promoter and CD47 sequence, selects an INS-VNTR Class III starting line, arranges SA-FasL microgels in an outer boundary ring around a 100 micrometre central oxygen layer, and has no score or built DNA.",
+    "plain": "The name Design X covers two separate things: a scored comparison on the 2,160-design grid (Design A plus one insulin-gene base edit, using the baseline 119 micrometre oxygen layer) and an unscored Stage-0 upgrade suite (new B2M switch, 20-variant HLA-E selectivity panel and CD47 variant, an intronic IL-1 and Fas receptor knockdown or base-editor stop comparators, a protective insulin-gene cell line, an outer-ring Fas-ligand gel layout and an ordered-microwell, catalase-buffered 100 micrometre oxygen layer, with no insulin-gene edit). Neither is built or tested.",
+    "detail": "Clarified in IIP-0009 and expanded with Stage-0 comparators in IIP-0016, IIP-0018 and IIP-0019. The scored grid candidate (ISLET1_CHASSIS_X_EMERGENT_CHALLENGER, K=4, B=1) adds an INS base edit to Design A on the baseline 119 micrometre Layout B oxygen layer and is tied for second place on the grid. The separate Stage-0 molecular and pouch suite (K=4, B=0) tests a new B2M promoter, CD47 sequence and 20-construct S10 HLA-E NKG2C/NKG2A selectivity panel (IIP-0016), a 6-arm CXCL10 synthetic-intron Multi-miR(IL1R1 + FAS) donor alongside standalone zero-bystander FAS/IL1R1 CBE stop comparators (IIP-0018), an INS-VNTR Class III starting line, an outer-ring SA-FasL gel layout, and ordered microwells with <= 50 micrometre CaO2 beads and a >= 20 micrometre catalase barrier film around a 100 micrometre central oxygen layer (IIP-0019), behind pre-registered lab pass gates.",
     "tests": [
       "1",
       "2A",
@@ -366,7 +366,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Keep separate identities, provide the exact donor and protein ledger, and qualify each product before any promotion.",
-    "source": "Concise specification sections 3 and 4.6; IIP-0009",
+    "source": "Concise specification sections 3 and 4.6; IIP-0009, IIP-0016, IIP-0018 and IIP-0019",
     "status": "open",
     "added": "2026-10-25",
     "since": "v0.8.0"
@@ -374,8 +374,8 @@
   {
     "id": "OQ-015",
     "title": "Does the proposed outer-band pouch physically fit?",
-    "plain": "In the baseline geometry used for the scores across Designs A, B and X, a 350 micrometre slab with a 119 micrometre central oxygen layer leaves two outer bands of 115.5 micrometres, slightly narrower than 120 micrometre cell clusters. The Stage-0 versions of Design A and Design X thin the central layer to 100 micrometres, leaving 125 micrometre outer bands and capping clusters at 100 micrometres so they fit on paper. Nothing has been built or measured yet.",
-    "detail": "Clarified in IIP-0009. Changing source-lamina porosity while holding oxygen inventory fixed is a conditional sensitivity, not a scored design input. In the scored Layout B baseline shared by the grid rows for Designs A, B and X, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to contain 120 micrometre spheres without compression. Stage-0 Embodiment A* and Stage-0 Design X thin the central lamina to 100 micrometres (125 micrometre outer bands, clusters at most 100 micrometres), which fits on paper but raises solid CaO2 loading to 46.39 wt% (23.45 vol%) and remains unbuilt.",
+    "plain": "In the baseline geometry used for the scores across Designs A, B and X, a 350 micrometre slab with a 119 micrometre central oxygen layer leaves two outer bands of 115.5 micrometres, slightly narrower than 120 micrometre cell clusters. Explicit 3D checks also showed that loose clusters clump together and that uncoated edge beads spike local peroxide, so the Stage-0 layouts add ordered microwells, wet-sieved beads of at most 50 micrometres and catalase barrier films at least 20 micrometres thick (at 350 or expanded 390 micrometres) alongside a 140 micrometre bead-free pre-vascularized comparator. Nothing has been built or measured yet.",
+    "detail": "Clarified in IIP-0009 and audited in 3D in IIP-0019. In the scored Layout B baseline shared by the grid rows for Designs A, B and X, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to contain 120 micrometre spheres without compression. Stage-0 Embodiment A* and Stage-0 Design X thin the central lamina to 100 micrometres (clusters <= 80 to 100 micrometres) and pair ordered microwells with wet-sieved d_99 <= 50 micrometre beads and >= 20 micrometre cell-free catalase-immobilized barrier films across expanded 390 micrometre or 350 micrometre cross-sections while holding 791.5 mg CaO2 conserved, alongside a two-stage 140 micrometre Zero-CaO2 bead-free pre-vascularized comparator (IIP-0019). All layouts remain unbuilt.",
     "tests": [
       "5"
     ],
@@ -386,8 +386,8 @@
     ],
     "rules": [],
     "pmids": [],
-    "settle": "Reconcile local cell packing, bead inventory, source geometry and cluster dimensions in one physical design before claiming an oxygen improvement.",
-    "source": "Concise specification section 5; IIP-0009",
+    "settle": "Reconcile local cell packing, microwell spacing, sieved bead inventory, catalase barrier retention and cluster dimensions in physical prototypes before claiming an oxygen improvement.",
+    "source": "Concise specification section 5; IIP-0009 and IIP-0019",
     "status": "open",
     "added": "2026-10-25",
     "since": "v0.8.0"
@@ -395,8 +395,8 @@
   {
     "id": "OQ-016",
     "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
-    "plain": "The 21% and 37% figures are rough judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
-    "detail": "Raised in IIP-0003 (issue #3). Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, and the three-design figure depends on how strongly Designs A, B and X share failure modes at each hurdle. Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data.",
+    "plain": "The 26%, 31% and 34% single-design figures (Designs A, B and X) and the 51% three-design figure are computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
+    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-15 after IIP-0016..IIP-0019. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (26%), B (31%) and X (34%) giving 51.4% (about 51%) for three locked products or 54.7% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data.",
     "tests": [
       "1",
       "2A",
@@ -412,8 +412,8 @@
     ],
     "rules": [],
     "pmids": [],
-    "settle": "Fix one clinical definition of success, write down the per-design and shared failure assumptions at each hurdle, and replace the starting judgements with measured pass rates as lab and preclinical results arrive.",
-    "source": "IIP-0003, and the full blueprint (warning 4)",
+    "settle": "Fix one clinical definition of success, test the per-design and shared failure assumptions in Stage 0-2 experiments, and replace the computational judgements with measured pass rates as lab and preclinical results arrive.",
+    "source": "IIP-0003, IIP-0016..IIP-0019, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
     "since": "v0.8.0"

@@ -1,6 +1,6 @@
 // The "realistic chance of working" estimates shown on the Blueprint page, read from success-probability.json.
-// They are the blueprint team's own estimates, not measurements. To change one, edit its percentage in the JSON file and set
-// lastUpdated: the combined figures work themselves out. A bad value stops the build with a message instead of reaching the page.
+// They are the blueprint team's own computational estimates, not lab measurements. To change one, edit its percentage in the JSON file
+// and set lastUpdated: the combined figures work themselves out. A bad value stops the build with a message instead of reaching the page.
 import data from './success-probability.json';
 
 export type OddsKind = 'shown' | 'partial' | 'unknown';
@@ -10,9 +10,13 @@ export interface OddsGate {
   /** 1 to 4, the order of the hurdles. */
   number: number;
   title: string;
-  /** The estimate for one design on its own, as a percentage from 0 to 100. */
+  /** The estimate for Design A on its own, as a percentage from 0 to 100. */
   singleArmPct: number;
-  /** The estimate when three designs are tested side by side. */
+  /** The estimate for Design B on its own, as a percentage from 0 to 100. */
+  designBPct: number;
+  /** The estimate for Design X on its own, as a percentage from 0 to 100. */
+  designXPct: number;
+  /** The conditional surviving-portfolio estimate when three designs are tested side by side. */
   threeArmPct: number;
   badge: string;
   badgeKind: OddsKind;
@@ -57,6 +61,8 @@ export const oddsGates: OddsGate[] = data.gates.map((g, i) => {
     number: i + 1,
     title: words(g.title, `${where}.title`),
     singleArmPct: percent(g.singleArmPct, `${where}.singleArmPct`),
+    designBPct: percent(g.designBPct, `${where}.designBPct`),
+    designXPct: percent(g.designXPct, `${where}.designXPct`),
     threeArmPct: percent(g.threeArmPct, `${where}.threeArmPct`),
     badge: words(g.badge, `${where}.badge`),
     badgeKind: g.badgeKind as OddsKind,
@@ -70,9 +76,14 @@ export const oddsGates: OddsGate[] = data.gates.map((g, i) => {
 /** Multiplies percentages (each 0 to 100) and returns a percentage: 88 and 50 make 44. */
 export const combine = (values: number[]): number => values.reduce((total, v) => (total * v) / 100, 100);
 
-/** All the hurdles cleared by one design on its own. */
+/** All four hurdles cleared by Design A on its own. */
 export const oddsSingle: number = combine(oddsGates.map((g) => g.singleArmPct));
-/** All the hurdles cleared when three designs are tested side by side. */
+export const oddsDesignA: number = oddsSingle;
+/** All four hurdles cleared by Design B on its own. */
+export const oddsDesignB: number = combine(oddsGates.map((g) => g.designBPct));
+/** All four hurdles cleared by Design X on its own. */
+export const oddsDesignX: number = combine(oddsGates.map((g) => g.designXPct));
+/** All four hurdles cleared by at least one same design when all three are tested side by side. */
 export const oddsThree: number = combine(oddsGates.map((g) => g.threeArmPct));
 
 /** The way a combined figure is shown: a whole number, never a false decimal. */

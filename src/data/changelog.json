@@ -2,6 +2,26 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-15",
+    "title": "Four-hurdle computational odds reassessed across all three blueprints",
+    "summary": "Updates the Blueprint page's four-hurdle computational estimates across Designs A, B and X after IIP-0016 through IIP-0019, puts all three single designs head to head alongside the three-design portfolio figure, and links the hurdle bars to the design switcher.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Reassessed the four-hurdle sequential conditional estimates across all three blueprints after IIP-0016–IIP-0019 (Warning 4 and OQ-016): Design A moves from 21% to 26% (88% x 78% x 56% x 68%), Design B to 31% (88% x 79% x 64% x 70%), Design X to 34% (88% x 81% x 70% x 68%), and testing all three side by side moves from 37% to 51% (88% x 87% x 85% x 79%, from an explicit 4,096-state common-shock tree obeying IIP-0003's surviving-design rule)."
+      },
+      {
+        "kind": "added",
+        "text": "The summary card on /blueprint#odds now shows Designs X, B and A head to head beside the three-design figure, and the four hurdle cards respond live to the page's Design A, B and X switcher."
+      },
+      {
+        "kind": "changed",
+        "text": "Clarified in the odds notes that all four hurdles are computational estimates for each combined design (since layering new untested edits can shift earlier human-anchored steps too) and are reviewed when accepted blueprint changes, human trial data or OpenIslet lab results change our assessment."
+      }
+    ]
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-15",
     "title": "Layer-4 explicit-3D clumping, microbead-H2O2 barrier and Design-Z micro-optode gates",
     "summary": "Adds a Gate-3D-V-verified explicit-3D finite-volume reaction-diffusion audit in Layer 4 quantifying lateral SC-islet clumping, discrete edge-bead peroxide hotspots and 140 µm bead-free pre-vascularized boundary thresholds, and binds Stage-0 Rule S6, Gate P05 and Design Z promotion to fail-closed physical qualification gates.",
     "changes": [

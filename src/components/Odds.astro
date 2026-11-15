@@ -1,18 +1,63 @@
 ---
-// "Realistic chance of working": four hurdles, our estimate for each, and the two combined figures. All the numbers and the
-// per-hurdle wording live in src/data/success-probability.json, so an update there changes the whole section.
-import { oddsGates, oddsSingle, oddsThree, oddsLastUpdated, wholePercent } from '../data/successProbability';
+// "Realistic chance of working": four hurdles, our computational estimate for each design (A, B, X) and for all three side by side,
+// plus the combined head-to-head and portfolio figures. All numbers and per-hurdle wording live in src/data/success-probability.json.
+import {
+  oddsGates,
+  oddsDesignA,
+  oddsDesignB,
+  oddsDesignX,
+  oddsThree,
+  oddsLastUpdated,
+  wholePercent,
+} from '../data/successProbability';
 import { longDate, pubmed, release } from '../data/site';
 import changelog from '../data/changelog.json';
 import OddsArt from './odds/OddsArt.astro';
 
 const latestBlueprintDate = changelog[0]?.date ?? release.date;
 
-const formula = (key: 'singleArmPct' | 'threeArmPct') => oddsGates.map((g) => `${g[key]}%`).join(' × ');
-const results = [
-  { id: 'one', label: 'One design on its own, first try', sub: 'Design A', formula: formula('singleArmPct'), value: wholePercent(oddsSingle) },
-  { id: 'three', label: 'Three designs tested side by side', sub: 'Designs A, B and X', formula: formula('threeArmPct'), value: wholePercent(oddsThree) },
+type PctKey = 'singleArmPct' | 'designBPct' | 'designXPct' | 'threeArmPct';
+const formula = (key: PctKey) => oddsGates.map((g) => `${g[key]}%`).join(' × ');
+
+const singleDesigns = [
+  {
+    id: 'X',
+    name: 'Design X',
+    sub: 'Simulated frontier upgrades',
+    key: 'designXPct' as const,
+    formula: formula('designXPct'),
+    value: wholePercent(oddsDesignX),
+  },
+  {
+    id: 'B',
+    name: 'Design B',
+    sub: 'Matched HLA-C and bead-free sheet',
+    key: 'designBPct' as const,
+    formula: formula('designBPct'),
+    value: wholePercent(oddsDesignB),
+  },
+  {
+    id: 'A',
+    name: 'Design A',
+    sub: 'Simplest baseline control',
+    key: 'singleArmPct' as const,
+    formula: formula('singleArmPct'),
+    value: wholePercent(oddsDesignA),
+  },
 ];
+
+const scenBars = [
+  { id: 'A', label: 'One design (Design A)', key: 'singleArmPct' as const },
+  { id: 'B', label: 'One design (Design B)', key: 'designBPct' as const },
+  { id: 'X', label: 'One design (Design X)', key: 'designXPct' as const },
+];
+
+const aVal = wholePercent(oddsDesignA);
+const bVal = wholePercent(oddsDesignB);
+const xVal = wholePercent(oddsDesignX);
+const threeVal = wholePercent(oddsThree);
+const threeFormula = formula('threeArmPct');
+
 const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip chip--warn' } as const;
 ---
 
@@ -20,7 +65,11 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
   <div class="container">
     <p class="eyebrow">Odds</p>
     <h2 class="h2">Chance of clearing four hurdles: our rough estimate</h2>
-    <p class="lead odds__lead">Nobody can know yet, so we show our working instead of one confident number. We split the question into four hurdles a design has to clear, give our best estimate for each, and multiply them together.</p>
+    <p class="lead odds__lead">
+      Nobody can know yet, so we show our working instead of one confident number. We split the question into four hurdles a design has to
+      clear, give our best computational estimate for each blueprint (use the Design A, B and X buttons above to switch the hurdle bars),
+      and multiply them together.
+    </p>
 
     <div class="odds__cards">
       {
@@ -34,11 +83,15 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
             <h3 class="odd__t">{g.title}</h3>
             <ul class="odd__est">
               <li>
-                <span class="odd__lab">One design (Design A)</span>
-                <strong class="mono odd__pct">{g.singleArmPct}%</strong>
-                <span class="bar odd__bar" aria-hidden="true"><span style={`width:${g.singleArmPct}%`}></span></span>
+                {scenBars.map((s) => (
+                  <div class="odd__scen" data-scen={s.id} hidden={s.id !== 'A'}>
+                    <span class="odd__lab">{s.label}</span>
+                    <strong class="mono odd__pct">{g[s.key]}%</strong>
+                    <span class="bar odd__bar" aria-hidden="true"><span style={`width:${g[s.key]}%`}></span></span>
+                  </div>
+                ))}
               </li>
-              <li>
+              <li class="odd__row">
                 <span class="odd__lab">Three side by side</span>
                 <strong class="mono odd__pct">{g.threeArmPct}%</strong>
                 <span class="bar odd__bar odd__bar--three" aria-hidden="true"><span style={`width:${g.threeArmPct}%`}></span></span>
@@ -58,28 +111,45 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
     <div class="card odds__sum">
       <h3 class="h3">Putting the four hurdles together</h3>
       <p class="odds__scope">
-        These are our judgements for four hurdles, each for a design still in the running. They assume this product’s cells work as
-        designed and pass the lab safety checks before any trial, so they are not the chance of a cure.
+        These are our computational judgements for four hurdles, each for a design still in the running. They assume this product’s cells
+        work as designed and pass the lab safety checks before any trial, so they are not the chance of a cure.
       </p>
       <div class="odds__results">
-        {
-          results.map((r) => (
-            <div class="res">
-              <p class="res__k"><strong>{r.label}</strong> <span>{r.sub}</span></p>
-              <p class="res__big mono"><span class="res__about">about</span> {r.value}%</p>
-              <span class="bar res__bar" aria-hidden="true"><span style={`width:${r.value}%`}></span></span>
-              <p class="res__formula mono">{r.formula}</p>
-            </div>
-          ))
-        }
+        <div class="res">
+          <p class="res__k"><strong>One design on its own, first try</strong> <span>All three blueprints modelled head to head</span></p>
+          <ul class="res__stack">
+            {
+              singleDesigns.map((d) => (
+                <li class="res__item">
+                  <div class="res__itemhead">
+                    <p class="res__name"><strong>{d.name}</strong> <span>{d.sub}</span></p>
+                    <p class="res__mid mono"><span class="res__about">about</span> {d.value}%</p>
+                  </div>
+                  <span class="bar res__bar" aria-hidden="true"><span style={`width:${d.value}%`}></span></span>
+                  <p class="res__formula mono">{d.formula}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="res res--three">
+          <p class="res__k"><strong>Three designs tested side by side</strong> <span>Designs A, B and X</span></p>
+          <p class="res__big mono"><span class="res__about">about</span> {threeVal}%</p>
+          <span class="bar res__bar" aria-hidden="true"><span style={`width:${threeVal}%`}></span></span>
+          <p class="res__formula mono">{threeFormula}</p>
+          <p class="res__why pretty">
+            Because Designs A, B and X use genuinely different immune shields and pouch layouts across hurdles 2, 3 and 4, testing all
+            three side by side pushes the chance that at least one clears every hurdle past half.
+          </p>
+        </div>
       </div>
       <p class="odds__rule">Chance of getting past every hurdle = hurdle 1 × hurdle 2 × hurdle 3 × hurdle 4, each the chance that a design still in the running clears it.</p>
 
       <div class="notes">
-        <p><strong>What these numbers are.</strong> Our own estimates, made by the blueprint team and informed by the published trial results. They are not lab results, and they do not say whether any one person would be cured.</p>
-        <p><strong>Why three designs.</strong> The side-by-side figure is for advancing three distinct designs in parallel. It rises least where they share the same approach; the reason for each hurdle is in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a> (warning 4).</p>
-        <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank designs against each other. They are not percentages, and they are not these odds.</p>
-        <p><strong>Updated as results arrive.</strong> We change these percentages as new human trial data and OpenIslet lab results come in. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
+        <p><strong>What these numbers are.</strong> Our own computational estimates for each combined design, anchored to human trial data where partial proof exists (hurdles 1 and 2) and to 3D physics and sequence models where it does not yet (hurdles 3 and 4). Layering new untested edits together can shift earlier hurdles too, so none of these figures is a lab measurement or the chance of a cure.</p>
+        <p><strong>Why three designs.</strong> Even the highest-scoring simulated design (Design X, about {xVal}%) faces real biological risk on its own, while Design A (about {aVal}%) keeps the simplest genetic build as a low-risk baseline control and Design B (about {bVal}%) covers an independent HLA-C and chemical-free pouch route. Advancing all three side by side reaches about {threeVal}% (see warning 4 in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a>).</p>
+        <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank fixed-grid designs against each other. They are not percentages, and they are not these odds.</p>
+        <p><strong>Updated as designs and results evolve.</strong> We review these percentages when accepted blueprint changes, new human trial data or OpenIslet lab results change our assessment. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
       </div>
     </div>
   </div>
@@ -93,7 +163,7 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
   }
   .odds__lead {
     margin-top: 0.875rem;
-    max-width: 46rem;
+    max-width: 48rem;
   }
   /* four columns on a wide screen, two on a medium one, one on a phone: never an uneven last row. The picture is the only panel. */
   .odds__cards {
@@ -155,11 +225,15 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
     flex-direction: column;
     gap: 0.5rem;
   }
-  .odd__est li {
+  .odd__row,
+  .odd__scen {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: baseline;
     gap: 0.125rem 0.75rem;
+  }
+  .odd__scen[hidden] {
+    display: none;
   }
   .odd__lab {
     font-size: 0.9375rem;
@@ -226,36 +300,82 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
     font-size: 0.875rem;
     color: var(--muted);
   }
+  .res__stack {
+    list-style: none;
+    padding: 0;
+    margin: 0.875rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+  .res__item + .res__item {
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--line-soft);
+  }
+  .res__itemhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .res__name {
+    font-size: 0.9375rem;
+  }
+  .res__name span {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .res__mid {
+    font-size: clamp(1.375rem, 2.5vw, 1.6875rem);
+    line-height: 1.05;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    white-space: nowrap;
+  }
   .res__big {
-    margin-top: 0.5rem;
-    font-size: clamp(2.125rem, 4.4vw, 2.875rem);
+    margin-top: 0.75rem;
+    font-size: clamp(2.25rem, 4.6vw, 3.125rem);
     line-height: 1.05;
     font-weight: 500;
     letter-spacing: -0.02em;
     color: var(--ink);
   }
   .res__about {
-    font-size: 1rem;
+    font-size: 0.9375rem;
     font-weight: 400;
     letter-spacing: 0;
     color: var(--muted);
   }
   .res__bar {
     display: block;
+    margin-top: 0.5rem;
+  }
+  .res--three .res__bar {
     margin-top: 0.75rem;
   }
   .res__formula {
-    margin-top: 0.625rem;
-    font-size: 0.9375rem;
+    margin-top: 0.4375rem;
+    font-size: 0.875rem;
     color: var(--body);
     overflow-wrap: anywhere;
   }
+  .res--three .res__formula {
+    margin-top: 0.625rem;
+    font-size: 0.9375rem;
+  }
+  .res__why {
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
   .odds__scope {
     margin-top: 0.5rem;
-    max-width: 46rem;
+    max-width: 48rem;
   }
   .odds__rule {
-    margin-top: 0.875rem;
+    margin-top: 1rem;
     font-size: 0.9375rem;
     color: var(--muted);
   }

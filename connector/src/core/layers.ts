@@ -24,7 +24,7 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   },
   tissue: {
     name: 'The tissue layer (layer 4 of 5)',
-    plain: () => "Simulates the graft's oxygen supply over 14 days, and blood sugar and hormones over 24 hours. These are computer models and have not been tested in the lab.",
+    plain: () => "Simulates the graft's 14-day oxygen supply, explicit 3D cluster-clumping and discrete microbead-peroxide barrier transport alongside a 140 µm bead-free sheet comparator, plus 24-hour blood-sugar and hormone control. These are computer models and have not been tested in the lab.",
   },
   patient: {
     name: 'The patient layer (layer 5 of 5)',
