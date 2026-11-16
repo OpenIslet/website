@@ -39,6 +39,24 @@
     "year": 1999,
     "doi": "10.1084/jem.190.8.1135"
   },
+  "10647616": {
+    "pmid": "10647616",
+    "title": "Clinical optimization of pretargeted radioimmunotherapy with antibody-streptavidin conjugate and 90Y-DOTA-biotin.",
+    "authors": [
+      "Breitz HB",
+      "Weiden PL",
+      "Beaumier PL",
+      "Axworthy DB",
+      "Seiler C",
+      "Su FM",
+      "Graves S",
+      "Bryan K",
+      "Reno JM"
+    ],
+    "journal": "J Nucl Med",
+    "year": 2000,
+    "doi": ""
+  },
   "15538371": {
     "pmid": "15538371",
     "title": "A pancreatic islet-specific microRNA regulates insulin secretion.",
@@ -59,6 +77,23 @@
     "year": 2004,
     "doi": "10.1038/nature03076"
   },
+  "19276268": {
+    "pmid": "19276268",
+    "title": "Combining radiotherapy with APO010 in cancer treatment.",
+    "authors": [
+      "Verbrugge I",
+      "Wissink EH",
+      "Rooswinkel RW",
+      "Jongsma J",
+      "Beltraminelli N",
+      "Dupuis M",
+      "Borst J",
+      "Verheij M"
+    ],
+    "journal": "Clin Cancer Res",
+    "year": 2009,
+    "doi": "10.1158/1078-0432.CCR-08-2125"
+  },
   "19336676": {
     "pmid": "19336676",
     "title": "PTPN2, a candidate gene for type 1 diabetes, modulates interferon-gamma-induced pancreatic beta-cell apoptosis.",
@@ -76,6 +111,23 @@
     "journal": "Diabetes",
     "year": 2009,
     "doi": "10.2337/db08-1510"
+  },
+  "21183510": {
+    "pmid": "21183510",
+    "title": "APO010, a synthetic hexameric CD95 ligand, induces human glioma cell death in vitro and in vivo.",
+    "authors": [
+      "Eisele G",
+      "Roth P",
+      "Hasenbach K",
+      "Aulwurm S",
+      "Wolpert F",
+      "Tabatabai G",
+      "Wick W",
+      "Weller M"
+    ],
+    "journal": "Neuro Oncol",
+    "year": 2011,
+    "doi": "10.1093/neuonc/noq176"
   },
   "21368762": {
     "pmid": "21368762",
@@ -276,6 +328,26 @@
     "year": 2014,
     "doi": "10.1073/pnas.1402571111"
   },
+  "25194818": {
+    "pmid": "25194818",
+    "title": "Self-hydrolyzing maleimides improve the stability and pharmacological properties of antibody-drug conjugates.",
+    "authors": [
+      "Lyon RP",
+      "Setter JR",
+      "Bovee TD",
+      "Doronina SO",
+      "Hunter JH",
+      "Anderson ME",
+      "Balasubramanian CL",
+      "Duniho SM",
+      "Leiske CI",
+      "Li F",
+      "Senter PD"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2014,
+    "doi": "10.1038/nbt.2968"
+  },
   "25311805": {
     "pmid": "25311805",
     "title": "Uncovering the peptide-binding specificities of HLA-C: a general strategy to determine the specificity of any MHC class I molecule.",
@@ -363,6 +435,22 @@
     "journal": "Biochem J",
     "year": 2016,
     "doi": "10.1042/BCJ20160481"
+  },
+  "27804292": {
+    "pmid": "27804292",
+    "title": "Analysis of Pre-existing IgG and IgM Antibodies against Polyethylene Glycol (PEG) in the General Population.",
+    "authors": [
+      "Yang Q",
+      "Jacobs TM",
+      "McCallen JD",
+      "Moore DT",
+      "Huckaby JT",
+      "Edelstein JN",
+      "Lai SK"
+    ],
+    "journal": "Anal Chem",
+    "year": 2016,
+    "doi": "10.1021/acs.analchem.6b03437"
   },
   "27807284": {
     "pmid": "27807284",
@@ -531,6 +619,18 @@
     "year": 2018,
     "doi": "10.3892/ijo.2017.4221"
   },
+  "29466233": {
+    "pmid": "29466233",
+    "title": "Anti-streptavidin IgG antibody interference in anti-cyclic citrullinated peptide (CCP) IgG antibody assays is a rare but important cause of false-positive anti-CCP results.",
+    "authors": [
+      "Berth M",
+      "Willaert S",
+      "De Ridder C"
+    ],
+    "journal": "Clin Chem Lab Med",
+    "year": 2018,
+    "doi": "10.1515/cclm-2017-1153"
+  },
   "29867165": {
     "pmid": "29867165",
     "title": "Local immunomodulation Fas ligand-engineered biomaterials achieves allogeneic islet graft acceptance.",
@@ -684,6 +784,36 @@
     "journal": "Cell stem cell",
     "year": 2019,
     "doi": "10.1016/j.stem.2019.02.005"
+  },
+  "31782946": {
+    "pmid": "31782946",
+    "title": "Interference of anti-streptavidin antibodies in immunoassays: a very rare phenomenon or a more common finding?",
+    "authors": [
+      "Verougstraete N",
+      "Berth M",
+      "Vaneechoutte M",
+      "Delanghe J",
+      "Callewaert N"
+    ],
+    "journal": "Clin Chem Lab Med",
+    "year": 2020,
+    "doi": "10.1515/cclm-2019-1064"
+  },
+  "32619459": {
+    "pmid": "32619459",
+    "title": "Characterization of resistance to a recombinant hexameric Fas-ligand (APO010) in human cancer cell lines.",
+    "authors": [
+      "Jandu H",
+      "Nielsen A",
+      "Brunner N",
+      "Hansen A",
+      "Knudsen S",
+      "Stenvang J",
+      "Jensen PB"
+    ],
+    "journal": "Exp Hematol",
+    "year": 2020,
+    "doi": "10.1016/j.exphem.2020.06.005"
   },
   "32668238": {
     "pmid": "32668238",
@@ -1204,6 +1334,26 @@
     "journal": "Nature communications",
     "year": 2025,
     "doi": "10.1038/s41467-025-59924-7"
+  },
+  "40605797": {
+    "pmid": "40605797",
+    "title": "Pretargeted Anti-CD20 Radioimmunotherapy with scFv Fusion Protein Safely Combines with BEAM and ASCT in Patients with High-risk B-cell Lymphomas.",
+    "authors": [
+      "Orozco JJ",
+      "Matesan MC",
+      "Lundberg SJ",
+      "Haaf RL",
+      "Miyaoka RS",
+      "Fisher DR",
+      "Gooley TA",
+      "Green DJ",
+      "Sandmaier BM",
+      "Martin PS",
+      "Gopal AK"
+    ],
+    "journal": "Mol Cancer Ther",
+    "year": 2025,
+    "doi": "10.1158/1535-7163.MCT-24-0550"
   },
   "40757665": {
     "pmid": "40757665",

@@ -63,11 +63,11 @@ test('the combined figures are the hurdles multiplied together, and shown as who
   assert.ok(Math.abs(odds.oddsThree - product('threeArmPct')) < 1e-9);
   assert.equal(odds.wholePercent(20.592), 21);
   assert.equal(odds.wholePercent(37.4), 37);
-  // Current 2026-11-15 figures across Designs A, B, X and three side by side:
-  assert.equal(odds.wholePercent(odds.oddsDesignA), 26);
+  // Current 2026-11-16 figures across Designs A, B, X and three side by side:
+  assert.equal(odds.wholePercent(odds.oddsDesignA), 27);
   assert.equal(odds.wholePercent(odds.oddsDesignB), 31);
-  assert.equal(odds.wholePercent(odds.oddsDesignX), 34);
-  assert.equal(odds.wholePercent(odds.oddsThree), 51);
+  assert.equal(odds.wholePercent(odds.oddsDesignX), 36);
+  assert.equal(odds.wholePercent(odds.oddsThree), 53);
 });
 
 test('testing three designs never lowers a hurdle below any single design, and never makes the whole more likely than any one hurdle', () => {
@@ -108,7 +108,7 @@ test('a slip in the file stops the build with a clear message', async () => {
 test('the page takes its numbers from the file, so none of the figures is typed into the page', async () => {
   const section = await readFile(join(root, 'src/components/Odds.astro'), 'utf8');
   const markup = section.slice(0, section.indexOf('<style>'));
-  assert.ok(!/\b(21|26|31|34|37|51)\s*%/.test(markup), 'a combined figure is written into the section instead of being worked out');
+  assert.ok(!/\b(21|26|27|31|34|36|37|51|53)\s*%/.test(markup), 'a combined figure is written into the section instead of being worked out');
   for (const g of odds.oddsGates) {
     for (const key of ['singleArmPct', 'designBPct', 'designXPct', 'threeArmPct']) {
       assert.ok(!markup.includes(`>${g[key]}%<`), `${g.id} ${key} is written into the section`);

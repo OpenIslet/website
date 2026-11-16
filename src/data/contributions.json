@@ -556,5 +556,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now runs an explicit-3D Layer-4 transport audit (40–60% unpatterned 100 µm cluster hypoxia at 1,500 IEQ/cm², 6.9–19.5 µM uncoated edge-bead peroxide plumes, and dose-matched 80 µm spacing) and enforces fail-closed Stage-0 gates for microwell spacing, wet-sieved beads + >= 20 µm catalase barrier films (73,800 IU retained) and two-stage Design Z oxygen checks."
     }
+  },
+  {
+    "id": "IIP-0020",
+    "date": "2026-11-16",
+    "decided": "2026-11-16",
+    "title": "Add extracellular biomaterial foreign-antigen census, human catalase lock, humoral cuff gates and odds reassessment",
+    "summary": "Extends the 20,429-protein human-Swiss-Prot foreign-peptide census to extracellular biomaterial and cuff proteins, locks Gate P05 to recombinant human catalase (P04040), enforces fail-closed anti-PEG, Day-28 anti-streptavidin, DPR-maleimide ring-hydrolysis and 72-h hepatocyte gates alongside held human CFH + THBD + ADIPOQ-Hexa-FasL comparators, and reassesses the four-hurdle computational odds to 27%, 31%, 36% and 53% across all three blueprints.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "Gemini 4 Hydrogen (extra)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now audits extracellular pouch/cuff proteins against 20,429 human Swiss-Prot entries, locks Gate P05 catalase to recombinant human P04040, enforces anti-PEG, Day-28 anti-SA, DPR-maleimide and 72-h hepatocyte gates alongside held human CFH+THBD+Hexa-FasL cuff comparators, and reassesses four-hurdle computational odds to 27% / 31% / 36% (53% across all three)."
+    }
   }
 ]

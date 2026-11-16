@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-15",
+  "lastUpdated": "2026-11-16",
   "launchBaseline": {
     "singleArmPct": 21,
     "threeArmPct": 37
@@ -24,42 +24,42 @@
       "title": "Does the genetic cloak stop rejection without anti-rejection drugs?",
       "singleArmPct": 78,
       "designBPct": 79,
-      "designXPct": 81,
+      "designXPct": 82,
       "threeArmPct": 87,
       "badge": "Seen in one person",
       "badgeKind": "partial",
-      "plain": "It has worked once: in one person, edited donor islet cells were left alone for more than a year with no anti-rejection drugs. Rather than bet all three blueprints on one identical cloak, Design A uses the standard HLA-E and CD47 cloak, Design B keeps one matched HLA-C gene checked against a 22-species foreign-peptide scan, and Design X screens a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells.",
-      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025, plus Islet-1’s HLA-E and HLA-C sequence models (IIP-0016, IIP-0017).",
+      "plain": "It has worked once: in one person, edited donor islet cells were left alone for more than a year with no anti-rejection drugs. Rather than bet all three blueprints on one identical cloak, Design A uses the standard HLA-E and CD47 cloak, Design B keeps one matched HLA-C gene checked against a 22-species foreign-peptide scan, and Design X screens a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells alongside a streptavidin-free human cuff comparator against pre-existing anti-PEG and secondary anti-streptavidin antibodies.",
+      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025, plus Islet-1’s HLA-E, HLA-C and biomaterial sequence models (IIP-0016, IIP-0017, IIP-0020).",
       "pmid": "40757665",
       "next": "Next: test all three cloaks head to head on stem-cell islets (Stage 1, lab testing)."
     },
     {
       "id": "attack",
       "title": "Can the cells survive the autoimmune attack that caused the diabetes?",
-      "singleArmPct": 56,
+      "singleArmPct": 57,
       "designBPct": 64,
-      "designXPct": 70,
-      "threeArmPct": 85,
+      "designXPct": 73,
+      "threeArmPct": 86,
       "badge": "Biggest unknown",
       "badgeKind": "unknown",
-      "plain": "This is the hardest step. People with type 1 diabetes carry immune cells that remember beta cells, plus inflammatory signals (IL-1 and Fas ligand) that can kill nearby cells even when MHC flags are hidden. Design A pairs scar-free SERPINB9 with a transient Fas-ligand gel, Design B dampens interferon signalling via a protective TYK2 variant, and Design X dials down the cell’s own IL-1 and Fas death receptors.",
-      "evidence": "Anchored to the single human autoimmune graft follow-up (Sana UP421, above) and Islet-1’s receptor-shield and TYK2 models (IIP-0012, IIP-0017, IIP-0018).",
+      "plain": "This is the hardest step. People with type 1 diabetes carry immune cells that remember beta cells, plus inflammatory signals (IL-1 and Fas ligand) and indirect responses to shed foreign biomaterial proteins that can attack nearby cells even when MHC flags are hidden. Designs A and X lock recombinant human catalase (removing bovine or fungal enzyme debris), Design A pairs scar-free SERPINB9 with a primed-serum-gated Fas-ligand gel, Design B dampens interferon signalling via a protective TYK2 variant, and Design X dials down the cell’s own IL-1 and Fas death receptors while qualifying an all-human CFH, THBD and Hexa-FasL cuff.",
+      "evidence": "Anchored to the single human autoimmune graft follow-up (Sana UP421, above) and Islet-1’s receptor-shield, TYK2 and biomaterial-antigen models (IIP-0012, IIP-0017, IIP-0018, IIP-0020).",
       "pmid": "",
-      "next": "Next: head-to-head cytokine and T-cell stress tests (Stage 1, lab testing)."
+      "next": "Next: head-to-head cytokine, primed-serum and T-cell stress tests (Stage 1, lab testing)."
     },
     {
       "id": "oxygen",
       "title": "Does the oxygen layer keep the graft alive until blood vessels grow in?",
-      "singleArmPct": 68,
+      "singleArmPct": 69,
       "designBPct": 70,
-      "designXPct": 68,
-      "threeArmPct": 79,
+      "designXPct": 69,
+      "threeArmPct": 80,
       "badge": "Computer model only",
       "badgeKind": "unknown",
-      "plain": "A new graft has no blood vessels at first. Explicit 3D physics simulations caught two hidden hazards—cell clusters clumping together and peroxide spikes next to oxygen-releasing beads—so Designs A and X add ordered microwells, wet-sieved beads of 50 µm or less and a catalase barrier film at least 20 µm thick, while Design B tests an independent 140 µm bead-free pre-vascularized sheet with no peroxide chemistry.",
-      "evidence": "From Islet-1’s 3D finite-volume oxygen and peroxide simulations (IIP-0019). None of these values has been measured in the lab yet.",
+      "plain": "A new graft has no blood vessels at first. Explicit 3D physics simulations and a foreign-protein audit caught hidden hazards—cell clusters clumping together, peroxide spikes next to oxygen-releasing beads, and foreign-body inflammation from animal or fungal catalase—so Designs A and X add ordered microwells, wet-sieved beads of 50 µm or less and a recombinant human catalase barrier film at least 20 µm thick, while Design B tests an independent 140 µm bead-free pre-vascularized sheet with no peroxide chemistry.",
+      "evidence": "From Islet-1’s 3D finite-volume oxygen and peroxide simulations and human-catalase lock (IIP-0019, IIP-0020). None of these values has been measured in the lab yet.",
       "pmid": "",
-      "next": "Next: microwell, peroxide-barrier and blood-vessel tests (Stage 2)."
+      "next": "Next: microwell, human-catalase peroxide-barrier and blood-vessel tests (Stage 2)."
     }
   ]
 }

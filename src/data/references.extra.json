@@ -1116,5 +1116,146 @@
     "journal": "J Biol Chem",
     "year": 2016,
     "doi": "10.1074/jbc.M115.699298"
+  },
+  "10647616": {
+    "title": "Clinical optimization of pretargeted radioimmunotherapy with antibody-streptavidin conjugate and 90Y-DOTA-biotin.",
+    "authors": [
+      "Breitz HB",
+      "Weiden PL",
+      "Beaumier PL",
+      "Axworthy DB",
+      "Seiler C",
+      "Su FM",
+      "Graves S",
+      "Bryan K",
+      "Reno JM"
+    ],
+    "journal": "J Nucl Med",
+    "year": 2000,
+    "doi": ""
+  },
+  "19276268": {
+    "title": "Combining radiotherapy with APO010 in cancer treatment.",
+    "authors": [
+      "Verbrugge I",
+      "Wissink EH",
+      "Rooswinkel RW",
+      "Jongsma J",
+      "Beltraminelli N",
+      "Dupuis M",
+      "Borst J",
+      "Verheij M"
+    ],
+    "journal": "Clin Cancer Res",
+    "year": 2009,
+    "doi": "10.1158/1078-0432.CCR-08-2125"
+  },
+  "21183510": {
+    "title": "APO010, a synthetic hexameric CD95 ligand, induces human glioma cell death in vitro and in vivo.",
+    "authors": [
+      "Eisele G",
+      "Roth P",
+      "Hasenbach K",
+      "Aulwurm S",
+      "Wolpert F",
+      "Tabatabai G",
+      "Wick W",
+      "Weller M"
+    ],
+    "journal": "Neuro Oncol",
+    "year": 2011,
+    "doi": "10.1093/neuonc/noq176"
+  },
+  "25194818": {
+    "title": "Self-hydrolyzing maleimides improve the stability and pharmacological properties of antibody-drug conjugates.",
+    "authors": [
+      "Lyon RP",
+      "Setter JR",
+      "Bovee TD",
+      "Doronina SO",
+      "Hunter JH",
+      "Anderson ME",
+      "Balasubramanian CL",
+      "Duniho SM",
+      "Leiske CI",
+      "Li F",
+      "Senter PD"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2014,
+    "doi": "10.1038/nbt.2968"
+  },
+  "27804292": {
+    "title": "Analysis of Pre-existing IgG and IgM Antibodies against Polyethylene Glycol (PEG) in the General Population.",
+    "authors": [
+      "Yang Q",
+      "Jacobs TM",
+      "McCallen JD",
+      "Moore DT",
+      "Huckaby JT",
+      "Edelstein JN",
+      "Lai SK"
+    ],
+    "journal": "Anal Chem",
+    "year": 2016,
+    "doi": "10.1021/acs.analchem.6b03437"
+  },
+  "29466233": {
+    "title": "Anti-streptavidin IgG antibody interference in anti-cyclic citrullinated peptide (CCP) IgG antibody assays is a rare but important cause of false-positive anti-CCP results.",
+    "authors": [
+      "Berth M",
+      "Willaert S",
+      "De Ridder C"
+    ],
+    "journal": "Clin Chem Lab Med",
+    "year": 2018,
+    "doi": "10.1515/cclm-2017-1153"
+  },
+  "31782946": {
+    "title": "Interference of anti-streptavidin antibodies in immunoassays: a very rare phenomenon or a more common finding?",
+    "authors": [
+      "Verougstraete N",
+      "Berth M",
+      "Vaneechoutte M",
+      "Delanghe J",
+      "Callewaert N"
+    ],
+    "journal": "Clin Chem Lab Med",
+    "year": 2020,
+    "doi": "10.1515/cclm-2019-1064"
+  },
+  "32619459": {
+    "title": "Characterization of resistance to a recombinant hexameric Fas-ligand (APO010) in human cancer cell lines.",
+    "authors": [
+      "Jandu H",
+      "Nielsen A",
+      "Brunner N",
+      "Hansen A",
+      "Knudsen S",
+      "Stenvang J",
+      "Jensen PB"
+    ],
+    "journal": "Exp Hematol",
+    "year": 2020,
+    "doi": "10.1016/j.exphem.2020.06.005"
+  },
+  "40605797": {
+    "title": "Pretargeted Anti-CD20 Radioimmunotherapy with scFv Fusion Protein Safely Combines with BEAM and ASCT in Patients with High-risk B-cell Lymphomas.",
+    "authors": [
+      "Orozco JJ",
+      "Matesan MC",
+      "Lundberg SJ",
+      "Haaf RL",
+      "Miyaoka RS",
+      "Fisher DR",
+      "Gooley TA",
+      "Green DJ",
+      "Sandmaier BM",
+      "Martin PS",
+      "Gopal AK"
+    ],
+    "journal": "Mol Cancer Ther",
+    "year": 2025,
+    "doi": "10.1158/1535-7163.MCT-24-0550"
   }
 }

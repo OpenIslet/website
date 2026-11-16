@@ -311,7 +311,7 @@ const designX: Scenario = {
     },
     proposal: {
       title: 'The molecular proposal',
-      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals paired with a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells, a 6-arm CXCL10 synthetic-intron Multi-miR(IL1R1 + FAS) bystander-receptor shield (plus standalone zero-bystander FAS/IL1R1 base-editor stop comparators), a protective starting cell line, and an outer-ring Fas-ligand gel paired with ordered microwells, wet-sieved calcium-peroxide beads of 50 µm or less and catalase barrier films at least 20 µm thick around a 100 µm central oxygen layer. It does not include the insulin-gene edit. Across all designs, the zinc transporter SLC30A8 (ZnT8) is kept intact and four extra candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) stay held outside core designs behind written lab pass rules. None of this has been tested in the lab or added to the fixed grid score.',
+      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals paired with a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells, a 6-arm CXCL10 synthetic-intron Multi-miR(IL1R1 + FAS) bystander-receptor shield (plus standalone zero-bystander FAS/IL1R1 base-editor stop comparators), a protective starting cell line, and an outer-ring Fas-ligand gel (tested alongside a streptavidin-free human CFH + THBD + ADIPOQ-Hexa-FasL comparator on self-hydrolyzing DPR-maleimide linkers across anti-PEG and anti-streptavidin human sera) paired with ordered microwells, wet-sieved calcium-peroxide beads of 50 µm or less and recombinant human catalase (P04040) barrier films at least 20 µm thick around a 100 µm central oxygen layer. It does not include the insulin-gene edit. Across all designs, the zinc transporter SLC30A8 (ZnT8) is kept intact and four extra candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) stay held outside core designs behind written lab pass rules. None of this has been tested in the lab or added to the fixed grid score.',
     },
   },
   proposals: [
@@ -327,8 +327,8 @@ const designX: Scenario = {
     },
     {
       art: 'gel',
-      title: 'Ordered microwells, catalase barrier and outer-ring gel',
-      text: 'Pairs ordered microwells (capping clusters at 80 to 100 µm against 3D crowding), wet-sieved calcium-peroxide beads of 50 µm or less and catalase barrier films at least 20 µm thick around a thinner 100 µm central oxygen layer, while keeping Fas-ligand gel particles strictly in an outer boundary ring away from the beta cells. Stage-0 tests check peroxide clearance, immune rebound once the gel washes out, and an optional CD55 complement shield with intact endogenous CD59.',
+      title: 'Ordered microwells, human catalase barrier and streptavidin-free cuff comparator',
+      text: 'Pairs ordered microwells (capping clusters at 80 to 100 µm against 3D crowding), wet-sieved calcium-peroxide beads of 50 µm or less and recombinant human catalase (P04040) barrier films at least 20 µm thick around a thinner 100 µm central oxygen layer, while keeping Fas-ligand gel particles strictly in an outer boundary ring away from the beta cells. Stage-0 tests check peroxide clearance, pre-existing anti-PEG and Day-28 anti-streptavidin human serum neutralization alongside a held streptavidin-free human CFH + THBD + ADIPOQ-Hexa-FasL comparator on self-hydrolyzing DPR-maleimide linkers (with 72-hour human hepatocyte safety), immune rebound once the gel washes out, and an optional CD55 complement shield with intact endogenous CD59.',
     },
   ],
 };
@@ -339,9 +339,9 @@ export const niche = [
   { k: 'Cell mix', v: '60% beta, 30% alpha, 10% delta by default; higher-beta mixes (70:20:10 to 80:10:10) are compared in Stage 0 and replace it only if fresh batches confirm insulin shut-off and low-sugar glucagon rescue' },
   { k: 'Cluster size', v: '120 µm or less in the baseline model (capped at 100 µm in the thinner-core Stage-0 designs, with Stage-0 microwell spacing and dose-matched 80 µm comparisons against 3D cluster crowding)' },
   { k: 'Blood vessels', v: 'Proposed stem-cell-derived blood-vessel fragments; tested in the model across late-connecting and weaker vessels alongside a zero-vessel lower bound, and unmeasured in a graft' },
-  { k: 'Early oxygen support', v: 'Proposed silicone-peroxide layer with catalase; Stage-0 tests measure each recipe’s wet-sieved bead size, release law, half-life, 20 µm catalase barrier films against local peroxide plumes, and hormone recovery after the 14-day low-oxygen window' },
+  { k: 'Early oxygen support', v: 'Proposed silicone-peroxide layer with strictly recombinant human catalase (P04040, disqualifying bovine or fungal xeno-catalases); Stage-0 tests measure each recipe’s wet-sieved bead size, endotoxin, shed-mass cap, release law, half-life, 20 µm barrier films against local peroxide plumes, and hormone recovery after the 14-day low-oxygen window' },
   { k: 'Layer thickness', v: '350 µm total thickness (central oxygen layer about 119 µm in the scored baseline, thinned to 100 µm in Stage-0 proposals, with 390 µm or 2 × 105 µm outer-band barrier-film geometries and a 140 µm bead-free pre-vascularized comparator tested in Stage 0); a safe dose, area and oxygen margin remain unvalidated' },
-  { k: 'Gel particles', v: 'Temporary clotting-control and Fas-ligand gel particles (outer boundary ring in the Stage-0 Design X proposal); Stage-0 tests check beta-cell safety, immune rebound once the gel washes out, and an optional CD55 complement shield' },
+  { k: 'Gel particles', v: 'Temporary clotting-control and Fas-ligand gel particles (outer boundary ring in Stage-0 Design X, tested across anti-PEG and Day-28 anti-streptavidin human sera alongside a held streptavidin-free human CFH + THBD + ADIPOQ-Hexa-FasL comparator on self-hydrolyzing DPR-maleimide linkers); Stage-0 tests check beta-cell and 72-hour human hepatocyte safety, immune rebound once the gel washes out, and an optional CD55 complement shield' },
 ];
 
 export const assets = assetList;

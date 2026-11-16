@@ -1,6 +1,27 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-16",
+    "title": "Extracellular biomaterial foreign-antigen census, P04040 catalase lock, humoral cuff gates and four-hurdle odds reassessment",
+    "summary": "Audits extracellular oxygen-pouch and cuff proteins against 20,429 human Swiss-Prot entries, locks Gate P05 to recombinant human catalase (P04040), enforces fail-closed anti-PEG, Day-28 anti-streptavidin, DPR-maleimide hydrolysis and 72-h human hepatocyte gates alongside held streptavidin-free human cuff comparators, and updates the four-hurdle computational estimates.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "An extracellular biomaterial foreign-peptide census across 20,429 human Swiss-Prot entries in Layer 2 and structural/bioconjugation audit in Layer 3 (PDB 1DGF, 1SWB, 1DX5, 4MSV/3TJE; rejecting 2FHA bacterioferritin), paired with a fail-closed Gate P05 lock requiring recombinant human catalase (UniProt P04040, 0 foreign 8–11-mers in 527-aa and Met-cleaved 526-aa forms, <= 0.10 EU/mg and <= 0.50 EU total-implant endotoxin, <= 30% 7-day shed-protein mass) and disqualifying bovine (P00432) or fungal (P55303) xeno-catalases (DEC-099, IIP-0020)."
+      },
+      {
+        "kind": "added",
+        "text": "Donor-stratified Stage-0 humoral, maleimide-stability and hepatocyte safety gates across >= 12 unpooled human sera stratified by baseline anti-PEG IgG/IgM (PMID 27804292) and Day-28 anti-streptavidin IgG (PMIDs 10647616, 29466233, 31782946, 40605797), evaluating retained SA-FasL/SA-THBD alongside a held Mode-B human cuff comparator panel (CFH[19–448] + THBD[363–497]-Cys + H1a ADIPOQ-Hexa-FasL on >= 98% ring-hydrolyzed DPR-maleimide linkers, PMIDs 25194818, 19276268, 21183510, 32619459; <= 5% 14-day bioactive FasL shedding; 72-h primary human hepatocyte caspase-3/7 and ALT/LDH <= 1.2x)."
+      },
+      {
+        "kind": "changed",
+        "text": "Reassessed the four-hurdle sequential computational estimates (Warning 4 and OQ-016): Design A moves from 26% to 27% (88% x 78% x 57% x 69%), Design B stays at 31% (88% x 79% x 64% x 70%), Design X moves from 34% to 36% (88% x 82% x 73% x 69%), and testing all three side by side moves from 51% (51.48%) to 53% (52.59% locked / 52.22% at fixed c_3 = 0.88 / 55.63% modular; 88% x 87% x 86% x 80%)."
+      }
+    ],
+    "contribution": "IIP-0020"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-15",
     "title": "Four-hurdle computational odds reassessed across all three blueprints",
     "summary": "Updates the Blueprint page's four-hurdle computational estimates across Designs A, B and X after IIP-0016 through IIP-0019, puts all three single designs head to head alongside the three-design portfolio figure, and links the hurdle bars to the design switcher.",

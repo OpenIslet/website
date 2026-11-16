@@ -125,8 +125,8 @@
   {
     "id": "OQ-005",
     "title": "Does the oxygen supply hold up under pessimistic assumptions?",
-    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In 3D simulations, unpatterned clusters crowd one another, uncoated edge beads create local peroxide spikes, and a single 68-hour release half-life is assumed across denser bead recipes—so Stage-0 tests pair ordered microwells, wet-sieved beads of 50 micrometres or less and catalase barrier films at least 20 micrometres thick alongside a 140 micrometre bead-free sheet comparator.",
-    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint. Resolving discrete clusters and beads in 3D (IIP-0019) adds three local transport gates: unpatterned pouring at 1,500 IEQ/cm^2 (15 um physical collagen = 45 um hydrogel-equivalent standoff) pushes 40-60% of 100 um clusters below 15 mmHg (vs ordered microwells or dose-matched 80 um clusters at 142.22/152.83 um pitch, distinct from 768 IEQ/cm^2 pitch-held derating); an uncoated edge-touching CaO2 bead creates a 6.9-19.5 uM peroxide plume requiring wet-sieved d_99 <= 50 um beads plus >= 20 um catalase barrier films (~105,429 IU post-cure active load on 333.3 cm^2 to retain 73,800 IU and hold 24-hour burst <= 2.5 uM across expanded 390 um or 350 um cross-sections); and any 140 um bead-free Design Z pouch must pass both 5-site 14-day empty-lumen micro-optode thresholds (Einstein 2023, PMID 38993891) and loaded closed-state confirmation.",
+    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In 3D simulations, unpatterned clusters crowd one another, uncoated edge beads create local peroxide spikes, and animal or fungal catalase sheds foreign protein pieces—so Stage-0 tests pair ordered microwells, wet-sieved beads of 50 micrometres or less and strictly recombinant human catalase barrier films at least 20 micrometres thick alongside a 140 micrometre bead-free sheet comparator.",
+    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint. Resolving discrete clusters and beads in 3D (IIP-0019, IIP-0020) adds local transport and enzyme-species gates: unpatterned pouring at 1,500 IEQ/cm^2 (15 um physical collagen = 45 um hydrogel-equivalent standoff) pushes 40-60% of 100 um clusters below 15 mmHg (vs ordered microwells or dose-matched 80 um clusters at 142.22/152.83 um pitch, distinct from 768 IEQ/cm^2 pitch-held derating); an uncoated edge-touching CaO2 bead creates a 6.9-19.5 uM peroxide plume requiring wet-sieved d_99 <= 50 um beads plus >= 20 um barrier films locked strictly to recombinant human catalase (UniProt P04040, 0 foreign 8-to-11-mers in both 527-aa and Met-cleaved 526-aa forms across 20,429 human Swiss-Prot proteins, disqualifying bovine P00432 and Aspergillus niger P55303 xeno-catalases and enforcing <= 0.10 EU/mg and <= 0.50 EU total-implant endotoxin plus <= 30% 7-day shed-protein mass alongside ~105,429 IU post-cure active load on 333.3 cm^2 to retain 73,800 IU and hold 24-hour burst <= 2.5 uM); and any 140 um bead-free Design Z pouch must pass both 5-site 14-day empty-lumen micro-optode thresholds (Einstein 2023, PMID 38993891) and loaded closed-state confirmation.",
     "tests": [
       "5"
     ],
@@ -149,8 +149,8 @@
       "24065585",
       "21788581"
     ],
-    "settle": "Measure crystal and wet-sieved microbead size distributions, oxygen-release half-life, kinetic law, >= 20 um catalase barrier-film peroxide clearance and 7-day washout retention in implanted form; compare unpatterned vs microwell-spaced 100 um and dose-matched 80 um clusters; and require both empty-lumen micro-optode and loaded closed-state oxygen and hormone confirmation over 14 days.",
-    "source": "Concise specification sections 5 and 9; IIP-0002, IIP-0010 and IIP-0019",
+    "settle": "Measure crystal and wet-sieved microbead size distributions, oxygen-release half-life, kinetic law, recombinant human P04040 catalase barrier-film peroxide clearance, endotoxin and 7-day activity/shed-mass retention in implanted form; compare unpatterned vs microwell-spaced 100 um and dose-matched 80 um clusters; and require both empty-lumen micro-optode and loaded closed-state oxygen and hormone confirmation over 14 days.",
+    "source": "Concise specification sections 5 and 9; IIP-0002, IIP-0010, IIP-0019 and IIP-0020",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -370,8 +370,8 @@
   {
     "id": "OQ-014",
     "title": "X is two different candidates, not one verified product",
-    "plain": "The name Design X covers two separate things: a scored comparison on the 2,160-design grid (Design A plus one insulin-gene base edit, using the baseline 119 micrometre oxygen layer) and an unscored Stage-0 upgrade suite (new B2M switch, 20-variant HLA-E selectivity panel and CD47 variant, an intronic IL-1 and Fas receptor knockdown or base-editor stop comparators, a protective insulin-gene cell line, an outer-ring Fas-ligand gel layout and an ordered-microwell, catalase-buffered 100 micrometre oxygen layer, with no insulin-gene edit). Neither is built or tested.",
-    "detail": "Clarified in IIP-0009 and expanded with Stage-0 comparators in IIP-0016, IIP-0018 and IIP-0019. The scored grid candidate (ISLET1_CHASSIS_X_EMERGENT_CHALLENGER, K=4, B=1) adds an INS base edit to Design A on the baseline 119 micrometre Layout B oxygen layer and is tied for second place on the grid. The separate Stage-0 molecular and pouch suite (K=4, B=0) tests a new B2M promoter, CD47 sequence and 20-construct S10 HLA-E NKG2C/NKG2A selectivity panel (IIP-0016), a 6-arm CXCL10 synthetic-intron Multi-miR(IL1R1 + FAS) donor alongside standalone zero-bystander FAS/IL1R1 CBE stop comparators (IIP-0018), an INS-VNTR Class III starting line, an outer-ring SA-FasL gel layout, and ordered microwells with <= 50 micrometre CaO2 beads and a >= 20 micrometre catalase barrier film around a 100 micrometre central oxygen layer (IIP-0019), behind pre-registered lab pass gates.",
+    "plain": "The name Design X covers two separate things: a scored comparison on the 2,160-design grid (Design A plus one insulin-gene base edit, using the baseline 119 micrometre oxygen layer) and an unscored Stage-0 upgrade suite (new B2M switch, 20-variant HLA-E selectivity panel and CD47 variant, an intronic IL-1 and Fas receptor knockdown or base-editor stop comparators, a protective insulin-gene cell line, an outer-ring Fas-ligand gel tested alongside a streptavidin-free human cuff comparator, and an ordered-microwell, human-catalase-buffered 100 micrometre oxygen layer, with no insulin-gene edit). Neither is built or tested.",
+    "detail": "Clarified in IIP-0009 and expanded with Stage-0 comparators in IIP-0016, IIP-0018, IIP-0019 and IIP-0020. The scored grid candidate (ISLET1_CHASSIS_X_EMERGENT_CHALLENGER, K=4, B=1) adds an INS base edit to Design A on the baseline 119 micrometre Layout B oxygen layer and is tied for second place on the grid. The separate Stage-0 molecular and pouch suite (K=4, B=0) tests a new B2M promoter, CD47 sequence and 20-construct S10 HLA-E NKG2C/NKG2A selectivity panel (IIP-0016), a 6-arm CXCL10 synthetic-intron Multi-miR(IL1R1 + FAS) donor alongside standalone zero-bystander FAS/IL1R1 CBE stop comparators (IIP-0018), an INS-VNTR Class III starting line, an outer-ring SA-FasL gel layout challenged in anti-PEG and Day-28 anti-streptavidin human sera alongside a streptavidin-free CFH[19-448] + THBD[363-497]-Cys + ADIPOQ-Hexa-FasL comparator on self-hydrolyzing DPR-maleimide linkers (IIP-0020), and ordered microwells with <= 50 micrometre CaO2 beads and a >= 20 micrometre recombinant human P04040 catalase barrier film around a 100 micrometre central oxygen layer (IIP-0019, IIP-0020), behind pre-registered lab pass gates.",
     "tests": [
       "1",
       "2A",
@@ -386,7 +386,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Keep separate identities, provide the exact donor and protein ledger, and qualify each product before any promotion.",
-    "source": "Concise specification sections 3 and 4.6; IIP-0009, IIP-0016, IIP-0018 and IIP-0019",
+    "source": "Concise specification sections 3 and 4.6; IIP-0009, IIP-0016, IIP-0018, IIP-0019 and IIP-0020",
     "status": "open",
     "added": "2026-10-25",
     "since": "v0.8.0"
@@ -415,8 +415,8 @@
   {
     "id": "OQ-016",
     "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
-    "plain": "The 26%, 31% and 34% single-design figures (Designs A, B and X) and the 51% three-design figure are computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
-    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-15 after IIP-0016..IIP-0019. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (26%), B (31%) and X (34%) giving 51.4% (about 51%) for three locked products or 54.7% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data.",
+    "plain": "The 27%, 31% and 36% single-design figures (Designs A, B and X) and the 53% three-design figure are uncalibrated computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits or biomaterial shields together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
+    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data.",
     "tests": [
       "1",
       "2A",
@@ -433,7 +433,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Fix one clinical definition of success, test the per-design and shared failure assumptions in Stage 0-2 experiments, and replace the computational judgements with measured pass rates as lab and preclinical results arrive.",
-    "source": "IIP-0003, IIP-0016..IIP-0019, and the full blueprint (warning 4)",
+    "source": "IIP-0003, IIP-0016..IIP-0020, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
     "since": "v0.8.0"
@@ -530,15 +530,16 @@
   },
   {
     "id": "OQ-020",
-    "title": "Do edited islets stay protected after temporary gel signals wear off, and can added CD55 help without hurting insulin release?",
-    "plain": "Temporary gel particles carrying clotting-control and Fas-ligand proteins wash out after the early transplant window, which could let the immune system rebound against the bare cells. Adding an extra complement shield (CD55) must also be tested on the exact same edited cells while keeping the cell's own CD59 insulin-release machinery intact.",
-    "detail": "Raised in IIP-0012. Prior SA-FasL microgel studies used short-course rapamycin and measured fluorescent retention rather than functional depletion half-life (Headen 2018, PMID 29867165; Lei 2022, PMID 35559682; Turan 2024, PMID 38709159). Stage 0 compares never-conditioned, conditioned-then-depleted and active-gel sibling aliquots under fresh complement and T-cell rechallenge, tests ectopic CD55(SCR1-4) on the identical edited background while preserving endogenous intracellular CD59 isoforms needed for insulin exocytosis (Golec 2022, PMID 35666870; van der Torren 2017, PMID 27787618), and holds four extra candidate edits (TYMS, NLRC5, endogenous CD274 activation and TXNIP) outside core designs behind pre-registered pass gates.",
+    "title": "Do edited islets stay protected after temporary gel signals wear off, and do biomaterial antibodies or shed FasL compromise the cuff?",
+    "plain": "Temporary gel particles carrying clotting-control and Fas-ligand proteins wash out after the early transplant window, while pre-existing anti-PEG antibodies or Day-28 anti-streptavidin antibodies could neutralise or opsonise the cuff. Stage-0 tests therefore challenge the streptavidin cuff alongside a held all-human CFH, THBD and Hexa-FasL comparator on self-hydrolyzing linkers, and test ectopic CD55 while keeping intracellular CD59 intact.",
+    "detail": "Raised in IIP-0012 and expanded in IIP-0020. Prior SA-FasL microgel studies used short-course rapamycin in single-dose grafts (where Lei 2022, PMID 35559682 still observed anti-SA-FasL IgG seroconversion alongside tolerability of ~200 ug tethered SA-FasL) and measured fluorescent retention rather than functional depletion half-life (Headen 2018, PMID 29867165; Turan 2024, PMID 38709159). Core bacterial streptavidin is 100% foreign to the human proteome (508/508 8-to-11-mers; baseline human anti-SA reactivity in Berth 2018 PMID 29466233 and Verougstraete 2020 PMID 31782946, plus clinical secondary antibody surges in Breitz 2000 PMID 10647616 and Orozco 2025 PMID 40605797), ~72% of adults carry detectable anti-PEG antibodies (~7% IgG > 500 ng/mL, Yang 2016 PMID 27804292), and unhydrolyzed maleimides can shed soluble oligomeric FasL via retro-Michael exchange (Lyon 2014 PMID 25194818; soluble APO010 hepatotoxicity context in Verbrugge 2009 PMID 19276268, Eisele 2011 PMID 21183510 and Jandu 2020 PMID 32619459). Stage 0 therefore challenges SA-FasL/SA-THBD alongside a held Mode-B human cuff comparator panel (CFH[19-448] + THBD[363-497]-Cys + H1a ADIPOQ-Hexa-FasL on >= 98% ring-hydrolyzed DPR-maleimide linkers, <= 5% 14-day bioactive FasL shedding, and 72-h primary human hepatocyte caspase-3/7 & ALT/LDH <= 1.2x) across >= 12 unpooled human sera stratified by anti-PEG and Day-28 anti-SA IgG (surface C3b and fluid sC5b-9 <= 5%, two-sided FasL EC50 within [0.50, 2.00]x and Emax >= 80%), compares never-conditioned, gel-depleted and active-gel aliquots for immune rebound, tests ectopic CD55(SCR1-4) while preserving endogenous CD59 (Golec 2022 PMID 35666870; van der Torren 2017 PMID 27787618), and holds TYMS, NLRC5, endogenous CD274 and TXNIP outside core designs.",
     "tests": [
       "1",
       "2A",
       "2B",
       "3",
-      "4"
+      "4",
+      "5"
     ],
     "designs": [
       "A",
@@ -552,10 +553,19 @@
       "38709159",
       "35666870",
       "27787618",
-      "38867450"
+      "38867450",
+      "10647616",
+      "19276268",
+      "21183510",
+      "25194818",
+      "27804292",
+      "29466233",
+      "31782946",
+      "32619459",
+      "40605797"
     ],
-    "settle": "Compare never-treated, gel-depleted and active-gel edited islets under fresh human serum and T-cell rechallenge, and test edited islets with and without ectopic CD55 for complement survival and glucose-stimulated insulin secretion.",
-    "source": "Concise specification sections 4.6, 5 and 9; IIP-0012",
+    "settle": "Challenge SA-FasL/SA-THBD and the held DPR-hydrolyzed human CFH + THBD + ADIPOQ-Hexa-FasL cuff comparator across >= 12 unpooled human sera stratified by baseline anti-PEG and Day-28 anti-SA IgG (checking surface C3b, fluid sC5b-9, two-sided FasL EC50/Emax, THBD/CFH retention, <= 5% 14-day bioactive FasL shedding and 72-h primary human hepatocyte safety), compare gel-depleted vs never-treated islets for immune rebound, and test ectopic CD55 alongside intact endogenous CD59.",
+    "source": "Concise specification sections 4.6, 5 and 9; IIP-0012 and IIP-0020",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"
