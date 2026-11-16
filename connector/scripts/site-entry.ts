@@ -10,4 +10,15 @@ export { specTokens, fillTokens } from '../../src/data/specTokens';
 export { outcomes } from '../../src/data/contributions';
 export { reviewTemplate, draftPrompt, submitPrompt, explorePrompts, checkPrompt } from '../../src/data/prompts';
 export { paths as helpPaths, stepNames } from '../../src/data/guide';
+export {
+  oddsGates,
+  oddsDesignA,
+  oddsDesignB,
+  oddsDesignX,
+  oddsThree,
+  oddsLastUpdated,
+  oddsLaunchSingle,
+  oddsLaunchThree,
+  wholePercent,
+} from '../../src/data/successProbability';
 export * as versions from '../../src/data/versions';

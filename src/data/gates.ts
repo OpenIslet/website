@@ -85,7 +85,7 @@ export const gates: Gate[] = [
     name: 'Oxygen supply and safety switch',
     ask: 'Do the cells get oxygen in the first 3 days, and can they be removed or destroyed on command if needed?',
     explain: [
-      'A new graft has no blood vessels at first, so cells can run out of oxygen in the first 3 days. The design uses small clusters, pre-built blood-vessel fragments and a material that releases oxygen. The computer model suggests this is enough, but only just: the margin is thin if our assumptions are pessimistic, and nothing has been measured.',
+      'A new graft has no blood vessels at first, so cells can run out of oxygen in the first 3 days. The baseline design uses small clusters, pre-built blood-vessel fragments and a layer that releases oxygen; 3D transport checks add ordered microwells, wet-sieved calcium-peroxide beads of 50 µm or less with catalase barrier films at least 20 µm thick, alongside a 140 µm bead-free sheet comparator. Even so, the margin is thin if our assumptions are pessimistic, and nothing has been measured yet.',
       'Every cell is designed to carry a safety switch (iCasp9). If anything goes wrong, a drug called AP1903, designed to act only on cells that carry the switch, could be given to remove them. Nothing has shown yet that the switch works in every cell.',
     ],
   },

@@ -453,6 +453,126 @@
                 "type": "string",
                 "maxLength": 120
               },
+              "product_variant_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "estimand_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s8b_epistasis_estimand_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "obs_beta_x1_x4_epistasis_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "obs_beta_x3_x4_epistasis_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "specimen_or_clone_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "specimen_or_clone_ids": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "mcb_clone_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "prior_variant_safety_status": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_reason": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_reason_code": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_repeat_batch_ids": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_independent_qp_approver_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "oos_retest_assignable_cause_code": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_conditioning_history_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_depletion_mode": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_sa_fhl1_status": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_immune_responder_history": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "knockin_splice_challenger_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "knockin_locus4_orientation": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_construct_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_construct_donor_sha256": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "current_lot_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_qualified_lot_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_hlae_floor_mode": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "b2_tyk2_recipient_genotype_stratum": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "b2_tyk2_hlac_allele": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s6_cluster_size_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "p05_barrier_slab_geometry_mode": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "design_z_divider_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
               "obs_stage7_yield_ratio": {
                 "anyOf": [
                   {
@@ -708,6 +828,126 @@
                 "maxLength": 120
               },
               "assay_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "product_variant_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "estimand_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s8b_epistasis_estimand_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "obs_beta_x1_x4_epistasis_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "obs_beta_x3_x4_epistasis_scale": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "specimen_or_clone_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "specimen_or_clone_ids": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "mcb_clone_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "prior_variant_safety_status": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_reason": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_reason_code": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_repeat_batch_ids": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "reset_prior_safety_stop_independent_qp_approver_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "oos_retest_assignable_cause_code": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_conditioning_history_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_depletion_mode": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_sa_fhl1_status": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "adjunct_immune_responder_history": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "knockin_splice_challenger_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "knockin_locus4_orientation": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_construct_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_construct_donor_sha256": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "current_lot_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_qualified_lot_id": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s10_hlae_floor_mode": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "b2_tyk2_recipient_genotype_stratum": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "b2_tyk2_hlac_allele": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "s6_cluster_size_arm": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "p05_barrier_slab_geometry_mode": {
+                "type": "string",
+                "maxLength": 120
+              },
+              "design_z_divider_arm": {
                 "type": "string",
                 "maxLength": 120
               },

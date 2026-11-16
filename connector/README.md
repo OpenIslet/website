@@ -35,7 +35,7 @@ npm run mock-github   # a stand-in for GitHub, to try the submission queue (see 
 | `get_submission_status` | Where a submission is. Public, so no sign-in |
 | `get_review_prompt` | The prompt for the blind review, built from the draft, to paste into a fresh chat |
 | `check_draft` | A dry run of the submission checks. It posts nothing |
-| `submit_proposal` | Sends an IIP to the public queue. Signed in with GitHub, it opens the public issue at once; not signed in, it saves the checked files for a day and returns a link to the web form with them filled in. **Closed until `SUBMISSIONS_OPEN` is switched on**: it runs the same checks, then says submissions open soon |
+| `submit_proposal` | Sends an IIP to the public queue. Signed in with GitHub, it opens the public issue at once; not signed in, it saves the checked files for a day and returns a link to the web form with them filled in. When `SUBMISSIONS_OPEN` is `false`, it runs the same checks and reports that submissions are closed |
 
 Every read tool takes `version` (`draft`, `latest`, or a locked name such as `islet-1.0`). Every answer starts with a plain-English summary, ends with the version it came from, and comes with `structuredContent` for programs. Three prompts (`draft_a_proposal`, `blind_review`, `submit_my_proposal`) and six resources (the blueprint, the Idea Graveyard, versions, the review template, open questions and each study) are published too.
 
@@ -46,7 +46,7 @@ Set in `wrangler.jsonc` (`vars`) or the Worker's environment. [DEPLOY.md](DEPLOY
 | Variable | Default | Meaning |
 | --- | --- | --- |
 | `ACTIVE_BUNDLE` | `islet-1-draft` | The bundle that answers when no version is asked for |
-| `SUBMISSIONS_OPEN` | `false` | The master switch for the whole queue: `submit_proposal`, the web API, and the connector's sign-in |
+| `SUBMISSIONS_OPEN` | `true` (`wrangler.jsonc`; `false` in code fallback) | The master switch for the whole queue: `submit_proposal`, the web API, and the connector's sign-in |
 | `UNFREEZE_SCENARIO_SCORES` | `true` | Whether the design scores appear (only in the designs section, always with their caveat) |
 | `SHOW_SIMULATED_SURVIVAL` | `true` | Whether the patient layer shows its simulated "5-year survival" percentages. They always come under the layer's scope note. Set to `false` to hold them back |
 

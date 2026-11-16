@@ -62,9 +62,9 @@ function legendY(d: D) {
 }
 const legendTops = { A: legendY('A'), B: legendY('B'), X: legendY('X') };
 const graft = [
-  { n: 'a', id: 'spec-environment', title: 'Clusters', text: '120 µm or less across: beta, alpha and delta cells' },
+  { n: 'a', id: 'spec-environment', title: 'Clusters', text: '120 µm or less across (80–100 µm in Stage-0 microwells): beta, alpha and delta cells' },
   { n: 'b', id: 'spec-environment', title: 'Blood vessels', text: 'Pre-built fragments between the clusters' },
-  { n: 'c', id: 'spec-environment', title: 'Oxygen layer', text: 'Calcium peroxide and catalase: oxygen for 3 days' },
+  { n: 'c', id: 'spec-environment', title: 'Oxygen layer', text: 'Wet-sieved peroxide beads with catalase barrier films (or 140 µm bead-free comparator)' },
 ];
 
 const date = new Date(`${release.date}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });

@@ -52,7 +52,7 @@
       },
       {
         "kind": "added",
-        "text": "Seven live-verified GRCh38 zero-bystander ([4..8]) FAS and IL1R1 cytosine-base-editor stop-needle comparators (9 SpCas9-CBE / SpG-CBE guides, separated from germline IFIH1 p.Ile923Val and TYK2 p.Pro1104Ala missense benchmarks), plus Layer-3 crystal-interface and cis/trans compartment reconciliation (PDB 4DEP, 3O4O, 4MSV, 4J6G) retiring soluble endothelial IL1R2 decoys and blocking CASP8/FADD deletion (PMID 22426547, PMID 21368762)."
+        "text": "Screened 112 germline type 1 diabetes genetic regions (from OpenTargets top-200 MONDO_0005147 after stripping drug-target, MODY, T2D and exocrine confounders; PMID 34127860, PMID 34012112), ruling out 16 misleading beta-cell knockout traps (16p13 CLEC16A vs DEXI, PTPN2, TNFAIP3, BACH2, CTSH, SOCS1, GLIS3, DLK1, INS, CASP8, FADD, JAK1, STAT1, IFNGR1, IRF1 and TNFRSF1A; PMID 24949970, PMID 30478640, PMID 24608439, PMID 24982147, PMID 21368762) and registering seven live-verified GRCh38 zero-bystander ([4..8]) FAS and IL1R1 cytosine-base-editor stop-needle comparators alongside Layer-3 crystal-interface checks (PDB 4DEP, 3O4O, 4MSV, 4J6G) retiring soluble endothelial IL1R2 decoys (PMID 22426547)."
       },
       {
         "kind": "added",

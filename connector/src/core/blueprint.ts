@@ -66,6 +66,13 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
         md.bullets([
           ...Object.values(overview.designs).map((d: any) => `**${d.name}** (${d.summary}). ${d.for_whom} Main risk: ${d.main_risk}`), // eslint-disable-line @typescript-eslint/no-explicit-any
         ]) +
+        (overview.odds
+          ? '\n' +
+            md.h(2, 'Four-hurdle computational odds (not clinical cure rates)') +
+            md.bullets([
+              `**Design A:** about ${overview.odds.design_a_pct}% · **Design B:** about ${overview.odds.design_b_pct}% · **Design X:** about ${overview.odds.design_x_pct}% · **Three designs side by side:** about ${overview.odds.three_designs_pct}% (reassessed ${longDate(overview.odds.last_updated)}, up from about ${overview.odds.launch_baseline.three_designs_pct}% across three designs and about ${overview.odds.launch_baseline.single_design_pct}% for one design alone at launch; conditional computational judgements assuming lab safety and function checks pass).`,
+            ])
+          : '') +
         '\nPass design="X" for the challenger on its own.\n' +
         '\n' +
         md.h(2, 'What the evidence is') +
@@ -77,7 +84,7 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
           'Checks at five layers: the studies, the DNA, the proteins, the graft and body, and patient matching.',
         ]) +
         '\nAsk for another section (tests, designs, roadmap, versions, help) for more.';
-      data = { title: overview.title, goal: overview.goal, counts: c, tests: overview.tests.map((t: any) => ({ id: t.id, short: t.short })), designs: Object.keys(overview.designs) }; // eslint-disable-line @typescript-eslint/no-explicit-any
+      data = { title: overview.title, goal: overview.goal, counts: c, odds: overview.odds ?? null, tests: overview.tests.map((t: any) => ({ id: t.id, short: t.short })), designs: Object.keys(overview.designs) }; // eslint-disable-line @typescript-eslint/no-explicit-any
       break;
     }
     case 'tests': {

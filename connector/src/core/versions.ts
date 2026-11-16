@@ -23,7 +23,7 @@ export async function listVersions(bundle: Bundle): Promise<Answer> {
     md.table(
       ['Version', 'Status', 'Date', 'Citable (DOI)'],
       [
-        [v.draft.name, 'Open draft', `Opens ${longDate(v.draft.opens)} as ${v.draft.release_when_it_opens}`, 'Not applicable'],
+        [v.draft.name, 'Open draft', `Opened ${longDate(v.draft.opens)} as ${v.draft.release_when_it_opens}`, 'Not applicable'],
         ...locked.map((l) => [l.name, 'Locked', longDate(l.lock_date), l.doi ?? 'Being minted']),
         ...v.planned.map((p) => [p.name, `Planned. Fixes only from ${longDate(p.freeze_from)}`, longDate(p.lock_date), 'At the lock']),
       ],
@@ -40,7 +40,7 @@ export async function listVersions(bundle: Bundle): Promise<Answer> {
   return {
     summary,
     body,
-    data: { family: v.family, draft: v.draft, locked: v.locked, planned: v.planned, history: v.history.map((h) => ({ version: h.version, date: h.date, title: h.title })) },
+    data: { family: v.family, draft: v.draft, locked: v.locked, planned: v.planned, history: v.history.map((h) => ({ version: h.version, date: h.date, title: h.title, summary: h.summary, changes: h.changes })) },
     notes: ['A locked version never changes. Answers say which version they came from.'],
   };
 }

@@ -105,7 +105,7 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
         <div class="explain__item">
           <p class="explain__k">Why three designs</p>
           <h2>Nobody knows yet which approach works best</h2>
-          <p>Design A is the simplest idea and the lead design. Design B is a more tailored idea that carries more risk. Design X is the challenger: Design A with one more edit. The blueprint carries all three, so lab tests can decide instead of a guess.</p>
+          <p>Design A is the simplest idea and the lead design. Design B is a matched HLA-C alternative that also tests a chemical-free pouch route. Design X is the challenger: Design A plus one insulin-gene edit on the scored grid, alongside Stage-0 receptor, cloak and microwell upgrades. The blueprint carries all three, so lab tests can decide instead of a guess.</p>
         </div>
         <div class="explain__item">
           <p class="explain__k">How to read this page</p>
@@ -173,7 +173,7 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
 
           <article class="paper">
             <header class="paper__head">
-              <p class="paper__k">Concise specification · {release.version} · {longDate(release.date)}</p>
+              <p class="paper__k">Concise specification · {release.version} · updated {longDate(changelog[0]?.date ?? release.date)}</p>
               <h2 class="paper__title">{spec.frontmatter.title}</h2>
               <p class="paper__meta">
                 Status: design stage, not yet tested in the lab. Licence: CC BY 4.0. Cite as: OpenIslet (2026), Islet-1 blueprint {release.version}.
@@ -476,6 +476,9 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
                       <ul class="cl__changes">
                         {e.changes.map((ch) => (<li><span class={`kind kind--${ch.kind}`}>{kindLabel[ch.kind]}</span><span>{ch.text}</span></li>))}
                       </ul>
+                      {handleOf(e.contribution) && (
+                        <p class="cl__credit">Credit: <a href={`/contributions#${(e.contribution ?? '').toLowerCase()}`}>@{handleOf(e.contribution)}</a> · contribution <span class="mono">{e.contribution}</span></p>
+                      )}
                     </li>
                   ))}
                 </ol>

@@ -1,4 +1,4 @@
-// The OpenIslet MCP server: thirteen tools, three prompts and five resources over a versioned data bundle.
+// The OpenIslet MCP server: thirteen tools, three prompts and six resources over a versioned data bundle.
 // This file only wires things together. The work is in src/core, which has no dependency on the Worker runtime.
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/server';
 import { z } from 'zod';
@@ -19,7 +19,7 @@ import { conflictingEvidence, getStudy, oneLineStudy } from './core/studies';
 import { limitLength, andList, clip } from './core/text';
 import { listVersions, resolveVersion } from './core/versions';
 import type { Meta } from './core/types';
-import { WETLAB_CANONICAL_ENDPOINTS, type WetlabEmpiricalReadouts } from './core/wetlab-readouts';
+import { WETLAB_CANONICAL_ENDPOINTS, WETLAB_METADATA_KEYS, type WetlabEmpiricalReadouts } from './core/wetlab-readouts';
 
 export interface ServerDeps {
   store: BundleStore;
@@ -445,8 +445,7 @@ export function createConnectorServer(deps: ServerDeps): McpServer {
   // ---- 12 ----
   const wetlabVal = z.union([z.number(), z.string().max(40)]);
   const wetlabReadoutsSchema = z.strictObject({
-    batch_id: z.string().max(120).optional(),
-    assay_id: z.string().max(120).optional(),
+    ...Object.fromEntries(WETLAB_METADATA_KEYS.map((key) => [key, z.string().max(120).optional()])),
     ...Object.fromEntries(WETLAB_CANONICAL_ENDPOINTS.flatMap((endpoint) => [
       [endpoint.meanKey, wetlabVal.optional()], [endpoint.seKey, wetlabVal.optional()],
     ])),

@@ -107,7 +107,7 @@ export const stages: Stage[] = [
       'Direction and penalty labels in the corpus are rule-based heuristics. They have not been independently adjudicated.',
       'The first construct, cluster-density, differentiation and immune and insulin-secretion acceptance experiments are pre-registered and still pending.',
     ],
-    timing: `The open draft starts on ${day(draft.opens)}. Islet-1.0 locks on ${day(planned[0].lock)}.`,
+    timing: `The open draft started on ${day(draft.opens)}. Islet-1.0 locks on ${day(planned[0].lock)}.`,
   },
   {
     id: '1',

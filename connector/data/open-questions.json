@@ -34,8 +34,8 @@
   {
     "id": "OQ-002",
     "title": "Does SERPINB9 really block the killer-cell toxin as designed?",
-    "plain": "Killer immune cells fire a toxin called granzyme B into their targets. The design makes the cells carry SERPINB9, a protein that should block that toxin. A computer cannot tell us whether it works, so only a lab test can.",
-    "detail": "The flexible loop of SERPINB9 that engages granzyme B cannot be modelled reliably by structure prediction, so whether the inserted protein blocks granzyme B at the needed level is unresolved.",
+    "plain": "Killer immune cells fire a toxin called granzyme B into their targets. The design makes the cells carry SERPINB9, a protein that should block that toxin, and Stage-0 checks compare the reference 2A-linked version with scar-free SERPINB9 templates. A computer cannot tell us whether it works, so only a lab test can.",
+    "detail": "The flexible reactive-centre loop of SERPINB9 that engages granzyme B (Sun 1996, PMID 8910377; Bird 1998, PMID 9774654; granzyme B reference crystal PDB 1IAU is complexed with Ac-IEPD-CHO rather than SERPINB9, Rotonda 2001, PMID 11325591) cannot be modelled reliably by structure prediction. Canonical CXCL10::SERPINB9-GSG-P2A-PD-L1 also leaves a 21-amino-acid C-terminal P2A tail on SERPINB9, so Stage-0 checks compare it head to head against materialized scar-free (2A-free) dual-promoter SERPINB9 donors (L3-BF-B, 4,078 bp, and DX-L3, 3,799 bp; IIP-0015 and IIP-0017) alongside exploratory redox-substituted SERPINB9 C341S in ARM6 (Mangan 2016, PMID 26670609; IIP-0018).",
     "tests": [
       "4"
     ],
@@ -45,9 +45,14 @@
       "X"
     ],
     "rules": [],
-    "pmids": [],
-    "settle": "A lab test of whether cells carrying the SERPINB9 design survive exposure to granzyme B.",
-    "source": "Concise specification sections 4.3 and 9",
+    "pmids": [
+      "8910377",
+      "9774654",
+      "11325591",
+      "26670609"
+    ],
+    "settle": "Compare cells carrying the canonical GSG-P2A SERPINB9 cassette, the scar-free 2A-free dual-promoter SERPINB9 donors and exploratory SERPINB9 C341S against granzyme B and perforin/peroxynitrite stress.",
+    "source": "Concise specification sections 4.3 and 9; IIP-0015, IIP-0017 and IIP-0018",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -55,8 +60,8 @@
   {
     "id": "OQ-003",
     "title": "Can the patient's own immune cells restart the attack using debris from the graft?",
-    "plain": "Cells with no HLA flags are hard for T cells to see directly. But the patient's own immune cells can pick up debris from the graft and show it to T cells, which can restart the attack that caused the diabetes.",
-    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). For cytokine and death-receptor bystander killing triggered by indirect presentation and Day 0–7 SA-FasL microgels, IIP-0018 pre-registers a held 6-arm Locus-3 Multi-miR(IL1R1 + FAS) synthetic-intron Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5; Amen 2022, Fellmann 2013) plus seven standalone zero-bystander FAS/IL1R1 cytosine-base-editor stop comparators, while blocking CASP8/FADD deletion (Kaiser 2011) and retiring soluble endothelial IL1R2 decoys (Thomas 2012); none is yet measured.",
+    "plain": "Cells with no HLA flags are hard for T cells to see directly. But the patient's own immune cells can pick up debris from the graft, show it to T cells, and release inflammatory IL-1 and Fas-ligand signals that attack nearby beta cells.",
+    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). Screening 112 germline type 1 diabetes genetic regions from the top 200 OpenTargets entries (Robertson 2021, PMID 34127860; Chiou 2021, PMID 34012112) ruled out 16 misleading beta-cell knockout targets—including the 16p13 nearest-gene mitophagy regulator CLEC16A (Soleimanpour 2014, PMID 24949970, vs chromatin-looped DEXI, Dos Santos 2019, PMID 30478640), protective survival brakes PTPN2, TNFAIP3, BACH2 (Marroquí 2014, PMID 24608439), CTSH (Fløyel 2014, PMID 24982147), SOCS1, GLIS3, DLK1 and INS, necroptosis brakes CASP8/FADD (Kaiser 2011, PMID 21368762), and CXCL10 switch blocks JAK1, STAT1, IFNGR1, IRF1 and TNFRSF1A—and converged on IL1R1 and FAS bystander execution receptors. IIP-0018 therefore pre-registers a held 6-arm Locus-3 Multi-miR(IL1R1 + FAS) synthetic-intron Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5; Amen 2022, Fellmann 2013) plus seven standalone zero-bystander FAS/IL1R1 cytosine-base-editor stop comparators while retiring soluble endothelial IL1R2 decoys (Thomas 2012); none is yet measured.",
     "tests": [
       "2B"
     ],
@@ -73,7 +78,13 @@
       "35880017",
       "24332856",
       "21368762",
-      "22426547"
+      "22426547",
+      "34127860",
+      "34012112",
+      "24949970",
+      "30478640",
+      "24608439",
+      "24982147"
     ],
     "settle": "Mix the patient's antigen-presenting and T cells with debris from flag-free islets (comparing canonical P2A, 2A-free CXCL10 test templates, the 6-arm Locus-3 Multi-miR(IL1R1 + FAS) challenger suite and standalone FAS/IL1R1 stop comparators across HLA-DQ2.5/DQ8/DR3/DR4 donors), and look for T-cell activation and bystander cell damage.",
     "source": "Concise specification sections 4.2, 4.3, 4.5 and 9; rule GY-010; IIP-0017 and IIP-0018",
@@ -114,7 +125,7 @@
   {
     "id": "OQ-005",
     "title": "Does the oxygen supply hold up under pessimistic assumptions?",
-    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In the computer model the margin inside each cluster of cells is thin, and the model uses a single 68-hour oxygen-release half-life across recipes that pack more calcium peroxide into smaller beads. With a faster or slower release, or late blood vessels, oxygen or peroxide safety can fail.",
+    "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In 3D simulations, unpatterned clusters crowd one another, uncoated edge beads create local peroxide spikes, and a single 68-hour release half-life is assumed across denser bead recipes—so Stage-0 tests pair ordered microwells, wet-sieved beads of 50 micrometres or less and catalase barrier films at least 20 micrometres thick alongside a 140 micrometre bead-free sheet comparator.",
     "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint. Resolving discrete clusters and beads in 3D (IIP-0019) adds three local transport gates: unpatterned pouring at 1,500 IEQ/cm^2 (15 um physical collagen = 45 um hydrogel-equivalent standoff) pushes 40-60% of 100 um clusters below 15 mmHg (vs ordered microwells or dose-matched 80 um clusters at 142.22/152.83 um pitch, distinct from 768 IEQ/cm^2 pitch-held derating); an uncoated edge-touching CaO2 bead creates a 6.9-19.5 uM peroxide plume requiring wet-sieved d_99 <= 50 um beads plus >= 20 um catalase barrier films (~105,429 IU post-cure active load on 333.3 cm^2 to retain 73,800 IU and hold 24-hour burst <= 2.5 uM across expanded 390 um or 350 um cross-sections); and any 140 um bead-free Design Z pouch must pass both 5-site 14-day empty-lumen micro-optode thresholds (Einstein 2023, PMID 38993891) and loaded closed-state confirmation.",
     "tests": [
       "5"
@@ -224,8 +235,8 @@
   {
     "id": "OQ-009",
     "title": "Which layout should be used to add CD47 and HLA-E at B2M?",
-    "plain": "Two ways of adding the two genes are being compared. One reads them as a single unit and is too long for the usual delivery virus. The other gives each gene its own switch and fits.",
-    "detail": "Layout 1 joins the genes with a 2A sequence (4,880 base pairs, over the single-AAV6 limit, so non-viral delivery would be needed). Layout 2 uses two promoters facing opposite directions with no 2A joint (3,974 base pairs, fits one AAV6 virus).",
+    "plain": "Two layouts for adding CD47 and HLA-E at B2M are being compared, alongside a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells while fitting inside one delivery virus.",
+    "detail": "Layout 1 (Arm 1A) joins the genes with a porcine GSG-P2A sequence (4,880 base pairs, over the single-AAV6 limit and carrying uncleaved 697-aa readthrough risk; IIP-0017). Layout 2 (Arm 1B, 3,974 base pairs, alongside 4,143-bp Embodiment A*) uses separate promoters facing opposite directions with no 2A joint and fits in one AAV6 virus, paired in Stage 0 with silent B2M exon-2 stop-seam hardening against a 32-aa out-of-frame tail (IIP-0015) and a 20-construct two-strand splice-cleaned HLA-E NKG2C/NKG2A comparator panel (Lin 2023, PMID 37264229; Lauterbach 2015, PMID 26382247; IIP-0016).",
     "tests": [
       "2A",
       "3"
@@ -234,10 +245,17 @@
       "A",
       "X"
     ],
-    "rules": [],
-    "pmids": [],
-    "settle": "Build both layouts and compare expression level, editing yield and delivery.",
-    "source": "Concise specification section 4.1",
+    "rules": [
+      "GY-009"
+    ],
+    "pmids": [
+      "28504668",
+      "37156915",
+      "37264229",
+      "26382247"
+    ],
+    "settle": "Compare Layout 1, Layout 2 and the 20-construct splice-cleaned HLA-E comparator panel across resting and interferon-stimulated islet and vascular cells for surface density, splicing fidelity, promoter methylation, editing yield and NK/CD8 response.",
+    "source": "Concise specification section 4.1; rule GY-009; IIP-0015, IIP-0016 and IIP-0017",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -245,8 +263,8 @@
   {
     "id": "OQ-010",
     "title": "At CXCL10, does it matter which protective gene comes first?",
-    "plain": "The design adds two protective genes at one spot, SERPINB9 and PD-L1, so they switch on only when inflammation appears. The current order is SERPINB9 first. A lab test would compare it with the reverse order.",
-    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1, compared head-to-head with CXCL10::PD-L1-GSG-P2A-SERPINB9 and with a held 6-arm 5'-UTR synthetic-intron Multi-miR(IL1R1 + FAS) Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6; IIP-0018) gated on calibrated UMI splicing, >= 85% retained SERPINB9/PD-L1 induction, >= 90% miR-375 AGO2 occupancy (Poy 2004), unblunted postprandial IL-1beta-amplified GSIS (Dror 2017) and >= 99.99% AP1903 iCasp9 kill.",
+    "plain": "The design adds SERPINB9 and PD-L1 at CXCL10 so they switch on only during inflammation. Stage-0 tests compare the SERPINB9-first reference cassette against the reverse order, scar-free 2A-free donors, and a 6-arm synthetic-intron IL-1 and Fas receptor shield inside one AAV6 virus.",
+    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1, compared head-to-head with CXCL10::PD-L1-GSG-P2A-SERPINB9, scar-free (2A-free) dual-promoter L3-BF-B (4,078 bp) and DX-L3 (3,799 bp) donors with antisense-ART3 splice hardening (IIP-0015, IIP-0017), and a held 6-arm 5'-UTR synthetic-intron Multi-miR(IL1R1 + FAS) Stage-0 challenger suite built on the 2A-free L3-BF-B backbone (4,398-bp donor / 4,688 bp single-AAV6; IIP-0018) gated on calibrated UMI splicing, >= 85% retained SERPINB9/PD-L1 induction, >= 90% miR-375 AGO2 occupancy (Poy 2004), unblunted postprandial IL-1beta-amplified GSIS (Dror 2017) and >= 99.99% AP1903 iCasp9 kill.",
     "tests": [
       "4",
       "2B"
@@ -265,7 +283,7 @@
       "28092375"
     ],
     "settle": "Edit cells with each order and with the 6-arm Multi-miR(IL1R1 + FAS) synthetic-intron challenger panel, comparing SERPINB9/PD-L1 levels, splicing fidelity, miR-375 loading, insulin secretion and survival under inflammation and killer-cell attack.",
-    "source": "Concise specification section 4.3; IIP-0018",
+    "source": "Concise specification section 4.3; IIP-0015, IIP-0017 and IIP-0018",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -286,7 +304,7 @@
       "12370285"
     ],
     "settle": "Test whether the sequence drives expression on its own, outside inflammation.",
-    "source": "Concise specification sections 4.5 and 9",
+    "source": "Concise specification sections 4.5 and 9; IIP-0017",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -325,9 +343,9 @@
   },
   {
     "id": "OQ-013",
-    "title": "Is switching off TYK2 worth its cost in insulin-making cells?",
-    "plain": "In the model, switching off TYK2 helps against rejection, autoimmune attack and early attack. But it costs about a third of the insulin-making cells while they grow. Whether the trade is worth it in the full design is not known.",
-    "detail": "Design B switches off TYK2. Chandra 2022 (PMID 36289205) reports about 32 per cent fewer insulin-making cells during differentiation.",
+    "title": "Is switching off TYK2 worth its cost in insulin-making cells, or does TYK2 P1104A avoid it?",
+    "plain": "In Design B1, switching off TYK2 helps against inflammatory signalling in the model, but costs about a third of the insulin-making cells while they grow. Design B2 instead tests the naturally protective TYK2 P1104A variant to spare cell yield, provided it does not create a foreign peptide on kept HLA-C.",
+    "detail": "Design B1 disrupts TYK2, where Chandra 2022 (PMID 36289205) reports about 32 per cent fewer insulin-making cells during stem-cell islet differentiation. Design B2 (evaluated in the four-hurdle assessment) instead preserves wild-type TYK2 or installs the catalytic-domain protective variant TYK2 P1104A (rs34536443; Dendrou 2016, PMID 27807284; Boisson-Dupuis 2018, PMID 30578352) to dampen type-I interferon signalling while retaining TYK2 scaffolding, gated on IIP-0017's stratified HLA-C SAPTKFLEL presentation and CD8+ T-cell hold checks (OQ-004).",
     "tests": [
       "1",
       "2A",
@@ -339,10 +357,12 @@
     ],
     "rules": [],
     "pmids": [
-      "36289205"
+      "36289205",
+      "27807284",
+      "30578352"
     ],
-    "settle": "Measure insulin-making cell yield and immune protection in the full Design B, with and without the TYK2 edit.",
-    "source": "Concise specification section 4.5",
+    "settle": "Compare wild-type TYK2, TYK2 knockout (B1) and TYK2 P1104A (B2) head to head in the Design B chassis for Stage-7 beta-cell yield, interferon protection and HLA-C SAPTKFLEL antigenicity.",
+    "source": "Concise specification section 4.5; OQ-004; IIP-0011 and IIP-0017",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -374,8 +394,8 @@
   {
     "id": "OQ-015",
     "title": "Does the proposed outer-band pouch physically fit?",
-    "plain": "In the baseline geometry used for the scores across Designs A, B and X, a 350 micrometre slab with a 119 micrometre central oxygen layer leaves two outer bands of 115.5 micrometres, slightly narrower than 120 micrometre cell clusters. Explicit 3D checks also showed that loose clusters clump together and that uncoated edge beads spike local peroxide, so the Stage-0 layouts add ordered microwells, wet-sieved beads of at most 50 micrometres and catalase barrier films at least 20 micrometres thick (at 350 or expanded 390 micrometres) alongside a 140 micrometre bead-free pre-vascularized comparator. Nothing has been built or measured yet.",
-    "detail": "Clarified in IIP-0009 and audited in 3D in IIP-0019. In the scored Layout B baseline shared by the grid rows for Designs A, B and X, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to contain 120 micrometre spheres without compression. Stage-0 Embodiment A* and Stage-0 Design X thin the central lamina to 100 micrometres (clusters <= 80 to 100 micrometres) and pair ordered microwells with wet-sieved d_99 <= 50 micrometre beads and >= 20 micrometre cell-free catalase-immobilized barrier films across expanded 390 micrometre or 350 micrometre cross-sections while holding 791.5 mg CaO2 conserved, alongside a two-stage 140 micrometre Zero-CaO2 bead-free pre-vascularized comparator (IIP-0019). All layouts remain unbuilt.",
+    "plain": "In the baseline geometry used for the scores across Designs A, B and X, a 350 micrometre slab with a 119 micrometre central oxygen layer leaves two outer bands of 115.5 micrometres, slightly narrower than 120 micrometre cell clusters. Explicit 3D checks also showed that loose clusters clump together and that uncoated edge beads spike local peroxide, so the Stage-0 layouts add ordered microwells, wet-sieved beads of at most 50 micrometres and catalase barrier films at least 20 micrometres thick (at 350 or expanded 390 micrometres) alongside a 140 micrometre bead-free pre-vascularised comparator. Nothing has been built or measured yet.",
+    "detail": "Clarified in IIP-0009 and audited in 3D in IIP-0019. In the scored Layout B baseline shared by the grid rows for Designs A, B and X, a 350 micrometre slab with a 34% central lamina (119 micrometres) leaves two 115.5 micrometre outer bands, too narrow to contain 120 micrometre spheres without compression. Stage-0 Embodiment A* and Stage-0 Design X thin the central lamina to 100 micrometres (clusters <= 80 to 100 micrometres) and pair ordered microwells with wet-sieved d_99 <= 50 micrometre beads and >= 20 micrometre cell-free catalase-immobilised barrier films across expanded 390 micrometre or 350 micrometre cross-sections while holding 791.5 mg CaO2 conserved, alongside a two-stage 140 micrometre Zero-CaO2 bead-free pre-vascularised comparator (IIP-0019). All layouts remain unbuilt.",
     "tests": [
       "5"
     ],
@@ -511,7 +531,7 @@
   {
     "id": "OQ-020",
     "title": "Do edited islets stay protected after temporary gel signals wear off, and can added CD55 help without hurting insulin release?",
-    "plain": "Temporary gel particles carrying clotting-control and Fas-ligand proteins wash out after the early transplant window, which could let the immune system rebound against the bare cells. Adding a extra complement shield (CD55) must also be tested on the exact same edited cells while keeping the cell's own CD59 insulin-release machinery intact.",
+    "plain": "Temporary gel particles carrying clotting-control and Fas-ligand proteins wash out after the early transplant window, which could let the immune system rebound against the bare cells. Adding an extra complement shield (CD55) must also be tested on the exact same edited cells while keeping the cell's own CD59 insulin-release machinery intact.",
     "detail": "Raised in IIP-0012. Prior SA-FasL microgel studies used short-course rapamycin and measured fluorescent retention rather than functional depletion half-life (Headen 2018, PMID 29867165; Lei 2022, PMID 35559682; Turan 2024, PMID 38709159). Stage 0 compares never-conditioned, conditioned-then-depleted and active-gel sibling aliquots under fresh complement and T-cell rechallenge, tests ectopic CD55(SCR1-4) on the identical edited background while preserving endogenous intracellular CD59 isoforms needed for insulin exocytosis (Golec 2022, PMID 35666870; van der Torren 2017, PMID 27787618), and holds four extra candidate edits (TYMS, NLRC5, endogenous CD274 activation and TXNIP) outside core designs behind pre-registered pass gates.",
     "tests": [
       "1",

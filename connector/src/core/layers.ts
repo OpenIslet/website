@@ -20,7 +20,7 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   proteins: {
     name: 'The protein layer (layer 3 of 5)',
     plain: (c) =>
-      `Replays reference-coordinate geometry from ${c.experimentalStructures ?? 'unavailable'} experimental structures and ${c.predictedStructures ?? 'unavailable'} AlphaFold models across ${c.proteinPairs ?? 'unavailable'} protein pairs alongside soluble receptor-affinity reconciliations and non-gating CC-BY-4.0 AlphaMissense v3 variant provenance. Reference compatibility does not establish engineered-product folding, receptor selectivity, immune protection, clonal safety or pan-allelic function.`,
+      `Replays reference-coordinate geometry from ${c.experimentalStructures ?? 'unavailable'} pinned experimental structures and ${c.predictedStructures ?? 'unavailable'} AlphaFold models across ${c.proteinPairs ?? 'unavailable'} core protein pairs, supplemented by a 13-structure peptide-bound HLA-E crystal survey, four cytokine/death-receptor crystal checks, soluble receptor-affinity reconciliations and non-gating CC-BY-4.0 AlphaMissense v3 variant provenance. Reference compatibility does not establish engineered-product folding, receptor selectivity, immune protection, clonal safety or pan-allelic function.`,
   },
   tissue: {
     name: 'The tissue layer (layer 4 of 5)',

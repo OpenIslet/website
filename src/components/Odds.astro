@@ -8,9 +8,12 @@ import {
   oddsDesignX,
   oddsThree,
   oddsLastUpdated,
+  oddsLaunchSingle,
+  oddsLaunchThree,
   wholePercent,
 } from '../data/successProbability';
 import { longDate, pubmed, release } from '../data/site';
+import { draft } from '../data/versions';
 import changelog from '../data/changelog.json';
 import OddsArt from './odds/OddsArt.astro';
 
@@ -149,7 +152,7 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
         <p><strong>What these numbers are.</strong> Our own computational estimates for each combined design, anchored to human trial data where partial proof exists (hurdles 1 and 2) and to 3D physics and sequence models where it does not yet (hurdles 3 and 4). Layering new untested edits together can shift earlier hurdles too, so none of these figures is a lab measurement or the chance of a cure.</p>
         <p><strong>Why three designs.</strong> Even the highest-scoring simulated design (Design X, about {xVal}%) faces real biological risk on its own, while Design A (about {aVal}%) keeps the simplest genetic build as a low-risk baseline control and Design B (about {bVal}%) covers an independent HLA-C and chemical-free pouch route. Advancing all three side by side reaches about {threeVal}% (see warning 4 in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a>).</p>
         <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank fixed-grid designs against each other. They are not percentages, and they are not these odds.</p>
-        <p><strong>Updated as designs and results evolve.</strong> We review these percentages when accepted blueprint changes, new human trial data or OpenIslet lab results change our assessment. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
+        <p><strong>Updated as designs and results evolve.</strong> Up from about {oddsLaunchThree}% across three designs (and about {oddsLaunchSingle}% for one design alone) when the open draft opened on {longDate(draft.opens)}. We review these percentages when accepted blueprint changes, new human trial data or OpenIslet lab results change our assessment. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
       </div>
     </div>
   </div>

@@ -4,6 +4,7 @@ import contract from './wetlab-endpoint-contract.json';
 export type WetlabReadoutValue = number | string;
 export interface WetlabEmpiricalReadouts { batch_id?: string; assay_id?: string; [key: string]: WetlabReadoutValue | undefined }
 export const WETLAB_CANONICAL_ENDPOINTS = contract.endpoints;
+export const WETLAB_METADATA_KEYS = contract.metadata_keys;
 const decimal = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/;
 
 function numeric(value: unknown, key: string): number {

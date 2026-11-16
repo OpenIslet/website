@@ -161,11 +161,11 @@ const named: Scenario[] = [
         ],
         notes: [
           'The proposed inflammation-responsive protection retains STAT1; switching STAT1 off would conflict with this trigger.',
-          'SERPINB9 is made first, then PD-L1; a lab test compares this order with the reverse while keeping the template inside one AAV6 virus.',
+          'SERPINB9 is made first, then PD-L1; Stage-0 lab tests compare this reference GSG-P2A cassette against scar-free (2A-free) dual-promoter SERPINB9 comparators and the reverse gene order while keeping the template inside one AAV6 virus.',
           'Stage-0 tests check that nearby inflammatory genes (CXCL9 and CXCL11) and opposite-strand ART3 transcripts stay undisturbed—comparing one-change-at-a-time silent PD-L1 variants, a 3′-end cleavage check and an optional single-sided 80-bp boundary element alongside the untouched reference donor without adding hairpin repeats to the AAV6 virus—and test whether PD-L1 shed into cell-free liquid around the cells calms a separate immune response on its own.',
-          'Stage-0 tests also evaluate a held 6-arm Multi-miR(IL1R1 + FAS) synthetic-intron challenger panel (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5) and seven standalone zero-bystander FAS/IL1R1 base-editor stop comparators against indirect IL-1β and FasL/SA-FasL bystander killing, gated on UMI splicing, miR-375 AGO2 retention, postprandial IL-1β insulin release and >= 99.99% iCasp9 kill (while blocking CASP8 deletion and retiring soluble endothelial IL1R2 decoys).',
+          'Screening 112 germline type 1 diabetes genetic regions (from the top 200 OpenTargets entries after stripping drug-target, MODY, type 2 diabetes and exocrine confounders) converged on shared host-immune IL-1β and Fas-ligand bystander killing while ruling out 16 misleading gene targets we must not switch off—including the 16p13 nearest-gene mitophagy regulator CLEC16A (where risk variants loop to inflammatory DEXI instead), protective beta-cell survival brakes (PTPN2, TNFAIP3, BACH2, CTSH, SOCS1, GLIS3, DLK1 and INS), necroptosis brakes (CASP8 and FADD), and CXCL10 switch regulators (JAK1, STAT1, IFNGR1, IRF1 and TNFRSF1A). Stage-0 tests therefore evaluate a held 6-arm Multi-miR(IL1R1 + FAS) synthetic-intron challenger panel (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5) and seven standalone zero-bystander FAS/IL1R1 base-editor stop comparators, gated on UMI splicing, miR-375 AGO2 retention, postprandial IL-1β insulin release and >= 99.99% iCasp9 kill (while retiring soluble endothelial IL1R2 decoys).',
         ],
-        pmids: ['28526819', '30952982', '28813417', '28462820', '29345283', '35880017', '24332856', '22426547', '21368762', '15538371', '28092375'],
+        pmids: ['28526819', '30952982', '28813417', '28462820', '29345283', '35880017', '24332856', '22426547', '21368762', '15538371', '28092375', '34127860', '34012112', '24949970', '30478640', '24608439', '24982147'],
       },
       aavs1,
     ],
@@ -180,11 +180,11 @@ const named: Scenario[] = [
     rows: [
       { name: 'HLA-A and HLA-B genes', sub: 'Switch off, keep one HLA-C', marks: 'npnpnn' },
       { name: 'CIITA gene', sub: 'Switch off', marks: 'npnnnn' },
-      { name: 'TYK2 gene', sub: 'Switch off', marks: 'xsssnn' },
+      { name: 'TYK2 gene', sub: 'B1: switch off; B2: keep or P1104A variant', marks: 'xsssnn' },
       { name: 'CXCL10 gene', sub: 'Add SERPINB9 and PD-L1', marks: 'nnsnpn' },
       { name: 'AAVS1 location', sub: 'Add safety switch', marks: 'nnnnnp' },
-      { name: 'INS gene', sub: 'One base edit', marks: 'nnpnnn' },
-      { name: 'Setting', sub: 'Small clusters, vessels, oxygen', marks: 'pnsnsp' },
+      { name: 'INS gene', sub: 'One base edit (B1)', marks: 'nnpnnn' },
+      { name: 'Setting', sub: 'Small clusters, vessels, oxygen (or 140 µm bead-free sheet)', marks: 'pnsnsp' },
     ],
     loci: [
       {
@@ -238,8 +238,8 @@ const named: Scenario[] = [
           { label: 'PD-L1', kind: 'cds', grow: 1.8 },
         ],
         notes: [
-          'A 2A-free topology is proposed to avoid that linker scar; its actual expression products and antigen presentation are unmeasured.',
-          'Layer 2 retains provisional P2A B comparators only; those priors do not validate this unresolved 2A-free product.',
+          'A 2A-free topology is proposed to avoid that linker scar (trimming reference-unmatched 8–11-amino-acid stretches from 205 to 83 in wild-type-TYK2 Design B and from 243 to 121 in TYK2-P1104A Design B2 across the 22-species foreign-peptide scan); its actual expression products and antigen presentation are unmeasured.',
+          'Layer 2 retains provisional P2A B comparators only; those priors do not validate this unresolved 2A-free product. In the four-hurdle assessment, Design B pairs B2 (TYK2 P1104A) with the 140 µm bead-free pre-vascularized sheet comparator as an independent chemical-free route.',
         ],
         pmids: ['12370285'],
       },
@@ -311,24 +311,24 @@ const designX: Scenario = {
     },
     proposal: {
       title: 'The molecular proposal',
-      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals, a protective starting cell line, a dedicated outer-ring arrangement for the Fas-ligand gel, and a thinner 100 µm central oxygen layer. It does not include the insulin-gene edit. Across all designs, the zinc transporter SLC30A8 (ZnT8) is kept intact and four extra candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) stay held outside core designs behind written lab pass rules. None of this is built, measured or scored yet.',
+      text: 'A separate Stage-0 version with proposed upgrades: a new switch for the HLA-E and CD47 “don’t attack me” signals paired with a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells, a 6-arm CXCL10 synthetic-intron Multi-miR(IL1R1 + FAS) bystander-receptor shield (plus standalone zero-bystander FAS/IL1R1 base-editor stop comparators), a protective starting cell line, and an outer-ring Fas-ligand gel paired with ordered microwells, wet-sieved calcium-peroxide beads of 50 µm or less and catalase barrier films at least 20 µm thick around a 100 µm central oxygen layer. It does not include the insulin-gene edit. Across all designs, the zinc transporter SLC30A8 (ZnT8) is kept intact and four extra candidate edits (TYMS, NLRC5, endogenous CD274 and TXNIP) stay held outside core designs behind written lab pass rules. None of this has been tested in the lab or added to the fixed grid score.',
     },
   },
   proposals: [
     {
       art: 'signals',
-      title: 'Redesigned “don’t attack me” signals',
-      text: 'A new DNA switch and a slightly changed CD47 protein, to be tested for more protective signal in the first hours. HLA-E stays unchanged unless an optional side test (D227K/T228A) curbs viral-reactive killer T cells without weakening regulatory CD8+ T cells. A written proposal: its full Design X cassette is not built yet. Not scored or tested.',
+      title: 'Redesigned “don’t attack me” and receptor shields',
+      text: 'A new DNA switch, a cysteine-cleaned CD47 protein and a 20-construct splice-cleaned HLA-E panel screened to avoid triggering activating NKG2C natural killer cells while keeping NKG2A protection (plus an optional D227K/T228A control against viral-reactive killer T cells), paired at CXCL10 with a 6-arm synthetic-intron Multi-miR(IL1R1 + FAS) shield that dials down the cell’s own IL-1 and Fas bystander death receptors inside one AAV6 virus. Held behind Stage-0 lab pass gates; not in the fixed grid score.',
     },
     {
       art: 'line',
-      title: 'A protective stem-cell line',
-      text: `Start from a stem-cell line that already carries a natural variant of the insulin gene linked to a lower risk of type 1 diabetes, alongside testing how a naturally protective TYK2 variant behaves across the ${release.counts.virtualPatients.toLocaleString('en-US')}-patient simulation. Choosing a starting line is not an edit, and any protection is unproven.`,
+      title: 'A protective stem-cell line and base-edit comparators',
+      text: `Start from a stem-cell line that already carries a natural variant of the insulin gene linked to a lower risk of type 1 diabetes, alongside testing how a naturally protective TYK2 variant behaves across the ${release.counts.virtualPatients.toLocaleString('en-US')}-patient simulation and comparing seven standalone zero-bystander FAS and IL1R1 base-editor stop alleles. Choosing a starting line is not an edit, and any protection is unproven.`,
     },
     {
       art: 'gel',
-      title: 'A layered gel around the graft',
-      text: 'While all three designs include clotting-control and Fas-ligand gel signals, the Stage-0 Design X proposal places the Fas-ligand particles strictly in an outer boundary ring around a thinner 100 µm central oxygen layer so they stay away from the beta cells. Stage-0 tests also check immune rebound once the gel wears off and test an optional CD55 complement shield while keeping endogenous CD59 insulin release intact.',
+      title: 'Ordered microwells, catalase barrier and outer-ring gel',
+      text: 'Pairs ordered microwells (capping clusters at 80 to 100 µm against 3D crowding), wet-sieved calcium-peroxide beads of 50 µm or less and catalase barrier films at least 20 µm thick around a thinner 100 µm central oxygen layer, while keeping Fas-ligand gel particles strictly in an outer boundary ring away from the beta cells. Stage-0 tests check peroxide clearance, immune rebound once the gel washes out, and an optional CD55 complement shield with intact endogenous CD59.',
     },
   ],
 };

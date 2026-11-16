@@ -25,6 +25,20 @@
     "year": 1999,
     "doi": "10.1093/emboj/18.15.4250"
   },
+  "10523611": {
+    "pmid": "10523611",
+    "title": "A20 inhibits cytokine-induced apoptosis and nuclear factor kappaB-dependent gene activation in islets.",
+    "authors": [
+      "Grey ST",
+      "Arvelo MB",
+      "Hasenkamp W",
+      "Bach FH",
+      "Ferran C"
+    ],
+    "journal": "J Exp Med",
+    "year": 1999,
+    "doi": "10.1084/jem.190.8.1135"
+  },
   "15538371": {
     "pmid": "15538371",
     "title": "A pancreatic islet-specific microRNA regulates insulin secretion.",
@@ -44,6 +58,24 @@
     "journal": "Nature",
     "year": 2004,
     "doi": "10.1038/nature03076"
+  },
+  "19336676": {
+    "pmid": "19336676",
+    "title": "PTPN2, a candidate gene for type 1 diabetes, modulates interferon-gamma-induced pancreatic beta-cell apoptosis.",
+    "authors": [
+      "Moore F",
+      "Colli ML",
+      "Cnop M",
+      "Esteve MI",
+      "Cardozo AK",
+      "Cunha DA",
+      "Bugliani M",
+      "Marchetti P",
+      "Eizirik DL"
+    ],
+    "journal": "Diabetes",
+    "year": 2009,
+    "doi": "10.2337/db08-1510"
   },
   "21368762": {
     "pmid": "21368762",
@@ -171,6 +203,79 @@
     "year": 2013,
     "doi": "10.1016/j.celrep.2013.11.020"
   },
+  "24608439": {
+    "pmid": "24608439",
+    "title": "BACH2, a candidate risk gene for type 1 diabetes, regulates apoptosis in pancreatic β-cells via JNK1 modulation and crosstalk with the candidate gene PTPN2.",
+    "authors": [
+      "Marroquí L",
+      "Santin I",
+      "Dos Santos RS",
+      "Marselli L",
+      "Marchetti P",
+      "Eizirik DL"
+    ],
+    "journal": "Diabetes",
+    "year": 2014,
+    "doi": "10.2337/db13-1443"
+  },
+  "24949970": {
+    "pmid": "24949970",
+    "title": "The diabetes susceptibility gene Clec16a regulates mitophagy.",
+    "authors": [
+      "Soleimanpour SA",
+      "Gupta A",
+      "Bakay M",
+      "Ferrari AM",
+      "Groff DN",
+      "Fadista J",
+      "Spruce LA",
+      "Kushner JA",
+      "Groop L",
+      "Seeholzer SH",
+      "Kaufman BA",
+      "Hakonarson H",
+      "Stoffers DA"
+    ],
+    "journal": "Cell",
+    "year": 2014,
+    "doi": "10.1016/j.cell.2014.05.016"
+  },
+  "24982147": {
+    "pmid": "24982147",
+    "title": "CTSH regulates β-cell function and disease progression in newly diagnosed type 1 diabetes patients.",
+    "authors": [
+      "Fløyel T",
+      "Brorsson C",
+      "Nielsen LB",
+      "Miani M",
+      "Bang-Berthelsen CH",
+      "Friedrichsen M",
+      "Overgaard AJ",
+      "Berchtold LA",
+      "Wiberg A",
+      "Poulsen P",
+      "Hansen L",
+      "Rosinger S",
+      "Boehm BO",
+      "Ram R",
+      "Nguyen Q",
+      "Mehta M",
+      "Morahan G",
+      "Concannon P",
+      "Bergholdt R",
+      "Nielsen JH",
+      "Reinheckel T",
+      "von Herrath M",
+      "Vaag A",
+      "Eizirik DL",
+      "Mortensen HB",
+      "Størling J",
+      "Pociot F"
+    ],
+    "journal": "Proc Natl Acad Sci U S A",
+    "year": 2014,
+    "doi": "10.1073/pnas.1402571111"
+  },
   "25311805": {
     "pmid": "25311805",
     "title": "Uncovering the peptide-binding specificities of HLA-C: a general strategy to determine the specificity of any MHC class I molecule.",
@@ -216,6 +321,22 @@
     "journal": "Hum Immunol",
     "year": 2015,
     "doi": "10.1016/j.humimm.2015.09.003"
+  },
+  "26450151": {
+    "pmid": "26450151",
+    "title": "The genetic and regulatory architecture of ERBB3-type 1 diabetes susceptibility locus.",
+    "authors": [
+      "Kaur S",
+      "Mirza AH",
+      "Brorsson CA",
+      "Fløyel T",
+      "Størling J",
+      "Mortensen HB",
+      "Pociot F"
+    ],
+    "journal": "Mol Cell Endocrinol",
+    "year": 2016,
+    "doi": "10.1016/j.mce.2015.10.002"
   },
   "27626039": {
     "pmid": "27626039",
@@ -433,6 +554,24 @@
     "year": 2018,
     "doi": "10.1038/s41563-018-0099-0"
   },
+  "30478640": {
+    "pmid": "30478640",
+    "title": "DEXI, a candidate gene for type 1 diabetes, modulates rat and human pancreatic beta cell inflammation via regulation of the type I IFN/STAT signalling pathway.",
+    "authors": [
+      "Dos Santos RS",
+      "Marroqui L",
+      "Velayos T",
+      "Olazagoitia-Garmendia A",
+      "Jauregi-Miguel A",
+      "Castellanos-Rubio A",
+      "Eizirik DL",
+      "Castaño L",
+      "Santin I"
+    ],
+    "journal": "Diabetologia",
+    "year": 2019,
+    "doi": "10.1007/s00125-018-4782-0"
+  },
   "30578352": {
     "pmid": "30578352",
     "title": "Tuberculosis and impaired IL-23-dependent IFN-γ immunity in humans homozygous for a common TYK2 missense variant.",
@@ -573,6 +712,71 @@
     "journal": "Cell Syst",
     "year": 2020,
     "doi": "10.1016/j.cels.2020.06.010"
+  },
+  "34012112": {
+    "pmid": "34012112",
+    "title": "Interpreting type 1 diabetes risk with genetics and single-cell epigenomics.",
+    "authors": [
+      "Chiou J",
+      "Geusz RJ",
+      "Okino ML",
+      "Han JY",
+      "Miller M",
+      "Melton R",
+      "Beebe E",
+      "Benaglio P",
+      "Huang S",
+      "Korgaonkar K",
+      "Heller S",
+      "Kleger A",
+      "Preissl S",
+      "Gorkin DU",
+      "Sander M",
+      "Gaulton KJ"
+    ],
+    "journal": "Nature",
+    "year": 2021,
+    "doi": "10.1038/s41586-021-03552-w"
+  },
+  "34127860": {
+    "pmid": "34127860",
+    "title": "Fine-mapping, trans-ancestral and genomic analyses identify causal variants, cells, genes and drug targets for type 1 diabetes.",
+    "authors": [
+      "Robertson CC",
+      "Inshaw JRJ",
+      "Onengut-Gumuscu S",
+      "Chen WM",
+      "Santa Cruz DF",
+      "Yang H",
+      "Cutler AJ",
+      "Crouch DJM",
+      "Farber E",
+      "Bridges SL Jr",
+      "Edberg JC",
+      "Kimberly RP",
+      "Buckner JH",
+      "Deloukas P",
+      "Divers J",
+      "Dabelea D",
+      "Lawrence JM",
+      "Marcovina S",
+      "Shah AS",
+      "Greenbaum CJ",
+      "Atkinson MA",
+      "Gregersen PK",
+      "Oksenberg JR",
+      "Pociot F",
+      "Rewers MJ",
+      "Steck AK",
+      "Dunger DB",
+      "Wicker LS",
+      "Concannon P",
+      "Todd JA",
+      "Rich SS"
+    ],
+    "journal": "Nat Genet",
+    "year": 2021,
+    "doi": "10.1038/s41588-021-00880-5"
   },
   "34407395": {
     "pmid": "34407395",

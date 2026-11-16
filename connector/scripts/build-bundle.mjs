@@ -198,14 +198,20 @@ const modulesDump = JSON.parse(
 const GENE_ALIASES = { 'PD-L1': 'CD274', PDL1: 'CD274', ICASP9: 'CASP9', 'ICASP-9': 'CASP9', 'HLA-E*01:03': 'HLA-E' };
 const DESIGN_GENES = [
   'B2M', 'CIITA', 'CD47', 'HLA-E', 'HLA-A', 'HLA-B', 'HLA-C', 'TYK2', 'CXCL10', 'SERPINB9', 'CD274', 'CASP9', 'INS', 'IAPP', 'CXADR',
-  'GAD2', 'G6PC2', 'SLC30A8', 'PTPN2', 'TNFAIP3', 'STAT1', 'JAK1', 'JAK2', 'RNLS', 'TXNIP', 'FASLG', 'NLRC5', 'PDX1', 'NKX6-1', 'MAFA',
-  'CTLA4', 'SLC18A1', 'GCG', 'SST',
+  'GAD2', 'G6PC2', 'SLC30A8', 'PTPN2', 'TNFAIP3', 'STAT1', 'JAK1', 'JAK2', 'RNLS', 'TXNIP', 'FAS', 'FASLG', 'IL1R1', 'NLRC5', 'PDX1', 'NKX6-1', 'MAFA',
+  'CTLA4', 'SLC18A1', 'GCG', 'SST', 'CD55', 'TYMS', 'THBD', 'ART3', 'PPP1R12C', 'DEXI', 'CLEC16A', 'BACH2', 'CTSH', 'SOCS1', 'GLIS3', 'DLK1',
+  'ERBB3', 'IFNGR1', 'IRF1', 'CASP8', 'FADD', 'TNFRSF1A', 'IFIH1',
 ];
 const vocab = new Set(DESIGN_GENES);
 const splitSymbols = (s) => String(s).split('_').filter((p) => /^[A-Z][A-Z0-9-]+$/.test(p) && !/^[A-Z]\d+[A-Z]$/.test(p));
 for (const key of Object.keys(graph.target_gene_atlas)) splitSymbols(key).forEach((g) => vocab.add(g));
 for (const m of Object.values(modulesDump.modules)) m.genes.forEach((g) => vocab.add(g));
 for (const s of studies) for (const arm of s.arms) for (const ed of arm.gate2_3_4_genetic_and_epitope_edits ?? []) if (ed.gene_symbol_hgnc) splitSymbols(ed.gene_symbol_hgnc).forEach((g) => vocab.add(g));
+{
+  const l2ForGenes = readJson('data/extracted/layer2_regulatory_and_perturbation_atlas.json');
+  const bcrankRows = l2ForGenes?.stage0_locus3_multimir_and_cbe_needle_manifest_iip_0018?.bcrank_t1d_heuristic_stage0_rubric?.cc_by_4_clean_ranked_34 ?? [];
+  for (const row of bcrankRows) if (row?.gene_symbol) splitSymbols(row.gene_symbol).forEach((g) => vocab.add(g));
+}
 const geneList = [...vocab].sort();
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const geneMatchers = [
@@ -596,6 +602,15 @@ put('blueprint/overview.json', {
   },
   release: { version: release.version, date: release.date },
   counts: release.counts,
+  odds: {
+    last_updated: site.oddsLastUpdated,
+    launch_baseline: { single_design_pct: site.oddsLaunchSingle, three_designs_pct: site.oddsLaunchThree },
+    design_a_pct: site.wholePercent(site.oddsDesignA),
+    design_b_pct: site.wholePercent(site.oddsDesignB),
+    design_x_pct: site.wholePercent(site.oddsDesignX),
+    three_designs_pct: site.wholePercent(site.oddsThree),
+    hurdles: site.oddsGates,
+  },
   tests: site.gates.map((g) => ({ id: g.id, number: g.n, short: g.short, name: g.name, question: g.ask, explanation: g.explain, parts: g.parts ?? null })),
   designs,
   champion_challenger_portfolio: release.champion_challenger_portfolio ?? null,

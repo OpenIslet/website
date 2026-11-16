@@ -52,6 +52,14 @@ if (!Array.isArray(data.gates) || data.gates.length === 0) {
 }
 
 export const oddsLastUpdated: string = data.lastUpdated;
+export const oddsLaunchSingle: number = percent(
+  (data as { launchBaseline?: { singleArmPct?: unknown } }).launchBaseline?.singleArmPct ?? 21,
+  'launchBaseline.singleArmPct',
+);
+export const oddsLaunchThree: number = percent(
+  (data as { launchBaseline?: { threeArmPct?: unknown } }).launchBaseline?.threeArmPct ?? 37,
+  'launchBaseline.threeArmPct',
+);
 
 export const oddsGates: OddsGate[] = data.gates.map((g, i) => {
   const where = `gates[${i}]`;

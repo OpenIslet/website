@@ -41,10 +41,10 @@ const designs = [
     tag: 'Comparison',
     edits: `${b.edits} gene edits, ${b.baseEdits} base edit`,
     line: 'Matched HLA-C hypothesis',
-    text: 'Tests whether retained matching HLA-C can engage inhibitory NK receptors. Protection and manufacturing performance are unmeasured. Design B is a family: this picture and its score are for B1, the six-edit version. B2 is a five-edit version with an optional TYK2 prime edit.',
+    text: 'Tests whether retained matching HLA-C (checked against a 22-species foreign-peptide scan) can engage inhibitory NK receptors. Protection and manufacturing performance are unmeasured. Design B is a family: this picture and its score are for B1, the six-edit version; B2 is a five-edit version with an optional protective TYK2 P1104A variant, paired in the four-hurdle assessment with a 140 µm bead-free sheet comparator.',
     list: [
       ['HLA-A, HLA-B, CIITA', 'switch off. Keep one matched HLA-C'],
-      ['TYK2', 'a gene that passes on inflammation signals. B1 switches it off; differentiation penalties are literature-anchored priors, not measured yields of this product'],
+      ['TYK2', 'a gene that passes on inflammation signals. B1 switches it off; B2 keeps TYK2 or tests its protective P1104A variant'],
       ['CXCL10', 'add SERPINB9 and PD-L1'],
       ['AAVS1', 'add the safety switch'],
       ['INS', 'B1 INS-edit hypothesis; effects on recognition and insulin function remain unmeasured'],
@@ -74,7 +74,7 @@ const explainers = [
   {
     k: 'Why three?',
     t: 'Nobody yet knows which approach works best',
-    d: 'Hiding cells from the immune system is new science. Design A is the simplest idea and the current lead. Design B is a more tailored idea with more risk. Design X is the challenger: Design A with one extra edit. A challenger takes the lead only if lab results show it is better, in a head-to-head test written down in advance.',
+    d: 'Hiding cells from the immune system is new science. Design A is the simplest idea and the current lead. Design B covers a matched HLA-C and chemical-free pouch route. Design X is the challenger: Design A with one extra edit on the scored grid, plus Stage-0 cloak, receptor and microwell upgrades. A challenger takes the lead only if lab results show it is better, in a head-to-head test written down in advance.',
   },
   {
     k: 'Personalised',

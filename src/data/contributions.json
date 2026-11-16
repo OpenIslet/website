@@ -523,7 +523,7 @@
     ],
     "outcome": {
       "kind": "changed_blueprint",
-      "note": "The blueprint now ships a held 6-arm Locus-3 Multi-miR(IL1R1+FAS) synthetic-intron Stage-0 challenger FASTA (inside the 4,700-bp single-AAV6 cap, adding zero foreign peptides in primary ARM5) plus seven standalone zero-bystander FAS/IL1R1 base-editor stop comparators, retires soluble endothelial IL1R2 decoys, and gates promotion on splicing, miR-375 AGO2, GSIS and iCasp9 checks."
+      "note": "Screening 112 T1D genetic regions ruled out 16 misleading gene targets (including CLEC16A vs DEXI) and converged on IL1R1 and FAS. The blueprint now ships a held 6-arm Locus-3 Multi-miR(IL1R1+FAS) synthetic-intron FASTA (inside one AAV6 cap) plus seven standalone FAS/IL1R1 base-editor stop comparators, retiring soluble endothelial IL1R2 decoys."
     }
   },
   {
