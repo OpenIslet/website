@@ -588,5 +588,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now audits extracellular pouch/cuff proteins against 20,429 human Swiss-Prot entries, locks Gate P05 catalase to recombinant human P04040, enforces anti-PEG, Day-28 anti-SA, DPR-maleimide and 72-h hepatocyte gates alongside held human CFH+THBD+Hexa-FasL cuff comparators, and reassesses four-hurdle computational odds to 27% / 31% / 36% (53% across all three)."
     }
+  },
+  {
+    "id": "IIP-0021",
+    "date": "2026-11-16",
+    "decided": "2026-11-16",
+    "title": "Add Layer-4 lineage-partitioned OCR helper, M101 reservoir bound and Stage-0 redox/rest conditioning gates",
+    "summary": "Adds a backward-compatible two-scale lineage-partitioned intrinsic-OCR helper to Layer 4, records parameterized Design Z post-washout/PFC bounds, staged (v = 0.18, 0.36, 0.60) exercise insulin-lag limits and the closed-slab M101 reservoir bound (< 9 s above 15 mmHg), and pre-registers fail-closed Stage-0 120-h OCR plus 4-arm Nec-1s × Ferrostatin-1 pellet-washout and NQO1 gates while keeping 791.5 mg CaO2 and 88% Hurdle-1 unchanged.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "Gemini 4 Hydrogen (extra)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now partitions whole-slab and single-cluster oxygen demand in Layer 4, logs parameterized Design Z post-washout/PFC bounds, staged exercise lag limits and the closed-slab M101 reservoir bound (< 9 s above 15 mmHg), and adds Stage-0 120-h OCR plus 4-arm Nec-1s × Ferrostatin-1 pellet-washout and NQO1 gates while keeping 791.5 mg CaO2 and 88% Hurdle-1."
+    }
   }
 ]

@@ -77,6 +77,54 @@
     "year": 2004,
     "doi": "10.1038/nature03076"
   },
+  "16897713": {
+    "pmid": "16897713",
+    "title": "Arenicola marina extracellular hemoglobin: a new promising blood substitute.",
+    "authors": [
+      "Rousselot M",
+      "Delpy E",
+      "Drieu La Rochelle C",
+      "Lagente V",
+      "Pirow R",
+      "Rees JF",
+      "Hagege A",
+      "Le Guen D",
+      "Hourdez S",
+      "Zal F"
+    ],
+    "journal": "Biotechnol J",
+    "year": 2006,
+    "doi": "10.1002/biot.200500049"
+  },
+  "17130499": {
+    "pmid": "17130499",
+    "title": "Contribution of calcium influx in mediating glucose-stimulated oxygen consumption in pancreatic islets.",
+    "authors": [
+      "Sweet IR",
+      "Gilbert M"
+    ],
+    "journal": "Diabetes",
+    "year": 2006,
+    "doi": "10.2337/db06-0400"
+  },
+  "17503968": {
+    "pmid": "17503968",
+    "title": "A K ATP channel-dependent pathway within alpha cells regulates glucagon release from both rodent and human islets of Langerhans.",
+    "authors": [
+      "MacDonald PE",
+      "De Marinis YZ",
+      "Ramracheya R",
+      "Salehi A",
+      "Ma X",
+      "Johnson PR",
+      "Cox R",
+      "Eliasson L",
+      "Rorsman P"
+    ],
+    "journal": "PLoS Biol",
+    "year": 2007,
+    "doi": "10.1371/journal.pbio.0050143"
+  },
   "19276268": {
     "pmid": "19276268",
     "title": "Combining radiotherapy with APO010 in cancer treatment.",
@@ -205,6 +253,31 @@
     "year": 2012,
     "doi": "10.1128/JVI.00485-12"
   },
+  "23190609": {
+    "pmid": "23190609",
+    "title": "Necrostatin-1 analogues: critical issues on the specificity, activity and in vivo use in experimental disease models.",
+    "authors": [
+      "Takahashi N",
+      "Duprez L",
+      "Grootjans S",
+      "Cauwels A",
+      "Nerinckx W",
+      "DuHadaway JB",
+      "Goossens V",
+      "Roelandt R",
+      "Van Hauwermeiren F",
+      "Libert C",
+      "Declercq W",
+      "Callewaert N",
+      "Prendergast GC",
+      "Degterev A",
+      "Yuan J",
+      "Vandenabeele P"
+    ],
+    "journal": "Cell Death Dis",
+    "year": 2012,
+    "doi": "10.1038/cddis.2012.176"
+  },
   "23698740": {
     "pmid": "23698740",
     "title": "The immunogenicity of virus-derived 2A sequences in immunocompetent individuals.",
@@ -220,6 +293,22 @@
     "journal": "Gene Ther",
     "year": 2013,
     "doi": "10.1038/gt.2013.25"
+  },
+  "23935835": {
+    "pmid": "23935835",
+    "title": "Preconditioning with associated blocking of Ca2+ inflow alleviates hypoxia-induced damage to pancreatic β-cells.",
+    "authors": [
+      "Ma Z",
+      "Moruzzi N",
+      "Catrina SB",
+      "Hals I",
+      "Oberholzer J",
+      "Grill V",
+      "Björklund A"
+    ],
+    "journal": "PLoS One",
+    "year": 2013,
+    "doi": "10.1371/journal.pone.0067498"
   },
   "24065585": {
     "pmid": "24065585",
@@ -631,6 +720,26 @@
     "year": 2018,
     "doi": "10.1515/cclm-2017-1153"
   },
+  "29789532": {
+    "pmid": "29789532",
+    "title": "Ferroptosis-inducing agents compromise in vitro human islet viability and function.",
+    "authors": [
+      "Bruni A",
+      "Pepper AR",
+      "Pawlick RL",
+      "Gala-Lopez B",
+      "Gamble AF",
+      "Kin T",
+      "Seeberger K",
+      "Korbutt GS",
+      "Bornstein SR",
+      "Linkermann A",
+      "Shapiro AMJ"
+    ],
+    "journal": "Cell Death Dis",
+    "year": 2018,
+    "doi": "10.1038/s41419-018-0506-0"
+  },
   "29867165": {
     "pmid": "29867165",
     "title": "Local immunomodulation Fas ligand-engineered biomaterials achieves allogeneic islet graft acceptance.",
@@ -843,6 +952,17 @@
     "year": 2020,
     "doi": "10.1016/j.cels.2020.06.010"
   },
+  "32893325": {
+    "pmid": "32893325",
+    "title": "Erastin-induced ferroptosis is a regulator for the growth and function of human pancreatic islet-like cell clusters.",
+    "authors": [
+      "Li XY",
+      "Leung PS"
+    ],
+    "journal": "Cell Regen",
+    "year": 2020,
+    "doi": "10.1186/s13619-020-00055-3"
+  },
   "34012112": {
     "pmid": "34012112",
     "title": "Interpreting type 1 diabetes risk with genetics and single-cell epigenomics.",
@@ -908,6 +1028,21 @@
     "year": 2021,
     "doi": "10.1038/s41588-021-00880-5"
   },
+  "34252539": {
+    "pmid": "34252539",
+    "title": "Receptor-interacting serine/threonine-protein kinase 1 (RIPK1) inhibitors Necrostatin-1 (Nec-1) and 7-Cl-O-Nec-1 (Nec-1s) are potent inhibitors of NAD(P)H: Quinone oxidoreductase 1 (NQO1).",
+    "authors": [
+      "Yu J",
+      "Zhong B",
+      "Zhao L",
+      "Hou Y",
+      "Wang X",
+      "Chen X"
+    ],
+    "journal": "Free Radic Biol Med",
+    "year": 2021,
+    "doi": "10.1016/j.freeradbiomed.2021.07.017"
+  },
   "34407395": {
     "pmid": "34407395",
     "title": "Selective deletion of human leukocyte antigens protects stem cell-derived islets from immune rejection.",
@@ -923,6 +1058,20 @@
     "journal": "Cell stem cell",
     "year": 2021,
     "doi": "10.1016/j.stem.2021.08.001"
+  },
+  "34572979": {
+    "pmid": "34572979",
+    "title": "Necrostatin-1 Prevents Ferroptosis in a RIPK1- and IDO-Independent Manner in Hepatocellular Carcinoma.",
+    "authors": [
+      "Yuk H",
+      "Abdullah M",
+      "Kim DH",
+      "Lee H",
+      "Lee SJ"
+    ],
+    "journal": "Antioxidants (Basel)",
+    "year": 2021,
+    "doi": "10.3390/antiox10091347"
   },
   "35241836": {
     "pmid": "35241836",
@@ -1140,6 +1289,23 @@
     "journal": "Nature immunology",
     "year": 2023,
     "doi": "10.1038/s41590-023-01523-z"
+  },
+  "37318185": {
+    "pmid": "37318185",
+    "title": "Beneficial Effects of Two Marine Oxygen Carriers, M101 and M201, on Human Islet Quality in Hypoxic Culture Conditions.",
+    "authors": [
+      "Lemaire F",
+      "Sigrist S",
+      "Brassard J",
+      "Demini L",
+      "Zal F",
+      "Jeandidier N",
+      "Pinget M",
+      "Maillard E"
+    ],
+    "journal": "Cell Transplant",
+    "year": 2023,
+    "doi": "10.1177/09636897231179642"
   },
   "37476069": {
     "pmid": "37476069",
@@ -1362,5 +1528,34 @@
     "journal": "The New England journal of medicine",
     "year": 2025,
     "doi": "10.1056/NEJMoa2503822"
+  },
+  "41951603": {
+    "pmid": "41951603",
+    "title": "RIP kinase inhibition with Necrostatin-1 improves human marginal mass islet graft survival and function for the management of type 1 diabetes.",
+    "authors": [
+      "Aggarwal S",
+      "Cuesta-Gomez N",
+      "Paramor J",
+      "Kelly S",
+      "Polishevska K",
+      "Seeberger K",
+      "Worton J",
+      "Kuppan P",
+      "Pepper AR"
+    ],
+    "journal": "Cell death & disease",
+    "year": 2026,
+    "doi": "10.1038/s41419-026-08728-8"
+  },
+  "42547502": {
+    "pmid": "42547502",
+    "title": "β-cell-targeted RNA activation of vascular endothelial growth factor-A improves islet transplantation.",
+    "authors": [
+      "Van Simaeys D",
+      "Berggren PO"
+    ],
+    "journal": "Signal Transduct Target Ther",
+    "year": 2026,
+    "doi": "10.1038/s41392-026-02934-8"
   }
 }

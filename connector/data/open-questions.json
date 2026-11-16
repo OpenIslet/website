@@ -126,7 +126,7 @@
     "id": "OQ-005",
     "title": "Does the oxygen supply hold up under pessimistic assumptions?",
     "plain": "A new graft has no blood vessels at first, so it carries its own oxygen for the first three days. In 3D simulations, unpatterned clusters crowd one another, uncoated edge beads create local peroxide spikes, and animal or fungal catalase sheds foreign protein pieces—so Stage-0 tests pair ordered microwells, wet-sieved beads of 50 micrometres or less and strictly recombinant human catalase barrier films at least 20 micrometres thick alongside a 140 micrometre bead-free sheet comparator.",
-    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint. Resolving discrete clusters and beads in 3D (IIP-0019, IIP-0020) adds local transport and enzyme-species gates: unpatterned pouring at 1,500 IEQ/cm^2 (15 um physical collagen = 45 um hydrogel-equivalent standoff) pushes 40-60% of 100 um clusters below 15 mmHg (vs ordered microwells or dose-matched 80 um clusters at 142.22/152.83 um pitch, distinct from 768 IEQ/cm^2 pitch-held derating); an uncoated edge-touching CaO2 bead creates a 6.9-19.5 uM peroxide plume requiring wet-sieved d_99 <= 50 um beads plus >= 20 um barrier films locked strictly to recombinant human catalase (UniProt P04040, 0 foreign 8-to-11-mers in both 527-aa and Met-cleaved 526-aa forms across 20,429 human Swiss-Prot proteins, disqualifying bovine P00432 and Aspergillus niger P55303 xeno-catalases and enforcing <= 0.10 EU/mg and <= 0.50 EU total-implant endotoxin plus <= 30% 7-day shed-protein mass alongside ~105,429 IU post-cure active load on 333.3 cm^2 to retain 73,800 IU and hold 24-hour burst <= 2.5 uM); and any 140 um bead-free Design Z pouch must pass both 5-site 14-day empty-lumen micro-optode thresholds (Einstein 2023, PMID 38993891) and loaded closed-state confirmation.",
+    "detail": "In the 14-day model the homogenized slab average minimum is 19.9 mmHg, while the two-zone cluster model gives a conservative gel-only core oxygen of 2.15 mmHg (0.15 mmHg above the 2.0 mmHg core-necrosis floor; uniform-supply is 4.08 mmHg and homogenized Dirichlet is 8.64 mmHg), alongside an unrounded joint grid of late-connecting and weaker blood vessels and a zero-vessel lower bound (IIP-0002). Twenty of the 21 main PDE regimes also carry over a single unvalidated 68.0-hour oxygen-release half-life from a 25 wt% (10.55 vol%) monolithic silicone disk (Pedraza 2012, PMID 22371586) to 31.25 wt% (13.86 vol%, Layout B) and 46.39 wt% (23.45 vol%, Stage-0 Design X) microbeads with surface-immobilised catalase (IIP-0010). Across an 84-regime fixed-inventory sweep, Stage-0 Design X passes only from 34 to 87 hours at a 36-hour vascular midpoint under first-order or reaction shrinking-core release, narrows to 34 to 68 hours at a 60-hour midpoint, and has no passing half-life when Ginstling-Brounshtein diffusion kinetics combine with a 60-hour midpoint. Resolving discrete clusters and beads in 3D (IIP-0019, IIP-0020) adds local transport and enzyme-species gates: unpatterned pouring at 1,500 IEQ/cm^2 (15 um physical collagen = 45 um hydrogel-equivalent standoff) pushes 40-60% of 100 um clusters below 15 mmHg (vs ordered microwells or dose-matched 80 um clusters at 142.22/152.83 um pitch, distinct from 768 IEQ/cm^2 pitch-held derating); an uncoated edge-touching CaO2 bead creates a 6.9-19.5 uM peroxide plume requiring wet-sieved d_99 <= 50 um beads plus >= 20 um barrier films locked strictly to recombinant human catalase (UniProt P04040, 0 foreign 8-to-11-mers in both 527-aa and Met-cleaved 526-aa forms across 20,429 human Swiss-Prot proteins, disqualifying bovine P00432 and Aspergillus niger P55303 xeno-catalases and enforcing <= 0.10 EU/mg and <= 0.50 EU total-implant endotoxin plus <= 30% 7-day shed-protein mass alongside ~105,429 IU post-cure active load on 333.3 cm^2 to retain 73,800 IU and hold 24-hour burst <= 2.5 uM); and any 140 um bead-free Design Z pouch must pass both 5-site 14-day empty-lumen micro-optode thresholds (Einstein 2023, PMID 38993891) and loaded closed-state confirmation. IIP-0021 further adds a two-scale lineage-partitioned intrinsic-OCR helper to Layer 4 (scaling whole-slab demand as (m_endo + 0.15 * m_vasc) / 1.15 while passing pure-endocrine m_endo to single-cluster BVPs, distinguishing 14.30% vascular cells from 13.04% modeled vascular OCR; Ma 2013 PMID 23935835; Sweet & Gilbert 2006 PMID 17130499; MacDonald 2007 PMID 17503968), shows 25 mmHg plain hydrogel Design Z fails across acute rest, chronic 1.097x demand and 5 vol% PFC (11.4-12.4 mmHg < 15 mmHg), bounds standalone closed-slab Arenicola marina M101 hemoglobin (5 g/L in 10 mL = 2.17 umol vs 5,491 umol CaO2) below 9 seconds above 15 mmHg (Rousselot 2006 PMID 16897713; distinct from air-exposed culture in Lemaire 2023 PMID 37318185), and gates Stage-0 120-hour assembled-organoid respirometry (upper95 <= 0.80, depot t_1/2 >= 72 h) and 4-arm Nec-1s x Ferrostatin-1 pre-conditioning (Aggarwal 2026 PMID 41951603; Takahashi 2012 PMID 23190609; Yuk 2021 PMID 34572979; Bruni 2018 PMID 29789532; Li & Leung 2020 PMID 32893325; washed cell-pellet LC-MS <= LOQ and >= 90% NQO1 activity per Yu 2021 PMID 34252539) while keeping 791.5 mg CaO2 and 36/60-h vascular timing (Van Simaeys 2026 PMID 42547502) unchanged.",
     "tests": [
       "5"
     ],
@@ -147,10 +147,22 @@
       "27729543",
       "35241836",
       "24065585",
-      "21788581"
+      "21788581",
+      "16897713",
+      "17130499",
+      "17503968",
+      "23190609",
+      "23935835",
+      "29789532",
+      "32893325",
+      "34252539",
+      "34572979",
+      "37318185",
+      "41951603",
+      "42547502"
     ],
-    "settle": "Measure crystal and wet-sieved microbead size distributions, oxygen-release half-life, kinetic law, recombinant human P04040 catalase barrier-film peroxide clearance, endotoxin and 7-day activity/shed-mass retention in implanted form; compare unpatterned vs microwell-spaced 100 um and dose-matched 80 um clusters; and require both empty-lumen micro-optode and loaded closed-state oxygen and hormone confirmation over 14 days.",
-    "source": "Concise specification sections 5 and 9; IIP-0002, IIP-0010, IIP-0019 and IIP-0020",
+    "settle": "Measure crystal and wet-sieved microbead size distributions, oxygen-release half-life, kinetic law, recombinant human P04040 catalase barrier-film peroxide clearance, endotoxin and 7-day activity/shed-mass retention in implanted form; run the 120-hour assembled-organoid OCR coupon and 4-arm Nec-1s x Ferrostatin-1 washed-pellet/NQO1 conditioning check; compare unpatterned vs microwell-spaced 100 um and dose-matched 80 um clusters; and require both empty-lumen micro-optode and loaded closed-state oxygen and hormone confirmation over 14 days.",
+    "source": "Concise specification sections 5 and 9; IIP-0002, IIP-0010, IIP-0019, IIP-0020 and IIP-0021",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -473,7 +485,7 @@
     "id": "OQ-018",
     "title": "Do insulin and glucagon release recover after low oxygen, and can higher-beta mixes match the 60:30:10 default?",
     "plain": "Surviving the first 14 days of low oxygen does not guarantee that the cells still release insulin and glucagon properly afterwards. Separately, packing more beta cells into each cluster could shrink the graft if insulin shut-off and low-sugar glucagon rescue still hold up.",
-    "detail": "Raised in IIP-0004 and IIP-0006. Surviving a 336-hour hypoxic bridge does not establish preserved glucose-regulated insulin secretion, rapid shut-off, or low-glucose glucagon rescue during and after reoxygenation (Wang 2025, PMID 40404627; Chendke 2023, PMID 37476069). Stage 0 measures hormone function after recovery before crediting functional dose, and compares intermediate beta:alpha:delta mixtures (70:20:10, 70:25:5, 80:15:5 and 80:10:10) beside the 60:30:10 default and pure beta-cell controls (Perez-Frances 2024, PMID 39169271), keeping 60:30:10 unless independent batches pass both shut-off and glucagon-rescue checks.",
+    "detail": "Raised in IIP-0004 and IIP-0006. Surviving a 336-hour hypoxic bridge does not establish preserved glucose-regulated insulin secretion, rapid shut-off, or low-glucose glucagon rescue during and after reoxygenation (Wang 2025, PMID 40404627; Chendke 2023, PMID 37476069). Stage 0 measures hormone function after recovery before crediting functional dose, and compares intermediate beta:alpha:delta mixtures (70:20:10, 70:25:5, 80:15:5 and 80:10:10) beside the 60:30:10 default and pure beta-cell controls (Perez-Frances 2024, PMID 39169271), keeping 60:30:10 unless independent batches pass both shut-off and glucagon-rescue checks. IIP-0021 also records conditional 13-state portal exercise insulin-washout lag bounds across 150,000 (v = 0.18, kept distinct from Stage-5A's 25,000-35,000 IEQ forearm sentinel; 4.64 mM preserved paracrine vs 3.53 mM scaled), 300,000 (v = 0.36, T_ins <= 3.64 min) and non-waivable full-dose 500,000 total IEQ (v = 0.60, T_ins <= 1.96-2.71 min), and requires post-washout dynamic GSIS SI >= 3.0, >= 85% absolute insulin output retention and >= 2.0-fold low-glucose alpha-cell glucagon induction after any metabolic-rest or Nec-1s x Ferrostatin-1 conditioning exposure (MacDonald 2007, PMID 17503968).",
     "tests": [
       "1",
       "5"
@@ -487,10 +499,11 @@
     "pmids": [
       "40404627",
       "37476069",
-      "39169271"
+      "39169271",
+      "17503968"
     ],
     "settle": "Measure dynamic insulin secretion, 3-minute shut-off and low-sugar glucagon release after recovery from the 14-day low-oxygen window, and compare intermediate beta:alpha:delta mixtures against 60:30:10 across independent differentiation batches.",
-    "source": "Concise specification sections 5 and 9; IIP-0004 and IIP-0006",
+    "source": "Concise specification sections 5 and 9; IIP-0004, IIP-0006 and IIP-0021",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

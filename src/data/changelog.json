@@ -2,6 +2,23 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-16",
+    "title": "Layer-4 two-scale lineage OCR helper, M101 reservoir bound and Stage-0 metabolic-rest and conditioning gates",
+    "summary": "Prevents sub-unity cell-packing aliasing in Layer 4 via a two-scale lineage-partitioned OCR helper, records parameterized Design Z post-washout/PFC, washout eigenmode, staged exercise lag and closed-slab M101 reservoir bounds, and adds fail-closed Stage-0 120-h OCR and 4-arm Nec-1s × Ferrostatin-1 pellet-LOQ/NQO1 conditioning gates while keeping 791.5 mg CaO2 and 88% Hurdle-1 unchanged.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "A backward-compatible two-scale lineage-partitioned intrinsic-OCR helper in Layer 4 (scaling whole-slab demand as (m_endo + 0.15 * m_vasc) / 1.15 while passing pure-endocrine m_endo to single-cluster Wigner-Seitz BVPs at explicit areal loading, distinguishing 14.30% vascular cells from 13.04% modeled vascular OCR; PMIDs 23935835, 17130499, 17503968), alongside two-sink and one-sink slab washout eigenmodes, parameterized 48-h washout and 2.5 µm discrete-bead catalase sweeps (>= 73,800 IU retained / ~105,429 IU post-cure), Design Z acute vs chronic vs 5 vol% PFC bounds, conditional staged (v = 0.18, 0.36, 0.60) portal exercise insulin-lag limits (36/60-h vascular timing unchanged, PMID 42547502), and the closed-slab standalone M101 finite-reservoir bound (< 9 s above 15 mmHg, PMIDs 16897713, 37318185; DEC-100, IIP-0021)."
+      },
+      {
+        "kind": "added",
+        "text": "Fail-closed Stage-0 120-h assembled-organoid OCR and 4-arm Nec-1s × Ferrostatin-1 pre-encapsulation conditioning gates across 13 endpoints, 3 unpooled metadata keys and 5 boolean locks: barring unencapsulated free-drug washout, requiring simultaneous 0–120 h longitudinal OCR upper95 <= 0.80 with preserved viable lineage function, depot t_1/2 >= 72 h, and post-washout GSIS SI >= 3.0 / >= 85% absolute output / glucagon fold >= 2.0 before any coupled Stage-2 CaO2 reduction test, and gating Vehicle, 10 µM Nec-1s, 2 µM Ferrostatin-1 and combination arms (holding 100 µM benchmark and Nec-1 anti-ferroptotic comparators, PMIDs 41951603, 23190609, 34572979, 29789532, 32893325) on supernatant LC-MS < 10 nM, washed cell-pellet recovery >= 80% and residual <= LOQ, undiluted endocrine and vascular NQO1 activity >= 90% (PMID 34252539), >= 85% SC-beta and PLVAP+ iEC viable yields, and post-washout GSIS SI >= 3.0."
+      }
+    ],
+    "contribution": "IIP-0021"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-16",
     "title": "Extracellular biomaterial foreign-antigen census, P04040 catalase lock, humoral cuff gates and four-hurdle odds reassessment",
     "summary": "Audits extracellular oxygen-pouch and cuff proteins against 20,429 human Swiss-Prot entries, locks Gate P05 to recombinant human catalase (P04040), enforces fail-closed anti-PEG, Day-28 anti-streptavidin, DPR-maleimide hydrolysis and 72-h human hepatocyte gates alongside held streptavidin-free human cuff comparators, and updates the four-hurdle computational estimates.",
     "changes": [
