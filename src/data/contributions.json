@@ -620,5 +620,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now partitions whole-slab and single-cluster oxygen demand in Layer 4, logs parameterized Design Z post-washout/PFC bounds, staged exercise lag limits and the closed-slab M101 reservoir bound (< 9 s above 15 mmHg), and adds Stage-0 120-h OCR plus 4-arm Nec-1s × Ferrostatin-1 pellet-washout and NQO1 gates while keeping 791.5 mg CaO2 and 88% Hurdle-1."
     }
+  },
+  {
+    "id": "IIP-0022",
+    "date": "2026-11-16",
+    "decided": "2026-11-16",
+    "title": "Split Track-2 NK rescue contract, add PVR/necroptosis guardrails and 2^12 portfolio generator",
+    "summary": "Splits Track-2 B'-SCT (KIR) and held HLA-G1 (LILRB1) natural-killer rescue routes fail-closed with upper95 subset routing, adds CC0 RCSB PDB PVR and HLA-G1 structural provenance plus off-grid Idea Graveyard guardrails for B2M-null CD155/CD226 sign-inversion testing and lineage-separated necroptosis, and computes the 4,096-state common-shock portfolio tree programmatically with zero change to headline odds.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "Gemini 4 Hydrogen (extra)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now splits Track-2 B'-SCT (KIR) and held HLA-G1 (LILRB1) NK rescue routes fail-closed with upper95 subset routing, logs CC0 RCSB PDB PVR and HLA-G1 coordinate provenance plus off-grid Idea Graveyard guardrails for B2M-null CD155/CD226 testing and lineage-separated necroptosis, and computes the 4,096-state common-shock portfolio tree programmatically with zero odds change."
+    }
   }
 ]

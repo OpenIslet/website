@@ -1440,5 +1440,181 @@
     "journal": "Signal Transduct Target Ther",
     "year": 2026,
     "doi": "10.1038/s41392-026-02934-8"
+  },
+  "25301392": {
+    "title": "Autoreactive T cells induce necrosis and not BCL-2-regulated or death receptor-mediated apoptosis or RIPK3-dependent necroptosis of transplanted islets in a mouse model of type 1 diabetes.",
+    "authors": [
+      "Zhao Y",
+      "Scott NA",
+      "Fynch S",
+      "Elkerbout L",
+      "Wong WW",
+      "Mason KD",
+      "Strasser A",
+      "Huang DC",
+      "Kay TW",
+      "Thomas HE"
+    ],
+    "journal": "Diabetologia",
+    "year": 2015,
+    "doi": "10.1007/s00125-014-3407-5"
+  },
+  "35947095": {
+    "title": "CD155 mutation (Ala67Thr) increases the binding affinity for and the signaling via an inhibitory immunoreceptor TIGIT.",
+    "authors": [
+      "Matsuo T",
+      "Iguchi-Manaka A",
+      "Shibuya A",
+      "Shibuya K"
+    ],
+    "journal": "Cancer Sci",
+    "year": 2022,
+    "doi": "10.1111/cas.15526"
+  },
+  "36170817": {
+    "title": "Engineering of immune checkpoints B7-H3 and CD155 enhances immune compatibility of MHC-I(-/-) iPSCs for β cell replacement.",
+    "authors": [
+      "Chimienti R",
+      "Baccega T",
+      "Torchio S",
+      "Manenti F",
+      "Pellegrini S",
+      "Cospito A",
+      "Amabile A",
+      "Lombardo MT",
+      "Monti P",
+      "Sordi V",
+      "Lombardo A",
+      "Malnati M",
+      "Piemonti L"
+    ],
+    "journal": "Cell Rep",
+    "year": 2022,
+    "doi": "10.1016/j.celrep.2022.111423"
+  },
+  "36707047": {
+    "title": "Inhibition of RIPK1 kinase does not affect diabetes development: β-Cells survive RIPK1 activation.",
+    "authors": [
+      "Takiishi T",
+      "Xiao P",
+      "Franchimont M",
+      "Gilglioni EH",
+      "Arroba EN",
+      "Gurzov EN",
+      "Bertrand MJ",
+      "Cardozo AK"
+    ],
+    "journal": "Mol Metab",
+    "year": 2023,
+    "doi": "10.1016/j.molmet.2023.101681"
+  },
+  "37675979": {
+    "title": "Biophysical characterization of PVR family interactions and therapeutic antibody recognition to TIGIT.",
+    "authors": [
+      "Diong SJ",
+      "Jashnani A",
+      "Drake AW",
+      "Bee C",
+      "Findeisen F",
+      "Dollinger G",
+      "Wang F",
+      "Rajpal A",
+      "Strop P",
+      "Lee PS"
+    ],
+    "journal": "MAbs",
+    "year": 2023,
+    "doi": "10.1080/19420862.2023.2253788"
+  },
+  "38981470": {
+    "title": "Genetic ablation of adhesion ligands mitigates rejection of allogeneic cellular immunotherapies.",
+    "authors": [
+      "Hammer Q",
+      "Perica K",
+      "Mbofung RM",
+      "van Ooijen H",
+      "Martin KE",
+      "Momayyezi P",
+      "Varady E",
+      "Pan Y",
+      "Jelcic M",
+      "Groff B",
+      "Abujarour R",
+      "Krokeide SZ",
+      "Lee T",
+      "Williams A",
+      "Goodridge JP",
+      "Valamehr B",
+      "Önfelt B",
+      "Sadelain M",
+      "Malmberg KJ"
+    ],
+    "journal": "Cell Stem Cell",
+    "year": 2024,
+    "doi": "10.1016/j.stem.2024.06.011"
+  },
+  "39004142": {
+    "title": "RIPK1 is dispensable for cell death regulation in β-cells during hyperglycemia.",
+    "authors": [
+      "Veli Ö",
+      "Kaya Ö",
+      "Varanda AB",
+      "Hildebrandt X",
+      "Xiao P",
+      "Estornes Y",
+      "Poggenberg M",
+      "Wang Y",
+      "Pasparakis M",
+      "Bertrand MJM",
+      "Walczak H",
+      "Annibaldi A",
+      "Cardozo AK",
+      "Peltzer N"
+    ],
+    "journal": "Mol Metab",
+    "year": 2024,
+    "doi": "10.1016/j.molmet.2024.101988"
+  },
+  "40796566": {
+    "title": "Diminished immune cell adhesion in hypoimmune ICAM-1 knockout human pluripotent stem cells.",
+    "authors": [
+      "Saha S",
+      "Haynes WJ",
+      "Seo J",
+      "Del Rio NM",
+      "Young EE",
+      "Zhang J",
+      "Holm AM",
+      "Pimentel M",
+      "Flannagan L",
+      "Huang L",
+      "Blashka W",
+      "Murphy L",
+      "Scholz MJ",
+      "Henrichs A",
+      "Suresh Babu J",
+      "Steill J",
+      "Kratz J",
+      "Stewart R",
+      "Kamp TJ",
+      "Brown ME"
+    ],
+    "journal": "Nat Commun",
+    "year": 2025,
+    "doi": "10.1038/s41467-025-62568-2"
+  },
+  "41202120": {
+    "title": "Human stem cell-derived β cells expressing an optimized CD155 reduce cytotoxic immune cell function for application in type 1 diabetes.",
+    "authors": [
+      "Brown ME",
+      "Barra JM",
+      "Pina MR",
+      "Proia J",
+      "Brusko TM",
+      "Russ HA"
+    ],
+    "journal": "Sci Adv",
+    "year": 2025,
+    "doi": "10.1126/sciadv.adx9755"
   }
 }

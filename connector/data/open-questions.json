@@ -3,7 +3,7 @@
     "id": "OQ-001",
     "title": "Is there enough CD47 and HLA-E on the cells in the first hours?",
     "plain": "Two signals tell the immune system's natural killer cells and macrophages to leave the new cells alone. If the cells carry too little of either signal in the first hours, those attackers can destroy them before the other protections matter.",
-    "detail": "In Design A (Arm 1B), an internal EEF1A1 promoter drives CD47 constitutively (238,004 molecules per cell computational prior; Stage-0 gate at least 200,000) and an internal 5xISRE promoter drives HLA-E (release gate at least 15,000 molecules per cell, while the proposed Design X signal aims for 25,000; 10,890 computational resting prior). Endogenous B2M read-through is not credited as productive HLA-E expression, and resting surface density on stage 7 beta cells and endothelial cells is unmeasured (rule GY-009). On soluble HLA-E*01:03, none of the six functional human leader peptides in Lin 2023 reaches a 4.0-fold NKG2C-over-NKG2A affinity gap on its own (kept separate from older HLA-E*01:01 monomer assays such as Valés-Gómez 1999), while VMAPRTLFL acts as a tight activating NKG2C control (Lauterbach 2015), so IIP-0016 adds a 20-construct Stage-0 HLA-E comparator panel gated on paired resting and 24-h IFN-gamma NK subset, UL40 CD8+ T-cell and regulatory T-cell assays.",
+    "detail": "In Design A (Arm 1B), an internal EEF1A1 promoter drives CD47 constitutively (238,004 molecules per cell computational prior; Stage-0 gate at least 200,000) and an internal 5xISRE promoter drives HLA-E (release gate at least 15,000 molecules per cell, while the proposed Design X signal aims for 25,000; 10,890 computational resting prior). Endogenous B2M read-through is not credited as productive HLA-E expression, and resting surface density on stage 7 beta cells and endothelial cells is unmeasured (rule GY-009). On soluble HLA-E*01:03, none of the six functional human leader peptides in Lin 2023 reaches a 4.0-fold NKG2C-over-NKG2A affinity gap on its own (kept separate from older HLA-E*01:01 monomer assays such as Valés-Gómez 1999), while VMAPRTLFL acts as a tight activating NKG2C control (Lauterbach 2015), so IIP-0016 adds a 20-construct Stage-0 HLA-E comparator panel gated on paired resting and 24-h IFN-gamma NK subset, UL40 CD8+ T-cell and regulatory T-cell assays. IIP-0022 further routes NKG2A- KIR+ (<= 8%) and IL-12/IL-18 SIRPa-low (<= 10%) escape on upper95 bounds, splits Track-2 HLA-C B'-SCT (KIR2DL across >= 6 KIR-typed donors) from held HLA-G1 (LILRB1, PDB 6AEE engineered C42S/L110I/Q115R crystal; held pending product registration and gated at uniform <= 8% upper95 on sorted LILRB1- NKG2A- KIR+ NK cells), and adds matched B2M-/- TIGIT-low/CD226-high NK testing for prospective PVR (CD155 Ala67Thr rs1058402, PDB 3UDW/6O3O/6ARQ; Diong 2023 PMID 37675979; Matsuo 2022 PMID 35947095; Brown 2025 PMID 41202120 vs Chimienti 2022 PMID 36170817) synaptic sign-inversion.",
     "tests": [
       "3",
       "2A"
@@ -23,10 +23,14 @@
       "28504668",
       "37264229",
       "26382247",
-      "10428963"
+      "10428963",
+      "37675979",
+      "35947095",
+      "41202120",
+      "36170817"
     ],
     "settle": "Count CD47 and HLA-E molecules on the surface of edited cells at hour zero with calibrated flow cytometry (QuantiBRITE beads), and run the 20-construct Stage-0 HLA-E comparator panel across paired resting and 24-h IFN-gamma sorted NKG2A+/NKG2C- and adaptive NKG2C+/NKG2A- NK cells, UL40-reactive CD8+ T cells and regulatory CD8+ T cells.",
-    "source": "Concise specification sections 4.1 and 9; rule GY-009; IIP-0016",
+    "source": "Concise specification sections 4.1 and 9; rule GY-009; IIP-0016 and IIP-0022",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -61,7 +65,7 @@
     "id": "OQ-003",
     "title": "Can the patient's own immune cells restart the attack using debris from the graft?",
     "plain": "Cells with no HLA flags are hard for T cells to see directly. But the patient's own immune cells can pick up debris from the graft, show it to T cells, and release inflammatory IL-1 and Fas-ligand signals that attack nearby beta cells.",
-    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). Screening 112 germline type 1 diabetes genetic regions from the top 200 OpenTargets entries (Robertson 2021, PMID 34127860; Chiou 2021, PMID 34012112) ruled out 16 misleading beta-cell knockout targets—including the 16p13 nearest-gene mitophagy regulator CLEC16A (Soleimanpour 2014, PMID 24949970, vs chromatin-looped DEXI, Dos Santos 2019, PMID 30478640), protective survival brakes PTPN2, TNFAIP3, BACH2 (Marroquí 2014, PMID 24608439), CTSH (Fløyel 2014, PMID 24982147), SOCS1, GLIS3, DLK1 and INS, necroptosis brakes CASP8/FADD (Kaiser 2011, PMID 21368762), and CXCL10 switch blocks JAK1, STAT1, IFNGR1, IRF1 and TNFRSF1A—and converged on IL1R1 and FAS bystander execution receptors. IIP-0018 therefore pre-registers a held 6-arm Locus-3 Multi-miR(IL1R1 + FAS) synthetic-intron Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5; Amen 2022, Fellmann 2013) plus seven standalone zero-bystander FAS/IL1R1 cytosine-base-editor stop comparators while retiring soluble endothelial IL1R2 decoys (Thomas 2012); none is yet measured.",
+    "detail": "Donor B2M-/- and CIITA-/- block direct presentation but not indirect presentation of shed secretome and debris by host dendritic cells on HLA-DQ2/DQ8 (rule GY-010). Across a 22-species human-Swiss-Prot-subtracted census (IIP-0017), porcine teschovirus-1 GSG-P2A adds internal and uncleaved-readthrough stretches that were never directly tested in Arber 2013 (PMID 23698740, which assayed T2A, E2A and F2A rather than porcine P2A), while switching to existing 2A-free CXCL10 test donors trims reference-unmatched 8-to-11-mers in Design A from 319 to 235 (mature species) or 391 to 269 (including precursors and readthrough). Screening 112 germline type 1 diabetes genetic regions from the top 200 OpenTargets entries (Robertson 2021, PMID 34127860; Chiou 2021, PMID 34012112) ruled out 16 misleading beta-cell knockout targets—including the 16p13 nearest-gene mitophagy regulator CLEC16A (Soleimanpour 2014, PMID 24949970, vs chromatin-looped DEXI, Dos Santos 2019, PMID 30478640), protective survival brakes PTPN2, TNFAIP3, BACH2 (Marroquí 2014, PMID 24608439), CTSH (Fløyel 2014, PMID 24982147), SOCS1, GLIS3, DLK1 and INS, necroptosis brakes CASP8/FADD (Kaiser 2011, PMID 21368762), and CXCL10 switch blocks JAK1, STAT1, IFNGR1, IRF1 and TNFRSF1A—and converged on IL1R1 and FAS bystander execution receptors. IIP-0018 therefore pre-registers a held 6-arm Locus-3 Multi-miR(IL1R1 + FAS) synthetic-intron Stage-0 challenger suite (4,398-bp donor / 4,688 bp single-AAV6, zero added foreign peptides in primary ARM5; Amen 2022, Fellmann 2013) plus seven standalone zero-bystander FAS/IL1R1 cytosine-base-editor stop comparators while retiring soluble endothelial IL1R2 decoys (Thomas 2012); none is yet measured. IIP-0022 also records off-grid guardrails for constrained TNFRSF1A (gnomAD v4 pLI = 0.9999) and lineage-separated necroptosis (beta-cell resistance to canonical TNF/BV6/zVAD necroptosis in mouse and human EndoC-betaH1 models, Zhao 2015 PMID 25301392; Takiishi 2023 PMID 36707047; Veli 2024 PMID 39004142, vs susceptible vascular endothelium, plus product-specific efferocytosis checks on adhesion-knockout proposals, Hammer 2024 PMID 38981470; Saha 2025 PMID 40796566).",
     "tests": [
       "2B"
     ],
@@ -84,10 +88,15 @@
       "24949970",
       "30478640",
       "24608439",
-      "24982147"
+      "24982147",
+      "25301392",
+      "36707047",
+      "39004142",
+      "38981470",
+      "40796566"
     ],
     "settle": "Mix the patient's antigen-presenting and T cells with debris from flag-free islets (comparing canonical P2A, 2A-free CXCL10 test templates, the 6-arm Locus-3 Multi-miR(IL1R1 + FAS) challenger suite and standalone FAS/IL1R1 stop comparators across HLA-DQ2.5/DQ8/DR3/DR4 donors), and look for T-cell activation and bystander cell damage.",
-    "source": "Concise specification sections 4.2, 4.3, 4.5 and 9; rule GY-010; IIP-0017 and IIP-0018",
+    "source": "Concise specification sections 4.2, 4.3, 4.5, 8 and 9; rule GY-010; IIP-0017, IIP-0018 and IIP-0022",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -428,7 +437,7 @@
     "id": "OQ-016",
     "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
     "plain": "The 27%, 31% and 36% single-design figures (Designs A, B and X) and the 53% three-design figure are uncalibrated computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits or biomaterial shields together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
-    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data.",
+    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline) with zero change to published headline percentages.",
     "tests": [
       "1",
       "2A",
@@ -445,7 +454,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Fix one clinical definition of success, test the per-design and shared failure assumptions in Stage 0-2 experiments, and replace the computational judgements with measured pass rates as lab and preclinical results arrive.",
-    "source": "IIP-0003, IIP-0016..IIP-0020, and the full blueprint (warning 4)",
+    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
     "since": "v0.8.0"

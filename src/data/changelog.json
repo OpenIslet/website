@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-16",
+    "title": "Fail-closed Track-2 NK rescue split, PVR and lineage-necroptosis guardrails, and programmatic 4,096-state portfolio generator",
+    "summary": "Separates HLA-C B'-SCT (KIR) from held HLA-G1 (LILRB1) NK fallback routing on upper95 subset bounds, adds CC0 RCSB PDB coordinate audits and off-grid Idea Graveyard guardrails for B2M-null CD155/CD226 and lineage-separated necroptosis, and replaces hard-coded 2^12 portfolio decimals with an executable 4,096-state generator.",
+    "changes": [
+      {
+        "kind": "changed",
+        "text": "Routed Switch S10/S2 NKG2A- KIR+ (<= 8.0%) and IL-12/IL-18 SIRPa-low (<= 10.0%) NK escape on upper95 confidence bounds when measured (preserving provisional core_14_panel compatibility) and split deprecated track2_b_sct_or_hlag1_lilrb1_rescue_qualified into track2_b_sct_kir_rescue_qualified (n >= 6 KIR-typed donors, 0 failing donors, upper95 <= 8.0%) vs track2_hlag1_lilrb1_rescue_qualified (uniform upper95 <= 8.0% on sorted LILRB1- NKG2A- KIR+ primary NK across n >= 6 donors, held pending HLA-G1 product definition registration with distinct locus2_construct assignment; DEC-101, IIP-0022)."
+      },
+      {
+        "kind": "added",
+        "text": "Authenticated CC0-1.0 RCSB PDB coordinate hashes and engineered-crystal disclosures for 3UDW (PVR:TIGIT), 6O3O (PVR:CD226), 6ARQ (PVR:CD96 C110S) and 6AEE (HLA-G1:LILRB1 C42S/L110I/Q115R) in Layer 3 (Ala67 6.41–7.06 Å, C:A 19/23 = 82.61% vs D:B 19/19 = 100% shared contacts), paired with off-grid Idea Graveyard guardrails (preserving 10 grid-firing entries; framing CD155 Ala67Thr rs1058402 across PMIDs 37675979, 35947095, 41202120 and 36170817 as a prospective B2M-/- sign-inversion hypothesis requiring matched-cell testing, and framing SC-beta vs PLVAP+ iEC necroptosis across PMIDs 36707047, 39004142, 25301392, 40796566 and 38981470 with time-resolved viability and orthogonal rescue)."
+      },
+      {
+        "kind": "changed",
+        "text": "Replaced hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator computing both legacy 3-slot and shared-A/X 2-route pouch unions across active and prior (DEC-098) hurdle vectors with zero change to published headline odds."
+      }
+    ],
+    "contribution": "IIP-0022"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-16",
     "title": "Layer-4 two-scale lineage OCR helper, M101 reservoir bound and Stage-0 metabolic-rest and conditioning gates",
     "summary": "Prevents sub-unity cell-packing aliasing in Layer 4 via a two-scale lineage-partitioned OCR helper, records parameterized Design Z post-washout/PFC, washout eigenmode, staged exercise lag and closed-slab M101 reservoir bounds, and adds fail-closed Stage-0 120-h OCR and 4-arm Nec-1s × Ferrostatin-1 pellet-LOQ/NQO1 conditioning gates while keeping 791.5 mg CaO2 and 88% Hurdle-1 unchanged.",
     "changes": [
