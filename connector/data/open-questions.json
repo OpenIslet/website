@@ -180,7 +180,7 @@
     "id": "OQ-006",
     "title": "Do many gene edits at once cause DNA rearrangements?",
     "plain": "Each extra edit is another chance for the cell's DNA to be rearranged by mistake, and cells with cancer-linked changes could take over. This is why the scoring model penalises extra edits.",
-    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Open-license CC-BY-4.0 AlphaMissense v3 annotations (Cheng 2023, PMID 37733863) are attached strictly as descriptive context across 27 priority genes and the TYK2 prime-edit window, because 30x whole-genome sequencing misses ~21.5% of 5%-allele-fraction clones and cannot replace >= 63,000x duplex sequencing or manufacturing-scale structural checks (IIP-0017).",
+    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Open-license CC-BY-4.0 AlphaMissense v3 annotations (Cheng 2023, PMID 37733863) are attached strictly as descriptive context across 27 priority genes and the TYK2 prime-edit window, because 30x whole-genome sequencing misses ~21.5% of 5%-allele-fraction clones and cannot replace >= 63,000x duplex sequencing or manufacturing-scale structural checks (IIP-0017). Inside Stage 0's <= 20% wildcard allocation (IIP-0023), the unscored Design Y landing-pad wildcard compares two-step eePASSIGE 73-bp B2M exon-1 TwinPE excision -> 52-bp attP-in-genome + 11,066-bp 7-unit attB-minicircle (Pandey 2025, PMID 38858586; Levesque 2026, PMID 42749803; avoiding Cas9-DSB AAV capture in Hanlon 2019, PMID 31570731) and 2-locus TadCBEd (Neugebauer 2023, PMID 36357719, gating full C>T + A>G + indel haplotypes) while retaining mandatory CAST-Seq (< 10^-5), k = 0 OT1/OT2/OT4/WGS pseudo-site checks and >= 63,000x TP53/PPM1D/BCOR duplex sequencing.",
     "tests": [
       "5"
     ],
@@ -194,10 +194,14 @@
     ],
     "pmids": [
       "39529170",
-      "37733863"
+      "37733863",
+      "31570731",
+      "36357719",
+      "38858586",
+      "42749803"
     ],
     "settle": "Deep duplex sequencing (>= 63,000x) and long-read phasing of edited cell lines for rearrangements and cancer-linked changes, with the same checks repeated at manufacturing scale.",
-    "source": "Concise specification sections 4.5, 6 and 9; rule GY-006; IIP-0017",
+    "source": "Concise specification sections 4.5, 4.6, 6 and 9; rule GY-006; IIP-0017 and IIP-0023",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -334,7 +338,7 @@
     "id": "OQ-012",
     "title": "Can the safety switch remove almost every cell?",
     "plain": "Every cell carries a safety switch that a drug (AP1903) should trigger to remove them. The proposed target is fewer than one cell in 100 million able to regrow. Nothing has shown that yet.",
-    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9; IIP-0011 and IIP-0015). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches).",
+    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9; IIP-0011 and IIP-0015). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches). For the unscored Stage-0 Design Y landing-pad wildcard (IIP-0023), where cHS4 + HNRNPA2B1 UCOE + UBC-iCasp9 sits as the 7th transcription unit inside a biallelic 11,066-bp B2M minicircle, gate Y-04 additionally checks 60-day multi-cistron co-retention against supercoiling coupling (Naughton 2013, PMID 23416946; Gilbert 2014, PMID 24584092) and requires k = 0 clonogenic survivors across N_eff = N * f_clonogenic * eta >= 299,573,228 effective trials (exact Poisson upper95 <= 1.0e-8).",
     "tests": [
       "5"
     ],
@@ -354,10 +358,12 @@
       "11242052",
       "9724721",
       "11734640",
-      "12620238"
+      "12620238",
+      "23416946",
+      "24584092"
     ],
     "settle": "Compare the AAVS1 anti-silencing, orientation and splice-cleaned arms across maturation with calibrated minigene and UMI junction sequencing, check PPP1R12C splicing, double-stranded RNA stress and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count clonogenic survivors.",
-    "source": "Concise specification sections 4.4 and 9; IIP-0011 and IIP-0015",
+    "source": "Concise specification sections 4.4, 4.6 and 9; IIP-0011, IIP-0015 and IIP-0023",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -521,7 +527,7 @@
     "id": "OQ-019",
     "title": "Do the core gene insertions leave nearby genes and splicing intact, and does shed PD-L1 act in the liquid around the graft?",
     "plain": "Inserting protective genes at B2M, CXCL10 and AAVS1 or switching off CIITA could accidentally disturb nearby genes, splice in either direction into surrounding host exons, form repeated hairpins in AAV6 templates, or lose promoter activity over time. At CXCL10, enzymes can also clip PD-L1 off the cell surface into the surrounding liquid, where its effect on immune cells is unknown.",
-    "detail": "Raised in IIP-0005, IIP-0011, IIP-0015 and IIP-0016. Sequence, two-strand splice-motif and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation, ships a 20-construct two-strand splice-hardened HLA-E comparator panel at B2M (0 created splice donors or new acceptor coordinates, alongside the silent stop-seam check against splicing into B2M exon 2's 32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene, 5'/3'-RACE and clonal UMI junction sequencing (at least 3,700 UMIs) across Loci 1, 3 and 4, and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283).",
+    "detail": "Raised in IIP-0005, IIP-0011, IIP-0015 and IIP-0016. Sequence, two-strand splice-motif and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation, ships a 20-construct two-strand splice-hardened HLA-E comparator panel at B2M (0 created splice donors or new acceptor coordinates, alongside the silent stop-seam check against splicing into B2M exon 2's 32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene, 5'/3'-RACE and clonal UMI junction sequencing (at least 3,700 UMIs) across Loci 1, 3 and 4, and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283). Separately, inside the <= 20% wildcard firewall (IIP-0023), Stage 0 audits the 3-construct Design Y landing-pad FASTA (5'/3'-RACE verifying 0 sense ATGs across the 75-bp B2M 5'-UTR + attR leader, 201-bp vs 601-bp CIITA-pIV CpG-island reconciliation alongside Nunez 2021 PMID 33838111 CRISPRoff and full-length CIITA isoforms PMID 9184229, and hCDH5 + 4x miR-375-3p CD200 iEC:SC-beta >= 50:1 selectivity sparing beta-cell miR-375 and human ADORA1/ADORA2A GSIS, PMID 42660457, PMID 35297680).",
     "tests": [
       "2A",
       "2B",
@@ -542,10 +548,14 @@
       "22696657",
       "28462820",
       "32053646",
-      "37264229"
+      "37264229",
+      "9184229",
+      "33838111",
+      "35297680",
+      "42660457"
     ],
     "settle": "Run calibrated host-context minigene assays, 5'/3'-RACE, clonal UMI splice-junction sequencing (at least 3,700 UMIs), host-mRNA equivalence checks and bisulfite methylation assays across resting and inflamed edited islets alongside the one-factor-at-a-time Stage-0 comparators, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
-    "source": "Concise specification sections 4.1 to 4.4, 6 and 9; IIP-0005, IIP-0011, IIP-0015 and IIP-0016",
+    "source": "Concise specification sections 4.1 to 4.6, 6 and 9; IIP-0005, IIP-0011, IIP-0015, IIP-0016 and IIP-0023",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

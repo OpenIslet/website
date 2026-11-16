@@ -652,5 +652,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now splits Track-2 B'-SCT (KIR) and held HLA-G1 (LILRB1) NK rescue routes fail-closed with upper95 subset routing, logs CC0 RCSB PDB PVR and HLA-G1 coordinate provenance plus off-grid Idea Graveyard guardrails for B2M-null CD155/CD226 testing and lineage-separated necroptosis, and computes the 4,096-state common-shock portfolio tree programmatically with zero odds change."
     }
+  },
+  {
+    "id": "IIP-0023",
+    "date": "2026-11-16",
+    "decided": "2026-11-16",
+    "title": "Upgrade Design Y wildcard with eePASSIGE polarity, TadCBEd, ADORA1 physics and Y-01..Y-04 gates",
+    "summary": "Upgrades the unscored Stage-0 Design Y landing-pad wildcard strictly inside the <= 20% Y/Z firewall (zero change to Blueprints A, B, or X or headline odds), materializing the 3-comparator FASTA, inverting Bxb1 polarity to eePASSIGE attP-in-genome, comparing TadCBEd vs CRISPRoff, modeling human ADORA1/ADORA2A diffusion, and adding a fail-closed 23-endpoint Y-01..Y-04 contract.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "ChatGPT 6.1 Sol (max)",
+      "ChatGPT 6 Astra (max)",
+      "Claude 5.5 Sonnet (max)",
+      "Gemini 4 Hydrogen (extra)",
+      "Muse Wonder Full",
+      "ChatGPT-6.1 Sol (Ultra)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now specifies Stage-0 wildcard Design Y strictly inside the <= 20% Y/Z cap (zero change to A, B, X or headline odds), adding the 3-comparator FASTA, eePASSIGE B2M attP-in-genome polarity, TadCBEd vs CRISPRoff haplotype/CGI checks, human ADORA1/ADORA2A reaction-diffusion, and a fail-closed 23-endpoint Y-01..Y-04 contract."
+    }
   }
 ]

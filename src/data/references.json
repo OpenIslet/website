@@ -11,6 +11,19 @@
     "year": 1996,
     "doi": "10.1016/0891-5849(96)02051-5"
   },
+  "9184229": {
+    "pmid": "9184229",
+    "title": "Expression of MHC class II molecules in different cellular and functional compartments is controlled by differential usage of multiple promoters of the transactivator CIITA.",
+    "authors": [
+      "Muhlethaler-Mottet A",
+      "Otten LA",
+      "Steimle V",
+      "Mach B"
+    ],
+    "journal": "EMBO J",
+    "year": 1997,
+    "doi": "10.1093/emboj/16.10.2851"
+  },
   "10428963": {
     "pmid": "10428963",
     "title": "Kinetics and peptide dependency of the binding of the inhibitory NK receptor CD94/NKG2-A and the activating receptor CD94/NKG2-C to HLA-E.",
@@ -278,6 +291,25 @@
     "year": 2012,
     "doi": "10.1038/cddis.2012.176"
   },
+  "23416946": {
+    "pmid": "23416946",
+    "title": "Transcription forms and remodels supercoiling domains unfolding large-scale chromatin structures.",
+    "authors": [
+      "Naughton C",
+      "Avlonitis N",
+      "Corless S",
+      "Prendergast JG",
+      "Mati IK",
+      "Eijk PP",
+      "Cockroft SL",
+      "Bradley M",
+      "Ylstra B",
+      "Gilbert N"
+    ],
+    "journal": "Nat Struct Mol Biol",
+    "year": 2013,
+    "doi": "10.1038/nsmb.2509"
+  },
   "23698740": {
     "pmid": "23698740",
     "title": "The immunogenicity of virus-derived 2A sequences in immunocompetent individuals.",
@@ -343,6 +375,17 @@
     "journal": "Cell Rep",
     "year": 2013,
     "doi": "10.1016/j.celrep.2013.11.020"
+  },
+  "24584092": {
+    "pmid": "24584092",
+    "title": "Supercoiling in DNA and chromatin.",
+    "authors": [
+      "Gilbert N",
+      "Allan J"
+    ],
+    "journal": "Curr Opin Genet Dev",
+    "year": 2014,
+    "doi": "10.1016/j.gde.2013.10.013"
   },
   "24608439": {
     "pmid": "24608439",
@@ -913,6 +956,34 @@
     "year": 2019,
     "doi": "10.1016/j.stem.2019.02.005"
   },
+  "31570731": {
+    "pmid": "31570731",
+    "title": "High levels of AAV vector integration into CRISPR-induced DNA breaks.",
+    "authors": [
+      "Hanlon KS",
+      "Kleinstiver BP",
+      "Garcia SP",
+      "Zaborowski MP",
+      "Volak A",
+      "Spirig SE",
+      "Muller A",
+      "Sousa AA",
+      "Tsai SQ",
+      "Bengtsson NE",
+      "Lööv C",
+      "Ingelsson M",
+      "Chamberlain JS",
+      "Corey DP",
+      "Aryee MJ",
+      "Joung JK",
+      "Breakefield XO",
+      "Maguire CA",
+      "György B"
+    ],
+    "journal": "Nat Commun",
+    "year": 2019,
+    "doi": "10.1038/s41467-019-12449-2"
+  },
   "31782946": {
     "pmid": "31782946",
     "title": "Interference of anti-streptavidin antibodies in immunoassays: a very rare phenomenon or a more common finding?",
@@ -981,6 +1052,35 @@
     "journal": "Cell Regen",
     "year": 2020,
     "doi": "10.1186/s13619-020-00055-3"
+  },
+  "33838111": {
+    "pmid": "33838111",
+    "title": "Genome-wide programmable transcriptional memory by CRISPR-based epigenome editing.",
+    "authors": [
+      "Nuñez JK",
+      "Chen J",
+      "Pommier GC",
+      "Cogan JZ",
+      "Replogle JM",
+      "Adriaens C",
+      "Ramadoss GN",
+      "Shi Q",
+      "Hung KL",
+      "Samelson AJ",
+      "Pogson AN",
+      "Kim JYS",
+      "Chung A",
+      "Leonetti MD",
+      "Chang HY",
+      "Kampmann M",
+      "Bernstein BE",
+      "Hovestadt V",
+      "Gilbert LA",
+      "Weissman JS"
+    ],
+    "journal": "Cell",
+    "year": 2021,
+    "doi": "10.1016/j.cell.2021.03.025"
   },
   "34012112": {
     "pmid": "34012112",
@@ -1126,6 +1226,25 @@
     "year": 2022,
     "doi": "10.1038/s41587-022-01219-z"
   },
+  "35297680": {
+    "pmid": "35297680",
+    "title": "Development of a Beta Cell-Specific Expression Control Element for Recombinant Adeno-Associated Virus.",
+    "authors": [
+      "Chai S",
+      "Kim Y",
+      "Galivo F",
+      "Dorrell C",
+      "Wakefield L",
+      "Posey J",
+      "Ackermann AM",
+      "Kaestner KH",
+      "Hebrok M",
+      "Grompe M"
+    ],
+    "journal": "Hum Gene Ther",
+    "year": 2022,
+    "doi": "10.1089/hum.2021.219"
+  },
   "35559682": {
     "pmid": "35559682",
     "title": "FasL microgels induce immune acceptance of islet allografts in nonhuman primates.",
@@ -1232,6 +1351,38 @@
     "year": 2022,
     "doi": "10.1111/cas.15526"
   },
+  "36008610": {
+    "pmid": "36008610",
+    "title": "High-yield genome engineering in primary cells using a hybrid ssDNA repair template and small-molecule cocktails.",
+    "authors": [
+      "Shy BR",
+      "Vykunta VS",
+      "Ha A",
+      "Talbot A",
+      "Roth TL",
+      "Nguyen DN",
+      "Pfeifer WG",
+      "Chen YY",
+      "Blaeschke F",
+      "Shifrut E",
+      "Vedova S",
+      "Mamedov MR",
+      "Chung JJ",
+      "Li H",
+      "Yu R",
+      "Wu D",
+      "Wolf J",
+      "Martin TG",
+      "Castro CE",
+      "Ye L",
+      "Esensten JH",
+      "Eyquem J",
+      "Marson A"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2023,
+    "doi": "10.1038/s41587-022-01418-8"
+  },
   "36055241": {
     "pmid": "36055241",
     "title": "Whole-genome CRISPR screening identifies genetic manipulations to reduce immune rejection of stem cell-derived islets.",
@@ -1270,6 +1421,29 @@
     "year": 2022,
     "doi": "10.1038/s41467-022-34069-z"
   },
+  "36357719": {
+    "pmid": "36357719",
+    "title": "Evolution of an adenine base editor into a small, efficient cytosine base editor with low off-target activity.",
+    "authors": [
+      "Neugebauer ME",
+      "Hsu A",
+      "Arbab M",
+      "Krasnow NA",
+      "McElroy AN",
+      "Pandey S",
+      "Doman JL",
+      "Huang TP",
+      "Raguram A",
+      "Banskota S",
+      "Newby GA",
+      "Tolar J",
+      "Osborn MJ",
+      "Liu DR"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2023,
+    "doi": "10.1038/s41587-022-01533-6"
+  },
   "36707047": {
     "pmid": "36707047",
     "title": "Inhibition of RIPK1 kinase does not affect diabetes development: β-Cells survive RIPK1 activation.",
@@ -1302,6 +1476,47 @@
     "journal": "Adv Healthc Mater",
     "year": 2023,
     "doi": "10.1002/adhm.202300239"
+  },
+  "37127662": {
+    "pmid": "37127662",
+    "title": "A highly efficient transgene knock-in technology in clinically relevant cell types.",
+    "authors": [
+      "Allen AG",
+      "Khan SQ",
+      "Margulies CM",
+      "Viswanathan R",
+      "Lele S",
+      "Blaha L",
+      "Scott SN",
+      "Izzo KM",
+      "Gerew A",
+      "Pattali R",
+      "Cochran NR",
+      "Holland CS",
+      "Zhao AH",
+      "Sherman SE",
+      "Jaskolka MC",
+      "Wu M",
+      "Wilson AC",
+      "Sun X",
+      "Ciulla DM",
+      "Zhang D",
+      "Nelson JD",
+      "Zhang P",
+      "Mazzucato P",
+      "Huang Y",
+      "Giannoukos G",
+      "Marco E",
+      "Nehil M",
+      "Follit JA",
+      "Chang KH",
+      "Shearman MS",
+      "Wilson CJ",
+      "Zuris JA"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2024,
+    "doi": "10.1038/s41587-023-01779-8"
   },
   "37156915": {
     "pmid": "37156915",
@@ -1491,6 +1706,29 @@
     "year": 2024,
     "doi": "10.4049/jimmunol.2300743"
   },
+  "38858586": {
+    "pmid": "38858586",
+    "title": "Efficient site-specific integration of large genes in mammalian cells via continuously evolved recombinases and prime editing.",
+    "authors": [
+      "Pandey S",
+      "Gao XD",
+      "Krasnow NA",
+      "McElroy A",
+      "Tao YA",
+      "Duby JE",
+      "Steinbeck BJ",
+      "McCreary J",
+      "Pierce SE",
+      "Tolar J",
+      "Meissner TB",
+      "Chaikof EL",
+      "Osborn MJ",
+      "Liu DR"
+    ],
+    "journal": "Nat Biomed Eng",
+    "year": 2025,
+    "doi": "10.1038/s41551-024-01227-1"
+  },
   "38867450": {
     "pmid": "38867450",
     "title": "Thymidylate synthase disruption to limit cell proliferation in cell therapies.",
@@ -1509,6 +1747,32 @@
     "journal": "Molecular therapy : the journal of the American Society of Gene Therapy",
     "year": 2024,
     "doi": "10.1016/j.ymthe.2024.06.014"
+  },
+  "38879678": {
+    "pmid": "38879678",
+    "title": "Intra-islet α-cell Gs signaling promotes glucagon release.",
+    "authors": [
+      "Liu L",
+      "El K",
+      "Dattaroy D",
+      "Barella LF",
+      "Cui Y",
+      "Gray SM",
+      "Guedikian C",
+      "Chen M",
+      "Weinstein LS",
+      "Knuth E",
+      "Jin E",
+      "Merrins MJ",
+      "Roman J",
+      "Kaestner KH",
+      "Doliba N",
+      "Campbell JE",
+      "Wess J"
+    ],
+    "journal": "Nat Commun",
+    "year": 2024,
+    "doi": "10.1038/s41467-024-49537-x"
   },
   "38981470": {
     "pmid": "38981470",
@@ -1602,6 +1866,19 @@
     "year": 2024,
     "doi": "10.1038/s42255-024-01114-8"
   },
+  "39179886": {
+    "pmid": "39179886",
+    "title": "STRAIGHT-IN: a platform for rapidly generating panels of genetically modified human pluripotent stem cell lines.",
+    "authors": [
+      "Blanch-Asensio A",
+      "Grandela C",
+      "Mummery CL",
+      "Davis RP"
+    ],
+    "journal": "Nat Protoc",
+    "year": 2026,
+    "doi": "10.1038/s41596-024-01039-2"
+  },
   "39326417": {
     "pmid": "39326417",
     "title": "Transplantation of chemically induced pluripotent stem-cell-derived islets under abdominal anterior rectus sheath in a type 1 diabetes patient.",
@@ -1625,6 +1902,14 @@
     "journal": "Cell",
     "year": 2025,
     "doi": "10.1016/j.cell.2025.02.018"
+  },
+  "40251154": {
+    "pmid": "40251154",
+    "title": "Inhibition of polymorphonuclear cells averts cytotoxicity against hypoimmune cells in xenotransplantation.",
+    "authors": [],
+    "journal": "Nature communications",
+    "year": 2025,
+    "doi": "10.1038/s41467-025-58774-7"
   },
   "40404627": {
     "pmid": "40404627",
@@ -1714,6 +1999,32 @@
     "year": 2025,
     "doi": "10.1126/sciadv.adx9755"
   },
+  "41642947": {
+    "pmid": "41642947",
+    "title": "Programmable genome editing in human cells using RNA-guided bridge recombinases.",
+    "authors": [
+      "Pelea O",
+      "Tálas A",
+      "Carrera JF",
+      "Mathis N",
+      "van de Venn L",
+      "Yeh CD",
+      "Kulcsár PI",
+      "Marquart KF",
+      "Weber Y",
+      "Gerecke SE",
+      "Harvey-Seutcheu IF",
+      "Mailänder D",
+      "Pfleiderer MM",
+      "Chanez C",
+      "Corn JE",
+      "Schwank G",
+      "Jinek M"
+    ],
+    "journal": "Science",
+    "year": 2026,
+    "doi": "10.1126/science.adz1884"
+  },
   "41951603": {
     "pmid": "41951603",
     "title": "RIP kinase inhibition with Necrostatin-1 improves human marginal mass islet graft survival and function for the management of type 1 diabetes.",
@@ -1742,5 +2053,62 @@
     "journal": "Signal Transduct Target Ther",
     "year": 2026,
     "doi": "10.1038/s41392-026-02934-8"
+  },
+  "42660457": {
+    "pmid": "42660457",
+    "title": "Increased ADORA1 expression in pancreatic islets coincides with insulin secretory defects in human type 2 diabetes.",
+    "authors": [
+      "Mohammed Al-Amily I",
+      "Parandeh F",
+      "Amisten S",
+      "Dunér P",
+      "Meidute-Abaraviciene S",
+      "Grapengiesser E",
+      "Hellman B",
+      "Salehi A"
+    ],
+    "journal": "J Biol Chem",
+    "year": 2026,
+    "doi": "10.1016/j.jbc.2026.113501"
+  },
+  "42749803": {
+    "pmid": "42749803",
+    "title": "Targeted genomic integration and rearrangement using prime assembly.",
+    "authors": [
+      "Levesque S",
+      "Kawashima N",
+      "Hwang GH",
+      "Zeng J",
+      "Toskov V",
+      "Barry T",
+      "Mannherz W",
+      "Homfeldt L",
+      "Becerra B",
+      "Schoonenberg VAC",
+      "Pinello L",
+      "Agarwal S",
+      "Bauer DE"
+    ],
+    "journal": "Nature",
+    "year": 2026,
+    "doi": "10.1038/s41586-026-11024-2"
+  },
+  "42791925": {
+    "pmid": "42791925",
+    "title": "Effect of Adenosine on the Morphological and Functional Integrity of Isolated Human Islets Exposed to Normoxic and Hypoxic Conditions.",
+    "authors": [
+      "Brandhorst H",
+      "Brandhorst D",
+      "Spiers R",
+      "Acreman S",
+      "Christopherson L",
+      "Cornu A",
+      "Portnojs A",
+      "Al-Hasani K",
+      "Johnson PRV"
+    ],
+    "journal": "Bioengineering (Basel)",
+    "year": 2026,
+    "doi": "10.3390/bioengineering13091053"
   }
 }

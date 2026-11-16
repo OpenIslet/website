@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-16",
+    "title": "Stage-0 Design Y wildcard eePASSIGE landing-pad FASTA, TadCBEd vs CRISPRoff reconciliation, ADORA1/ADORA2A physics and Y-01..Y-04 contract",
+    "summary": "Materializes the 3-comparator Design Y wildcard FASTA inside the <= 20% Y/Z Stage-0 firewall, reconciles eePASSIGE polarity, TadCBEd haplotypes, CIITA isoforms and human ADORA1/ADORA2A diffusion, and adds fail-closed Y-01..Y-04 endpoints with zero change to core blueprints or headline odds.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "Materialized data/constructs/islet1_design_y_wildcard_comparators_v0.8.0.fasta (SHA-256 c7f54b824a73cf9d40247d4fd251cb5c28a8eca4a1530b9661284200bb4cbabc: 11,066-bp 7-cistron 0x-2A DESIGN_Y_CORE_CD200_IEC, 11,859-bp +CD59, and 12,555-bp CD39 comparators) strictly inside the shared <= 20% Y/Z Stage-0 wildcard firewall with zero changes to Blueprints A, B, or X (DEC-102, IIP-0023)."
+      },
+      {
+        "kind": "changed",
+        "text": "Upgraded Stage-0 Design Y in Layer 2 and the ranker/playbook: inverted Bxb1 polarity to two-step eePASSIGE 73-bp B2M Exon-1 attP-in-genome + attB-minicircle (separating prospective >= 3.0% hPSC knock-in target from published experimental contexts), reconciled 201-bp CIITA-pIV TSS CGI (Obs/Exp = 0.7982) vs 601-bp (0.5154) and full-length CIITA isoforms (NM_001286402.1 p.Q53*/p.W334* and pIV p.Q29*) alongside TadCBEd C>T + A>G + indel haplotype NGS, and replaced rodent A1/A3 prose with human ADORA1/ADORA2A source-flux reaction-diffusion."
+      },
+      {
+        "kind": "added",
+        "text": "Registered 23 fail-closed Design Y Stage-0 quantitative endpoints (18 core Y-01..Y-04 endpoints plus 5 dedicated >= 60-day age, phased ONT intactness, 4-lineage count, and exact Poisson k = 0 at N_eff >= 299,573,228 AP1903 clonogenic denominators with 1e-12 SE floors), 3 modality enums, and 5 boolean controls that remain NOT_TESTED when Design Y fields are absent."
+      }
+    ],
+    "contribution": "IIP-0023"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-16",
     "title": "Fail-closed Track-2 NK rescue split, PVR and lineage-necroptosis guardrails, and programmatic 4,096-state portfolio generator",
     "summary": "Separates HLA-C B'-SCT (KIR) from held HLA-G1 (LILRB1) NK fallback routing on upper95 subset bounds, adds CC0 RCSB PDB coordinate audits and off-grid Idea Graveyard guardrails for B2M-null CD155/CD226 and lineage-separated necroptosis, and replaces hard-coded 2^12 portfolio decimals with an executable 4,096-state generator.",
     "changes": [
