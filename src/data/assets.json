@@ -46,6 +46,33 @@
   },
   {
     "group": "check",
+    "title": "All 2,160 design scores, stepping stones and edit-count frontier",
+    "path": "data/extracted/islet1_combinatorial_pareto_and_ladder_v0.8.0.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "Every combination scored by the model, the step-by-step path from Sana UP421 (#246) through minimal HIP in our setting (#45) to Design A (#1), the best design at each edit count (K = 0 to 7), and how sensitive the ranking is to each assumption.",
+    "for": "Scientists and developers"
+  },
+  {
+    "group": "check",
+    "title": "Stage-0 36-run head-to-head dish protocol",
+    "path": "data/protocols/hip_core_fractional_factorial_v0.6.2.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "The 36-run fractional-factorial dish experiment designed to test whether simpler 3-edit cells match or beat 4-edit Design A before anything moves beyond a dish.",
+    "for": "Wet-lab scientists and statisticians"
+  },
+  {
+    "group": "check",
+    "title": "Stage-0 wet-lab pass and hold thresholds",
+    "path": "data/protocols/wetlab_endpoint_contract_v0.8.0.json",
+    "license": "CC-BY-4.0",
+    "format": "JSON",
+    "what": "Every pre-registered Stage-0 assay readout, unit and pass/hold threshold in a machine-readable contract.",
+    "for": "Wet-lab scientists and developers"
+  },
+  {
+    "group": "check",
     "title": "Idea Graveyard data",
     "path": "data/graveyard/idea_graveyard_v0.5.json",
     "license": "CC-BY-4.0",

@@ -195,12 +195,12 @@ const modulesDump = JSON.parse(
 // ---------------------------------------------------------------------------------------------------------------
 // Genes: one vocabulary, used to tag studies and findings so they can be searched and filtered by gene
 // ---------------------------------------------------------------------------------------------------------------
-const GENE_ALIASES = { 'PD-L1': 'CD274', PDL1: 'CD274', ICASP9: 'CASP9', 'ICASP-9': 'CASP9', 'HLA-E*01:03': 'HLA-E' };
+const GENE_ALIASES = { 'PD-L1': 'CD274', PDL1: 'CD274', ICASP9: 'CASP9', 'ICASP-9': 'CASP9', 'HLA-E*01:03': 'HLA-E', CD155: 'PVR', CD39: 'ENTPD1', IL1RACP: 'IL1RAP' };
 const DESIGN_GENES = [
-  'B2M', 'CIITA', 'CD47', 'HLA-E', 'HLA-A', 'HLA-B', 'HLA-C', 'TYK2', 'CXCL10', 'SERPINB9', 'CD274', 'CASP9', 'INS', 'IAPP', 'CXADR',
-  'GAD2', 'G6PC2', 'SLC30A8', 'PTPN2', 'TNFAIP3', 'STAT1', 'JAK1', 'JAK2', 'RNLS', 'TXNIP', 'FAS', 'FASLG', 'IL1R1', 'NLRC5', 'PDX1', 'NKX6-1', 'MAFA',
-  'CTLA4', 'SLC18A1', 'GCG', 'SST', 'CD55', 'TYMS', 'THBD', 'ART3', 'PPP1R12C', 'DEXI', 'CLEC16A', 'BACH2', 'CTSH', 'SOCS1', 'GLIS3', 'DLK1',
-  'ERBB3', 'IFNGR1', 'IRF1', 'CASP8', 'FADD', 'TNFRSF1A', 'IFIH1',
+  'B2M', 'CIITA', 'CD47', 'HLA-E', 'HLA-A', 'HLA-B', 'HLA-C', 'HLA-G', 'TYK2', 'CXCL10', 'SERPINB9', 'CD274', 'CASP9', 'INS', 'IAPP', 'CXADR',
+  'GAD2', 'G6PC2', 'SLC30A8', 'PTPN2', 'TNFAIP3', 'STAT1', 'JAK1', 'JAK2', 'RNLS', 'TXNIP', 'FAS', 'FASLG', 'IL1R1', 'IL1R2', 'IL1RAP', 'NLRC5', 'PDX1', 'NKX6-1', 'MAFA',
+  'CTLA4', 'SLC18A1', 'GCG', 'SST', 'CD55', 'CD59', 'TYMS', 'THBD', 'CFH', 'ADIPOQ', 'CAT', 'NQO1', 'ART3', 'PPP1R12C', 'DEXI', 'CLEC16A', 'BACH2', 'CTSH', 'SOCS1', 'GLIS3', 'DLK1',
+  'ERBB3', 'IFNGR1', 'IRF1', 'CASP8', 'FADD', 'TNFRSF1A', 'IFIH1', 'PVR', 'CD226', 'TIGIT', 'CD96', 'LILRB1', 'RIPK1', 'RIPK3', 'MLKL', 'ADORA1', 'ADORA2A', 'CD200', 'ENTPD1',
 ];
 const vocab = new Set(DESIGN_GENES);
 const splitSymbols = (s) => String(s).split('_').filter((p) => /^[A-Z][A-Z0-9-]+$/.test(p) && !/^[A-Z]\d+[A-Z]$/.test(p));
@@ -465,14 +465,23 @@ put('graph/summary.json', {
 // The Idea Graveyard: the public rules, the design modules and the raw entries the linter reads
 // ---------------------------------------------------------------------------------------------------------------
 const sourceEntries = graveyardRaw.graveyard_entries;
+const offGridGuardrails = (graveyardRaw.off_grid_molecular_dead_end_guardrails?.guardrails ?? []).map((g) => ({
+  graveyard_id: g.guardrail_id,
+  cheapest_falsification_assay: g.cheapest_falsification_assay ?? null,
+  trigger_pattern: { requires_any_module: [], condition: g.status ?? null },
+}));
+const allRuleSources = [...sourceEntries, ...offGridGuardrails];
 const publicRules = site.rules.map((r) => {
-  const src = r.source ? sourceEntries.find((e) => e.graveyard_id.startsWith(r.source)) : null;
+  const src = r.source ? allRuleSources.find((e) => e.graveyard_id.startsWith(r.source)) : null;
   return {
     id: r.id,
     graveyard_id: src?.graveyard_id ?? null,
     title: r.title,
     level: r.level,
-    level_plain: r.level === 'BLOCK' ? 'Dead end: a design that includes this idea scores zero' : 'Risky: a design that includes this idea needs a check before anyone relies on it',
+    level_plain:
+      r.level === 'BLOCK'
+        ? 'Dead end: a design that includes this idea scores zero or is ruled out before lab testing'
+        : 'Risky: a design that includes this idea needs a check before anyone relies on it',
     tests: r.tests,
     idea: r.idea,
     why: r.why,
@@ -484,6 +493,7 @@ const publicRules = site.rules.map((r) => {
     added: r.added,
     version: r.version,
     contribution: r.contribution ?? null,
+    grid_rule: Boolean(r.gridRule),
     trigger_modules: src?.trigger_pattern?.requires_any_module ?? [],
     trigger_condition: src?.trigger_pattern?.condition ?? null,
     cheapest_falsification_assay: src?.cheapest_falsification_assay ?? null,
@@ -590,6 +600,10 @@ put('blueprint/scores.json', {
     weakest_test: d.weakestTest,
     test_scores: d.tests,
   })),
+  stepping_stones: site.steppingStones ?? [],
+  pareto_by_edits: site.paretoByEdits ?? [],
+  stepping_stones_note: site.steppingStonesNote ?? '',
+  prior_sensitivity: release.priorSensitivity ?? {},
   spread: { starting_assumptions_pct: release.variance.assumptions, overlap_pct: release.variance.overlap, published_findings_pct: release.variance.findings },
 });
 put('blueprint/overview.json', {

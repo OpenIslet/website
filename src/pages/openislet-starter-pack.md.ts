@@ -66,7 +66,7 @@ const graveyard = rules
   .join('\n\n');
 
 // ---- the open questions ----
-const openQuestions = (questions as { id: string; title: string; plain: string; settle: string; tests: string[]; designs: string[]; status: string }[])
+const openQuestions = (questions as { id: string; title: string; plain: string; settle: string; tests: string[]; designs: string[]; status: string; source?: string }[])
   .filter((q) => q.status === 'open')
   .map((q) => `- **${q.id}. ${q.title}** ${q.plain} To settle it: ${q.settle} (Tests: ${q.tests.join(', ')}. Designs: ${q.designs.join(', ')}.${q.source ? ` Where it comes from: ${q.source}.` : ''})`)
   .join('\n');

@@ -30,6 +30,15 @@ describe('cross-surface propagation in the connector', () => {
     const x = await s.call('get_blueprint_overview', { design: 'X' });
     expect(x.text).not.toMatch(/HLA-E (?:itself )?stays unchanged/i);
     expect(x.text).toContain('Multi-miR(IL1R1 + FAS)');
+
+    const designsOverview = await s.call('get_blueprint_overview', { section: 'designs' });
+    expect(designsOverview.text).toContain('0.0526');
+    expect(designsOverview.text).toContain('K = 4');
+
+    const gySuggest = await s.call('check_against_graveyard', {
+      idea: 'use bovine catalase in the oxygen layer and unhydrolysed maleimide FasL linkers',
+    });
+    expect((gySuggest.structuredContent as any).suggestions.map((r: { id: string }) => r.id)).toContain('GY-013'); // eslint-disable-line @typescript-eslint/no-explicit-any
   });
 
   it('indexes core edit, receptor and triaged T1D trap genes so get_conflicting_evidence never rejects them as unknown', async () => {
@@ -67,19 +76,22 @@ describe('cross-surface propagation in the connector', () => {
   it('keeps open-questions and graveyard bundle records aligned with every merged IIP and rule ID', () => {
     const oqs = readJson('questions/open-questions.json') as Array<{ id: string; plain: string; detail: string; source: string; pmids: string[] }>;
     const gys = readJson('graveyard/entries.json') as Array<{ graveyard_id: string; why_it_fails: string }>;
+    const publicRules = readJson('graveyard/rules.json') as Array<{ id: string; graveyard_id: string | null; grid_rule?: boolean }>;
+    const scores = readJson('blueprint/scores.json') as { stepping_stones?: Array<{ id: string; rank: number; children: number }>; pareto_by_edits?: unknown[] };
     const ledger = readJson('contributions/ledger.json') as { records: Array<{ id: string }> };
+
+    expect(gys).toHaveLength(10);
+    expect(publicRules.length).toBeGreaterThanOrEqual(17);
+    expect(publicRules.map((r) => r.id)).toEqual(expect.arrayContaining(['GY-011', 'GY-012', 'GY-013', 'GY-014', 'GY-015', 'GY-016', 'GY-017']));
+    expect(scores.pareto_by_edits).toHaveLength(8);
+    expect(scores.stepping_stones?.find((st) => st.id === 'MINIMAL_HIP_NICHE_PLUS_SWITCH')).toMatchObject({ rank: 45, children: 0.0526 });
 
     const knownIips = new Set<string>([
       'IIP-0001',
       ...changelogFile.flatMap((c) => (c.contribution ? [c.contribution] : [])),
       ...ledger.records.map((r) => r.id),
     ]);
-    const knownGys = new Set(
-      gys.flatMap((g) => {
-        const m = g.graveyard_id.match(/^GRAVEYARD_(\d{3})/);
-        return m ? [`GY-${m[1]}`] : [];
-      }),
-    );
+    const knownGys = new Set(publicRules.map((r) => r.id));
     const bibliography = refsBase as Record<string, { title?: string }>;
     const specMd = fs.readFileSync(path.join(bundleDir, 'blueprint/spec.md'), 'utf8');
     for (const m of specMd.matchAll(/#ref-(\d{5,9})/g)) {

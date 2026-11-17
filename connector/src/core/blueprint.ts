@@ -79,8 +79,8 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
         md.bullets([
           `${c.studies.toLocaleString('en-GB')} study records and ${c.findings.toLocaleString('en-GB')} findings, each tied to the place in the paper it comes from.`,
           `${typeof c.cegStudies === 'number' ? c.cegStudies.toLocaleString('en-GB') : '1,151'} primary empirical studies, ${typeof c.cegArms === 'number' ? c.cegArms.toLocaleString('en-GB') : '7,659'} experimental and control groups, ${typeof c.cegOutcomes === 'number' ? c.cegOutcomes.toLocaleString('en-GB') : '14,105'} structured outcomes and ${typeof c.cegLinks === 'number' ? c.cegLinks.toLocaleString('en-GB') : '2,447'} blueprint links in the Type 1 Diabetes Context–Evidence Graph (screened from ${typeof c.cegScreened === 'number' ? c.cegScreened.toLocaleString('en-GB') : '3,922'} candidate records).`,
-          `${c.graveyardRules} Idea Graveyard rules: ideas the evidence argues against, or that carry a risk.`,
-          `${c.designs.toLocaleString('en-GB')} designs checked against those rules: ${c.blocked.toLocaleString('en-GB')} were ruled out and ${c.feasible} remained.`,
+          `${c.graveyardRules} Idea Graveyard entries (${c.graveyardGridRules ?? 10} grid rules plus ${c.graveyardOffGridRules ?? 0} Stage-0 molecular and oxygen guardrails): ideas the evidence argues against, or that carry a risk.`,
+          `${c.designs.toLocaleString('en-GB')} designs checked against the ${c.graveyardGridRules ?? c.graveyardRules} grid rules: ${c.blocked.toLocaleString('en-GB')} were ruled out and ${c.feasible} remained.`,
           'Checks at five layers: the studies, the DNA, the proteins, the graft and body, and patient matching.',
         ]) +
         '\nAsk for another section (tests, designs, roadmap, versions, help) for more.';
@@ -139,7 +139,48 @@ export async function blueprintOverview(bundle: Bundle, cfg: Config, opts: { sec
             ]),
           ),
         );
-        data = { designs: overview.designs, scores: scores.designs, caveat: scores.caveat, spread: scores.spread };
+        if (Array.isArray(scores.stepping_stones) && scores.stepping_stones.length > 0) {
+          parts.push(md.h(3, 'Controlled stepping stones (0.0158 -> 0.0526 -> 0.0575 -> 0.0842 -> 0.1069)'));
+          parts.push(
+            'The reference designs above are scored as originally reported (for example, Sana UP421 without our oxygen-and-vessel setting or safety switch). Putting minimal HIP cells into the exact same setting and safety switch as Design A moves their child score from 0.0158 to 0.0526, and a 3-edit version without the CXCL10 shield scores 0.0575. Whether 4-edit Design A (0.1069) truly beats those simpler 3-edit cells in a dish is tested head to head in the 36-run Stage-0 protocol (data/protocols/hip_core_fractional_factorial_v0.6.2.json).\n',
+          );
+          parts.push(
+            md.table(
+              ['Step-by-step comparison', 'Gene edits', 'Child score', 'Overall score', 'Weakest test'],
+              scores.stepping_stones.map((s: any) => [ // eslint-disable-line @typescript-eslint/no-explicit-any
+                s.label + (s.unswitchedHold ? ' (clinical hold: no safety switch)' : ''),
+                `${s.edits}${s.baseEdits ? ` + ${s.baseEdits} base` : ''}`,
+                Number(s.children).toFixed(4),
+                Number(s.composite).toFixed(4),
+                `Test ${s.weakestTest}`,
+              ]),
+            ),
+          );
+        }
+        if (Array.isArray(scores.pareto_by_edits) && scores.pareto_by_edits.length > 0) {
+          parts.push(md.h(3, 'Best safety-switched design at each gene-edit count (K = 0 to 7)'));
+          parts.push(
+            md.table(
+              ['Edit count (K)', 'Best clinically switched design', 'Child score', 'Overall score', 'Weakest test'],
+              scores.pareto_by_edits.map((p: any) => [ // eslint-disable-line @typescript-eslint/no-explicit-any
+                `K = ${p.edits}${p.bestSwitchedBaseEdits ? ` (+${p.bestSwitchedBaseEdits} base)` : ''}`,
+                p.summary,
+                Number(p.bestSwitchedChildren).toFixed(4),
+                Number(p.bestSwitchedComposite).toFixed(4),
+                `Test ${p.bestSwitchedWeakestTest}`,
+              ]),
+            ),
+          );
+        }
+        data = {
+          designs: overview.designs,
+          scores: scores.designs,
+          stepping_stones: scores.stepping_stones ?? [],
+          pareto_by_edits: scores.pareto_by_edits ?? [],
+          prior_sensitivity: scores.prior_sensitivity ?? {},
+          caveat: scores.caveat,
+          spread: scores.spread,
+        };
       } else {
         notes.push('Model scores are switched off in this connector for now.');
         data = { designs: overview.designs };

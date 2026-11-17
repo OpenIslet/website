@@ -7,7 +7,7 @@ import ChangelogArt from '../components/ChangelogArt.astro';
 import Odds from '../components/Odds.astro';
 import { scenarios, gateColumns, niche, assets, reproduce } from '../data/blueprint';
 import { pubmed, release, longDate, showScenarioIndices, startHref } from '../data/site';
-import { indices, scoresCaption } from '../data/scenarios';
+import { indices, scoresCaption, steppingStones, paretoByEdits, steppingStonesNote } from '../data/scenarios';
 import { testShort } from '../data/gates';
 import { fillTokens } from '../data/specTokens';
 import { draft as openDraft } from '../data/versions';
@@ -195,31 +195,117 @@ const markName = { p: 'Main job', s: 'Helps', x: 'Trade-off', n: 'Not involved' 
                   return (
                     <div class="papertable">
                       {showScenarioIndices ? (
-                        <div class="tablewrap" data-label="Scores for each design on each test">
-                          <table>
-                            <thead>
-                              <tr><th scope="col">Design</th><th scope="col">Rank of {n(c.designs)} (overall score)</th><th scope="col">Gene edits</th><th scope="col">Model score (child profile)</th><th scope="col">Weakest test</th></tr>
-                            </thead>
-                            <tbody>
-                              {indices.map((r) => (
-                                <tr>
-                                  <th scope="row">
-                                    {r.name}
-                                    {r.reference && <span class="refnote">Another group’s design, scored as a check on the model</span>}
-                                  </th>
-                                  <td>{r.rank}</td>
-                                  <td>{r.sub.replace('reference · ', '')}</td>
-                                  <td class="mono">{r.value.toFixed(4)}</td>
-                                  <td>{testShort[r.weakestTest]}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
+                        <>
+                          <div class="tablewrap tablewrap--responsive" tabindex="0" role="region" aria-labelledby="table-3-caption" data-label="Scores for each design on each test">
+                            <table>
+                              <thead>
+                                <tr><th scope="col">Design</th><th scope="col">Rank of {n(c.designs)} (overall score)</th><th scope="col">Gene edits</th><th scope="col">Model score (child profile)</th><th scope="col">Weakest test</th></tr>
+                              </thead>
+                              <tbody>
+                                {indices.map((r) => (
+                                  <tr>
+                                    <th scope="row">
+                                      {r.name}
+                                      {r.reference && <span class="refnote">Another group’s design, scored as a check on the model</span>}
+                                    </th>
+                                    <td>{r.rank}</td>
+                                    <td>{r.sub.replace('reference · ', '')}</td>
+                                    <td class="mono">{r.value.toFixed(4)}</td>
+                                    <td>{testShort[r.weakestTest]}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                          <p id="table-3-caption" class="caption"><strong>Table 3.</strong> {scoresCaption}</p>
+
+                          <details class="stepstones" id="table-3-stepping-stones">
+                            <summary class="stepstones__sum">
+                              Show intermediate stepping stones (#246 → #45 → #32 → #5 → #1) and best design at each edit count (K = 0 to 7)
+                            </summary>
+                            <div class="stepstones__body">
+                              <p class="stepstones__lead">{steppingStonesNote}</p>
+
+                              <div class="tablewrap tablewrap--responsive" tabindex="0" role="region" aria-labelledby="table-3a-caption">
+                                <table>
+                                  <caption id="table-3a-caption" class="sr-only">Table 3A: Controlled stepping stones from Sana UP421 (#246) through minimal HIP in the Islet-1 setting (#45) to Design A (#1)</caption>
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">Step-by-step comparison</th>
+                                      <th scope="col">Rank of {n(c.designs)}</th>
+                                      <th scope="col">Gene edits</th>
+                                      <th scope="col">Child score</th>
+                                      <th scope="col">Overall score</th>
+                                      <th scope="col">Weakest test</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {steppingStones.map((s) => (
+                                      <tr>
+                                        <th scope="row">
+                                          {s.label}
+                                          <span class="refnote">{s.whatChanged}{s.unswitchedHold ? ' · clinical hold: no safety switch' : ''}</span>
+                                        </th>
+                                        <td>#{s.rank}</td>
+                                        <td>{s.edits}{s.baseEdits ? ` + ${s.baseEdits} base` : ''}</td>
+                                        <td class="mono">{s.children.toFixed(4)}</td>
+                                        <td class="mono">{s.composite.toFixed(4)}</td>
+                                        <td>{testShort[s.weakestTest]}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                              <p class="caption">
+                                <strong>Table 3A.</strong> Controlled one-step-at-a-time bridge from naked Sana UP421 (#246) through setting- and switch-matched minimal HIP (#45) to Design A (#1).
+                              </p>
+
+                              <div class="tablewrap tablewrap--responsive" tabindex="0" role="region" aria-labelledby="table-3b-caption">
+                                <table>
+                                  <caption id="table-3b-caption" class="sr-only">Table 3B: Best safety-switched design at each gene-edit count K = 0 to 7</caption>
+                                  <thead>
+                                    <tr>
+                                      <th scope="col">Edit count (K)</th>
+                                      <th scope="col">Best clinically switched design at this edit count</th>
+                                      <th scope="col">Rank of {n(c.designs)}</th>
+                                      <th scope="col">Child score</th>
+                                      <th scope="col">Overall score</th>
+                                      <th scope="col">Weakest test</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {paretoByEdits.map((p) => (
+                                      <tr>
+                                        <th scope="row">K = {p.edits}{p.bestSwitchedBaseEdits ? ` (+${p.bestSwitchedBaseEdits} base)` : ''}</th>
+                                        <td>
+                                          {p.summary}
+                                          {p.overallBestUnswitchedHold && (
+                                            <span class="refnote">
+                                              Unswitched clinical-hold stack at K = {p.edits}: #{p.overallBestRank} ({p.overallBestComposite.toFixed(4)} overall)
+                                            </span>
+                                          )}
+                                        </td>
+                                        <td>#{p.bestSwitchedRank}</td>
+                                        <td class="mono">{p.bestSwitchedChildren.toFixed(4)}</td>
+                                        <td class="mono">{p.bestSwitchedComposite.toFixed(4)}</td>
+                                        <td>{testShort[p.bestSwitchedWeakestTest]}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                              <p class="caption">
+                                <strong>Table 3B.</strong> Best safety-switched design at each gene-edit count (K = 0 to 7). Download <a href="/downloads/data/extracted/islet1_combinatorial_pareto_and_ladder_v0.8.0.json" download>all 2,160 scored combinations (JSON)</a> or the <a href="/downloads/data/protocols/hip_core_fractional_factorial_v0.6.2.json" download>36-run Stage-0 dish protocol (JSON)</a>.
+                              </p>
+                            </div>
+                          </details>
+                        </>
                       ) : (
-                        <p class="footnote">Model scores are not shown in this version.</p>
+                        <>
+                          <p class="footnote">Model scores are not shown in this version.</p>
+                          <p class="caption"><strong>Table 3.</strong> {scoresCaption}</p>
+                        </>
                       )}
-                      <p class="caption"><strong>Table 3.</strong> {scoresCaption}</p>
                     </div>
                   );
                 return null;
@@ -1094,6 +1180,75 @@ npm run build</pre>
     font-size: 0.8125rem;
     font-weight: 400;
     color: var(--muted);
+  }
+  .paper :global(.tablewrap--responsive) {
+    max-inline-size: 100%;
+    container-type: inline-size;
+  }
+  .paper :global(.tablewrap--responsive thead) {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 2;
+  }
+  .paper :global(.tablewrap--responsive tbody th) {
+    position: sticky;
+    inset-inline-start: 0;
+    z-index: 1;
+    background: #fff;
+  }
+  .stepstones {
+    margin-top: 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: var(--paper);
+  }
+  .stepstones__sum {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5ch;
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .stepstones__sum::-webkit-details-marker {
+    display: none;
+  }
+  .stepstones__sum::before {
+    content: "";
+    inline-size: 1em;
+    block-size: 1em;
+    flex-shrink: 0;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 6l4.5 4.5L12.5 6' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center / contain;
+    rotate: -90deg;
+  }
+  .stepstones__sum:dir(rtl)::before {
+    rotate: 90deg;
+  }
+  .stepstones[open] > .stepstones__sum {
+    border-bottom: 1px solid var(--line);
+  }
+  .stepstones[open] > .stepstones__sum::before {
+    rotate: 0deg;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .stepstones__sum::before {
+      transition: rotate 0.2s;
+    }
+  }
+  .stepstones__body {
+    padding: 0.875rem 1rem 1rem;
+    background: #fff;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+  .stepstones__lead {
+    margin-top: 0 !important;
+    font-size: 0.9375rem;
+    color: var(--body);
   }
   .refs {
     margin-top: 2.5rem;

@@ -79,6 +79,10 @@ try {
 try {
 manifest = verifyPublicExport(publicBundleDir);
 const rankings = JSON.parse((await readPinnedSource(repo, manifest, 'data/extracted/islet1_candidate_stack_rankings.json')).toString('utf8'));
+const paretoRel = 'data/extracted/islet1_combinatorial_pareto_and_ladder_v0.8.0.json';
+const paretoSummary = existsSync(join(publicBundleDir, paretoRel))
+  ? JSON.parse(readPublicArtifact(publicBundleDir, manifest, paretoRel).toString('utf8'))
+  : {};
 const blueprint = await readFile(join(publicBundleDir, 'ISLET-1-BLUEPRINT.md'), 'utf8');
 await copyFrom(publicBundleDir, 'data/graveyard/idea_graveyard_v0.5.json', join(root, 'src/data/idea_graveyard_v0.5.json'));
 console.log('staged the Idea Graveyard rules');
@@ -221,7 +225,9 @@ const release = {
     designs: rankings.total_valid_combinatorial_stacks_evaluated,
     feasible: rankings.total_feasible_unblocked_stacks,
     blocked: rankings.total_graveyard_blocked_stacks,
-    graveyardRules: manifest.counts.graveyard_entries_total,
+    graveyardRules: manifest.counts.graveyard_public_cards_total ?? manifest.counts.graveyard_entries_total,
+    graveyardGridRules: manifest.counts.graveyard_entries_total,
+    graveyardOffGridRules: manifest.counts.graveyard_offgrid_guardrails_total ?? 0,
     pinnedFiles: Array.isArray(artifacts) ? artifacts.length : Object.keys(artifacts).length,
     // Layers 2 to 5 of the blueprint.
     constructs: manifest.counts.layer2_construct_cassettes_total,
@@ -233,6 +239,32 @@ const release = {
     virtualPatients: manifest.counts.layer5_virtual_patients_simulated,
   },
   designs,
+  steppingStones: (paretoSummary.controlled_stepping_stone_ladder ?? []).map((s) => ({
+    id: s.step_id,
+    label: s.label,
+    whatChanged: s.what_changed,
+    rank: s.rank,
+    edits: s.K,
+    baseEdits: s.B,
+    unswitchedHold: s.unswitched_clinical_hold,
+    composite: s.composite_score,
+    children: s.child_score,
+    adults: s.adult_score,
+    weakestTest: s.weakest_test_child,
+  })),
+  paretoByEdits: (paretoSummary.pareto_frontier_by_edit_count_K ?? []).map((p) => ({
+    edits: p.K,
+    bestSwitchedRank: p.clinical_switched_best.rank,
+    bestSwitchedBaseEdits: p.clinical_switched_best.B,
+    bestSwitchedChildren: p.clinical_switched_best.child_score,
+    bestSwitchedComposite: p.clinical_switched_best.composite_score,
+    bestSwitchedWeakestTest: p.clinical_switched_best.weakest_test_child,
+    bestSwitchedId: p.clinical_switched_best.combination_id,
+    overallBestRank: p.overall_best.rank,
+    overallBestComposite: p.overall_best.composite_score,
+    overallBestUnswitchedHold: p.overall_best.unswitched_clinical_hold,
+  })),
+  priorSensitivity: paretoSummary.one_way_engineering_prior_sensitivity ?? {},
   // Share of the total spread in design scores, as percentages that add up to 100.
   variance: { assumptions: total, overlap: round(100 - total - findings, 2), findings },
 };

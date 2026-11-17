@@ -97,11 +97,17 @@ test('built starter pack word count and blueprint changelog credits stay in sync
       `src/pages/start.astro states ~${statedWords} words, but dist/openislet-starter-pack.md has ${actualWords} words`,
     );
     assert.match(pack, /Four-hurdle computational odds/, 'starter pack should include the four-hurdle computational odds section');
+    assert.match(pack, /\*\*Table 3A\.\*\*/, 'starter pack should include Table 3A controlled stepping stones');
+    assert.match(pack, /\*\*Table 3B\.\*\*/, 'starter pack should include Table 3B edit-count Pareto frontier');
+    assert.match(pack, /0\.0526/, 'starter pack should surface the #45 (0.0526) niche+switch-matched minimal HIP stepping stone');
+    assert.match(pack, /GY-017/, 'starter pack should include backfilled off-grid Idea Graveyard entries through GY-017');
   }
 
   const bpHtmlPath = join(root, 'dist/blueprint/index.html');
   if (existsSync(bpHtmlPath)) {
     const bpHtml = readFileSync(bpHtmlPath, 'utf8');
+    assert.ok(bpHtml.includes('id="table-3-stepping-stones"'), 'dist/blueprint/index.html should render #table-3-stepping-stones beneath Table 3');
+    assert.ok(bpHtml.includes('0.0526'), 'dist/blueprint/index.html should surface the #45 (0.0526) stepping-stone score');
     const changelog = readJson('src/data/changelog.json');
     for (const entry of changelog) {
       if (entry.contribution) {
@@ -112,4 +118,39 @@ test('built starter pack word count and blueprint changelog credits stay in sync
       }
     }
   }
+});
+
+test('Idea Graveyard parity and downloadable protocol/Pareto JSONs stay locked across OpenIslet, website and starter-pack sources', () => {
+  const release = readJson('src/data/release.json');
+  const gyCards = readJson('src/data/graveyard.json');
+  const gyRepo = readJson('src/data/idea_graveyard_v0.5.json');
+  const assets = readJson('src/data/assets.json');
+  const siteTs = read('src/data/site.ts');
+
+  const gridCount = gyRepo.graveyard_entries.length;
+  const offGridCount = gyRepo.off_grid_molecular_dead_end_guardrails?.guardrails?.length ?? 0;
+  assert.equal(gridCount, 10, 'combinatorial grid graveyard_entries must remain 10');
+  assert.ok(offGridCount >= 7, 'expected at least 7 off-grid Stage-0 guardrails');
+  assert.equal(gyCards.length, gridCount + offGridCount, 'src/data/graveyard.json must match grid + off-grid repository rules 1-to-1');
+  assert.equal(release.counts.graveyardRules, gyCards.length, 'release.counts.graveyardRules must equal total public Idea Graveyard entries');
+  assert.equal(release.counts.graveyardGridRules, gridCount, 'release.counts.graveyardGridRules must equal 10');
+  assert.equal(release.counts.graveyardOffGridRules, offGridCount, 'release.counts.graveyardOffGridRules must equal off-grid guardrail count');
+
+  assert.ok(Array.isArray(release.steppingStones) && release.steppingStones.length >= 7, 'release.steppingStones must be populated by sync-data.mjs');
+  assert.equal(release.paretoByEdits?.length, 8, 'release.paretoByEdits must cover K = 0..7');
+  const step45 = release.steppingStones.find((s) => s.id === 'MINIMAL_HIP_NICHE_PLUS_SWITCH');
+  assert.equal(step45?.rank, 45);
+  assert.equal(step45?.children, 0.0526);
+
+  const assetPaths = new Set(assets.map((a) => a.path));
+  for (const reqPath of [
+    'data/extracted/islet1_combinatorial_pareto_and_ladder_v0.8.0.json',
+    'data/protocols/hip_core_fractional_factorial_v0.6.2.json',
+    'data/protocols/wetlab_endpoint_contract_v0.8.0.json',
+  ]) {
+    assert.ok(assetPaths.has(reqPath), `src/data/assets.json must expose ${reqPath} on /blueprint#data`);
+    assert.ok(existsSync(join(root, 'public/downloads', reqPath)), `public/downloads/${reqPath} must exist`);
+  }
+  assert.match(siteTs, /islet1_combinatorial_pareto_and_ladder_v0\.8\.0\.json/, 'src/data/site.ts technicalSources should list the Pareto/ladder summary JSON');
+  assert.match(siteTs, /hip_core_fractional_factorial_v0\.6\.2\.json/, 'src/data/site.ts technicalSources should list the 36-run Stage-0 protocol JSON');
 });

@@ -92,7 +92,7 @@ export const stages: Stage[] = [
     who: 'project',
     points: [
       `Read the evidence: ${n(c.studies)} studies and ${n(c.findings)} findings for the scoring model, plus ${n(c.cegStudies)} primary studies and ${n(c.cegOutcomes)} structured outcomes in the Type 1 Diabetes Context–Evidence Graph, each linked to its source.`,
-      `Rule out what the evidence argues against: ${c.graveyardRules} Idea Graveyard rules applied to ${n(c.designs)} designs.`,
+      `Rule out what the evidence argues against: ${c.graveyardRules} Idea Graveyard entries (${c.graveyardGridRules ?? 10} grid rules applied to ${n(c.designs)} designs, plus ${c.graveyardOffGridRules ?? 0} Stage-0 molecular and oxygen guardrails).`,
       'Check the design at five layers: the studies, the DNA, the proteins, the graft and body, and patient matching.',
       'Score honestly: the scores show how much is still assumption.',
       'Open it to challenge: anyone with an AI assistant can look for weak spots, and fixes are credited by name.',
@@ -102,7 +102,7 @@ export const stages: Stage[] = [
     unknown: 'Nothing in the blueprint has been tested in a lab yet. The scores are model estimates on a 0 to 1 scale, not survival chances.',
     gate: `Version ${release.version} is an open computational blueprint; lab qualifications remain pending and accepted evidence can revise it.`,
     science: [
-      `Corpus: ${n(c.studies)} study records and ${n(c.findings)} extracted findings in the scoring set, alongside ${n(c.cegStudies)} primary empirical studies (${n(c.cegArms)} groups, ${n(c.cegOutcomes)} structured outcomes and ${n(c.cegLinks)} blueprint links, screened from ${n(c.cegScreened)} candidate records) in the Context–Evidence Graph. ${n(c.designs)} designs are scored under ${c.graveyardRules} Idea Graveyard rules.`,
+      `Corpus: ${n(c.studies)} study records and ${n(c.findings)} extracted findings in the scoring set, alongside ${n(c.cegStudies)} primary empirical studies (${n(c.cegArms)} groups, ${n(c.cegOutcomes)} structured outcomes and ${n(c.cegLinks)} blueprint links, screened from ${n(c.cegScreened)} candidate records) in the Context–Evidence Graph. ${n(c.designs)} designs are scored under ${c.graveyardGridRules ?? 10} grid-firing Idea Graveyard rules (${c.graveyardRules} Idea Graveyard entries in total, including ${c.graveyardOffGridRules ?? 0} Stage-0 guardrails).`,
       'Five layers: the literature, the DNA (sequence, two-strand splicing, 22-species foreign-peptide and grammar checks), the proteins (AlphaFold models and experimental structures), tissue and body simulations (including explicit 3D crowding and peroxide-barrier checks), and a patient compiler run on synthetic patients.',
       'Direction and penalty labels in the corpus are rule-based heuristics. They have not been independently adjudicated.',
       'The first construct, cluster-density, differentiation and immune and insulin-secretion acceptance experiments are pre-registered and still pending.',

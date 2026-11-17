@@ -27,6 +27,8 @@ export interface Rule {
   confidence: string;
   /** What kind of evidence it rests on, in plain words. */
   basis: string;
+  /** True for the 10 combinatorial-grid rules; false for off-grid Stage-0 guardrails. */
+  gridRule?: boolean;
 }
 
 interface Source {
@@ -35,6 +37,15 @@ interface Source {
   curation_status: string;
   evidence_basis_class: string;
   supporting_pmids: string[];
+  gridRule: boolean;
+}
+
+interface OffGridGuardrailRaw {
+  guardrail_id: string;
+  severity_level: Level;
+  curation_status: string;
+  evidence_basis_class: string;
+  pmids: string[];
 }
 
 const confidence = (s: string): string => {
@@ -60,13 +71,28 @@ type Entry = Omit<Rule, 'level' | 'papers' | 'confidence' | 'basis'> & {
   basis?: string;
 };
 
-const sources = raw.graveyard_entries as Source[];
+const gridSources: Source[] = (raw.graveyard_entries as Omit<Source, 'gridRule'>[]).map((g) => ({
+  ...g,
+  gridRule: true,
+}));
+const offGridRaw = (
+  (raw as { off_grid_molecular_dead_end_guardrails?: { guardrails?: OffGridGuardrailRaw[] } }).off_grid_molecular_dead_end_guardrails?.guardrails ?? []
+);
+const offGridSources: Source[] = offGridRaw.map((g) => ({
+  graveyard_id: g.guardrail_id,
+  severity_level: g.severity_level,
+  curation_status: g.curation_status,
+  evidence_basis_class: g.evidence_basis_class,
+  supporting_pmids: g.pmids,
+  gridRule: false,
+}));
+const sources: Source[] = [...gridSources, ...offGridSources];
 
 export const rules: Rule[] = (entries as Entry[])
   .map((e) => {
     if (!e.source) {
       if (!e.level || !e.papers) throw new Error(`Idea Graveyard entry ${e.id} needs either a "source" or its own "level" and "papers".`);
-      return { ...e, level: e.level, papers: e.papers, confidence: e.confidence ?? 'Not yet rated', basis: e.basis ?? '' } as Rule;
+      return { ...e, level: e.level, papers: e.papers, confidence: e.confidence ?? 'Not yet rated', basis: e.basis ?? '', gridRule: false } as Rule;
     }
     const matches = sources.filter((x) => x.graveyard_id.startsWith(e.source as string));
     if (matches.length !== 1) throw new Error(`graveyard.json entry ${e.id} must resolve to exactly one source rule; ${e.source} matches ${matches.length}. Re-run npm run sync-data.`);
@@ -77,11 +103,12 @@ export const rules: Rule[] = (entries as Entry[])
       papers: s.supporting_pmids,
       confidence: confidence(s.curation_status),
       basis: basis(s.evidence_basis_class),
+      gridRule: s.gridRule,
     } as Rule;
   })
   .sort((a, b) => b.added.localeCompare(a.added) || b.version.localeCompare(a.version) || b.id.localeCompare(a.id));
 
-// Every rule in the repository must have plain-English text on this site.
+// Every rule and off-grid Stage-0 guardrail in the repository must have plain-English text on this site.
 const covered = new Set((entries as Entry[]).map((e) => e.source).filter(Boolean) as string[]);
 for (const s of sources) {
   if (![...covered].some((c) => s.graveyard_id.startsWith(c))) {
@@ -98,10 +125,16 @@ export const ruleById = (id: string): Rule => {
 export const levelLabel = (l: Level): string => (l === 'BLOCK' ? 'Dead end' : 'Risky');
 export const levelClass = (l: Level): string => (l === 'BLOCK' ? 'chip chip--block' : 'chip chip--warn');
 export const levelMeaning = (l: Level): string =>
-  l === 'BLOCK' ? 'A design that includes this idea scores zero.' : 'A design that includes this idea needs a check before anyone relies on it.';
+  l === 'BLOCK'
+    ? 'A design that includes this idea scores zero or is ruled out before lab testing.'
+    : 'A design that includes this idea needs a check before anyone relies on it.';
 
 export const blockCount = rules.filter((r) => r.level === 'BLOCK').length;
 export const warnCount = rules.filter((r) => r.level === 'WARN').length;
+export const gridRulesCount = rules.filter((r) => r.gridRule).length;
+export const offGridRulesCount = rules.filter((r) => !r.gridRule).length;
+export const gridBlockCount = rules.filter((r) => r.gridRule && r.level === 'BLOCK').length;
+export const gridWarnCount = rules.filter((r) => r.gridRule && r.level === 'WARN').length;
 
 export const testNames: Record<string, string> = {
   '1': 'Test 1 · Insulin response',

@@ -1,5 +1,5 @@
 {
-  "source_manifest_sha256": "543889e58bf6e5699b140728ca574697bfb082edc7dd43d5f2b75533fff9406a",
+  "source_manifest_sha256": "36fb9960c02d9fa9d5b9aa8fa1b5ad6a7d60311b2bf0650da2a84719308c61a4",
   "source_ranking_sha256": "09b1a0c0e8df43c6e886b71ae957675e7fee2a95f73a6ec2756d2a5c48f8b738",
   "champion_challenger_portfolio": {
     "slots": {
@@ -214,8 +214,10 @@
     "designs": 2160,
     "feasible": 480,
     "blocked": 1680,
-    "graveyardRules": 10,
-    "pinnedFiles": 1361,
+    "graveyardRules": 17,
+    "graveyardGridRules": 10,
+    "graveyardOffGridRules": 7,
+    "pinnedFiles": 1362,
     "constructs": 4,
     "dnaChanges": null,
     "experimentalStructures": 13,
@@ -334,6 +336,351 @@
       }
     }
   ],
+  "steppingStones": [
+    {
+      "id": "UP421_NAKED_REFERENCE",
+      "label": "Sana UP421 reference (naked, no switch)",
+      "whatChanged": "B2M-/- + CIITA-/- + lentiviral CD47 in naked avascular clusters, no safety switch",
+      "rank": 246,
+      "edits": 3,
+      "baseEdits": 0,
+      "unswitchedHold": true,
+      "composite": 0.0173,
+      "children": 0.0158,
+      "adults": 0.0188,
+      "weakestTest": "5"
+    },
+    {
+      "id": "MINIMAL_HIP_NAKED_PLUS_SWITCH",
+      "label": "Minimal HIP + AAVS1 safety switch (naked)",
+      "whatChanged": "Adds biallelic AAVS1-iCasp9 safety switch while keeping naked avascular clusters",
+      "rank": 171,
+      "edits": 4,
+      "baseEdits": 0,
+      "unswitchedHold": false,
+      "composite": 0.0266,
+      "children": 0.0261,
+      "adults": 0.0271,
+      "weakestTest": "4"
+    },
+    {
+      "id": "MINIMAL_HIP_NICHE_NO_SWITCH",
+      "label": "Minimal HIP + oxygen/vessel niche (no switch)",
+      "whatChanged": "Places minimal HIP into <=120 um tri-hormonal clusters + microvessels + 72h CaO2/catalase without a safety switch",
+      "rank": 74,
+      "edits": 3,
+      "baseEdits": 0,
+      "unswitchedHold": true,
+      "composite": 0.0415,
+      "children": 0.0389,
+      "adults": 0.044,
+      "weakestTest": "4"
+    },
+    {
+      "id": "MINIMAL_HIP_NICHE_PLUS_SWITCH",
+      "label": "Minimal HIP + oxygen/vessel niche + AAVS1 switch",
+      "whatChanged": "Niche- and switch-matched minimal HIP peer: isolates the cell-engineering gap vs Design A on the exact same setting",
+      "rank": 45,
+      "edits": 4,
+      "baseEdits": 0,
+      "unswitchedHold": false,
+      "composite": 0.0536,
+      "children": 0.0526,
+      "adults": 0.0545,
+      "weakestTest": "4"
+    },
+    {
+      "id": "DESIGN_A_CLOAK_ONLY_3LOCUS",
+      "label": "3-locus B2M(HLA-E+CD47) + CIITA-KO + AAVS1 switch in niche",
+      "whatChanged": "Pareto-best safety-switched 3-edit design: Design A without the CXCL10 SERPINB9/PD-L1 shield",
+      "rank": 32,
+      "edits": 3,
+      "baseEdits": 0,
+      "unswitchedHold": false,
+      "composite": 0.0586,
+      "children": 0.0575,
+      "adults": 0.0596,
+      "weakestTest": "4"
+    },
+    {
+      "id": "MINIMAL_HIP_PLUS_CXCL10_5LOCUS",
+      "label": "5-locus minimal HIP + CXCL10(SERPINB9+PD-L1) + AAVS1 switch in niche",
+      "whatChanged": "Pareto-best 5-edit design: minimal HIP plus the inducible CXCL10 shield (1 extra viral/locus edit vs Design A)",
+      "rank": 5,
+      "edits": 5,
+      "baseEdits": 0,
+      "unswitchedHold": false,
+      "composite": 0.0853,
+      "children": 0.0842,
+      "adults": 0.0865,
+      "weakestTest": "3"
+    },
+    {
+      "id": "DESIGN_A_LEAD_4LOCUS",
+      "label": "Design A (4-locus lead)",
+      "whatChanged": "Single-locus B2M(HLA-E+CD47) knock-in + CIITA-KO + CXCL10(SERPINB9+PD-L1) + biallelic AAVS1-iCasp9 in niche",
+      "rank": 1,
+      "edits": 4,
+      "baseEdits": 0,
+      "unswitchedHold": false,
+      "composite": 0.1084,
+      "children": 0.1069,
+      "adults": 0.1099,
+      "weakestTest": "3"
+    },
+    {
+      "id": "DESIGN_X_GRID_CHALLENGER",
+      "label": "Design X (scored grid challenger)",
+      "whatChanged": "Design A plus one INS leader/DRiP base edit on the shared baseline niche",
+      "rank": 2,
+      "edits": 4,
+      "baseEdits": 1,
+      "unswitchedHold": false,
+      "composite": 0.1046,
+      "children": 0.1032,
+      "adults": 0.1061,
+      "weakestTest": "3"
+    },
+    {
+      "id": "DESIGN_B1_HLAC_COMPARATOR",
+      "label": "Design B (HLA-C-retained 6-locus + INS base-edit comparator)",
+      "whatChanged": "HLA-A/B-KO retaining matched HLA-C + CIITA-KO + TYK2-KO + INS base edit + CXCL10 + AAVS1-iCasp9 in niche",
+      "rank": 25,
+      "edits": 6,
+      "baseEdits": 1,
+      "unswitchedHold": false,
+      "composite": 0.0673,
+      "children": 0.0664,
+      "adults": 0.0683,
+      "weakestTest": "2A"
+    }
+  ],
+  "paretoByEdits": [
+    {
+      "edits": 0,
+      "bestSwitchedRank": 434,
+      "bestSwitchedBaseEdits": 0,
+      "bestSwitchedChildren": 0.0035,
+      "bestSwitchedComposite": 0.0038,
+      "bestSwitchedWeakestTest": "2A",
+      "bestSwitchedId": "ALLO_NONE_UNEDITED_OR_SYSTEMIC_IMMUNOSUPPRESSION__AUTO_NONE__CYTO_NONE__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_NONE",
+      "overallBestRank": 434,
+      "overallBestComposite": 0.0038,
+      "overallBestUnswitchedHold": false
+    },
+    {
+      "edits": 1,
+      "bestSwitchedRank": 377,
+      "bestSwitchedBaseEdits": 0,
+      "bestSwitchedChildren": 0.0074,
+      "bestSwitchedComposite": 0.008,
+      "bestSwitchedWeakestTest": "2A",
+      "bestSwitchedId": "ALLO_NONE_UNEDITED_OR_SYSTEMIC_IMMUNOSUPPRESSION__AUTO_NONE__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_NONE",
+      "overallBestRank": 377,
+      "overallBestComposite": 0.008,
+      "overallBestUnswitchedHold": false
+    },
+    {
+      "edits": 2,
+      "bestSwitchedRank": 338,
+      "bestSwitchedBaseEdits": 0,
+      "bestSwitchedChildren": 0.01,
+      "bestSwitchedComposite": 0.0103,
+      "bestSwitchedWeakestTest": "2A",
+      "bestSwitchedId": "ALLO_NONE_UNEDITED_OR_SYSTEMIC_IMMUNOSUPPRESSION__AUTO_NONE__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+      "overallBestRank": 60,
+      "overallBestComposite": 0.0453,
+      "overallBestUnswitchedHold": true
+    },
+    {
+      "edits": 3,
+      "bestSwitchedRank": 32,
+      "bestSwitchedBaseEdits": 0,
+      "bestSwitchedChildren": 0.0575,
+      "bestSwitchedComposite": 0.0586,
+      "bestSwitchedWeakestTest": "4",
+      "bestSwitchedId": "ALLO_B2M_HLAE_CD47_SWAP_CIITA_KO__AUTO_NONE__CYTO_NONE__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+      "overallBestRank": 6,
+      "overallBestComposite": 0.0839,
+      "overallBestUnswitchedHold": true
+    },
+    {
+      "edits": 4,
+      "bestSwitchedRank": 1,
+      "bestSwitchedBaseEdits": 0,
+      "bestSwitchedChildren": 0.1069,
+      "bestSwitchedComposite": 0.1084,
+      "bestSwitchedWeakestTest": "3",
+      "bestSwitchedId": "ALLO_B2M_HLAE_CD47_SWAP_CIITA_KO__AUTO_NONE__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+      "overallBestRank": 1,
+      "overallBestComposite": 0.1084,
+      "overallBestUnswitchedHold": false
+    },
+    {
+      "edits": 5,
+      "bestSwitchedRank": 5,
+      "bestSwitchedBaseEdits": 0,
+      "bestSwitchedChildren": 0.0842,
+      "bestSwitchedComposite": 0.0853,
+      "bestSwitchedWeakestTest": "3",
+      "bestSwitchedId": "ALLO_B2M_CIITA_KO_CD47_LENTI__AUTO_NONE__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+      "overallBestRank": 5,
+      "overallBestComposite": 0.0853,
+      "overallBestUnswitchedHold": false
+    },
+    {
+      "edits": 6,
+      "bestSwitchedRank": 25,
+      "bestSwitchedBaseEdits": 1,
+      "bestSwitchedChildren": 0.0664,
+      "bestSwitchedComposite": 0.0673,
+      "bestSwitchedWeakestTest": "2A",
+      "bestSwitchedId": "ALLO_HLA_C_RETAINED_SUPERDONOR_PLUS_TYK2_KO__AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_NONE__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+      "overallBestRank": 25,
+      "overallBestComposite": 0.0673,
+      "overallBestUnswitchedHold": false
+    },
+    {
+      "edits": 7,
+      "bestSwitchedRank": 52,
+      "bestSwitchedBaseEdits": 1,
+      "bestSwitchedChildren": 0.049,
+      "bestSwitchedComposite": 0.0497,
+      "bestSwitchedWeakestTest": "1",
+      "bestSwitchedId": "ALLO_HLA_C_RETAINED_SUPERDONOR_PLUS_TYK2_KO__AUTO_DUAL_INS_LEADER_AND_DRIP_EDIT__CYTO_CXCL10_SWAP_PDL1_SERPINB9__ER_RNLS_KO__NICHE_TRIHORMONAL_120UM_MVF_CAO2__SAF_AAVS1_CAG_ICASP9_BIALLELIC",
+      "overallBestRank": 52,
+      "overallBestComposite": 0.0497,
+      "overallBestUnswitchedHold": false
+    }
+  ],
+  "priorSensitivity": {
+    "locus_dsb_penalty_rate_lambda_K": {
+      "plausible_range": [
+        0.08,
+        0.25
+      ],
+      "point_estimate": 0.15,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.1084,
+      "design_a_composite_at_high": 0.1084,
+      "design_a_composite_swing": 0,
+      "design_b_rank_at_low": 17,
+      "design_b_rank_at_high": 31,
+      "design_b_composite_at_low": 0.0775,
+      "design_b_composite_at_high": 0.0551,
+      "design_b_composite_swing": -0.0224,
+      "design_a_remains_rank1_at_both_bounds": true
+    },
+    "base_edit_nickase_penalty_factor_gamma_B": {
+      "plausible_range": [
+        0.92,
+        0.985
+      ],
+      "point_estimate": 0.965,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.1084,
+      "design_a_composite_at_high": 0.1084,
+      "design_a_composite_swing": 0,
+      "design_b_rank_at_low": 25,
+      "design_b_rank_at_high": 25,
+      "design_b_composite_at_low": 0.0642,
+      "design_b_composite_at_high": 0.0688,
+      "design_b_composite_swing": 0.0046,
+      "design_a_remains_rank1_at_both_bounds": true
+    },
+    "indirect_apc_presentation_residual_hazard_cap": {
+      "plausible_range": [
+        -0.6,
+        -0.1
+      ],
+      "point_estimate": -0.25,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.0971,
+      "design_a_composite_at_high": 0.1128,
+      "design_a_composite_swing": 0.0157,
+      "design_b_rank_at_low": 18,
+      "design_b_rank_at_high": 25,
+      "design_b_composite_at_low": 0.0673,
+      "design_b_composite_at_high": 0.0673,
+      "design_b_composite_swing": 0,
+      "design_a_remains_rank1_at_both_bounds": true
+    },
+    "resting_b2m_promoter_hour0_density_discount": {
+      "plausible_range": [
+        -0.55,
+        0
+      ],
+      "point_estimate": -0.2,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.0941,
+      "design_a_composite_at_high": 0.1161,
+      "design_a_composite_swing": 0.022,
+      "design_b_rank_at_low": 21,
+      "design_b_rank_at_high": 25,
+      "design_b_composite_at_low": 0.0673,
+      "design_b_composite_at_high": 0.0673,
+      "design_b_composite_swing": 0,
+      "design_a_remains_rank1_at_both_bounds": true
+    },
+    "stage7_trihormonal_120um_mvf_cao2_niche_prior": {
+      "plausible_range": [
+        0.2,
+        0.7
+      ],
+      "point_estimate": 0.45,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.0927,
+      "design_a_composite_at_high": 0.1236,
+      "design_a_composite_swing": 0.0309,
+      "design_b_rank_at_low": 25,
+      "design_b_rank_at_high": 25,
+      "design_b_composite_at_low": 0.0567,
+      "design_b_composite_at_high": 0.0779,
+      "design_b_composite_swing": 0.0212,
+      "design_a_remains_rank1_at_both_bounds": true
+    },
+    "tyk2_stage0_differentiation_yield_penalty": {
+      "plausible_range": [
+        -0.55,
+        -0.15
+      ],
+      "point_estimate": -0.32,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.1084,
+      "design_a_composite_at_high": 0.1084,
+      "design_a_composite_swing": 0,
+      "design_b_rank_at_low": 28,
+      "design_b_rank_at_high": 23,
+      "design_b_composite_at_low": 0.0615,
+      "design_b_composite_at_high": 0.0714,
+      "design_b_composite_swing": 0.0099,
+      "design_a_remains_rank1_at_both_bounds": true
+    },
+    "pw_base_scale": {
+      "plausible_range": [
+        0.05,
+        0.12
+      ],
+      "point_estimate": 0.08,
+      "design_a_rank_at_low": 1,
+      "design_a_rank_at_high": 1,
+      "design_a_composite_at_low": 0.0597,
+      "design_a_composite_at_high": 0.2019,
+      "design_a_composite_swing": 0.1422,
+      "design_b_rank_at_low": 25,
+      "design_b_rank_at_high": 24,
+      "design_b_composite_at_low": 0.0391,
+      "design_b_composite_at_high": 0.1206,
+      "design_b_composite_swing": 0.0815,
+      "design_a_remains_rank1_at_both_bounds": true
+    }
+  },
   "variance": {
     "assumptions": 97.17,
     "overlap": 2.69,
