@@ -1,0 +1,46 @@
+---
+// A small label saying where a figure comes from. The four class names come from src/data/future.ts.
+interface Props {
+  kind: 'Computed' | 'Literature' | 'Assumption' | 'Idea';
+}
+const { kind } = Astro.props;
+---
+
+<span class:list={['ev', `ev--${kind.toLowerCase()}`]}><span class="ev__dot" aria-hidden="true"></span>{kind}</span>
+
+<style>
+  .ev {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .ev__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--line-strong);
+  }
+  .ev--computed {
+    color: var(--pass);
+  }
+  .ev--computed .ev__dot {
+    background: var(--pass);
+  }
+  .ev--literature {
+    color: var(--accent-dk);
+  }
+  .ev--literature .ev__dot {
+    background: var(--accent);
+  }
+  .ev--assumption {
+    color: var(--warn);
+  }
+  .ev--assumption .ev__dot {
+    background: var(--threat);
+  }
+</style>

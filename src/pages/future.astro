@@ -1,0 +1,1056 @@
+---
+// "The Future": a plain-English, evidence-sourced forward story kept strictly isolated from
+// the blueprint and the roadmap. This file is layout only; every word lives in src/data/future.ts.
+import Layout from '../layouts/Layout.astro';
+import { startHref, contact, pubmed } from '../data/site';
+import {
+  pageCopy as copy,
+  ladderModel,
+  explorerModel,
+  scenarios,
+  setbackModes,
+  timelineStages,
+  horizon1Items,
+  horizon2Items,
+  horizon2ScienceDrawer,
+  horizon3Padlocks,
+  failureModes,
+  ruledOutByPhysics,
+  clinicalContextSidebar,
+} from '../data/future';
+import { rich, fill } from '../components/future/rich';
+import BenchShelfArt from '../components/future/BenchShelfArt.astro';
+import TimelineExplorer from '../components/future/TimelineExplorer.astro';
+import Setbacks from '../components/future/Setbacks.astro';
+import StageRows from '../components/future/StageRows.astro';
+import ItemCards from '../components/future/ItemCards.astro';
+import OxygenLadder from '../components/future/OxygenLadder.astro';
+import Padlocks from '../components/future/Padlocks.astro';
+import FailureCards from '../components/future/FailureCards.astro';
+import RuledOut from '../components/future/RuledOut.astro';
+import SciDrawer from '../components/future/SciDrawer.astro';
+import EvidenceKey from '../components/future/EvidenceKey.astro';
+
+const tokens = { startHref, contactHref: contact.href };
+const html = (text: string) => rich(text, tokens);
+const href = (h: string) => h.replace(/\{(\w+)\}/g, (_m, name: keyof typeof tokens) => tokens[name] ?? '');
+const stopLabel = copy.stageLabels.stopRule;
+const classes = copy.evidence.classes;
+const terms = copy.terms;
+const { story } = copy;
+---
+
+<Layout title={copy.meta.title} description={copy.meta.description} current="future" share="future">
+  <div class="fut">
+    {/* ---- Opening & Figure 1 (Bench vs. Shelf) ---- */}
+    <section class="intro">
+      <div class="container">
+        <div class="intro__grid">
+          <div class="intro__text">
+            <p class="eyebrow">{copy.hero.eyebrow}</p>
+            <h1 class="h1 intro__h">{copy.hero.heading}</h1>
+            <p class="lead intro__lead" set:html={html(copy.hero.lead)} />
+            <p class="intro__model">
+              <span class="chip chip--ink">{copy.hero.modelPill}</span>
+              <span>{copy.hero.modelNote}</span>
+            </p>
+          </div>
+          <figure class="intro__art">
+            <BenchShelfArt copy={copy.benchShelf} />
+            <figcaption>
+              <details class="about">
+                <summary>About this picture</summary>
+                <div class="intro__caps">
+                  <p class="pretty" set:html={html(copy.benchShelf.captionBench)} />
+                  <p class="pretty" set:html={html(copy.benchShelf.captionShelf)} />
+                </div>
+              </details>
+            </figcaption>
+          </figure>
+        </div>
+
+        <aside class="note" aria-label={copy.statusNote.ariaLabel}>
+          <p class="note__k">{copy.statusNote.label}</p>
+          <p class="note__t pretty" set:html={html(copy.statusNote.body)} />
+          {
+            terms.length > 0 && (
+              <details class="words">
+                <summary>Plain-English glossary ({terms.length} terms)</summary>
+                <dl class="words__list">
+                  {terms.map((t) => (
+                    <div>
+                      <dt>{t.term}</dt>
+                      <dd>{t.meaning}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </details>
+            )
+          }
+        </aside>
+      </div>
+    </section>
+
+    {/* ---- Compact single-row chapter navigation ---- */}
+    <nav class="jump" aria-label={copy.jump.ariaLabel}>
+      <div class="container">
+        <ol class="jump__list" data-sidescroll>
+          {
+            copy.jump.links.map((l) => (
+              <li>
+                <a href={l.href}>{l.label}</a>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </nav>
+
+    {/* ---- Prologue: Facing the odds honestly ---- */}
+    <section class="chapter section section--white" id="why-push" tabindex="-1">
+      <div class="container">
+        <div class="prose">
+          <p class="eyebrow">{story.prelude.eyebrow}</p>
+          <h2 class="h2 chapter__h">{story.prelude.heading}</h2>
+          <div class="prose__body">
+            {story.prelude.paragraphs.map((p) => <p set:html={html(p)} />)}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---- Chapter 1: AI, robotic wet-labs & cloud labs ---- */}
+    <section class="chapter section" id="ai-and-labs" tabindex="-1">
+      <div class="container stackgap">
+        <div class="prose">
+          <p class="eyebrow">{story.ch1.eyebrow}</p>
+          <h2 class="h2 chapter__h">{story.ch1.heading}</h2>
+          <div class="prose__body">
+            {story.ch1.paragraphs.map((p) => <p set:html={html(p)} />)}
+          </div>
+          <p class="edge" set:html={html(story.ch1.edgeCallout)} />
+
+          <details class="appendix">
+            <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch1.sourcesLabel}</summary>
+            <div class="appendix__body">
+              <ul class="srclist">
+                {
+                  story.ch1.sources.map((s) => (
+                    <li class="srclist__row">
+                      <a class="pmid" href={pubmed(s.pmid)} rel="noopener">
+                        PMID {s.pmid}
+                      </a>
+                      <div class="srclist__t">
+                        <p class="srclist__cite">{s.citation}</p>
+                        <p class="srclist__note">{s.note}</p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    {/* ---- Chapter 2: Time & safety + Figure 2 (TimelineExplorer) ---- */}
+    <section class="chapter section section--white" id="time-explorer" tabindex="-1">
+      <div class="container stackgap">
+        <div class="prose">
+          <p class="eyebrow">{story.ch2.eyebrow}</p>
+          <h2 class="h2 chapter__h">{story.ch2.heading}</h2>
+          <div class="prose__body">
+            {story.ch2.paragraphsBeforeFigure.map((p) => <p set:html={html(p)} />)}
+          </div>
+        </div>
+
+        <figure class="storyfig" aria-labelledby="fig-time-h">
+          <figcaption class="storyfig__head">
+            <p class="eyebrow">{copy.explorer.eyebrow}</p>
+            <h3 class="h3 storyfig__h" id="fig-time-h">{copy.explorer.heading}</h3>
+            <p class="storyfig__intro" set:html={html(copy.explorer.intro)} />
+          </figcaption>
+          <TimelineExplorer
+            scenarios={scenarios}
+            stages={timelineStages}
+            maxUnits={explorerModel.maxTrackUnits}
+            defaultId={explorerModel.defaultScenarioId}
+            copy={{
+              scenarioLegend: copy.explorer.scenarioLegend,
+              toggleLabel: copy.explorer.highlight.label,
+              toggleHelp: copy.explorer.highlight.help,
+              legend: {
+                wait: copy.explorer.board.legendWait,
+                safety: copy.explorer.board.legendSafe,
+                parallel: copy.explorer.board.legendHatch,
+              },
+              lockedLabel: copy.explorer.board.lockedFloor,
+              endpoints: {
+                sentinel: copy.explorer.endpoints.sentinel,
+                review: copy.explorer.endpoints.review60,
+                readout: copy.explorer.endpoints.readout,
+              },
+              notShown: { label: copy.explorer.notShown.badge, textHtml: html(copy.explorer.notShown.text) },
+              table: { caption: copy.explorer.table.heading, heads: copy.explorer.table.columns },
+            }}
+          />
+        </figure>
+
+        <div class="prose">
+          <div class="prose__body">
+            {story.ch2.paragraphsAfterFigure.map((p) => <p set:html={html(p)} />)}
+          </div>
+          <p class="edge edge--paper" set:html={html(story.ch2.edgeCallout)} />
+
+          <details class="appendix">
+            <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch2.sourcesLabel}</summary>
+            <div class="appendix__body">
+              <ul class="srclist">
+                {
+                  story.ch2.sources.map((s) => (
+                    <li class="srclist__row">
+                      <a class="pmid" href={pubmed(s.pmid)} rel="noopener">
+                        PMID {s.pmid}
+                      </a>
+                      <div class="srclist__t">
+                        <p class="srclist__cite">{s.citation}</p>
+                        <p class="srclist__note">{s.note}</p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <details class="appendix appendix--wide">
+          <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch2.appendixSummary}</summary>
+          <div class="appendix__body stackgap">
+            <Setbacks modes={setbackModes} defaultId={explorerModel.defaultSetbackId} copy={copy.setbacks} />
+
+            <div class="sub">
+              <div class="sub__head">
+                <h3 class="h3">{copy.stageLabels.heading}</h3>
+                <span class="chip chip--warn">{copy.stageLabels.unbuiltBadge}</span>
+              </div>
+              <EvidenceKey label="What the coloured labels mean" classes={classes} />
+              <StageRows
+                stages={timelineStages}
+                labels={{
+                  prepared: copy.stageLabels.preparedAhead,
+                  floor: copy.stageLabels.safetyFloor,
+                  stop: stopLabel,
+                  scientists: copy.stageLabels.scientists,
+                }}
+              />
+            </div>
+
+            <SciDrawer label={copy.explorer.science.summary} paragraphs={copy.explorer.science.items} markup tokens={tokens} />
+          </div>
+        </details>
+      </div>
+    </section>
+
+    {/* ---- Chapter 3: Nearer term automated cell care ---- */}
+    <section class="chapter section" id="automated-nursery" tabindex="-1">
+      <div class="container stackgap">
+        <div class="prose">
+          <p class="eyebrow">{story.ch3.eyebrow}</p>
+          <h2 class="h2 chapter__h">{story.ch3.heading}</h2>
+          <div class="prose__body">
+            {story.ch3.paragraphs.map((p) => <p set:html={html(p)} />)}
+          </div>
+
+          <details class="appendix">
+            <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch3.sourcesLabel}</summary>
+            <div class="appendix__body">
+              <ul class="srclist">
+                {
+                  story.ch3.sources.map((s) => (
+                    <li class="srclist__row">
+                      <a class="pmid" href={pubmed(s.pmid)} rel="noopener">
+                        PMID {s.pmid}
+                      </a>
+                      <div class="srclist__t">
+                        <p class="srclist__cite">{s.citation}</p>
+                        <p class="srclist__note">{s.note}</p>
+                      </div>
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </details>
+        </div>
+
+        <details class="appendix appendix--wide">
+          <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch3.appendixSummary}</summary>
+          <div class="appendix__body stackgap">
+            <h3 class="h3" set:html={html(copy.horizons.h1.heading)} />
+            <ItemCards items={horizon1Items} cols={3} labels={{ stop: copy.horizons.stopRule }} />
+          </div>
+        </details>
+      </div>
+    </section>
+
+    {/* ---- Part 2 signpost: transitioning cleanly from Version-1 time compression to parallel future generations ---- */}
+    <aside class="partbridge on-dark" aria-labelledby="part2-bridge-h">
+      <div class="container partbridge__inner">
+        <p class="eyebrow partbridge__eyebrow">{story.part2Bridge.eyebrow}</p>
+        <h2 class="h2 partbridge__h" id="part2-bridge-h">{story.part2Bridge.heading}</h2>
+        <p class="partbridge__body pretty" set:html={html(story.part2Bridge.body)} />
+      </div>
+    </aside>
+
+    {/* ---- Chapter 4: Replaceable strip implant + Figure 3 (OxygenLadder) ---- */}
+    <section class="chapter section section--white" id="strip-implant" tabindex="-1">
+      <div class="container stackgap">
+        <div class="prose">
+          <p class="eyebrow">{story.ch4.eyebrow}</p>
+          <h2 class="h2 chapter__h">{story.ch4.heading}</h2>
+          <div class="prose__body">
+            {story.ch4.paragraphsBeforeFigure.map((p) => <p set:html={html(p)} />)}
+          </div>
+        </div>
+
+        <figure class="storyfig" aria-labelledby="fig-o2-h">
+          <figcaption class="storyfig__head">
+            <p class="eyebrow">{copy.ladder.eyebrow}</p>
+            <h3 class="h3 storyfig__h" id="fig-o2-h">{copy.ladder.heading}</h3>
+            <p class="storyfig__intro" set:html={html(copy.ladder.intro)} />
+          </figcaption>
+          <OxygenLadder model={ladderModel} copy={copy.ladder} tableLabel="Show every setting as a table" />
+        </figure>
+
+        <details class="appendix appendix--wide">
+          <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch4.sourcesLabel}</summary>
+          <div class="appendix__body">
+            <ul class="srclist">
+              {
+                story.ch4.sources.map((s) => (
+                  <li class="srclist__row">
+                    <a class="pmid" href={pubmed(s.pmid)} rel="noopener">
+                      PMID {s.pmid}
+                    </a>
+                    <div class="srclist__t">
+                      <p class="srclist__cite">{s.citation}</p>
+                      <p class="srclist__note">{s.note}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </details>
+
+        <details class="appendix appendix--wide" id="falsifiers">
+          <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch4.appendixSummary}</summary>
+          <div class="appendix__body stackgap">
+            <div class="sub">
+              <h3 class="h3" set:html={html(copy.horizons.h2.heading)} />
+              <p class="sub__lead" set:html={html(copy.horizons.h2.note)} />
+              <ItemCards items={horizon2Items} cols={2} labels={{ stop: copy.horizons.stopRule }} />
+              <SciDrawer label={copy.horizons.h2.scienceSummary} paragraphs={horizon2ScienceDrawer} />
+            </div>
+
+            <div class="sub">
+              <div class="sub__head">
+                <p class="eyebrow">{copy.failureModes.eyebrow}</p>
+                <span class="chip chip--warn">{copy.failureModes.unbuiltBadge}</span>
+              </div>
+              <p class="sub__lead">{copy.failureModes.intro}</p>
+              <FailureCards
+                cards={failureModes}
+                labels={{
+                  shortcut: copy.failureModes.shortcutLabel,
+                  finding: copy.failureModes.findingLabel,
+                  doesNotProve: copy.failureModes.doesNotProveLabel,
+                  instead: copy.failureModes.insteadLabel,
+                  working: 'Show the working',
+                  scientists: copy.failureModes.scientists,
+                }}
+              />
+            </div>
+
+            <div class="sub" id="ruled-out">
+              <div class="sub__head">
+                <p class="eyebrow">{copy.ruledOut.eyebrow}</p>
+                <span class="chip chip--block">{copy.ruledOut.badge}</span>
+              </div>
+              <RuledOut items={ruledOutByPhysics} labels={{ instead: copy.ruledOut.insteadLabel }} />
+              <a class="textlink" href={copy.ruledOut.link.href}>{copy.ruledOut.link.label} →</a>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    {/* ---- Chapter 5: Waking up the pancreas + Figure 4 (Padlocks) ---- */}
+    <section class="chapter section" id="pancreas-repair" tabindex="-1">
+      <div class="container stackgap">
+        <div class="prose">
+          <p class="eyebrow">{story.ch5.eyebrow}</p>
+          <h2 class="h2 chapter__h">{story.ch5.heading}</h2>
+          <div class="prose__body">
+            {story.ch5.paragraphsBeforeFigure.map((p) => <p set:html={html(p)} />)}
+          </div>
+        </div>
+
+        <figure class="lockpanel on-dark" aria-labelledby="hz3-h">
+          <figcaption class="lockpanel__head">
+            <div class="held">
+              <span class="held__badge">{copy.padlocks.holdBadge}</span>
+              <ul class="held__list">
+                {copy.padlocks.bannerLabels.map((b) => <li>{b}</li>)}
+              </ul>
+              <span class="held__status">{copy.padlocks.bannerStatus}</span>
+            </div>
+            <h3 class="h3 lockpanel__h" id="hz3-h">{copy.horizons.h3.heading}</h3>
+            <p class="lockpanel__intro" set:html={html(copy.horizons.h3.intro)} />
+          </figcaption>
+          <Padlocks
+            locks={horizon3Padlocks}
+            labelFor={(n: number) => fill(copy.padlocks.badge, [n])}
+            sourceFor={(pmid: string) => fill(copy.padlocks.pmid, [pmid])}
+            labels={{ stop: copy.padlocks.stopRule, scientists: copy.padlocks.scientists }}
+            studyHref={pubmed}
+          />
+        </figure>
+
+        <details class="appendix appendix--wide">
+          <summary><span class="appendix__mark" aria-hidden="true"></span>{story.ch5.sourcesLabel}</summary>
+          <div class="appendix__body">
+            <ul class="srclist">
+              {
+                story.ch5.sources.map((s) => (
+                  <li class="srclist__row">
+                    <a class="pmid" href={pubmed(s.pmid)} rel="noopener">
+                      PMID {s.pmid}
+                    </a>
+                    <div class="srclist__t">
+                      <p class="srclist__cite">{s.citation}</p>
+                      <p class="srclist__note">{s.note}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    {/* ---- Closing call to action ---- */}
+    <section class="closing on-dark">
+      <div class="container closing__grid">
+        <div>
+          <p class="eyebrow closing__eyebrow">{copy.closing.eyebrow}</p>
+          <h2 class="h2">{copy.closing.heading}</h2>
+          <p class="lead closing__lead" set:html={html(copy.closing.body)} />
+          <div class="closing__links">
+            {
+              copy.closing.links.map((l, i) => (
+                <a class:list={['btn', 'btn--lg', i === 0 ? 'btn--light' : 'btn--outline-light']} href={href(l.href)}>
+                  {l.label}
+                </a>
+              ))
+            }
+          </div>
+        </div>
+        <aside class="closing__aside" aria-label={copy.evidence.asideAriaLabel}>
+          <p class="closing__boundary pretty" set:html={html(copy.evidence.boundaryNote)} />
+          <p class="closing__prov pretty" set:html={html(copy.evidence.provenance)} />
+          <SciDrawer label={copy.evidence.scienceSummary} paragraphs={clinicalContextSidebar}>
+            <p>
+              <a class="pmid" href={pubmed(copy.evidence.pmid.id)} rel="noopener">
+                {copy.evidence.pmid.label}
+              </a>
+            </p>
+          </SciDrawer>
+        </aside>
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<script>
+  // Keeps aria-current synced with the visible story chapter (using native CSS scroll-target-group where supported,
+  // and scroll geometry elsewhere so assistive technologies and all browsers stay aligned).
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.jump a[href^="#"]'));
+  const parts = links
+    .map((link) => ({ link, part: document.getElementById(link.hash.slice(1)) }))
+    .filter((x): x is { link: HTMLAnchorElement; part: HTMLElement } => x.part !== null);
+  if (parts.length) {
+    const mark = () => {
+      const line = window.innerHeight * 0.35;
+      let current: HTMLAnchorElement | null = null;
+      for (const { link, part } of parts) {
+        if (part.getBoundingClientRect().top <= line) current = link;
+      }
+      for (const { link } of parts) {
+        if (link === current) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      }
+    };
+    window.addEventListener('scroll', mark, { passive: true });
+    window.addEventListener('resize', mark);
+    mark();
+  }
+</script>
+
+<style>
+  /* Jumps inside the page stop clear of the compact sticky chapter bar. */
+  .fut :global([id]) {
+    scroll-margin-top: 4.5rem;
+  }
+  .chapter:focus {
+    outline: none;
+  }
+  .stackgap {
+    display: grid;
+    gap: clamp(1.75rem, 3.5vw, 2.75rem);
+  }
+  .stackgap > :global(*) {
+    min-width: 0;
+  }
+
+  /* ---- Opening & Figure 1 ---- */
+  .intro {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+    padding-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .intro__grid {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  @media (min-width: 64em) {
+    .intro__grid {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    }
+  }
+  .intro__h {
+    margin-top: 0.75rem;
+  }
+  .intro__lead {
+    margin-top: 1.125rem;
+    max-width: 58ch;
+    line-height: 1.65;
+  }
+  .intro__model {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+    color: var(--muted);
+  }
+  .intro__art {
+    display: grid;
+    gap: 0.875rem;
+  }
+  .intro__art :global(svg) {
+    display: block;
+    width: 100%;
+    max-width: 34rem;
+    height: auto;
+    margin-inline: auto;
+    border-radius: 1.125rem;
+    box-shadow: var(--shadow);
+  }
+  .about {
+    max-width: 34rem;
+    margin-inline: auto;
+  }
+  .about summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .intro__caps {
+    display: grid;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  .note {
+    margin-top: clamp(1.75rem, 4vw, 2.75rem);
+    padding: clamp(1rem, 2.4vw, 1.5rem) clamp(1.125rem, 2.6vw, 1.75rem);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 0.75rem 0.75rem 0;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+  .note__k {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--accent-dk);
+  }
+  .note__t {
+    margin-top: 0.375rem;
+    line-height: 1.6;
+    color: var(--body);
+  }
+  .words {
+    margin-top: 0.5rem;
+  }
+  .words summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .words__list {
+    display: grid;
+    gap: 0.625rem 2.5rem;
+    margin: 0;
+    padding-bottom: 0.25rem;
+    font-size: 0.9375rem;
+  }
+  @media (min-width: 56em) {
+    .words__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .words__list dt {
+    font-weight: 600;
+  }
+  .words__list dd {
+    margin: 0.125rem 0 0;
+    color: var(--body);
+    line-height: 1.5;
+  }
+
+  /* ---- Compact sticky chapter bar ---- */
+  .jump {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: rgba(245, 247, 248, 0.94);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    border-block: 1px solid var(--line);
+  }
+  .jump__list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 0.25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .jump__list::-webkit-scrollbar {
+    display: none;
+  }
+  .jump a {
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    padding: 0 0.875rem;
+    color: var(--body);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .jump li:first-child a {
+    padding-left: 0;
+  }
+  .jump a:hover {
+    color: var(--accent-dk);
+  }
+  .jump a[aria-current='true'] {
+    color: var(--accent-dk);
+    font-weight: 600;
+    box-shadow: inset 0 -3px 0 var(--accent);
+  }
+
+  /* ---- Full-breadth narrative sections aligned to .container ---- */
+  .prose {
+    width: 100%;
+    text-align: start;
+  }
+  .chapter__h {
+    margin-top: 0.5rem;
+    text-wrap: balance;
+  }
+  .prose__body {
+    margin-top: 1.5rem;
+    font-size: clamp(1.0625rem, 0.95rem + 0.35vw, 1.1875rem);
+    line-height: 1.72;
+    color: var(--body);
+    overflow-wrap: break-word;
+  }
+  .prose__body p + p {
+    margin-top: 1.25em;
+  }
+  .prose__body p {
+    text-wrap: pretty;
+  }
+  .prose__body :global(strong) {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .prose__body :global(a) {
+    text-underline-offset: 0.16em;
+  }
+
+  /* Plausibility / frontier callout inside the story */
+  .edge {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 0.5rem 0.5rem 0;
+    background: #fff;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+  .edge--paper {
+    background: var(--paper);
+  }
+  .edge :global(strong) {
+    color: var(--ink);
+  }
+
+  /* ---- Part 2 transition banner ---- */
+  .partbridge {
+    padding-block: clamp(2.25rem, 4.5vw, 3.5rem);
+    background: var(--ink);
+    color: var(--dark-text);
+    border-block: 1px solid var(--dark-line);
+  }
+  .partbridge__inner {
+    display: grid;
+    gap: 0.625rem;
+  }
+  .partbridge__eyebrow {
+    color: var(--accent-lt);
+  }
+  .partbridge__h {
+    color: #fff;
+    text-wrap: balance;
+  }
+  .partbridge__body {
+    margin-top: 0.25rem;
+    font-size: clamp(1rem, 0.94rem + 0.25vw, 1.125rem);
+    line-height: 1.68;
+    color: var(--dark-soft);
+  }
+  .partbridge__body :global(strong) {
+    color: #fff;
+    font-weight: 600;
+  }
+
+  /* ---- Editorial figures woven between story beats ---- */
+  .storyfig {
+    display: grid;
+    gap: 1.125rem;
+    width: 100%;
+    padding: clamp(1.125rem, 2.5vw, 1.875rem);
+    border: 1px solid var(--line);
+    border-radius: 1rem;
+    background: var(--paper);
+  }
+  .storyfig > :global(*) {
+    min-width: 0;
+  }
+  .storyfig__head {
+    display: grid;
+    gap: 0.375rem;
+  }
+  .storyfig__h {
+    font-size: clamp(1.25rem, 1rem + 0.8vw, 1.5rem);
+    text-wrap: balance;
+  }
+  .storyfig__intro {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  /* ---- Figure 4: Shut padlocks panel ---- */
+  .lockpanel {
+    display: grid;
+    gap: 1.25rem;
+    width: 100%;
+    padding: clamp(1.25rem, 3vw, 2.25rem);
+    border-radius: 1rem;
+    background: var(--ink);
+    color: var(--dark-text);
+  }
+  .lockpanel > :global(*) {
+    min-width: 0;
+  }
+  .lockpanel__head {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .lockpanel__h {
+    color: #fff;
+    font-size: clamp(1.25rem, 1rem + 0.8vw, 1.5625rem);
+    text-wrap: balance;
+  }
+  .lockpanel__intro {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--dark-soft);
+    text-wrap: pretty;
+  }
+  .held {
+    display: grid;
+    justify-items: start;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid rgba(242, 169, 59, 0.45);
+    border-radius: 0.625rem;
+    background: rgba(242, 169, 59, 0.08);
+    font-size: 0.9375rem;
+  }
+  .held__badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--threat);
+    color: var(--ink);
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+  .held__list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem 1.5rem;
+    color: #fff;
+    font-weight: 500;
+  }
+  @media (min-width: 56em) {
+    .held__list {
+      grid-template-columns: repeat(3, auto);
+    }
+  }
+  .held__list li::before {
+    content: '';
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 50%;
+    background: var(--threat);
+  }
+  .held__status {
+    color: var(--dark-soft);
+  }
+
+  /* ---- On-demand reference disclosures (never class="sci", so leaf SciDrawers stay un-nested) ---- */
+  .appendix {
+    margin-top: 1.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: #fff;
+  }
+  .appendix--wide {
+    margin-top: 0;
+    width: 100%;
+  }
+  .appendix > summary {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    min-height: 3.25rem;
+    padding: 0.75rem clamp(1rem, 2.2vw, 1.375rem);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent-dk);
+    cursor: pointer;
+    list-style: none;
+  }
+  .appendix > summary::-webkit-details-marker {
+    display: none;
+  }
+  .appendix > summary:hover {
+    color: var(--ink);
+  }
+  .appendix__mark {
+    position: relative;
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+    color: var(--accent);
+  }
+  .appendix__mark::before,
+  .appendix__mark::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  .appendix__mark::after {
+    transform: rotate(90deg);
+    transition: transform 0.15s ease;
+  }
+  .appendix[open] > summary .appendix__mark::after {
+    transform: rotate(0deg);
+  }
+  .appendix__body {
+    padding: 0.25rem clamp(1rem, 2.2vw, 1.375rem) clamp(1rem, 2.2vw, 1.5rem);
+    border-top: 1px solid var(--line-soft);
+  }
+
+  /* Chapter 1 cited studies list (single column so every width stays clean and even) */
+  .srclist {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  .srclist__row {
+    display: grid;
+    gap: 0.5rem 1rem;
+    padding: 0.75rem 0;
+    align-items: start;
+  }
+  .srclist__row + .srclist__row {
+    border-top: 1px solid var(--line-soft);
+  }
+  @media (min-width: 40em) {
+    .srclist__row {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+  }
+  .srclist__cite {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .srclist__note {
+    margin-top: 0.125rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--body);
+  }
+
+  .sub {
+    display: grid;
+    gap: 1rem;
+  }
+  .sub > :global(*) {
+    min-width: 0;
+  }
+  .sub__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.875rem;
+  }
+  .sub__lead {
+    max-width: 60ch;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--body);
+    text-wrap: pretty;
+  }
+
+  /* ---- Closing ---- */
+  .closing {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--ink);
+    color: var(--dark-text);
+  }
+  .closing__grid {
+    display: grid;
+    gap: 2rem clamp(2rem, 5vw, 4rem);
+  }
+  @media (min-width: 64em) {
+    .closing__grid {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .closing__eyebrow {
+    color: var(--accent-lt);
+    margin-bottom: 0.75rem;
+  }
+  .closing__lead {
+    margin-top: 1rem;
+    max-width: 56ch;
+    line-height: 1.65;
+    color: var(--dark-soft);
+  }
+  .closing__lead :global(a),
+  .closing__aside :global(a) {
+    color: #c9d3ff;
+  }
+  .closing__links {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    max-width: 22rem;
+  }
+  @media (min-width: 44em) {
+    .closing__links {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 48rem;
+    }
+  }
+  .closing__links :global(.btn) {
+    padding-block: 0.5rem;
+    text-align: center;
+    line-height: 1.25;
+  }
+  .closing__aside {
+    display: grid;
+    gap: 0.75rem;
+    padding: clamp(1.125rem, 2.4vw, 1.5rem);
+    padding-bottom: 0.25rem;
+    border: 1px solid var(--dark-line);
+    border-radius: 0.75rem;
+    background: var(--dark-panel);
+    font-size: 0.9375rem;
+  }
+  .closing__boundary {
+    color: #fff;
+  }
+  .closing__prov {
+    font-size: 0.875rem;
+    color: var(--dark-muted);
+  }
+  .closing__aside :global(.sci) {
+    border-top-color: var(--dark-line);
+  }
+  .closing__aside :global(.sci summary) {
+    color: #c9d3ff;
+  }
+  .closing__aside :global(.sci__body) {
+    color: var(--dark-soft);
+  }
+  .closing__aside :global(.pmid) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--dark-line);
+    color: #c9d3ff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .appendix__mark::after {
+      transition: none;
+    }
+  }
+</style>

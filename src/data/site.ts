@@ -9,6 +9,7 @@ export const navItems = [
   { href: '/blueprint', label: 'Blueprint', id: 'blueprint' },
   { href: '/idea-graveyard', label: 'Idea Graveyard', id: 'graveyard' },
   { href: '/roadmap', label: 'Roadmap', id: 'roadmap' },
+  { href: '/future', label: 'The Future', id: 'future' },
   { href: '/contributions', label: 'Contributions', id: 'contributions' },
   { href: '/about', label: 'About', id: 'about' },
 ];
@@ -135,6 +136,7 @@ export const pageShareImages = {
   blueprint: { src: '/og/blueprint.jpg', alt: 'OpenIslet, Blueprint. The Islet-1 blueprint: three designs for a personalised type 1 diabetes cure, as a drawing, a specification and open data.' },
   'idea-graveyard': { src: '/og/idea-graveyard.jpg', alt: 'OpenIslet, Idea Graveyard. Ideas ruled out on paper, or flagged as risky: a public list, so nobody repeats a dead end.' },
   roadmap: { src: '/og/roadmap-v2.jpg', alt: 'OpenIslet, Roadmap. The path to patients: seven stages, from the open blueprint to the first person cured. The goal: 2030.' },
+  future: { src: '/og/future.jpg', alt: 'OpenIslet, The Future. Faster paths and full safety checks: how AI, automated labs and physics checks could shorten waiting without cutting safety.' },
   contributions: { src: '/og/contributions.jpg', alt: 'OpenIslet, Contributions. Who has helped, and what they did: every Islet Improvement Proposal, what it changed, and who sent it.' },
   start: { src: '/og/start.jpg', alt: 'OpenIslet, Start here. Help in six steps: give any AI chat the blueprint, and it leads, one question at a time.' },
 } as const;

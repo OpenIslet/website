@@ -1,0 +1,215 @@
+---
+// The eight failure-mode cards. On show: the title, a small picture, what to do instead and the number that would stop
+// it. Folded away: the shortcut, what the calculation found and what it does not prove, then the detail for scientists.
+// Two across on a wide screen (four even rows), one across on a phone. Words from src/data/future.ts.
+import EvidenceChip from './EvidenceChip.astro';
+import SciDrawer from './SciDrawer.astro';
+import FailureArt from './FailureArt.astro';
+
+interface Card {
+  number: number;
+  id: string;
+  title: string;
+  evidenceClass: 'Computed' | 'Literature' | 'Assumption' | 'Idea';
+  visualKind?: string;
+  shortcut: string;
+  finding: string;
+  doesNotProve: string;
+  instead: string;
+  stopThreshold: string;
+  science: readonly string[];
+}
+interface Props {
+  cards: readonly Card[];
+  labels: { shortcut: string; finding: string; doesNotProve: string; instead: string; scientists: string; working: string };
+}
+const { cards, labels } = Astro.props;
+const kinds = ['wells', 'pleat', 'plug', 'blood'] as const;
+type Kind = (typeof kinds)[number];
+const artFor = (k?: string): Kind | null => (kinds.includes(k as Kind) ? (k as Kind) : null);
+---
+
+<ol class="fcards">
+  {
+    cards.map((c) => (
+      <li class="fcard" id={c.id}>
+        <header class="fcard__head">
+          <span class="fcard__n">{c.number}</span>
+          <div class="fcard__ht">
+            <h3 class="h3 fcard__t">{c.title}</h3>
+            <EvidenceChip kind={c.evidenceClass} />
+          </div>
+        </header>
+        {artFor(c.visualKind) && (
+          <div class="fcard__art">
+            <FailureArt kind={artFor(c.visualKind)!} />
+          </div>
+        )}
+        <div class="fcard__d fcard__d--yes">
+          <p class="fcard__k">{labels.instead}</p>
+          <p class="pretty">{c.instead}</p>
+        </div>
+        <p class="fcard__stop pretty">{c.stopThreshold}</p>
+        <details class="work">
+          <summary><span class="work__mark" aria-hidden="true"></span>{labels.working}</summary>
+          <dl class="fcard__dl">
+            <div class="fcard__d fcard__d--no">
+              <dt>{labels.shortcut}</dt>
+              <dd class="pretty">{c.shortcut}</dd>
+            </div>
+            <div class="fcard__d">
+              <dt>{labels.finding}</dt>
+              <dd class="pretty">{c.finding}</dd>
+            </div>
+            <div class="fcard__d">
+              <dt>{labels.doesNotProve}</dt>
+              <dd class="pretty">{c.doesNotProve}</dd>
+            </div>
+          </dl>
+        </details>
+        <SciDrawer label={labels.scientists} paragraphs={c.science} />
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .fcards {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 60em) {
+    .fcards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .fcard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: clamp(1.125rem, 2.4vw, 1.5rem);
+    padding-bottom: 0.25rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    scroll-margin-top: 1rem;
+    overflow-wrap: anywhere;
+  }
+  .fcard__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.875rem;
+    align-items: start;
+  }
+  .fcard__n {
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+  }
+  .fcard__ht {
+    display: grid;
+    gap: 0.375rem;
+  }
+  .fcard__t {
+    text-wrap: balance;
+  }
+  .fcard__art {
+    display: flex;
+    justify-content: center;
+    padding: 0.25rem 0;
+  }
+  .fcard > :global(.sci) {
+    border-top: 0;
+    margin-top: -0.875rem;
+  }
+  .fcard__dl {
+    display: grid;
+    gap: 0.625rem;
+    margin: 0;
+  }
+  .fcard__d {
+    padding-left: 0.875rem;
+    border-left: 3px solid var(--line-strong);
+  }
+  .fcard__d--no {
+    border-left-color: var(--threat);
+  }
+  .fcard__d--yes {
+    border-left-color: var(--accent);
+  }
+  .fcard__d dt,
+  .fcard__k {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--muted);
+  }
+  .fcard__d--no dt {
+    color: var(--warn);
+  }
+  .fcard__d--yes .fcard__k {
+    color: var(--accent-dk);
+  }
+  .fcard__d dd,
+  .fcard__d p + p {
+    margin: 0.125rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .work {
+    border-top: 1px solid var(--line-soft);
+  }
+  .work summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent-dk);
+    cursor: pointer;
+    list-style: none;
+  }
+  .work summary::-webkit-details-marker {
+    display: none;
+  }
+  .work__mark {
+    position: relative;
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .work__mark::before,
+  .work__mark::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  .work__mark::after {
+    transform: rotate(90deg);
+  }
+  .work[open] .work__mark::after {
+    transform: rotate(0deg);
+  }
+  .work .fcard__dl {
+    padding-bottom: 1rem;
+  }
+  .fcard__stop {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.9375rem;
+  }
+</style>

@@ -1,0 +1,99 @@
+---
+// A set of idea cards for one horizon: title, a short tag, where the figure comes from, the summary and the stop rule.
+// The grid is set by the number of columns asked for, so a set of three or four never leaves a short last row.
+// Every word comes from src/data/future.ts.
+import EvidenceChip from './EvidenceChip.astro';
+
+interface Item {
+  id: string;
+  title: string;
+  badge: string;
+  evidenceClass: 'Computed' | 'Literature' | 'Assumption' | 'Idea';
+  summary: string;
+  stopRule: string;
+}
+interface Props {
+  items: readonly Item[];
+  /** Columns on a wide screen: 3 for a set of three, 2 for a set of four. */
+  cols: 2 | 3;
+  labels: { stop: string };
+}
+const { items, cols, labels } = Astro.props;
+---
+
+<ul class:list={['cards', `cards--${cols}`]}>
+  {
+    items.map((it) => (
+      <li class="card item" id={it.id}>
+        <h4 class="h3 item__t">{it.title}</h4>
+        <p class="item__s pretty">{it.summary}</p>
+        <p class="item__stop">
+          <span class="item__stop-k">{labels.stop}</span>
+          <span class="pretty">{it.stopRule}</span>
+        </p>
+        <p class="item__meta">
+          <EvidenceChip kind={it.evidenceClass} />
+          <span class="item__tag">{it.badge}</span>
+        </p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .cards {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Four cards: two and two. Three cards: one column until there is room for all three in a row. */
+  @media (min-width: 48em) {
+    .cards--2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64em) {
+    .cards--3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    scroll-margin-top: 1rem;
+    overflow-wrap: anywhere;
+  }
+  .item__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.75rem;
+  }
+  .item__tag {
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  .item__t {
+    text-wrap: balance;
+  }
+  .item__s {
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .item__stop {
+    display: grid;
+    gap: 0.125rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.875rem;
+  }
+  .item__stop-k {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--warn);
+  }
+</style>

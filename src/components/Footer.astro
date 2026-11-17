@@ -21,10 +21,12 @@ import { release, heroPhoto, repo, startHref, social, contact } from '../data/si
       </div>
       <nav aria-label="Footer" class="footer__links">
         <a href={startHref}>Start here</a>
+        <a href="/submit">Submit an IIP</a>
         <a href="/#problem">The problem</a>
         <a href="/blueprint">Blueprint</a>
         <a href="/idea-graveyard">Idea Graveyard</a>
         <a href="/roadmap">Roadmap</a>
+        <a href="/future">The Future</a>
         <a href="/contributions">Contributions</a>
         <a href="/ceg">Evidence graph</a>
         <a href="/about">About</a>
@@ -99,12 +101,18 @@ import { release, heroPhoto, repo, startHref, social, contact } from '../data/si
     gap: 0 3rem;
     align-content: start;
   }
-  /* Ten links: five even rows of two, then two even rows of five where there is room. Never three across (3, 3, 3 and 1).
-     The room is measured on the footer itself, in rem, so enlarged text (200%) falls back to two across instead of running off the side. */
-  @container footer (min-width: 48rem) {
+  /* Twelve links: six even rows of two, three even rows of four at medium width, and two even rows of six where there is room —
+     zero orphan links at every container width. Measured in rem so enlarged text (200%) steps down cleanly. */
+  @container footer (min-width: 36rem) {
     .footer__links {
-      grid-template-columns: repeat(5, minmax(7.5rem, 1fr));
+      grid-template-columns: repeat(4, minmax(7.5rem, 1fr));
       gap: 0 2rem;
+    }
+  }
+  @container footer (min-width: 54rem) {
+    .footer__links {
+      grid-template-columns: repeat(6, minmax(7rem, 1fr));
+      gap: 0 1.75rem;
     }
   }
   .footer__links a {

@@ -1,0 +1,224 @@
+---
+// The third horizon's three locks, drawn shut and of equal weight: no progress bars and no half-turned keys.
+// Each lock is paired with the lab test that would have to pass first. Every word comes from src/data/future.ts.
+import SciDrawer from './SciDrawer.astro';
+
+interface Lock {
+  number: number;
+  id: string;
+  title: string;
+  wallSummary: string;
+  testbedTitle: string;
+  testbedSummary: string;
+  stopRule: string;
+  science: readonly string[];
+  pmid?: string;
+}
+interface Props {
+  locks: readonly Lock[];
+  labels: { stop: string; scientists: string };
+  /** The small label above a lock's title, made from its number. */
+  labelFor: (n: number) => string;
+  /** The words on a study link, made from its PubMed number. */
+  sourceFor: (pmid: string) => string;
+  /** Builds the address of a study from its PubMed number. */
+  studyHref: (pmid: string) => string;
+}
+const { locks, labels, labelFor, sourceFor, studyHref } = Astro.props;
+---
+
+<ol class="locks">
+  {
+    locks.map((l) => (
+      <li class="lock" id={l.id}>
+        <div class="lock__top">
+          <svg class="lock__art" viewBox="0 0 96 112" width="72" height="84" aria-hidden="true" focusable="false">
+            <path class="lock__shackle" d="M27 52V36a21 21 0 0 1 42 0v16" fill="none" stroke-width="10" stroke-linecap="round" />
+            <path class="lock__shine" d="M33.5 50V36a14.5 14.5 0 0 1 8-13" fill="none" stroke-width="3" stroke-linecap="round" />
+            <rect class="lock__body" x="12" y="48" width="72" height="56" rx="10" />
+            <rect class="lock__band" x="12" y="60" width="72" height="6" />
+            <circle class="lock__hole" cx="48" cy="78" r="7.5" />
+            <path class="lock__hole" d="M44.5 80h7l2.5 14h-12z" />
+            <circle class="lock__rivet" cx="21" cy="96" r="2.5" />
+            <circle class="lock__rivet" cx="75" cy="96" r="2.5" />
+          </svg>
+          <div>
+            <p class="lock__k">{labelFor(l.number)}</p>
+            <h4 class="h3 lock__t">{l.title}</h4>
+          </div>
+        </div>
+        <p class="lock__s pretty">{l.wallSummary}</p>
+        <details class="bed">
+          <summary>
+            <span class="bed__mark" aria-hidden="true"></span>
+            <span class="bed__t">{l.testbedTitle}</span>
+          </summary>
+          <p class="bed__s pretty">{l.testbedSummary}</p>
+          <p class="lock__stop">
+            <span class="lock__stop-k">{labels.stop}</span>
+            <span class="pretty">{l.stopRule}</span>
+          </p>
+        </details>
+        <SciDrawer label={labels.scientists} paragraphs={l.science}>
+          {l.pmid && (
+            <p>
+              <a class="pmid" href={studyHref(l.pmid)} rel="noopener">
+                {sourceFor(l.pmid)}
+              </a>
+            </p>
+          )}
+        </SciDrawer>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .locks {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 64em) {
+    .locks {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .lock {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: clamp(1.125rem, 2.4vw, 1.5rem);
+    padding-bottom: 0.25rem;
+    border: 1px solid var(--dark-line);
+    border-radius: 0.75rem;
+    background: var(--dark-panel);
+    color: var(--dark-text);
+    scroll-margin-top: 1rem;
+    overflow-wrap: anywhere;
+  }
+  .lock__top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .lock__art {
+    flex: none;
+  }
+  .lock__shackle {
+    stroke: #8b9aa6;
+  }
+  .lock__shine {
+    stroke: #c5d1da;
+    opacity: 0.7;
+  }
+  .lock__body {
+    fill: var(--threat);
+  }
+  .lock__band {
+    fill: #d98f24;
+  }
+  .lock__hole {
+    fill: var(--ink);
+  }
+  .lock__rivet {
+    fill: #b97514;
+  }
+  .lock__k {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--threat);
+  }
+  .lock__t {
+    margin-top: 0.125rem;
+    color: #fff;
+    text-wrap: balance;
+  }
+  .lock__s {
+    font-size: 0.9375rem;
+    color: var(--dark-soft);
+  }
+  .bed {
+    border-radius: 0.5rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px dashed rgba(255, 255, 255, 0.28);
+  }
+  .bed summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.625rem;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+  .bed summary::-webkit-details-marker {
+    display: none;
+  }
+  .bed__mark {
+    position: relative;
+    width: 0.75rem;
+    height: 0.75rem;
+    color: #c9d3ff;
+  }
+  .bed__mark::before,
+  .bed__mark::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  .bed__mark::after {
+    transform: rotate(90deg);
+  }
+  .bed[open] .bed__mark::after {
+    transform: rotate(0deg);
+  }
+  .bed__t {
+    font-weight: 600;
+    color: #c9d3ff;
+  }
+  .bed__s {
+    padding: 0 1rem;
+    font-size: 0.9375rem;
+    color: var(--dark-soft);
+  }
+  .bed .lock__stop {
+    padding: 0.75rem 1rem 1rem;
+  }
+  .lock__stop {
+    display: grid;
+    gap: 0.125rem;
+    font-size: 0.875rem;
+    color: var(--dark-soft);
+  }
+  .lock__stop-k {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--threat);
+  }
+  /* The fold sits on the dark card, so it takes the light-on-dark colours. */
+  .lock :global(.sci) {
+    margin-top: auto;
+    border-top-color: var(--dark-line);
+  }
+  .lock :global(.sci summary) {
+    color: #c9d3ff;
+  }
+  .lock :global(.sci__body) {
+    color: var(--dark-soft);
+  }
+  .lock :global(.pmid) {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--dark-line);
+    color: #c9d3ff;
+  }
+</style>

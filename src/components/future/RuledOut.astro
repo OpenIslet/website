@@ -1,0 +1,116 @@
+---
+// The "ruled out" list: one row for each idea a calculation closed, with the figure that closed it and what to use
+// instead. A plain list of rows, so five items never leave a short last row of cards. Words from src/data/future.ts.
+interface Item {
+  id: string;
+  title: string;
+  verdictNumber: string;
+  whyRuledOut: string;
+  instead: string;
+  receiptRef: string;
+}
+interface Props {
+  items: readonly Item[];
+  labels: { instead: string };
+}
+const { items, labels } = Astro.props;
+---
+
+<ul class="out">
+  {
+    items.map((it) => (
+      <li class="out__row" id={it.id}>
+        <div class="out__what">
+          <svg class="out__x" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+          <div>
+            <h3 class="out__t">{it.title}</h3>
+            <p class="out__fig">{it.verdictNumber}</p>
+          </div>
+        </div>
+        <p class="out__why pretty">{it.whyRuledOut}</p>
+        <div class="out__end">
+          <p class="out__instead">
+            <span class="out__k">{labels.instead}</span>
+            <span class="pretty">{it.instead}</span>
+          </p>
+          <p class="out__ref mono">{it.receiptRef}</p>
+        </div>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .out {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    background: #fff;
+    overflow: hidden;
+  }
+  .out__row {
+    display: grid;
+    gap: 0.75rem 2rem;
+    padding: clamp(1rem, 2.4vw, 1.375rem) clamp(1rem, 2.4vw, 1.5rem);
+    border-left: 4px solid var(--block);
+    scroll-margin-top: 1rem;
+    overflow-wrap: anywhere;
+  }
+  .out__row + .out__row {
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 62em) {
+    .out__row {
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .out__what {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.625rem;
+    align-items: start;
+  }
+  .out__x {
+    margin-top: 0.125rem;
+    color: var(--block);
+  }
+  .out__t {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  .out__fig {
+    margin-top: 0.25rem;
+    font-family: var(--mono);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--block);
+  }
+  .out__why {
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .out__end {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .out__instead {
+    display: grid;
+    gap: 0.125rem;
+    font-size: 0.9375rem;
+  }
+  .out__k {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--accent-dk);
+  }
+  .out__ref {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>

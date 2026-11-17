@@ -1,0 +1,176 @@
+---
+// A small before-and-after drawing for a failure-mode card: the shortcut on the left, the proposed way on the right.
+// Shapes only, no words and no figures. The "after" side is drawn as a proposal (blue outline), never as a pass.
+interface Props {
+  kind: 'wells' | 'pleat' | 'plug' | 'blood';
+}
+const { kind } = Astro.props;
+---
+
+<svg class="art" viewBox="0 0 240 96" role="presentation" aria-hidden="true" focusable="false">
+  <rect class="art__pane art__pane--no" x="1" y="1" width="110" height="94" rx="10" />
+  <rect class="art__pane art__pane--yes" x="129" y="1" width="110" height="94" rx="10" />
+  <path class="art__arrow" d="M114 48h10m-4-4.5 4.5 4.5-4.5 4.5" />
+
+  {
+    kind === 'wells' && (
+      <>
+        {/* A round cluster resting on a flat wall, then seated in a hollow of the wall. */}
+        <path class="art__wall" d="M14 66h84v14H14z" />
+        <circle class="art__cell art__cell--no" cx="56" cy="46" r="20" />
+        <path class="art__wall" d="M142 66h20c0 0 2 0 2 2a20 20 0 0 0 40 0c0-2 2-2 2-2h20v14h-84z" />
+        <circle class="art__cell art__cell--yes" cx="184" cy="52" r="20" />
+        <path class="art__flow" d="M184 86v-8m-5 3 5-5 5 5" />
+      </>
+    )
+  }
+  {
+    kind === 'pleat' && (
+      <>
+        {/* A folded sheet with pockets between the folds, then flat strips with an even gap. */}
+        <path class="art__sheet art__sheet--no" d="M16 74 30 26l14 48 14-48 14 48 14-48 12 48" />
+        <circle class="art__pocket" cx="37" cy="64" r="5" />
+        <circle class="art__pocket" cx="65" cy="64" r="5" />
+        <circle class="art__pocket" cx="92" cy="64" r="5" />
+        <rect class="art__strip" x="144" y="26" width="80" height="12" rx="6" />
+        <rect class="art__strip" x="144" y="44" width="80" height="12" rx="6" />
+        <rect class="art__strip" x="144" y="62" width="80" height="12" rx="6" />
+      </>
+    )
+  }
+  {
+    kind === 'plug' && (
+      <>
+        {/* An empty sleeve read as it stands, then the same sleeve read with a test plug inside. */}
+        <rect class="art__sleeve" x="18" y="32" width="76" height="32" rx="16" />
+        <path class="art__gauge art__gauge--no" d="M44 20a12 12 0 0 1 24 0m-12 0 7-7" />
+        <rect class="art__sleeve" x="146" y="32" width="76" height="32" rx="16" />
+        <rect class="art__plug" x="160" y="39" width="48" height="18" rx="9" />
+        <path class="art__gauge art__gauge--yes" d="M172 20a12 12 0 0 1 24 0m-12 0-8-6" />
+      </>
+    )
+  }
+  {
+    kind === 'blood' && (
+      <>
+        {/* One small sample, then larger split samples and a small patch that goes first. */}
+        <rect class="art__vial art__vial--no" x="48" y="24" width="16" height="50" rx="8" />
+        <rect class="art__fill art__fill--no" x="51" y="54" width="10" height="17" rx="5" />
+        <rect class="art__vial art__vial--yes" x="146" y="20" width="18" height="56" rx="9" />
+        <rect class="art__fill art__fill--yes" x="149" y="38" width="12" height="35" rx="6" />
+        <rect class="art__vial art__vial--yes" x="172" y="20" width="18" height="56" rx="9" />
+        <rect class="art__fill art__fill--yes" x="175" y="38" width="12" height="35" rx="6" />
+        <rect class="art__patch" x="200" y="50" width="26" height="26" rx="6" />
+        <circle class="art__patch-dot" cx="213" cy="63" r="4" />
+      </>
+    )
+  }
+</svg>
+
+<style>
+  .art {
+    display: block;
+    width: 100%;
+    max-width: 15rem;
+    height: auto;
+  }
+  .art__pane {
+    fill: var(--paper);
+    stroke: var(--line);
+    stroke-width: 1.5;
+  }
+  .art__pane--no {
+    fill: var(--warn-bg);
+    stroke: #f0d9a8;
+  }
+  .art__pane--yes {
+    fill: var(--tint);
+    stroke: #c9d3ff;
+  }
+  .art__arrow {
+    fill: none;
+    stroke: var(--muted);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .art__wall {
+    fill: var(--line-strong);
+  }
+  .art__cell {
+    stroke-width: 2.5;
+  }
+  .art__cell--no {
+    fill: #f6d39a;
+    stroke: var(--warn);
+  }
+  .art__cell--yes {
+    fill: #c9d3ff;
+    stroke: var(--accent);
+  }
+  .art__flow,
+  .art__gauge {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .art__flow,
+  .art__gauge--yes {
+    stroke: var(--accent);
+  }
+  .art__gauge--no {
+    stroke: var(--warn);
+  }
+  .art__sheet {
+    fill: none;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .art__sheet--no {
+    stroke: var(--warn);
+  }
+  .art__pocket {
+    fill: #f6d39a;
+  }
+  .art__strip {
+    fill: #c9d3ff;
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+  .art__sleeve {
+    fill: #fff;
+    stroke: var(--muted);
+    stroke-width: 2.5;
+    stroke-dasharray: 5 4;
+  }
+  .art__plug {
+    fill: var(--accent);
+  }
+  .art__vial {
+    fill: #fff;
+    stroke-width: 2.5;
+  }
+  .art__vial--no {
+    stroke: var(--warn);
+  }
+  .art__vial--yes {
+    stroke: var(--accent);
+  }
+  .art__fill--no {
+    fill: #f6d39a;
+  }
+  .art__fill--yes {
+    fill: #c9d3ff;
+  }
+  .art__patch {
+    fill: #fff;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-dasharray: 4 3;
+  }
+  .art__patch-dot {
+    fill: var(--accent);
+  }
+</style>

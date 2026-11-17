@@ -1,0 +1,637 @@
+---
+// The interactive stack in the second horizon: a slider for the gap and a choice of what fills it. A live cross-section
+// drawing and a six-row list show an ordinal status for each layer (three words, never a pressure figure).
+// The rule that turns the slider and the choice into statuses is data (`ladderModel`), and every word comes from
+// `pageCopy.ladder`, both in src/data/future.ts. Without scripts the page shows the starting state and the full table.
+import { fill } from './rich';
+
+type Band = 'comfortable' | 'tight' | 'starved';
+interface Tier {
+  upTo: number | null;
+  rowStatuses: readonly string[];
+  verdictKey: string;
+  descKeys: { gap: string; well: string; core: string };
+}
+interface Props {
+  model: {
+    slider: { min: number; max: number; step: number; value: number };
+    optionIds: readonly string[];
+    selectedOptionId: string;
+    rowIds: readonly string[];
+    rules: Record<string, readonly Tier[]>;
+  };
+  copy: {
+    verdictLabel: string;
+    mediumLegend: string;
+    sliderLabel: string;
+    options: Record<string, string>;
+    ticks: readonly string[];
+    gapValue: readonly (string | null)[];
+    valueText: readonly (string | null)[];
+    statusWords: Record<string, string>;
+    verdicts: Record<string, string>;
+    rows: {
+      capillary: { title: string; desc: string };
+      scar: { title: string; desc: string };
+      sleeve: { title: string; desc: string };
+      gap: { titleParts: readonly (string | null)[] };
+      well: { title: string };
+      core: { title: string };
+    };
+    descriptions: { gap: Record<string, string>; well: Record<string, string>; core: Record<string, string> };
+  };
+  tableLabel: string;
+}
+const { model, copy, tableLabel } = Astro.props;
+const { slider } = model;
+const tierFor = (option: string, gap: number): Tier => {
+  const tiers = model.rules[option];
+  return tiers.find((t) => t.upTo === null || gap <= t.upTo) ?? tiers[tiers.length - 1];
+};
+const start = tierFor(model.selectedOptionId, slider.value);
+const gapText = (gap: number) => fill(copy.gapValue, [gap]);
+const gapPx = (gap: number) => 4 + ((gap - slider.min) / (slider.max - slider.min)) * 40;
+const g0 = gapPx(slider.value);
+
+// The first three rows never change their words; the last three follow the slider and the choice.
+const rows = [
+  { id: 'capillary', title: copy.rows.capillary.title, desc: copy.rows.capillary.desc },
+  { id: 'scar', title: copy.rows.scar.title, desc: copy.rows.scar.desc },
+  { id: 'sleeve', title: copy.rows.sleeve.title, desc: copy.rows.sleeve.desc },
+  { id: 'gap', title: fill(copy.rows.gap.titleParts, [gapText(slider.value)]), desc: copy.descriptions.gap[start.descKeys.gap] },
+  { id: 'well', title: copy.rows.well.title, desc: copy.descriptions.well[start.descKeys.well] },
+  { id: 'core', title: copy.rows.core.title, desc: copy.descriptions.core[start.descKeys.core] },
+];
+const client = {
+  slider,
+  rules: model.rules,
+  rowIds: model.rowIds,
+  statusWords: copy.statusWords,
+  verdicts: copy.verdicts,
+  descriptions: copy.descriptions,
+  gapValue: copy.gapValue,
+  valueText: copy.valueText,
+  gapTitle: copy.rows.gap.titleParts,
+};
+const rangeText = (tiers: readonly Tier[], i: number) => {
+  const t = tiers[i];
+  const from = i === 0 ? slider.min : (tiers[i - 1].upTo ?? slider.min) + slider.step;
+  return t.upTo === null ? `${gapText(from)} – ${gapText(slider.max)}` : `${gapText(from)} – ${gapText(t.upTo)}`;
+};
+---
+
+<div class="o2" id="o2-ladder" data-model={JSON.stringify(client)} data-option={model.selectedOptionId}>
+  <div class="o2__controls">
+    <fieldset class="o2__media">
+      <legend class="label">{copy.mediumLegend}</legend>
+      <div class="o2__opts">
+        {
+          model.optionIds.map((id) => (
+            <label class="o2__opt">
+              <input type="radio" name="o2-medium" id={`o2-${id}`} value={id} checked={id === model.selectedOptionId} />
+              <span>{copy.options[id]}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <div class="o2__slide">
+      <div class="o2__slide-top">
+        <label class="label" for="gap-slider">{copy.sliderLabel}</label>
+        <output class="o2__read" id="gap-readout" for="gap-slider">{gapText(slider.value)}</output>
+      </div>
+      <input
+        type="range"
+        id="gap-slider"
+        min={slider.min}
+        max={slider.max}
+        step={slider.step}
+        value={slider.value}
+        aria-valuetext={fill(copy.valueText, [slider.value, copy.verdicts[start.verdictKey]])}
+      />
+      <ul class="o2__ticks" aria-hidden="true">
+        {copy.ticks.map((t) => <li>{t}</li>)}
+      </ul>
+    </div>
+  </div>
+
+  <div class="o2__view">
+    <svg class="o2x" viewBox="0 0 300 286" aria-hidden="true" focusable="false" data-core={start.rowStatuses[5]} data-gap={start.rowStatuses[3]}>
+      <defs>
+        <pattern id="o2x-pores" width="14" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="4" cy="5" r="1.6" fill="#8b9aa6"></circle>
+          <circle cx="11" cy="2" r="1.2" fill="#8b9aa6"></circle>
+        </pattern>
+      </defs>
+      {/* 1: a blood vessel of the host */}
+      <rect x="44" y="14" width="244" height="30" rx="15" fill="#f3c0c0" stroke="#c7565a" stroke-width="2"></rect>
+      <g fill="#c7565a">
+        <ellipse cx="86" cy="29" rx="9" ry="5"></ellipse>
+        <ellipse cx="136" cy="27" rx="9" ry="5"></ellipse>
+        <ellipse cx="190" cy="31" rx="9" ry="5"></ellipse>
+        <ellipse cx="244" cy="28" rx="9" ry="5"></ellipse>
+      </g>
+      {/* 2: the thin tissue boundary */}
+      <path d="M44 58c20-6 40 6 61 0s40 6 61 0 40 6 61 0 41 6 61 0v12c-20 6-41-6-61 0s-41-6-61 0-41-6-61 0-41-6-61 0z" fill="#eadfce" stroke="#b79f7c" stroke-width="1.5"></path>
+      {/* 3: the sleeve wall */}
+      <rect x="44" y="82" width="244" height="28" rx="4" fill="#d6dee4" stroke="#6f808c" stroke-width="2"></rect>
+      <rect x="46" y="84" width="240" height="24" fill="url(#o2x-pores)"></rect>
+      {/* 4: the gap, whose height follows the slider */}
+      <rect class="o2x__gap" x="44" y="110" width="244" height={g0.toFixed(1)}></rect>
+      {/* 5 and 6: the well and the cluster, which move down as the gap grows */}
+      <g class="o2x__low" transform={`translate(0 ${g0.toFixed(1)})`}>
+        <g class="o2x__cup">
+          <path d="M44 110h78v42a44 44 0 0 0 88 0v-42h78v118H44z" fill="#e3e8ec" stroke="#6f808c" stroke-width="2" stroke-linejoin="round"></path>
+          <path d="M122 126v22M210 126v22" fill="none" stroke="#2a3fd6" stroke-width="6" stroke-linecap="round"></path>
+          <circle class="o2x__cluster" cx="166" cy="151" r="38"></circle>
+          <circle class="o2x__heart" cx="166" cy="151" r="15"></circle>
+        </g>
+        <g class="o2x__flat">
+          <rect x="44" y="110" width="244" height="118" fill="#dbe9f5" stroke="#7d9cc4" stroke-width="2"></rect>
+          <circle class="o2x__cluster" cx="166" cy="149" r="38"></circle>
+          <circle class="o2x__heart" cx="166" cy="149" r="15"></circle>
+        </g>
+        <g class="o2x__pin"><circle cx="20" cy="210" r="12"></circle><text x="20" y="214.500">5</text></g>
+        <g class="o2x__pin"><circle cx="20" cy="151" r="12"></circle><text x="20" y="155.500">6</text></g>
+      </g>
+      <g class="o2x__pin"><circle cx="20" cy="29" r="12"></circle><text x="20" y="33.500">1</text></g>
+      <g class="o2x__pin"><circle cx="20" cy="64" r="12"></circle><text x="20" y="68.500">2</text></g>
+      <g class="o2x__pin"><circle cx="20" cy="96" r="12"></circle><text x="20" y="100.500">3</text></g>
+      <g class="o2x__pin o2x__pin--gap" transform={`translate(0 ${(g0 / 2).toFixed(1)})`}><circle cx="20" cy="110" r="12"></circle><text x="20" y="114.500">4</text></g>
+    </svg>
+
+    <ol class="stack">
+      {
+        rows.map((r, i) => (
+          <li class="stack__row" data-row={r.id} data-band={start.rowStatuses[i]}>
+            <span class="stack__n" aria-hidden="true">{i + 1}</span>
+            <div class="stack__t">
+              <p class="stack__title" data-title>{r.title}</p>
+              <p class="stack__desc pretty" data-desc>{r.desc}</p>
+            </div>
+            <span class="band" data-chip>{copy.statusWords[start.rowStatuses[i]]}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <p class="o2__verdict" data-band={start.verdictKey} aria-live="polite">
+    <span class="o2__verdict-k">{copy.verdictLabel}</span>
+    <span class="band band--lg" id="o2-overall-badge">{copy.statusWords[start.verdictKey]}</span>
+    <span id="o2-overall-text">{copy.verdicts[start.verdictKey]}</span>
+  </p>
+
+  <details class="o2__table">
+    <summary>{tableLabel}</summary>
+    <div class="tablewrap" data-scroll-region tabindex="0" role="region" aria-label={tableLabel}>
+      <table>
+        <tbody>
+          {
+            model.optionIds.map((id) =>
+              model.rules[id].map((t, i) => (
+                <tr>
+                  {i === 0 && (
+                    <th scope="rowgroup" rowspan={model.rules[id].length}>
+                      {copy.options[id]}
+                    </th>
+                  )}
+                  <td class="nobr">{rangeText(model.rules[id], i)}</td>
+                  <td>
+                    <span class="band" data-band={t.verdictKey}>
+                      {copy.statusWords[t.verdictKey]}
+                    </span>
+                  </td>
+                  <td>{copy.verdicts[t.verdictKey]}</td>
+                </tr>
+              )),
+            )
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+<script>
+  type Tier = { upTo: number | null; rowStatuses: string[]; verdictKey: string; descKeys: Record<string, string> };
+  const root = document.getElementById('o2-ladder');
+  const sliderEl = document.getElementById('gap-slider') as HTMLInputElement | null;
+  if (root && sliderEl) {
+    const m = JSON.parse(root.dataset.model ?? '{}');
+    const fill = (parts: (string | null)[], values: (string | number)[]) => {
+      let i = 0;
+      return parts.map((p) => (p === null ? String(values[i++] ?? '') : p)).join('');
+    };
+    const svg = root.querySelector<SVGSVGElement>('.o2x');
+    const gapRect = root.querySelector<SVGRectElement>('.o2x__gap');
+    const low = root.querySelector<SVGGElement>('.o2x__low');
+    const gapPin = root.querySelector<SVGGElement>('.o2x__pin--gap');
+    const readout = document.getElementById('gap-readout');
+    const verdict = root.querySelector<HTMLElement>('.o2__verdict');
+    const badge = document.getElementById('o2-overall-badge');
+    const overall = document.getElementById('o2-overall-text');
+
+    const apply = () => {
+      const gap = Number(sliderEl.value);
+      const option = root.querySelector<HTMLInputElement>('input[name="o2-medium"]:checked')?.value ?? '';
+      const tiers: Tier[] = m.rules[option] ?? [];
+      const tier = tiers.find((t) => t.upTo === null || gap <= t.upTo) ?? tiers[tiers.length - 1];
+      if (!tier) return;
+      const gapText = fill(m.gapValue, [gap]);
+      root.dataset.option = option;
+
+      m.rowIds.forEach((id: string, i: number) => {
+        const row = root.querySelector<HTMLElement>(`[data-row="${id}"]`);
+        if (!row) return;
+        const band = tier.rowStatuses[i];
+        row.dataset.band = band;
+        const chip = row.querySelector('[data-chip]');
+        if (chip) chip.textContent = m.statusWords[band];
+        const desc = row.querySelector('[data-desc]');
+        if (desc && tier.descKeys[id]) desc.textContent = m.descriptions[id][tier.descKeys[id]];
+        if (id === 'gap') {
+          const title = row.querySelector('[data-title]');
+          if (title) title.textContent = fill(m.gapTitle, [gapText]);
+        }
+      });
+
+      if (readout) readout.textContent = gapText;
+      if (verdict) verdict.dataset.band = tier.verdictKey;
+      if (badge) badge.textContent = m.statusWords[tier.verdictKey];
+      if (overall) overall.textContent = m.verdicts[tier.verdictKey];
+      sliderEl.setAttribute('aria-valuetext', fill(m.valueText, [gap, m.verdicts[tier.verdictKey]]));
+
+      // The drawing: the gap grows with the slider, and the cluster's colour follows its status.
+      const px = 4 + ((gap - m.slider.min) / (m.slider.max - m.slider.min)) * 40;
+      gapRect?.setAttribute('height', px.toFixed(1));
+      low?.setAttribute('transform', `translate(0 ${px.toFixed(1)})`);
+      gapPin?.setAttribute('transform', `translate(0 ${(px / 2).toFixed(1)})`);
+      if (svg) {
+        svg.dataset.core = tier.rowStatuses[5];
+        svg.dataset.gap = tier.rowStatuses[3];
+      }
+    };
+    sliderEl.addEventListener('input', apply);
+    root.querySelectorAll<HTMLInputElement>('input[name="o2-medium"]').forEach((r) => r.addEventListener('change', apply));
+    apply();
+  }
+</script>
+
+<style>
+  .o2 {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.125rem, 2.4vw, 1.75rem);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+    --ok: var(--pass);
+    --ok-bg: var(--pass-bg);
+    --mid: var(--warn);
+    --mid-bg: var(--warn-bg);
+    --bad: var(--block);
+    --bad-bg: var(--block-bg);
+  }
+
+  /* ---- controls ---- */
+  .o2__controls {
+    display: grid;
+    gap: 1.25rem 2rem;
+  }
+  @media (min-width: 64em) {
+    .o2__controls {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+  .o2__media {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .o2__media legend {
+    padding: 0;
+    margin-bottom: 0.5rem;
+  }
+  .o2__opts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  @media (min-width: 40em) {
+    .o2__opts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .o2__opt {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    height: 100%;
+    min-height: 3rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.625rem;
+    background: #fff;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.3;
+    cursor: pointer;
+  }
+  .o2__opt input {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border: 2px solid var(--muted);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+  }
+  .o2__opt:hover {
+    border-color: var(--accent);
+  }
+  .o2__opt:has(input:checked) {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: #fff;
+  }
+  .o2__opt input:checked {
+    border-color: #fff;
+    background: radial-gradient(circle, #fff 0 38%, var(--ink) 44%);
+  }
+  .o2__opt:has(input:checked) input:focus-visible {
+    outline-color: var(--accent-lt);
+  }
+  .o2__slide-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .o2__read {
+    font-family: var(--mono);
+    font-size: 1.125rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .o2__slide input {
+    display: block;
+    width: 100%;
+    height: 2.75rem;
+    margin: 0;
+    background: transparent;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .o2__ticks {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.125rem 1rem;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+  .o2__ticks li + li::before {
+    content: '·';
+    margin-right: 1rem;
+    color: var(--line-strong);
+  }
+
+  /* ---- drawing and list ---- */
+  .o2__view {
+    display: grid;
+    gap: 1.25rem 2rem;
+    align-items: start;
+  }
+  @media (min-width: 56em) {
+    .o2__view {
+      grid-template-columns: minmax(0, 19rem) minmax(0, 1fr);
+    }
+  }
+  .o2x {
+    display: block;
+    width: 100%;
+    max-width: 19rem;
+    height: auto;
+    margin-inline: auto;
+    border-radius: 0.625rem;
+    background: var(--paper);
+  }
+  .o2x__gap {
+    fill: #dfe6ff;
+    stroke: #8ea0ff;
+    stroke-width: 1.5;
+  }
+  .o2[data-option='water'] .o2x__gap {
+    fill: #d6ecf7;
+    stroke: #6aa7c4;
+  }
+  .o2[data-option='fouled'] .o2x__gap {
+    fill: #efe3c0;
+    stroke: #b79a4b;
+  }
+  .o2[data-option='tangent'] .o2x__gap {
+    fill: #d6ecf7;
+    stroke: #6aa7c4;
+  }
+  .o2x__flat,
+  .o2[data-option='tangent'] .o2x__cup {
+    display: none;
+  }
+  .o2[data-option='tangent'] .o2x__flat {
+    display: inline;
+  }
+  .o2x__cluster {
+    fill: #9fdcc0;
+    stroke: var(--ok);
+    stroke-width: 2.5;
+    transition: fill 0.2s ease, stroke 0.2s ease;
+  }
+  .o2x__heart {
+    fill: #6cc79e;
+    transition: fill 0.2s ease;
+  }
+  .o2x[data-core='tight'] .o2x__cluster {
+    fill: #f6d39a;
+    stroke: var(--mid);
+  }
+  .o2x[data-core='tight'] .o2x__heart {
+    fill: #e7a93f;
+  }
+  .o2x[data-core='starved'] .o2x__cluster {
+    fill: #f1b6b0;
+    stroke: var(--bad);
+  }
+  .o2x[data-core='starved'] .o2x__heart {
+    fill: #a6231b;
+  }
+  .o2x__pin circle {
+    fill: var(--ink);
+  }
+  .o2x__pin text {
+    fill: #fff;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-anchor: middle;
+  }
+
+  .stack {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 0.625rem;
+    overflow: hidden;
+  }
+  .stack__row {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.5rem 0.75rem;
+    align-items: start;
+    padding: 0.75rem 0.875rem;
+    border-left: 4px solid var(--ok);
+    background: #fff;
+  }
+  @media (min-width: 34em) {
+    .stack__row {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+  }
+  .stack__row + .stack__row {
+    border-top: 1px solid var(--line-soft);
+  }
+  .stack__row[data-band='tight'] {
+    border-left-color: var(--threat);
+    background: #fffaf0;
+  }
+  .stack__row[data-band='starved'] {
+    border-left-color: var(--bad);
+    background: #fff6f5;
+  }
+  .stack__n {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+  .stack__title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .stack__desc {
+    margin-top: 0.125rem;
+    font-size: 0.875rem;
+    color: var(--body);
+    overflow-wrap: anywhere;
+  }
+  .band {
+    display: inline-flex;
+    align-items: center;
+    min-height: 1.75rem;
+    padding: 0.125rem 0.75rem;
+    border-radius: 999px;
+    background: var(--ok-bg);
+    color: var(--ok);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .stack__row .band {
+    grid-column: 2;
+    justify-self: start;
+  }
+  @media (min-width: 34em) {
+    .stack__row .band {
+      grid-column: 3;
+      justify-self: end;
+    }
+  }
+  [data-band='tight'] > .band,
+  .band[data-band='tight'] {
+    background: var(--mid-bg);
+    color: var(--mid);
+  }
+  [data-band='starved'] > .band,
+  .band[data-band='starved'] {
+    background: var(--bad-bg);
+    color: var(--bad);
+  }
+
+  .o2__verdict {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.375rem 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.625rem;
+    background: var(--paper);
+    font-weight: 600;
+  }
+  .o2__verdict-k {
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+  .band--lg {
+    min-height: 2rem;
+    font-size: 0.9375rem;
+  }
+
+  .o2__table summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .tablewrap {
+    overflow-x: auto;
+    margin-top: 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+  }
+  table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  th,
+  td {
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid var(--line-soft);
+  }
+  tr:first-child > * {
+    border-top: 0;
+  }
+  tbody th {
+    font-weight: 600;
+    width: 34%;
+    background: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .o2x__cluster,
+    .o2x__heart {
+      transition: none;
+    }
+  }
+</style>

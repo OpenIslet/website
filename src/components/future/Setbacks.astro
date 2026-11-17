@@ -1,0 +1,270 @@
+---
+// One hundred simulated runs as one hundred dots, under two ways of modelling setbacks. A pair of radio buttons
+// switches between them with CSS alone (:has), so it works without scripts. Words from src/data/future.ts.
+interface Mode {
+  id: string;
+  label: string;
+  caption: string;
+  cleanCount: number;
+  moderateRepeatCount: number;
+  bunchedRepeatCount: number;
+  over48MonthsPct: string;
+  middle80Range: string;
+}
+interface Props {
+  modes: readonly Mode[];
+  defaultId: string;
+  copy: {
+    heading: string;
+    intro: string;
+    legend: string;
+    cleanLabel: string;
+    moderateLabel: string;
+    bunchedLabel: string;
+    tailLabel: string;
+    outOf: string;
+  };
+}
+const { modes, defaultId, copy } = Astro.props;
+const dots = (m: Mode) =>
+  Array.from({ length: 100 }, (_, i) =>
+    i < m.cleanCount ? 'clean' : i < m.cleanCount + m.moderateRepeatCount ? 'moderate' : 'bunched',
+  );
+---
+
+<section class="runs" aria-labelledby="runs-h">
+  <div class="runs__text">
+    <h3 class="h3" id="runs-h">{copy.heading}</h3>
+    <p class="runs__intro pretty">{copy.intro}</p>
+    <fieldset class="pick">
+      <legend class="label">{copy.legend}</legend>
+      <div class="pick__opts">
+        {
+          modes.map((m) => (
+            <label class="pick__opt">
+              <input type="radio" name="setback-mode" value={m.id} checked={m.id === defaultId} />
+              <span>{m.label}</span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <div aria-live="polite">
+      {
+        modes.map((m) => (
+          <div class="runs__set" data-m={m.id}>
+            <ul class="tally">
+              <li>
+                <span class="dot dot--clean" aria-hidden="true" />
+                <span class="tally__n">
+                  {m.cleanCount}
+                  <span class="tally__of">{copy.outOf}</span>
+                </span>
+                <span class="tally__l">{copy.cleanLabel}</span>
+              </li>
+              <li>
+                <span class="dot dot--moderate" aria-hidden="true" />
+                <span class="tally__n">
+                  {m.moderateRepeatCount}
+                  <span class="tally__of">{copy.outOf}</span>
+                </span>
+                <span class="tally__l">{copy.moderateLabel}</span>
+              </li>
+              <li>
+                <span class="dot dot--bunched" aria-hidden="true" />
+                <span class="tally__n">
+                  {m.bunchedRepeatCount}
+                  <span class="tally__of">{copy.outOf}</span>
+                </span>
+                <span class="tally__l">{copy.bunchedLabel}</span>
+              </li>
+            </ul>
+            <p class="runs__tail">
+              <span class="runs__tail-n">{m.over48MonthsPct}</span>
+              <span>{copy.tailLabel}</span>
+            </p>
+            <p class="runs__cap pretty">{m.caption}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="runs__pic" id="setback-dots" aria-hidden="true">
+    {
+      modes.map((m) => (
+        <div class="dots" data-m={m.id}>
+          {dots(m).map((k) => (
+            <span class={`dot dot--${k}`} />
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .runs {
+    display: grid;
+    gap: 1.5rem 3rem;
+    padding: clamp(1.125rem, 2.4vw, 1.75rem);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+  }
+  @media (min-width: 60em) {
+    .runs {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+      align-items: center;
+    }
+  }
+  .runs__intro {
+    margin-top: 0.5rem;
+    max-width: 40rem;
+    color: var(--body);
+  }
+  .pick {
+    margin: 1.125rem 0 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .pick legend {
+    padding: 0;
+    margin-bottom: 0.375rem;
+  }
+  .pick__opts {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.625rem;
+    background: var(--paper);
+  }
+  .pick__opt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0 1rem 0 0.75rem;
+    border-radius: 0.4375rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .pick__opt input {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border: 2px solid var(--muted);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+  }
+  .pick__opt:has(input:checked) {
+    background: var(--ink);
+    color: #fff;
+  }
+  .pick__opt input:checked {
+    border-color: #fff;
+    background: radial-gradient(circle, #fff 0 38%, var(--ink) 44%);
+  }
+  .pick__opt:has(input:checked) input:focus-visible {
+    outline-color: var(--accent-lt);
+  }
+
+  .runs__set,
+  .dots {
+    display: none;
+  }
+  .runs:has(input[value='shared']:checked) .runs__set[data-m='shared'],
+  .runs:has(input[value='independent']:checked) .runs__set[data-m='independent'] {
+    display: block;
+  }
+  .runs:has(input[value='shared']:checked) .dots[data-m='shared'],
+  .runs:has(input[value='independent']:checked) .dots[data-m='independent'] {
+    display: grid;
+  }
+
+  .tally {
+    list-style: none;
+    padding: 0;
+    margin-top: 1.125rem;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .tally li {
+    display: grid;
+    grid-template-columns: auto 5.25rem minmax(0, 1fr);
+    gap: 0.625rem;
+    align-items: baseline;
+    font-size: 0.9375rem;
+  }
+  .tally .dot {
+    width: 0.75rem;
+    transform: translateY(0.0625rem);
+  }
+  .tally__n {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .tally__of {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0;
+  }
+  .tally__l {
+    color: var(--body);
+  }
+  .runs__tail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem 0.625rem;
+    margin-top: 1rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--line-soft);
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+  .runs__tail-n {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .runs__cap {
+    margin-top: 0.75rem;
+    max-width: 40rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+  }
+
+  .dots {
+    grid-template-columns: repeat(10, 1fr);
+    gap: clamp(0.25rem, 1.2vw, 0.4375rem);
+    max-width: 21rem;
+    margin-inline: auto;
+  }
+  .dot {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .dot--clean {
+    background: #c9d4db;
+  }
+  .dot--moderate {
+    background: var(--accent-lt);
+  }
+  .dot--bunched {
+    background: var(--threat);
+  }
+</style>

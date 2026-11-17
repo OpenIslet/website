@@ -1,0 +1,69 @@
+---
+// A small fold that says what the four evidence labels mean. Its words come from `pageCopy.evidence.classes`
+// in src/data/future.ts. With no words to show, it draws nothing.
+import EvidenceChip from './EvidenceChip.astro';
+
+type Kind = 'Computed' | 'Literature' | 'Assumption' | 'Idea';
+interface Props {
+  label: string;
+  classes?: Partial<Record<Kind, string>>;
+}
+const { label, classes } = Astro.props;
+const order: Kind[] = ['Computed', 'Literature', 'Assumption', 'Idea'];
+const rows = order.filter((k) => classes?.[k]);
+---
+
+{
+  rows.length > 0 && (
+    <details class="key">
+      <summary>{label}</summary>
+      <dl class="key__list">
+        {rows.map((k) => (
+          <div>
+            <dt>
+              <EvidenceChip kind={k} />
+            </dt>
+            <dd>{classes![k]}</dd>
+          </div>
+        ))}
+      </dl>
+    </details>
+  )
+}
+
+<style>
+  .key summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .key__list {
+    display: grid;
+    gap: 0.5rem 2rem;
+    margin: 0 0 0.5rem;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 0.625rem;
+    background: #fff;
+    font-size: 0.9375rem;
+  }
+  @media (min-width: 48em) {
+    .key__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .key__list > div {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: baseline;
+  }
+  .key__list dd {
+    margin: 0;
+    color: var(--body);
+  }
+</style>

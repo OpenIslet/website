@@ -1,0 +1,78 @@
+---
+// The fold that holds the detail for scientists. Closed until asked for; its words come from src/data/future.ts.
+import { rich, type Tokens } from './rich';
+
+interface Props {
+  label: string;
+  paragraphs?: readonly string[];
+  /** Set for paragraphs from `pageCopy`, which may carry inline markup. Item-list text is plain and is left alone. */
+  markup?: boolean;
+  tokens?: Tokens;
+}
+const { label, paragraphs = [], markup = false, tokens = {} } = Astro.props;
+---
+
+<details class="sci">
+  <summary><span class="sci__mark" aria-hidden="true"></span>{label}</summary>
+  <div class="sci__body">
+    {paragraphs.map((p) => (markup ? <p class="pretty" set:html={rich(p, tokens)} /> : <p class="pretty">{p}</p>))}
+    <slot />
+  </div>
+</details>
+
+<style>
+  .sci {
+    border-top: 1px solid var(--line-soft);
+  }
+  .sci summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--accent-dk);
+    cursor: pointer;
+    list-style: none;
+  }
+  .sci summary::-webkit-details-marker {
+    display: none;
+  }
+  .sci__mark {
+    position: relative;
+    flex: none;
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .sci__mark::before,
+  .sci__mark::after {
+    content: '';
+    position: absolute;
+    inset: 50% 0 auto 0;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 1px;
+    background: currentColor;
+  }
+  .sci__mark::after {
+    transform: rotate(90deg);
+    transition: transform 0.15s ease;
+  }
+  .sci[open] .sci__mark::after {
+    transform: rotate(0deg);
+  }
+  .sci__body {
+    display: grid;
+    gap: 0.625rem;
+    padding: 0 0 1rem;
+    font-size: 0.9375rem;
+    color: var(--body);
+    max-width: 52rem;
+    overflow-wrap: anywhere;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sci__mark::after {
+      transition: none;
+    }
+  }
+</style>

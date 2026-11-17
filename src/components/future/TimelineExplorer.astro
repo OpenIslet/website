@@ -1,0 +1,602 @@
+---
+// The timeline explorer: three scenarios on one scale. In every scenario the waiting part of each row changes length and
+// the safety part keeps exactly the same length. The switches are radio buttons and a checkbox, and the picture follows
+// them with CSS alone (:has), so it works without scripts. A table of the same figures sits underneath.
+// Every word comes from src/data/future.ts and is passed in as `copy`.
+interface Scenario {
+  id: string;
+  radioLabel: string;
+  shortBadge: string;
+  headlineRange: string;
+  sentinelMonths: string;
+  review60Months: string;
+  readoutMonths: string;
+  readoutRange: string;
+  summary: string;
+  waitUnits: readonly number[];
+  safetyUnits: readonly number[];
+}
+interface Stage {
+  step: number;
+  id: string;
+  title: string;
+  parallelOverlap: boolean;
+}
+interface Props {
+  scenarios: readonly Scenario[];
+  stages: readonly Stage[];
+  maxUnits: number;
+  defaultId: string;
+  copy: {
+    scenarioLegend: string;
+    toggleLabel: string;
+    toggleHelp: string;
+    legend: { wait: string; safety: string; parallel: string };
+    lockedLabel: string;
+    endpoints: { sentinel: { label: string; footnote: string }; review: { label: string; footnote: string }; readout: { label: string } };
+    /** `textHtml` is already safe HTML (made by rich()). */
+    notShown: { label: string; textHtml: string };
+    table: { caption: string; heads: readonly string[] };
+  };
+}
+const { scenarios, stages, maxUnits, defaultId, copy } = Astro.props;
+const pct = (units: number) => `${((units / maxUnits) * 100).toFixed(2)}%`;
+const widths = (i: number) => scenarios.map((s) => `--w-${s.id}:${pct(s.waitUnits[i])}`).join(';');
+const safety = scenarios[0].safetyUnits;
+---
+
+<div class="xp">
+  <div class="xp__controls">
+    <fieldset class="seg">
+      <legend class="label">{copy.scenarioLegend}</legend>
+      <div class="seg__opts">
+        {
+          scenarios.map((s) => (
+            <label class="seg__opt">
+              <input type="radio" name="future-scenario" value={s.id} checked={s.id === defaultId} />
+              <span class="seg__body">
+                <span class="seg__name">{s.radioLabel}</span>
+                <span class="seg__fig">{s.shortBadge}</span>
+              </span>
+            </label>
+          ))
+        }
+      </div>
+    </fieldset>
+    <label class="tgl">
+      <input class="tgl__sw" type="checkbox" id="highlight-safety" name="highlight-safety" />
+      <span class="tgl__t">
+        <span class="tgl__name">{copy.toggleLabel}</span>
+        <span class="tgl__help">{copy.toggleHelp}</span>
+      </span>
+    </label>
+  </div>
+
+  <div class="pre">
+    <span class="pre__k">{copy.notShown.label}</span>
+    <p class="pre__t pretty" set:html={copy.notShown.textHtml} />
+  </div>
+
+  <div class="board" id="ratchet-board">
+    <ol class="board__rows">
+      {
+        stages.map((st, i) => (
+          <li class="brow" style={`${widths(i)};--s:${pct(safety[i])}`}>
+            <a class="brow__name" href={`#${st.id}`} data-opens={st.id}>
+              <span class="brow__n">{st.step}</span>
+              <span class="brow__t">{st.title}</span>
+            </a>
+            <div class="brow__rail" aria-hidden="true">
+              <span class="brow__wait" />
+              <span class:list={['brow__safe', { 'is-parallel': st.parallelOverlap }]}>
+                <svg viewBox="0 0 24 24" width="14" height="14" focusable="false" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9.5" rx="2"></rect><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"></path></svg>
+                <span class="brow__lock">{copy.lockedLabel}</span>
+              </span>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <ul class="key">
+      <li><span class="key__sw key__sw--wait" aria-hidden="true"></span>{copy.legend.wait}</li>
+      <li><span class="key__sw key__sw--safe" aria-hidden="true"></span>{copy.legend.safety}</li>
+      <li><span class="key__sw key__sw--par" aria-hidden="true"></span>{copy.legend.parallel}</li>
+    </ul>
+  </div>
+
+  <div class="ends" id="endpoint-strip" aria-live="polite">
+    {
+      scenarios.map((s) => (
+        <section class="ends__set" data-s={s.id} aria-label={s.radioLabel}>
+          <p class="ends__head">{s.headlineRange}</p>
+          <dl class="ends__figs">
+            <div>
+              <dt>{copy.endpoints.sentinel.label}</dt>
+              <dd>{s.sentinelMonths}</dd>
+              <dd class="ends__note">{copy.endpoints.sentinel.footnote}</dd>
+            </div>
+            <div>
+              <dt>{copy.endpoints.review.label}</dt>
+              <dd>{s.review60Months}</dd>
+              <dd class="ends__note">{copy.endpoints.review.footnote}</dd>
+            </div>
+            <div>
+              <dt>{copy.endpoints.readout.label}</dt>
+              <dd>{s.readoutMonths}</dd>
+              <dd class="ends__note">{s.readoutRange}</dd>
+            </div>
+          </dl>
+          <p class="ends__sum pretty">{s.summary}</p>
+        </section>
+      ))
+    }
+  </div>
+
+  <details class="astable">
+    <summary>{copy.table.caption}</summary>
+    <div class="tablewrap" data-scroll-region tabindex="0" role="region" aria-label={copy.table.caption}>
+      <table>
+        <thead>
+          <tr>
+            {copy.table.heads.map((h) => <th scope="col">{h}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            scenarios.map((s) => (
+              <tr>
+                <th scope="row">{s.radioLabel}</th>
+                <td>{s.sentinelMonths}</td>
+                <td>{s.review60Months}</td>
+                <td>{s.readoutMonths}</td>
+                <td>{s.readoutRange}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </details>
+</div>
+
+<script>
+  // Choosing a row in the picture opens its details (and any enclosing appendix fold) further down the page.
+  document.querySelectorAll<HTMLAnchorElement>('[data-opens]').forEach((link) => {
+    link.addEventListener('click', () => {
+      let el: HTMLElement | null = document.getElementById(link.dataset.opens ?? '');
+      while (el) {
+        if (el instanceof HTMLDetailsElement) el.open = true;
+        el = el.parentElement;
+      }
+    });
+  });
+</script>
+
+<style>
+  .xp {
+    display: grid;
+    gap: 1.25rem;
+    --safe: var(--pass);
+    --safe-bg: var(--pass-bg);
+  }
+
+  /* ---- switches ---- */
+  .xp__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    align-items: end;
+  }
+  @media (min-width: 64em) {
+    .xp__controls {
+      grid-template-columns: minmax(0, 1fr) minmax(17rem, 22rem);
+    }
+  }
+  .seg {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+  .seg legend {
+    padding: 0;
+    margin-bottom: 0.5rem;
+  }
+  .seg__opts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+  @media (min-width: 44em) {
+    .seg__opts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .seg__opt {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 100%;
+    min-height: 4rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.625rem;
+    background: #fff;
+    cursor: pointer;
+  }
+  .seg__opt input {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border: 2px solid var(--muted);
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+  }
+  .seg__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .seg__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .seg__fig {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.3;
+  }
+  .seg__opt:hover {
+    border-color: var(--accent);
+  }
+  .seg__opt:has(input:checked) {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: #fff;
+  }
+  .seg__opt:has(input:checked) .seg__fig {
+    color: var(--dark-soft);
+  }
+  .seg__opt input:checked {
+    border-color: #fff;
+    background: radial-gradient(circle, #fff 0 38%, var(--ink) 44%);
+  }
+  .seg__opt:has(input:checked) input:focus-visible {
+    outline-color: var(--accent-lt);
+  }
+  .tgl {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 4rem;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.625rem;
+    background: #fff;
+    cursor: pointer;
+  }
+  /* The checkbox itself is drawn as the switch: a track, and a round knob that slides across. */
+  .tgl__sw {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: none;
+    width: 2.75rem;
+    height: 1.625rem;
+    margin: 0;
+    border-radius: 999px;
+    background-color: #6f808c;
+    background-image: radial-gradient(circle, #fff 0 0.5625rem, transparent 0.625rem);
+    background-size: 1.625rem 1.625rem;
+    background-repeat: no-repeat;
+    background-position: left center;
+    cursor: pointer;
+    transition: background-color 0.15s ease, background-position 0.15s ease;
+  }
+  .tgl__sw:checked {
+    background-color: var(--safe);
+    background-position: right center;
+  }
+  .tgl:has(input:checked) {
+    border-color: var(--safe);
+    background: var(--safe-bg);
+  }
+  .tgl__t {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+  .tgl__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .tgl__help {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  /* ---- the grey band before the start ---- */
+  .pre {
+    display: grid;
+    gap: 0.25rem 1.25rem;
+    padding: 0.875rem 1.125rem;
+    border: 1px dashed var(--line-strong);
+    border-radius: 0.75rem;
+    background: repeating-linear-gradient(135deg, var(--neutral-bg) 0 0.5rem, #f2f5f7 0.5rem 1rem);
+  }
+  @media (min-width: 56em) {
+    .pre {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: baseline;
+    }
+  }
+  .pre__k {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .pre__t {
+    font-size: 0.875rem;
+    color: var(--body);
+  }
+
+  /* ---- the picture ---- */
+  .board {
+    padding: clamp(1rem, 2.4vw, 1.5rem);
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 0.75rem;
+  }
+  .board__rows {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 0.875rem;
+  }
+  .brow {
+    display: grid;
+    gap: 0.25rem 1.25rem;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
+  }
+  @media (min-width: 60em) {
+    .brow {
+      grid-template-columns: minmax(0, 21rem) minmax(0, 1fr);
+    }
+  }
+  .brow__name {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.625rem;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--ink);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+  .brow__name:hover .brow__t {
+    color: var(--accent-dk);
+    text-decoration: underline;
+  }
+  .brow__n {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--ink);
+    color: #fff;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+  .brow__rail {
+    display: flex;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    background: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+    overflow: hidden;
+  }
+  .brow__wait {
+    flex: none;
+    height: 100%;
+    background: #b9c5cd;
+    transition: width 0.4s ease, opacity 0.2s ease;
+  }
+  .brow__safe {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    width: var(--s);
+    height: 100%;
+    padding: 0 0.5rem;
+    background: var(--safe);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: box-shadow 0.2s ease;
+  }
+  .brow__safe svg {
+    flex: none;
+  }
+  .brow__safe.is-parallel {
+    background: repeating-linear-gradient(135deg, var(--safe) 0 0.375rem, #2f8562 0.375rem 0.75rem);
+  }
+  /* Narrow bars keep the lock and drop the word. */
+  @container (max-width: 6rem) {
+    .brow__lock {
+      display: none;
+    }
+  }
+  .brow__safe {
+    container-type: inline-size;
+  }
+
+  /* The chosen scenario sets how long each row waits. The safety part never changes. */
+  .xp:has(input[value='sequential']:checked) .brow__wait {
+    width: var(--w-sequential);
+  }
+  .xp:has(input[value='prepared']:checked) .brow__wait {
+    width: var(--w-prepared);
+  }
+  .xp:has(input[value='floor']:checked) .brow__wait {
+    width: var(--w-floor);
+  }
+  .xp:has(#highlight-safety:checked) .brow__wait {
+    opacity: 0.3;
+  }
+  .xp:has(#highlight-safety:checked) .brow__safe {
+    box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 4px var(--ink);
+  }
+
+  .key {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem 1.5rem;
+    font-size: 0.8125rem;
+    color: var(--body);
+  }
+  .key li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .key__sw {
+    flex: none;
+    width: 1.25rem;
+    height: 0.75rem;
+    border-radius: 0.1875rem;
+    background: #b9c5cd;
+  }
+  .key__sw--safe {
+    background: var(--safe);
+  }
+  .key__sw--par {
+    background: repeating-linear-gradient(135deg, var(--safe) 0 0.25rem, #2f8562 0.25rem 0.5rem);
+  }
+
+  /* ---- the chosen scenario's figures ---- */
+  .ends__set {
+    display: none;
+    padding: clamp(1.125rem, 2.4vw, 1.5rem);
+    border-radius: 0.75rem;
+    background: var(--ink);
+    color: var(--dark-text);
+  }
+  .xp:has(input[value='sequential']:checked) .ends__set[data-s='sequential'],
+  .xp:has(input[value='prepared']:checked) .ends__set[data-s='prepared'],
+  .xp:has(input[value='floor']:checked) .ends__set[data-s='floor'] {
+    display: block;
+  }
+  .ends__head {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent-lt);
+  }
+  .ends__figs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem 1.5rem;
+    margin: 0.75rem 0 0;
+  }
+  @media (min-width: 44em) {
+    .ends__figs {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .ends__figs > div {
+    padding-top: 0.75rem;
+    border-top: 3px solid rgba(255, 255, 255, 0.22);
+  }
+  .ends__figs dt {
+    font-size: 0.875rem;
+    color: var(--dark-soft);
+  }
+  .ends__figs dd {
+    margin: 0.125rem 0 0;
+    font-size: clamp(1.25rem, 2.4vw, 1.625rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: #fff;
+  }
+  .ends__figs dd.ends__note {
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.35;
+    color: var(--dark-soft);
+  }
+  .ends__sum {
+    margin-top: 1rem;
+    max-width: 52rem;
+    font-size: 0.9375rem;
+    color: var(--dark-soft);
+  }
+
+  /* ---- the same figures as a table ---- */
+  .astable summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--accent);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .tablewrap {
+    overflow-x: auto;
+    margin-top: 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    background: #fff;
+  }
+  table {
+    width: 100%;
+    min-width: 38rem;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+  }
+  th,
+  td {
+    padding: 0.625rem 0.875rem;
+    text-align: left;
+    vertical-align: top;
+    border-top: 1px solid var(--line-soft);
+  }
+  thead th {
+    border-top: 0;
+    font-size: 0.8125rem;
+    color: var(--muted);
+    background: var(--paper);
+  }
+  tbody th {
+    font-weight: 600;
+    background: #fff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tgl__sw,
+    .brow__wait,
+    .brow__safe {
+      transition: none;
+    }
+  }
+</style>

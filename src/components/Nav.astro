@@ -56,7 +56,7 @@ const { current } = Astro.props;
   const toggle = document.querySelector<HTMLButtonElement>('.nav__toggle');
   const links = document.getElementById('nav-links');
   if (toggle && links) {
-    const wide = matchMedia('(min-width: 66.01em)');
+    const wide = matchMedia('(min-width: 73.01em)');
     toggle.hidden = false;
     document.documentElement.classList.add('has-menu');
     const set = (open: boolean) => {
@@ -94,7 +94,7 @@ const { current } = Astro.props;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem 2rem;
+    gap: 0.5rem 1.25rem;
   }
   .nav__brand {
     display: flex;
@@ -123,12 +123,17 @@ const { current } = Astro.props;
     display: flex;
     align-items: center;
     min-height: 2.75rem;
-    padding: 0 0.75rem;
+    padding: 0 0.625rem;
     color: var(--ink);
     font-size: 0.9375rem;
     font-weight: 500;
     white-space: nowrap;
     text-decoration: none;
+  }
+  @media (min-width: 82em) {
+    .nav__link {
+      padding: 0 0.75rem;
+    }
   }
   .nav__link:hover {
     color: var(--accent);
@@ -190,9 +195,9 @@ const { current } = Astro.props;
     margin: 0 0.25rem 0 0.5rem;
   }
 
-  /* Phones and tablets, where the six links, the button and the X link do not fit beside the logo: logo, the main button and
+  /* Phones and tablets, where the seven links, the button and the X link do not fit beside the logo: logo, the main button and
      the X link on one row, links in a single swipeable row below. */
-  @media (max-width: 66em) {
+  @media (max-width: 73em) {
     .nav__inner {
       display: grid;
       grid-template-columns: 1fr auto auto;
@@ -231,7 +236,7 @@ const { current } = Astro.props;
   .nav__link--x {
     display: none;
   }
-  @media (max-width: 66em) {
+  @media (max-width: 73em) {
     :global(.has-menu) .nav__inner {
       grid-template-columns: 1fr auto auto;
       padding-block: 0.25rem;
