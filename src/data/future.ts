@@ -205,11 +205,12 @@ export const timelineStages: readonly TimelineStageRow[] = [
     evidenceClass: 'Idea',
     parallelOverlap: false,
     preparedAhead:
-      'Share open research DNA starter kits and cloud-lab scripts early; lock the dynamic insulin-release test beside a never-frozen fresh control; test 24-hour feeding rhythms (potentially cutting 6-week batch loops toward ~3 weeks once proven); and validate non-destructive light sensors from watch-only feeding guidance toward a Day-14/Day-21 early dud-batch check.',
+      'Share open research DNA starter kits and cloud-lab scripts early; run the closed-loop 80 µm vs 100 µm living-islet oxygen-and-insulin check inside Step 1 without adding a roadmap stage; lock the dynamic insulin-release test beside a never-frozen fresh control; test 24-hour feeding rhythms (potentially cutting 6-week batch loops toward ~3 weeks once proven); and validate non-destructive light sensors from watch-only feeding guidance toward a Day-14/Day-21 early dud-batch check.',
     safetyFloor:
-      'Checks across at least 6 independent batches and 6 unseen type 1 diabetes immune donors, 6 day/night clock points confirming <=3 min insulin shut-off, mouse time-zone re-sync checks, and a 120-hour oxygen-demand test.',
-    stopRule: 'Drop any optical camera check whose stressed-batch match to real insulin release falls below 0.80, or any rhythm tweak that raises oxygen appetite.',
+      'Checks across at least 6 independent batches and 6 unseen type 1 diabetes immune donors, islet-chip equivalence within ±20% of the bench insulin assay plus out-of-sample fresh-batch confirmation, 6 day/night clock points confirming <=3 min insulin shut-off, mouse time-zone re-sync checks, and a 120-hour oxygen-demand test.',
+    stopRule: 'Drop any optical camera check whose stressed-batch match to real insulin release falls below 0.80, take zero closed-loop model credit if the islet chip diverges past ±20% from bench insulin or misses on a fresh batch, and drop any rhythm tweak that raises oxygen appetite.',
     science: [
+      'Closed-loop 80 µm vs 100 µm living-islet validation (IIP-0025 / DEC-104 Contrast B1; Balboa et al. PMID 35241836; Suszynski et al. PMID 21693022): Stage 0 locks the 3D FVM prediction on published human-islet benchmarks (100 µm worst-face oxygen 12.64–13.05 mmHg < 15.0 mmHg despite 17.08 mmHg spatial mean vs dose-matched 80 µm at 142.22 µm pitch clearing 15.68–16.32 mmHg nominal, paired primary 390 µm gain +2.68 mmHg and 350 µm gain +3.07 mmHg weighed against 1.953x cluster-count aggregation loss); partner-lab check requires microfluidic islet-chip insulin 90% TOST within [0.80, 1.25] (±20%) vs standard dynamic perifusion before testing net insulin per starting cell, <=8.0 min rise, and t50 <= 3.0 min shut-off under hypoxic stress across n >= 8 paired lots and confirming the recalibrated model prediction on a fresh held-out batch.',
       'Proteome-remodelling floor (artifacts-sonnet/receipts/s8_clonogenic_and_maturation_floors.json): 95% protein turnover takes 4.32 half-lives (17.3–25.9 d for t_1/2 = 4–6 d); baseline DAG books 0 days of circadian compression on Bank 1 (22 d vs 42 d differentiation shifts P50 by +0.005 mo because 119-d compendial banking governs), whereas validated ~20–25 d maturation cuts downstream test-lot and clinical-lot turnaround.',
       'Circadian maturation & two-stage PAT gates (PMID 31839570 + IIP-0021 + biostat_results.json): non-elevated sXBP1/CHOP, >=72 h cue washout, 120-h Nec-1s x Ferrostatin-1 washed-pellet (<10 nM LC-MS) assembled-organoid OCR coupon (upper95 <= 0.80) across >=6 circadian phases over 24–48 h; in computer simulations, replacing an early Day-7/Day-14 rule with a two-stage Day-14 progenitor-Z + Day-21 logit-slope check cut mistaken stops of healthy batches from 93.12% to 1.37% (99.99% to 3.36% in slow, variable batches) while catching 99.7% of simulated dead-end runs (gated on zero false discards observed across >=59 / 72 / 80 successful runs per group).',
       'Potency ring-study & live single-islet traces: dynamic perifusion GSIS + <=3.0 min shut-off + alpha-cell glucagon + iCasp9 clearance anchor alongside a never-frozen fresh comparator arm, plus watch-only label-free single-islet secretion traces (Zitzmann et al. PMID 42054864; PMID 42197878).',
@@ -250,7 +251,7 @@ export const timelineStages: readonly TimelineStageRow[] = [
     stopRule: 'Take zero scheduling credit from frozen vials if thawing gives switch-silenced cells more than a 1.2x survival edge or shifts beta-cell share past 3 percentage points.',
     science: [
       'Freeze-thaw selection guards (artifacts-sonnet/receipts/s4_cryo_selection_bias.json, gates G-07..G-09): 1:1 (~750 cells/arm resolves R = 1.2), 1:100, and 1:10^4 competitive mixes with apoptosis-resistant and iCasp9-silenced spikes must prove R <= 1.2 (95% UCB); satellite tail lot must undergo the exact freeze-thaw (G-08); post-recovery beta-fraction TOST within +-3 percentage points (>=22 lots/arm, G-09).',
-      'Two-tier transient miRNA-switch purification (Tsujisaka et al. PMID 35688152 / PMC9287667, which paired RNA switches with MACS sorting; biostat_results.json) & rapid microbial QC: Tier A negative switch cuts SLC18A1+ enterochromaffin cells <1% (q*_EC = 0.0818); proposed Tier B tandem >=2-stage miR-302/367-OFF positive tag + orthogonal miR-375-repressed clearance targets f_post = 6.57e-9 <= 10^-8 (gated on <0.01% dsRNA and >=72 h washout). Compendial rapid microbial/mycoplasma checks (USP <72>/<1071>, Ph. Eur. 2.6.27, Kang et al. PMID 41034515 one-day microbial test) aim to compress lot-release quarantine holds where product-specific suitability passes.',
+      'Two-tier transient miRNA-switch purification (Tsujisaka et al. PMID 35688152 / PMC9287667, which paired RNA switches with MACS sorting; biostat_results.json) & rapid microbial QC: applied strictly pre-vascular co-culture (before mixing miR-375-negative iECs/pericytes, which a post-mix miR-375-repressed switch would deplete by ~94.9%); Tier A uses an explicit SC-EC-depleting step (CD49a+ sort or TPH1/SLC18A1-ON switch, since miR-375-repressed clearance spares miR-375+ enterochromaffin cells at 8.3–9.6% leak) to cut SLC18A1+ enterochromaffin cells <1% (0.60% pre-mix; q*_EC = 0.0818); proposed Tier B tandem >=2-stage miR-302/367-OFF positive tag + orthogonal miR-375-repressed clearance targets f_post = 6.57e-9 <= 10^-8 (gated on <0.01% dsRNA and >=72 h washout). Compendial rapid microbial/mycoplasma checks (USP <72>/<1071>, Ph. Eur. 2.6.27, Kang et al. PMID 41034515 one-day microbial test) aim to compress lot-release quarantine holds where product-specific suitability passes.',
       'Tier 6A / 6B clonogenic arithmetic & CLK-3 span: >=99.99% 72-h Stage-7 clearance (Tier 6A) and N_eff >= 299,573,228 zero-survivor clonogenic opportunities (8.97e8–1.11e9 physical sorted clonogenic cells at eta = 0.27–0.334 across 9.335e8 pan-lineage cells; q_max <= 6.70e-5), running 17.0 wk (119 d) compendial QC beside the 134-d (42 d + 84 d + 8 d) satellite tail.',
     ],
   },
@@ -314,6 +315,16 @@ export const timelineStages: readonly TimelineStageRow[] = [
 ] as const;
 
 export const horizon1Items: readonly HorizonItem[] = [
+  {
+    ...UNBUILT,
+    id: 'h1-living-islets',
+    title: 'Test the AI’s predictions on living islets (80 vs 100 µm loop)',
+    badge: 'Closes the model-to-bench loop',
+    evidenceClass: 'Computed',
+    summary:
+      'Benchmark the oxygen model on published human-islet data and lock its 80 µm vs 100 µm prediction at Stage 0; check at a partner lab that an automated islet chip matches the standard bench insulin test within ±20%; then test whether smaller clusters deliver more insulin per starting cell under oxygen stress with prompt glucose rise and <=3 min shut-off — updating the model and confirming the revised prediction on a fresh batch without adding a roadmap stage.',
+    stopRule: 'Book zero closed-loop model credit if the islet chip diverges past ±20% from the bench insulin test, if forming 80 µm clusters loses more insulin per starting cell than better oxygen recovers, or if the updated prediction misses on a fresh batch.',
+  },
   {
     ...UNBUILT,
     id: 'h1-circadian',
@@ -533,7 +544,7 @@ export const failureModes: readonly FailureModeCard[] = [
       'Keep physical sorting primary until tandem two-stage microRNA logic switches (positive tag + orthogonal mature-islet-protected clearance) prove <1-in-100-million purity with independent safety pathways.',
     stopThreshold: 'Reject multi-barrier multiplication if escapers from barrier one survive barrier two above 1 in 10,000.',
     science: [
-      'biostat_results.json & s8 (gate G-12; Tsujisaka et al. PMID 35688152): q_neg(u, eps) = u + (1-u)*eps >= u; tandem >=2-stage miR-302/367-OFF positive selection (eps_sel <= 10^-4) + orthogonal miR-375-repressed clearance reaches f_post = 6.57e-9 <= 10^-8; certification requires >=3e4 first-barrier escapers challenged (beta <= 10^-4).',
+      'biostat_results.json & s8 (gate G-12; Tsujisaka et al. PMID 35688152): q_neg(u, eps) = u + (1-u)*eps >= u; applied strictly pre-vascular co-culture (before mixing miR-375-negative iECs/pericytes) and paired with explicit SC-EC depletion (CD49a+ sort or TPH1/SLC18A1-ON switch, avoiding 8.3–9.6% miR-375+ SC-EC escape), tandem >=2-stage miR-302/367-OFF positive selection (eps_sel <= 10^-4) + orthogonal miR-375-repressed clearance reaches f_post = 6.57e-9 <= 10^-8; certification requires >=3e4 first-barrier escapers challenged (beta <= 10^-4).',
     ],
   },
   {
@@ -811,20 +822,22 @@ export const pageCopy = {
 
     ch3: {
       eyebrow: 'Chapter 3 · Practical upgrades we aim to test on Version 1',
-      heading: 'Can automated incubators grow healthier cells faster — and freeze finished batches ready for when they are needed?',
+      heading: 'Can we test the AI’s predictions on living islets, grow healthier cells faster, and freeze finished batches ready for when they are needed?',
       paragraphs: [
-        'Before changing a single letter of DNA in today’s [[Islet-1 blueprint|/blueprint]], three practical incubator and banking upgrades are candidates we actively want partner and robotic labs to test on Version 1. Their goal is simple: waste fewer batches, sharpen how cleanly the cells behave, and untie a person’s surgery date from a live six-week incubator timer.',
-        'Inside a healthy body, islets never sit in unchanging soup; they ride 24-hour waves of meals, fasting, and sleep hormones. Daily feeding and fasting cues in lab bioreactors helped lab-grown islets respond more like adult islets and release less insulin when blood sugar is low ([[Alvarez-Dominguez et al., Cell Stem Cell 2020|https://pubmed.ncbi.nlm.nih.gov/31839570/]]), building on maturation benchmarks in [[Balboa et al., Nat. Biotechnol. 2022|https://pubmed.ncbi.nlm.nih.gov/35241836/]]. We want to see whether an automated tank can do the same, hit our 3-minute shut-off target, and eventually trim six-week batch loops toward ~20–25 days without cell stress (while booking zero days of shortcut on Bank 1). Beside the tank, gentle label-free cameras and real-time single-islet secretion sensors ([[Zitzmann et al., 2026|https://pubmed.ncbi.nlm.nih.gov/42054864/]]; [[Sensors 2026|https://pubmed.ncbi.nlm.nih.gov/42197878/]]) start in "watch-only" mode so future AI can learn early signs of drift — and once validated across 59 to 80 runs per group with zero false discards observed, our simulated **two-stage Day-14 and Day-21 slope check** cuts mistaken stops of healthy runs from **93.1% down to 1.4%** while catching **99.7%** of simulated dead-end runs roughly three weeks early.',
+        'Before changing a single letter of DNA in today’s [[Islet-1 blueprint|/blueprint]], four practical living-islet, incubator, and banking upgrades are candidates we actively want partner and robotic labs to test on Version 1. Their goal is simple: close the loop between computer predictions and living human islets, waste fewer batches, sharpen how cleanly the cells behave, and untie a person’s surgery date from a live six-week incubator timer.',
+        'First, we want to **test the AI’s oxygen predictions directly on living islets** inside Step 1 without adding another roadmap stage ([[IIP-0025|/contributions#iip-0025]]). At Stage 0, we benchmark the transport model on published human-islet data ([[Suszynski et al., 2012|https://pubmed.ncbi.nlm.nih.gov/21693022/]]; [[Balboa et al., Nat. Biotechnol. 2022|https://pubmed.ncbi.nlm.nih.gov/35241836/]]) and record its prediction for **80 µm versus 100 µm clusters** before a dish is touched. Next, a partner lab checks that an automated islet chip gives consistent insulin readings within ±20% of the standard bench assay. Then the robotic bench tests whether smaller clusters actually deliver **more insulin per starting cell** under oxygen stress (since forming nearly twice as many smaller clusters can lose cells during aggregation) and whether they respond promptly when glucose rises and shut off within 3 minutes when glucose drops. That closes the loop: the model makes a prediction, the lab tests it, the result informs the next comparison, and the revised prediction is confirmed on a **fresh batch**.',
+        'Inside a healthy body, islets also never sit in unchanging soup; they ride 24-hour waves of meals, fasting, and sleep hormones. Daily feeding and fasting cues in lab bioreactors helped lab-grown islets respond more like adult islets and release less insulin when blood sugar is low ([[Alvarez-Dominguez et al., Cell Stem Cell 2020|https://pubmed.ncbi.nlm.nih.gov/31839570/]]), building on maturation benchmarks in [[Balboa et al., Nat. Biotechnol. 2022|https://pubmed.ncbi.nlm.nih.gov/35241836/]]. We want to see whether an automated tank can do the same, hit our 3-minute shut-off target, and eventually trim six-week batch loops toward ~20–25 days without cell stress (while booking zero days of shortcut on Bank 1). Beside the tank, gentle label-free cameras and real-time single-islet secretion sensors ([[Zitzmann et al., 2026|https://pubmed.ncbi.nlm.nih.gov/42054864/]]; [[Sensors 2026|https://pubmed.ncbi.nlm.nih.gov/42197878/]]) start in "watch-only" mode so future AI can learn early signs of drift — and once validated across 59 to 80 runs per group with zero false discards observed, our simulated **two-stage Day-14 and Day-21 slope check** cuts mistaken stops of healthy runs from **93.1% down to 1.4%** while catching **99.7%** of simulated dead-end runs roughly three weeks early.',
         'Right beside the incubator sit two banking upgrades. Qualifying a **deep-freeze pause point (−150 °C or colder)** means clinical batches can be grown, tested, and stored safely in the freezer *while* mouse and regulator reviews finish — provided lab mixes prove thawing never gives rare safety-switch-silenced cells an unfair survival edge. And qualifying one **reusable starter cell bank** lets robot benches load and compare updated protective designs in matching vials side by side, while still running every single deep DNA check and the full 84-day safety watch.',
       ],
-      sourcesLabel: 'Peer-reviewed studies cited in Chapter 3 (4)',
+      sourcesLabel: 'Peer-reviewed studies cited in Chapter 3 (5)',
       sources: [
+        { pmid: '21693022', citation: 'Suszynski et al., Transplant. Rev. (2012)', note: 'Human islet oxygen-transport and cluster-size hypoxia benchmarks anchoring the 80 µm vs 100 µm closed-loop test.' },
         { pmid: '31839570', citation: 'Alvarez-Dominguez et al., Cell Stem Cell (2020)', note: 'Circadian 24-hour nutrient/hormone entrainment improving functional maturation and lowering low-glucose insulin leak in stem-cell islets.' },
         { pmid: '35241836', citation: 'Balboa et al., Nat. Biotechnol. (2022)', note: 'Functional, metabolic, and dynamic insulin-secretion maturation benchmarks in human stem-cell-derived islets.' },
         { pmid: '42054864', citation: 'Zitzmann et al., Biosens. Bioelectron. (2026)', note: 'Real-time, label-free impedimetric tracking of insulin secretion from individual 3D human stem-cell-derived islets.' },
         { pmid: '42197878', citation: 'Sensors (2026)', note: 'Label-free optical monitoring of insulin-granule dynamics paired with secretion in single living human islets.' },
       ] as readonly StorySource[],
-      appendixSummary: 'For scientists & engineers: open the 3 Version-1 nursery & banking cards and stop rules',
+      appendixSummary: 'For scientists & engineers: open the 4 Version-1 living-islet, nursery & banking cards and stop rules',
     },
 
     part2Bridge: {
@@ -975,7 +988,7 @@ export const pageCopy = {
     stopRule: 'Stop rule',
     h1: {
       kicker: 'Nearer term · Version 1',
-      heading: 'Automated nursery, banking & early-catch upgrades ({nobr|Islet-1}, zero new DNA cuts)',
+      heading: 'Closed-loop living-islet, nursery & banking upgrades ({nobr|Islet-1}, zero new DNA cuts)',
     },
     h2: {
       kicker: 'Generation 2 · Parallel hardware track',
