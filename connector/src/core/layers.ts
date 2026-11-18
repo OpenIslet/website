@@ -15,7 +15,7 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   dna: {
     name: 'The DNA layer (layer 2 of 5)',
     plain: (c) =>
-      `Holds ${c.constructs ?? 'unavailable'} genomic reference constructs, their sequence, translation, two-strand splice-motif, cellular and extracellular biomaterial Swiss-Prot-subtracted peptide-census and repeat checks, and pre-registered Stage-0 donor comparators (including the 3-construct Design Y landing-pad wildcard FASTA). AlphaGenome variant-impact scores are neither published nor used as evidence here (its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release), and no computational grammar or peptide check establishes insertion, splicing or immune safety.`,
+      `Holds ${c.constructs ?? 'unavailable'} genomic reference constructs, their sequence, strand-specific transcribed-interval ORF, translation, two-strand splice-motif, cellular and extracellular biomaterial Swiss-Prot-subtracted peptide-census and repeat checks, and pre-registered Stage-0 donor comparators (including the 6-construct 2A-free Design B research-comparator FASTA on State-3 hold and the 3-construct Design Y landing-pad wildcard FASTA). AlphaGenome variant-impact scores are neither published nor used as evidence here (its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release), and no computational grammar or peptide check establishes insertion, splicing or immune safety.`,
   },
   proteins: {
     name: 'The protein layer (layer 3 of 5)',
@@ -29,7 +29,7 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   patient: {
     name: 'The patient layer (layer 5 of 5)',
     plain: (c) =>
-      `Checks declared reference edit instructions, product-scoped routing and genotype inputs, and runs a simulated population of ${typeof c.virtualPatients === 'number' ? c.virtualPatients.toLocaleString('en-GB') : 'unavailable'} virtual patients alongside batch-isolated Stage-0 wet-lab provenance contracts. The results are scenario simulations, not predictions for any person. Exact B donor designs and clinical eligibility remain unresolved. Matching your own genotype is not offered yet.`,
+      `Checks declared reference edit instructions, 69-key normalized gnomAD v4.1 variant joins, 17-record HLA-C guide scoping, typed locus routing and genotype inputs, and runs a simulated population of ${typeof c.virtualPatients === 'number' ? c.virtualPatients.toLocaleString('en-GB') : 'unavailable'} virtual patients alongside batch-isolated Stage-0 wet-lab provenance contracts. The results are scenario simulations, not predictions for any person. Staged 2A-free Design B comparators remain strictly on research hold (execution_supported = false), and clinical eligibility remains unresolved. Matching your own genotype is not offered yet.`,
   },
 };
 

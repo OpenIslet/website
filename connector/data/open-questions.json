@@ -105,7 +105,7 @@
     "id": "OQ-004",
     "title": "Does one kept HLA-C gene calm natural killer cells without displaying a new target?",
     "plain": "Design B keeps one matched HLA-C gene so that natural killer cells see the cells as the patient's own. It is not yet known whether a single copy gives enough calming signal, or whether Design B2's optional TYK2 P1104A edit displays a foreign-looking peptide on that kept HLA-C.",
-    "detail": "After HLA-A and HLA-B deletion, a single retained HLA-C allele must supply enough leader peptide to stabilise surface HLA-E (tracked across IPD-IMGT/HLA SP-1C, SP-2C and SP-3C leader classes in Lin 2023, kept distinct from the HLA-B -21M/-21T leader split in Ramsuran 2018; rule GY-005). In Design B2, installing TYK2 P1104A replaces position-2 proline with an HLA-C-favoured alanine anchor (SPPTKFLEL to SAPTKFLEL; Rasmussen 2014, O'Donnell 2020), while over 90% of recipients carry wild-type TYK2 on both copies; IIP-0017 therefore enforces a fail-closed Stage-0 OR-hold gate across separate G/G, G/C and C/C recipient groups and HLA-C alleles on both islet and vascular cells.",
+    "detail": "After HLA-A and HLA-B deletion, a single retained HLA-C allele must supply enough leader peptide to stabilise surface HLA-E (tracked across IPD-IMGT/HLA SP-1C, SP-2C and SP-3C leader classes in Lin 2023, kept distinct from the HLA-B -21M/-21T leader split in Ramsuran 2018; rule GY-005). Across 17 coordinate-preserved HLA-C records (GRCh38 plus 16 INSDC genomic alleles across all 64 NNN PAMs; Doench 2016, PMID 26780180), 11 HLA-A and 6 HLA-B Exon 2-3 guides stay below 0.05 WT-CFD (recording both 114/115 nominal-cut-in-exon and 106/108 full-23mer-in-exon boundary counts), while mAb DT9 cross-reacts with HLA-E (Corrah 2011, PMID 21248048) so Stage-0 checks require separated HLA-A/B passes, phased donor HLA-A/B/C/E clearance and a matched HLA-E-only (HLA-C-null) DT9 specificity control (rule GY-021; IIP-0026). In Design B2, installing TYK2 P1104A replaces position-2 proline with an HLA-C-favoured alanine anchor (SPPTKFLEL to SAPTKFLEL; Rasmussen 2014, O'Donnell 2020), while over 90% of recipients carry wild-type TYK2 on both copies; IIP-0017 therefore enforces a fail-closed Stage-0 OR-hold gate across separate G/G, G/C and C/C recipient groups and HLA-C alleles on both islet and vascular cells, keeping PE2max as lead TYK2 prime editor and holding PE4max behind distinct microsatellite-instability and piecewise clonal repeat-indel gates (Chen 2021, PMID 34653350; Ferreira da Silva 2022, PMID 35140211; IIP-0026).",
     "tests": [
       "3",
       "2A"
@@ -114,7 +114,8 @@
       "B"
     ],
     "rules": [
-      "GY-005"
+      "GY-005",
+      "GY-021"
     ],
     "pmids": [
       "30853558",
@@ -123,10 +124,14 @@
       "27807284",
       "30578352",
       "32711842",
-      "25311805"
+      "25311805",
+      "21248048",
+      "26780180",
+      "34653350",
+      "35140211"
     ],
-    "settle": "Measure surface HLA-E and natural killer cell response in cells keeping a single HLA-C allele, and test Design B2's TYK2 P1104A SAPTKFLEL peptide by heavy-standard immunopeptidomics and human CD8+ T-cell killing and ELISPOT across separate G/G, G/C and C/C recipient strata on islet and vascular cells.",
-    "source": "Concise specification sections 4.5 and 9; rule GY-005; IIP-0017",
+    "settle": "Measure surface HLA-E (with matched HLA-E-only DT9 specificity controls) and natural killer cell response in cells keeping a single HLA-C allele after separated-pass phased HLA-A/B editing, and test Design B2's TYK2 P1104A SAPTKFLEL peptide by heavy-standard immunopeptidomics and human CD8+ T-cell killing and ELISPOT across separate G/G, G/C and C/C recipient strata on islet and vascular cells.",
+    "source": "Concise specification sections 4.5 and 9; rules GY-005 and GY-021; IIP-0017 and IIP-0026",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -200,7 +205,8 @@
     "rules": [
       "GY-006",
       "GY-018",
-      "GY-019"
+      "GY-019",
+      "GY-021"
     ],
     "pmids": [
       "39529170",
@@ -218,10 +224,14 @@
       "22560080",
       "27989715",
       "27436875",
-      "27151456"
+      "27151456",
+      "36522432",
+      "18796520",
+      "30850590",
+      "32460021"
     ],
-    "settle": "Deep duplex sequencing (>= 63,000x), long-read phasing, paired bank-and-Stage-7 1q32.1 MDM4 and 20q11.21 copy-number and >= 299-cell mosaicism checks, IC1/IC2/IG-DMR methylation, 46,XX X-inactivation and 1,000x mtDNA screening across >= 2 unrelated O/O donor banks (6 + 6 batches).",
-    "source": "Concise specification sections 4.5, 4.6, 6 and 9; rules GY-006, GY-018 and GY-019; IIP-0017, IIP-0023 and IIP-0024",
+    "settle": "Deep duplex sequencing (>= 63,000x), 69-key gnomAD v4.1 + 30x donor WGS target verification, per-locus phased haplotype BAF in [0.45, 0.55] (>= 50 het SNPs), paired bank-and-Stage-7 1q32.1 MDM4 and 20q11.21 copy-number and >= 299-cell mosaicism checks, IC1/IC2/IG-DMR methylation, 46,XX X-inactivation and 1,000x mtDNA screening across >= 2 unrelated O/O donor banks (6 + 6 batches).",
+    "source": "Concise specification sections 4.5, 4.6, 6 and 9; rules GY-006, GY-018, GY-019 and GY-021; IIP-0017, IIP-0023, IIP-0024 and IIP-0026",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -335,21 +345,29 @@
   },
   {
     "id": "OQ-011",
-    "title": "Does a sequence in Design B's CXCL10 edit act as an unintended switch?",
-    "plain": "Design B drops one linking sequence at the CXCL10 spot to avoid leaving a piece that the kept HLA-C gene could show to T cells as foreign. In exchange, a piece of the design might switch genes on at the wrong time. That has to be ruled out.",
-    "detail": "Design B uses a 2A-free layout at the CXCL10 locus, which trims reference-unmatched 8-to-11-mers from 205 to 83 in wild-type-TYK2 Design B and from 243 to 121 in Design B2 (IIP-0017). However, an internal promoter or eIF4G leader sequence can have cryptic promoter activity (PMID 12370285).",
+    "title": "Does Design B's staged 2A-free CXCL10 promoter switch on cleanly after retiring INS 3'-UTR knock-ins?",
+    "plain": "Design B drops the viral 2A linker so the kept HLA-C gene cannot display it to T cells. Inserting protective genes into the insulin (INS) 3'-UTR via an EIF4G2 leader has been permanently retired because nearly half of the graft's support and hormone cells do not make insulin and stretching insulin mRNA 37-fold risks destabilising it; instead, a six-construct 2A-free CXCL10 and divergent AAVS1 research-comparator FASTA is staged on hold until RNA start-site sequencing rules out leaky or upstream transcription.",
+    "detail": "IIP-0026 permanently retires chr11p15.5 INS 3'-UTR EIF4G2 bicistronic knock-ins into Idea Graveyard guardrail GY-022 (kept distinct from scored B1's separate INS signal-peptide point-edit hypothesis): 48.58% of curative-graft non-beta cells (alpha, delta, vascular and stromal) do not transcribe INS (Baron 2016, PMID 27667365), 8/15 Cas9 guides inside the 73-nt INS 3'-UTR disrupt PTBP1 ins-PRS stability motifs (Tillmar 2002, PMID 11696543), expanding the 3'-UTR 37.14-fold to 2,711 nt invites Upf1-mediated mRNA decay (Hogg 2010, PMID 21029861), and human EIF4G2 leader fragments carry cryptic-promoter and upstream-AUG liabilities (Henis-Korenblit 2000, PMID 10611228; Han 2002, PMID 12370285). Instead, IIP-0026 stages the 6-construct 2A-free Design B research-comparator FASTA (islet1_design_b_complete_constructs_v0.8.0.fasta, c1..c6, binding primary c1 CXCL10 and c5 divergent AAVS1 CD47 + iCasp9 donors at State 3 with execution_supported = false and reconciling complete +CD47 Design B reference-unmatched 8-to-11-mers at 108 mature / 109 precursor in B2 and 146 / 147 in B2 + TYK2 P1104A; IIP-0017, IIP-0026), while holding c1 (2308-3282) and c2 (2029-3003) at HOLD_PENDING_5PRIME_RACE_TSS until N_UMI_eff >= 3,689 5'-RACE / 3'-RACE verifies the mature PD-L1 transcript start site and rules out resting cryptic promoter activity.",
     "tests": [
-      "4"
+      "4",
+      "2B"
     ],
     "designs": [
       "B"
     ],
-    "rules": [],
-    "pmids": [
-      "12370285"
+    "rules": [
+      "GY-021",
+      "GY-022"
     ],
-    "settle": "Test whether the sequence drives expression on its own, outside inflammation.",
-    "source": "Concise specification sections 4.5 and 9; IIP-0017",
+    "pmids": [
+      "12370285",
+      "10611228",
+      "11696543",
+      "21029861",
+      "27667365"
+    ],
+    "settle": "Run N_UMI_eff >= 3,689 5'-RACE and 3'-RACE plus resting vs interferon-stimulated expression checks on Design B's staged 2A-free CXCL10 (c1..c3) and divergent AAVS1 (c5..c6) comparators to verify mature transcript boundaries and rule out leaky promoter activity.",
+    "source": "Concise specification sections 4.5, 8 and 9; rules GY-021 and GY-022; IIP-0017 and IIP-0026",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"

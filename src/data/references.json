@@ -52,6 +52,19 @@
     "year": 1999,
     "doi": "10.1084/jem.190.8.1135"
   },
+  "10611228": {
+    "pmid": "10611228",
+    "title": "A novel form of DAP5 protein accumulates in apoptotic cells as a result of caspase cleavage and internal ribosome entry site-mediated translation.",
+    "authors": [
+      "Henis-Korenblit S",
+      "Strumpf NL",
+      "Goldstaub D",
+      "Kimchi A"
+    ],
+    "journal": "Mol Cell Biol",
+    "year": 2000,
+    "doi": "10.1128/MCB.20.2.496-506.2000"
+  },
   "10647616": {
     "pmid": "10647616",
     "title": "Clinical optimization of pretargeted radioimmunotherapy with antibody-streptavidin conjugate and 90Y-DOTA-biotin.",
@@ -69,6 +82,56 @@
     "journal": "J Nucl Med",
     "year": 2000,
     "doi": ""
+  },
+  "11696543": {
+    "pmid": "11696543",
+    "title": "Control of insulin mRNA stability in rat pancreatic islets. Regulatory role of a 3'-untranslated region pyrimidine-rich sequence.",
+    "authors": [
+      "Tillmar L",
+      "Carlsson C",
+      "Welsh N"
+    ],
+    "journal": "J Biol Chem",
+    "year": 2002,
+    "doi": "10.1074/jbc.M108340200"
+  },
+  "12370285": {
+    "pmid": "12370285",
+    "title": "Regulation of gene expression by internal ribosome entry sites or cryptic promoters: the eIF4G story.",
+    "authors": [
+      "Han B",
+      "Zhang JT"
+    ],
+    "journal": "Mol Cell Biol",
+    "year": 2002,
+    "doi": "10.1128/MCB.22.21.7372-7384.2002"
+  },
+  "15039777": {
+    "pmid": "15039777",
+    "title": "Polypyrimidine tract-binding protein promotes insulin secretory granule biogenesis.",
+    "authors": [
+      "Knoch KP",
+      "Bergert H",
+      "Borgonovo B",
+      "Saeger HD",
+      "Altkrüger A",
+      "Verkade P",
+      "Solimena M"
+    ],
+    "journal": "Nat Cell Biol",
+    "year": 2004,
+    "doi": "10.1038/ncb1099"
+  },
+  "15228089": {
+    "pmid": "15228089",
+    "title": "Glucose-induced binding of the polypyrimidine tract-binding protein (PTB) to the 3'-untranslated region of the insulin mRNA (ins-PRS) is inhibited by rapamycin.",
+    "authors": [
+      "Tillmar L",
+      "Welsh N"
+    ],
+    "journal": "Mol Cell Biochem",
+    "year": 2004,
+    "doi": "10.1023/b:mcbi.0000026059.56089.e4"
   },
   "15538371": {
     "pmid": "15538371",
@@ -137,6 +200,27 @@
     "journal": "PLoS Biol",
     "year": 2007,
     "doi": "10.1371/journal.pbio.0050143"
+  },
+  "18796520": {
+    "pmid": "18796520",
+    "title": "Chromosome 11p15 paternal isodisomy in focal forms of neonatal hyperinsulinism.",
+    "authors": [
+      "Damaj L",
+      "le Lorch M",
+      "Verkarre V",
+      "Werl C",
+      "Hubert L",
+      "Nihoul-Fékété C",
+      "Aigrain Y",
+      "de Keyzer Y",
+      "Romana SP",
+      "Bellanne-Chantelot C",
+      "de Lonlay P",
+      "Jaubert F"
+    ],
+    "journal": "J Clin Endocrinol Metab",
+    "year": 2008,
+    "doi": "10.1210/jc.2008-0673"
   },
   "19074987": {
     "pmid": "19074987",
@@ -212,6 +296,17 @@
     "year": 2010,
     "doi": "10.1371/journal.pgen.1000992"
   },
+  "21029861": {
+    "pmid": "21029861",
+    "title": "Upf1 senses 3'UTR length to potentiate mRNA decay.",
+    "authors": [
+      "Hogg JR",
+      "Goff SP"
+    ],
+    "journal": "Cell",
+    "year": 2010,
+    "doi": "10.1016/j.cell.2010.10.005"
+  },
   "21183510": {
     "pmid": "21183510",
     "title": "APO010, a synthetic hexameric CD95 ligand, induces human glioma cell death in vitro and in vivo.",
@@ -228,6 +323,23 @@
     "journal": "Neuro Oncol",
     "year": 2011,
     "doi": "10.1093/neuonc/noq176"
+  },
+  "21248048": {
+    "pmid": "21248048",
+    "title": "Reappraisal of the relationship between the HIV-1-protective single-nucleotide polymorphism 35 kilobases upstream of the HLA-C gene and surface HLA-C expression.",
+    "authors": [
+      "Corrah TW",
+      "Goonetilleke N",
+      "Kopycinski J",
+      "Deeks SG",
+      "Cohen MS",
+      "Borrow P",
+      "McMichael A",
+      "Brackenridge S"
+    ],
+    "journal": "J Virol",
+    "year": 2011,
+    "doi": "10.1128/JVI.02276-10"
   },
   "21368762": {
     "pmid": "21368762",
@@ -633,6 +745,18 @@
     "year": 2014,
     "doi": "10.4049/jimmunol.1401689"
   },
+  "25701572": {
+    "pmid": "25701572",
+    "title": "Unified representation of genetic variants.",
+    "authors": [
+      "Tan A",
+      "Abecasis GR",
+      "Kang HM"
+    ],
+    "journal": "Bioinformatics",
+    "year": 2015,
+    "doi": "10.1093/bioinformatics/btv112"
+  },
   "25893782": {
     "pmid": "25893782",
     "title": "A prevascularized subcutaneous device-less site for islet and cellular transplantation.",
@@ -677,6 +801,28 @@
     "journal": "Mol Cell Endocrinol",
     "year": 2016,
     "doi": "10.1016/j.mce.2015.10.002"
+  },
+  "26780180": {
+    "pmid": "26780180",
+    "title": "Optimized sgRNA design to maximize activity and minimize off-target effects of CRISPR-Cas9.",
+    "authors": [
+      "Doench JG",
+      "Fusi N",
+      "Sullender M",
+      "Hegde M",
+      "Vaimberg EW",
+      "Donovan KF",
+      "Smith I",
+      "Tothova Z",
+      "Wilen C",
+      "Orchard R",
+      "Virgin HW",
+      "Listgarten J",
+      "Root DE"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2016,
+    "doi": "10.1038/nbt.3437"
   },
   "27151456": {
     "pmid": "27151456",
@@ -738,6 +884,27 @@
     "journal": "Molecular therapy. Methods & clinical development",
     "year": 2016,
     "doi": "10.1038/mtm.2016.3"
+  },
+  "27667365": {
+    "pmid": "27667365",
+    "title": "A Single-Cell Transcriptomic Map of the Human and Mouse Pancreas Reveals Inter- and Intra-cell Population Structure.",
+    "authors": [
+      "Baron M",
+      "Veres A",
+      "Wolock SL",
+      "Faust AL",
+      "Gaujoux R",
+      "Vetere A",
+      "Ryu JH",
+      "Wagner BK",
+      "Shen-Orr SS",
+      "Klein AM",
+      "Melton DA",
+      "Yanai I"
+    ],
+    "journal": "Cell Syst",
+    "year": 2016,
+    "doi": "10.1016/j.cels.2016.08.011"
   },
   "27729543": {
     "pmid": "27729543",
@@ -1088,6 +1255,18 @@
     "year": 2018,
     "doi": "10.1038/s41563-018-0099-0"
   },
+  "30010673": {
+    "pmid": "30010673",
+    "title": "Repair of double-strand breaks induced by CRISPR-Cas9 leads to large deletions and complex rearrangements.",
+    "authors": [
+      "Kosicki M",
+      "Tomberg K",
+      "Bradley A"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2018,
+    "doi": "10.1038/nbt.4192"
+  },
   "30478640": {
     "pmid": "30478640",
     "title": "DEXI, a candidate gene for type 1 diabetes, modulates rat and human pancreatic beta cell inflammation via regulation of the type I IFN/STAT signalling pathway.",
@@ -1211,6 +1390,35 @@
     "year": 2019,
     "doi": "10.1038/s41586-018-0858-8"
   },
+  "30850590": {
+    "pmid": "30850590",
+    "title": "CRISPR-Cas9 genome editing induces megabase-scale chromosomal truncations.",
+    "authors": [
+      "Cullot G",
+      "Boutin J",
+      "Toutain J",
+      "Prat F",
+      "Pennamen P",
+      "Rooryck C",
+      "Teichmann M",
+      "Rousseau E",
+      "Lamrissi-Garcia I",
+      "Guyonnet-Duperat V",
+      "Bibeyran A",
+      "Lalanne M",
+      "Prouzet-Mauléon V",
+      "Turcq B",
+      "Ged C",
+      "Blouin JM",
+      "Richard E",
+      "Dabernat S",
+      "Moreau-Gaudry F",
+      "Bedel A"
+    ],
+    "journal": "Nat Commun",
+    "year": 2019,
+    "doi": "10.1038/s41467-019-09006-2"
+  },
   "30853558": {
     "pmid": "30853558",
     "title": "Targeted Disruption of HLA Genes via CRISPR-Cas9 Generates iPSCs with Enhanced Immune Compatibility.",
@@ -1327,6 +1535,23 @@
     "year": 2020,
     "doi": "10.1186/s13287-019-1523-3"
   },
+  "32460021": {
+    "pmid": "32460021",
+    "title": "Detection of Deleterious On-Target Effects after HDR-Mediated CRISPR Editing.",
+    "authors": [
+      "Weisheit I",
+      "Kroeger JA",
+      "Malik R",
+      "Klimmt J",
+      "Crusius D",
+      "Dannert A",
+      "Dichgans M",
+      "Paquet D"
+    ],
+    "journal": "Cell Rep",
+    "year": 2020,
+    "doi": "10.1016/j.celrep.2020.107689"
+  },
   "32619459": {
     "pmid": "32619459",
     "title": "Characterization of resistance to a recombinant hexameric Fas-ligand (APO010) in human cancer cell lines.",
@@ -1436,6 +1661,25 @@
     "year": 2021,
     "doi": "10.1038/s41586-021-03552-w"
   },
+  "34050011": {
+    "pmid": "34050011",
+    "title": "Frequent loss of heterozygosity in CRISPR-Cas9-edited early human embryos.",
+    "authors": [
+      "Alanis-Lobato G",
+      "Zohren J",
+      "McCarthy A",
+      "Fogarty NME",
+      "Kubikova N",
+      "Hardman E",
+      "Greco M",
+      "Wells D",
+      "Turner JMA",
+      "Niakan KK"
+    ],
+    "journal": "Proc Natl Acad Sci U S A",
+    "year": 2021,
+    "doi": "10.1073/pnas.2004832117"
+  },
   "34127860": {
     "pmid": "34127860",
     "title": "Fine-mapping, trans-ancestral and genomic analyses identify causal variants, cells, genes and drug targets for type 1 diabetes.",
@@ -1520,6 +1764,46 @@
     "journal": "Antioxidants (Basel)",
     "year": 2021,
     "doi": "10.3390/antiox10091347"
+  },
+  "34653350": {
+    "pmid": "34653350",
+    "title": "Enhanced prime editing systems by manipulating cellular determinants of editing outcomes.",
+    "authors": [
+      "Chen PJ",
+      "Hussmann JA",
+      "Yan J",
+      "Knipping F",
+      "Ravisankar P",
+      "Chen PF",
+      "Chen C",
+      "Nelson JW",
+      "Newby GA",
+      "Sahin M",
+      "Osborn MJ",
+      "Weissman JS",
+      "Adamson B",
+      "Liu DR"
+    ],
+    "journal": "Cell",
+    "year": 2021,
+    "doi": "10.1016/j.cell.2021.09.018"
+  },
+  "35140211": {
+    "pmid": "35140211",
+    "title": "Prime editing efficiency and fidelity are enhanced in the absence of mismatch repair.",
+    "authors": [
+      "Ferreira da Silva J",
+      "Oliveira GP",
+      "Arasa-Verge EA",
+      "Kagiou C",
+      "Moretton A",
+      "Timelthaler G",
+      "Jiricny J",
+      "Loizou JI"
+    ],
+    "journal": "Nat Commun",
+    "year": 2022,
+    "doi": "10.1038/s41467-022-28442-1"
   },
   "35152257": {
     "pmid": "35152257",
@@ -1794,6 +2078,31 @@
     "journal": "Nat Biotechnol",
     "year": 2023,
     "doi": "10.1038/s41587-022-01533-6"
+  },
+  "36522432": {
+    "pmid": "36522432",
+    "title": "Human genetic diversity alters off-target outcomes of therapeutic gene editing.",
+    "authors": [
+      "Cancellieri S",
+      "Zeng J",
+      "Lin LY",
+      "Tognon M",
+      "Nguyen MA",
+      "Lin J",
+      "Bombieri N",
+      "Maitland SA",
+      "Ciuculescu MF",
+      "Katta V",
+      "Tsai SQ",
+      "Armant M",
+      "Wolfe SA",
+      "Giugno R",
+      "Bauer DE",
+      "Pinello L"
+    ],
+    "journal": "Nat Genet",
+    "year": 2023,
+    "doi": "10.1038/s41588-022-01257-y"
   },
   "36707047": {
     "pmid": "36707047",
@@ -2356,6 +2665,23 @@
     "journal": "The New England journal of medicine",
     "year": 2025,
     "doi": "10.1056/NEJMoa2503822"
+  },
+  "40769155": {
+    "pmid": "40769155",
+    "title": "AI-generated MLH1 small binder improves prime editing efficiency.",
+    "authors": [
+      "Park JC",
+      "Uhm H",
+      "Kim YW",
+      "Oh YE",
+      "Lee JH",
+      "Yang J",
+      "Kim K",
+      "Bae S"
+    ],
+    "journal": "Cell",
+    "year": 2025,
+    "doi": "10.1016/j.cell.2025.07.010"
   },
   "40796566": {
     "pmid": "40796566",

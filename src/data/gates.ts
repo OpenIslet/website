@@ -47,7 +47,7 @@ export const gates: Gate[] = [
       {
         code: '2A',
         title: 'Rejection of donor cells',
-        text: 'Cells from a donor carry ID flags (HLA proteins) that T cells and antibodies use to spot “not me”. Switching off the genes that build those flags (B2M and CIITA) is meant to make the cells much harder to recognise.',
+        text: 'Cells from a donor carry ID flags (HLA proteins) that T cells and antibodies use to spot “not me”. Switching off the genes that build those flags (B2M and CIITA, verified against donor genome sequencing and population variant data) is meant to make the cells much harder to recognise.',
       },
       {
         code: '2B',

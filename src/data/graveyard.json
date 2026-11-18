@@ -1,5 +1,31 @@
 [
   {
+    "id": "GY-022",
+    "source": "OFFGRID_GUARD_012_",
+    "title": "Inserting protective genes into the insulin (INS) 3′-UTR via an EIF4G2 leader, leaving half the graft unshielded and stretching insulin mRNA 37-fold",
+    "tests": ["1", "2", "4", "5"],
+    "idea": "Drop a bicistronic EIF4G2-driven protective cassette into the 73-nucleotide 3′-UTR of the insulin gene (INS) on chromosome 11p15.5 so beta cells express immune shields without touching another locus.",
+    "why": "Nearly half (48.6%) of the cells in a curative graft—alpha, delta, blood-vessel and support cells—do not transcribe INS at all and would be left unshielded. Cutting the 73-nucleotide INS 3′-UTR hits the pyrimidine-rich stability element (ins-PRS) on 8 of 15 Cas9 guides, stretching the 3′-UTR 37-fold to 2,711 nucleotides invites Upf1-mediated mRNA decay, human EIF4G2 leader fragments carry cryptic promoter and upstream start-codon risks, and double-strand breaks at 11p15.5 sit 1.2 kb from imprinted IGF2.",
+    "check": "Keep protective transgenes at constitutive or inflammation-responsive safe-harbour loci expressed across every graft cell type, and verify intact INS mRNA stability and 11p15.5 allelic balance (BAF within 0.45 to 0.55) if any point edit touches INS.",
+    "instead": "Retire INS 3′-UTR EIF4G2 knock-ins permanently (settling the knock-in half of OQ-011) and stage Design B’s 2A-free protective genes at CXCL10 and divergent AAVS1 on research hold while keeping scored B1’s separate INS signal-peptide hypothesis distinct.",
+    "added": "2026-11-18",
+    "version": "v0.8.0",
+    "contribution": "IIP-0026"
+  },
+  {
+    "id": "GY-021",
+    "source": "OFFGRID_GUARD_011_",
+    "title": "Screening guides on reference DNA alone, cutting HLA-A and HLA-B in one pass, reading DT9 staining without an HLA-E control, or skipping mismatch-repair checks on PE4max",
+    "tests": ["2", "3", "5", "manufacturing"],
+    "idea": "Rely on one reference genome or fixed allele cut-offs for guide off-targets, edit HLA-A and HLA-B simultaneously without checking all HLA-C alleles, read DT9 antibody staining directly as proof of retained HLA-C, or switch TYK2 prime editing to mismatch-repair-inhibited PE4max without microsatellite-instability gates.",
+    "why": "Donor variants can create or disrupt CRISPR cut sites missed on GRCh38, simultaneous HLA-A and HLA-B cuts can delete the 1.41 Mb interval holding HLA-E and retained HLA-C, antibody clone DT9 cross-reacts with HLA-E (so HLA-E+ / HLA-C-null cells still stain positive), whole-genome B-allele averages hide balanced reciprocal chromosome losses across edited arms, and transient MLH1 inhibition in PE4max can leave genome-wide repeat indels if unchecked.",
+    "check": "Join target variants by normalized coordinates against gnomAD v4.1 plus 30x donor WGS, screen HLA-A/B guides across phased donor HLA-A/B/C/E alleles in separated passes with per-locus phased BAF in [0.45, 0.55], include a matched HLA-E-only (HLA-C-null) specificity control beside DT9 + 3D12, and gate held PE4max on zero microsatellite shifts and a clonal repeat-indel cap.",
+    "instead": "Enforce variant-aware gnomAD v4.1 + donor WGS screening, separated-pass HLA-A/B editing with matched HLA-E-only DT9 controls, per-locus phased BAF checks, and PE2max as lead TYK2 editor with PE4max held behind strict MSI clearance.",
+    "added": "2026-11-18",
+    "version": "v0.8.0",
+    "contribution": "IIP-0026"
+  },
+  {
     "id": "GY-020",
     "source": "OFFGRID_GUARD_010_",
     "title": "Passing 3D pouch oxygen on spatial averages instead of worst-face edges, sizing catalase from Day-7 retention alone, or halving dose at fixed microwell pitch",

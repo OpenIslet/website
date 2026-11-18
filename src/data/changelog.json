@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-18",
+    "title": "69-key gnomAD v4.1 variant join, 17-record HLA-C guide scoping, staged 2A-free Design B comparator FASTA on State-3 hold, and INS 3′-UTR knock-in retirement",
+    "summary": "Replaces fixed dbSnp155 screening frequencies with a 69-key VCF-normalized gnomAD v4.1 join, scopes HLA-A/B guides across 17 HLA-C records paired with matched HLA-E-only DT9 specificity controls, stages the 6-construct 2A-free Design B research-comparator FASTA on State-3 hold (execution_supported = false), holds PE4max and 63k/90k-GE Design Y ddPCR specs, and retires INS 3′-UTR EIF4G2 knock-ins (OQ-011) into Idea Graveyard rule GY-022 alongside GY-021 with zero change to scores or headline odds.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "Staged data/constructs/islet1_design_b_complete_constructs_v0.8.0.fasta (SHA-256 4bb20389773c76b2705031ba675487825dfbd94d920a692cde75b7d56af22aa4: 6 2A-free Mode-B ACC-shielded comparators c1..c6 with 24-segment archival provenance, recording c6 cHS4 C72T/C73A = U78775.2 C79T/C80A) bound (c1 + c5 digest 82c351af082e0f97361e715c36e2ab5872b8d097efa1c9f59dfda53ea60496ea) to ISLET1_B2_5LOCUS_BASE and ISLET1_B2_5LOCUS_TYK2_PE at State 3 (STAGE0_RESEARCH_COMPARATOR_PENDING_ALLELE_QC, execution_supported = false), upgraded Layer-2 construct checks to require verified DNA SHA-256, strand-specific transcribed intervals and CDS frames (gating c1 2308–3282 / c2 2029–3003 975-nt upstream 5xISRE starts as HOLD_PENDING_5PRIME_RACE_TSS until N_UMI_eff >= 3,689 5′-RACE), exact peptide-set subtraction (reconciling complete +CD47 Design B inventories at 108/109 in B2 and 146/147 in B2 + TYK2 P1104A), and a versioned IIP-0015 PD-L1 SYN2/SYN4 antisense-ORF disclosure note (DEC-105, IIP-0026)."
+      },
+      {
+        "kind": "fixed",
+        "text": "Replaced fixed dbSnp155 screening frequencies in Layer 5 with iterative left-boundary-guarded 69-key VCF-normalized gnomAD v4.1 (gnomad_r4, CC0-1.0) AC/AN/FILTER joins (49/69 AN > 0 either modality, 20/69 unresolved; WGS 26 PASS / 1 AS_VQSR / 42 unresolved on unrounded ratios), scoped 11 HLA-A and 6 HLA-B Exon 2–3 < 0.05 WT-CFD candidates across 17 coordinate-preserved HLA-C records (recording 114/115 nominal-cut vs 106/108 full-23mer exon boundary counts, 0 external weight tables bundled, separate Mode-A AGC 0.003310/0.002058 vs held Mode-B ACC playbook rows, and matched HLA-E-only DT9 specificity controls per Corrah et al. 2011 PMID 21248048), replaced the EXON1 literal with typed CIITA Exon-5 routing, and enforced 3-path Direct/Ingest/Replay Stage-0 parity across 315 Stage-0 endpoints and 93 boolean flags (fixing S7 missing-evidence and SCT-without-MLC branches; GY-021)."
+      },
+      {
+        "kind": "fixed",
+        "text": "Held TYK2 PE4max behind distinct FAIL_MSI_DETECTED vs HOLD_MISSING_MSI plus piecewise clonal repeat-indel caps (C_clone <= C_ctrl + 5 for C_ctrl <= 25, else floor(1.2 * C_ctrl), 0 coding/splice indels), scoped held Design Y GT-preserving 6-site ddPCR to >= 63,000 single-unit (95.02%) / >= 90,000 pooled (99.38%) GE ideal Poisson floors paired with empirical blank/recovery controls, and permanently retired chr11p15.5 INS 3′-UTR EIF4G2 knock-ins (OQ-011: 48.58% non-beta graft cells unshielded, 37.14x 3′-UTR expansion 73 -> 2,711 nt, 8/15 guides hitting PTBP1 ins-PRS) into Idea Graveyard rule GY-022."
+      }
+    ],
+    "contribution": "IIP-0026"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-18",
     "title": "Layer-4 unrounded multi-mesh worst-face oxygen gates, two-timepoint human P04040 catalase envelope hold, and zero-primate B1–B3 route challengers",
     "summary": "Replaces spatial-average and display-rounded 3D oxygen pass checks with unrounded multi-mesh dual-band worst-face gates, product-binds Gate P05 human P04040 catalase across Day-7 and Day-14 retention plus z = 70.0 µm peroxide and unrounded endotoxin limits, separates Day-30/90 retrieval from dual-assay zero-event shedding, pre-registers zero-primate Contrasts B1–B3, and adds Idea Graveyard guardrail GY-020 with zero change to scores or headline odds.",
     "changes": [

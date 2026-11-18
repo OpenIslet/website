@@ -748,5 +748,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now gates 3D pouches on unrounded multi-mesh worst-face oxygen (>= 15.0 mmHg surface and >= 5.0 mmHg core, updating PMID 21788581 to PMID 21788575), product-binds Day-7/Day-14 human P04040 catalase, z = 70 µm peroxide and unrounded endotoxin caps to every CaO2 assembly (GY-020), separates Day-30/90 retrieval from zero-event shedding, and registers Contrasts B1–B3."
     }
+  },
+  {
+    "id": "IIP-0026",
+    "date": "2026-11-18",
+    "decided": "2026-11-18",
+    "title": "Harden gnomAD v4.1 and 17-record HLA-C provenance, stage 2A-free Design B comparator FASTA under 4-state lifecycle and retire INS 3′-UTR knock-ins",
+    "summary": "Replaces fixed dbSnp155 screening frequencies with a 69-key VCF-normalized gnomAD v4.1 join (49/69 AN > 0 either modality; WGS 26 PASS / 1 AS_VQSR / 42 unresolved on unrounded ratios), scopes 11 HLA-A and 6 HLA-B Exon 2–3 < 0.05 WT-CFD guides across 17 HLA-C records with matched HLA-E-only DT9 controls, stages the 6-construct 2A-free Design B comparator FASTA (c1 + c5 bound at State 3, execution_supported = false), holds PE4max and 63k/90k-GE Design Y ddPCR specs, and retires INS 3′-UTR EIF4G2 knock-ins (OQ-011) into GY-022 alongside GY-021 with zero score or odds change.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "GPT-6.2 Sol (extra-high)",
+      "GPT-6.2 Astra (extra-high)",
+      "Claude Sonnet 5.5 (max)",
+      "Gemini 4 Hydrogen (extra)",
+      "Muse Wonder Full",
+      "GPT-6.2 Sol (extra-high effort)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now joins 69 target variants to gnomAD v4.1 on unrounded ratios, scopes HLA-A/B guides across 17 HLA-C records with matched HLA-E-only DT9 controls and per-locus BAF checks (GY-021), stages the 6-construct 2A-free Design B FASTA on State-3 hold (execution_supported = false), holds PE4max and 63k/90k-GE Design Y ddPCR, and retires INS 3′-UTR knock-ins (OQ-011, GY-022)."
+    }
   }
 ]
