@@ -1,4 +1,21 @@
 {
+  "7679117": {
+    "pmid": "7679117",
+    "title": "Expression of the cystic fibrosis transmembrane conductance regulator from a novel adeno-associated virus promoter.",
+    "authors": [
+      "Flotte TR",
+      "Afione SA",
+      "Solow R",
+      "Drumm ML",
+      "Markakis D",
+      "Guggino WB",
+      "Zeitlin PL",
+      "Carter BJ"
+    ],
+    "journal": "J Biol Chem",
+    "year": 1993,
+    "doi": ""
+  },
   "8720919": {
     "pmid": "8720919",
     "title": "Low antioxidant enzyme gene expression in pancreatic islets compared with various other mouse tissues.",
@@ -113,6 +130,18 @@
     "year": 2000,
     "doi": ""
   },
+  "10954575": {
+    "pmid": "10954575",
+    "title": "Novel transcriptional regulatory signals in the adeno-associated virus terminal repeat A/D junction element.",
+    "authors": [
+      "Haberman RP",
+      "McCown TJ",
+      "Samulski RJ"
+    ],
+    "journal": "J Virol",
+    "year": 2000,
+    "doi": "10.1128/jvi.74.18.8732-8739.2000"
+  },
   "11696543": {
     "pmid": "11696543",
     "title": "Control of insulin mRNA stability in rat pancreatic islets. Regulatory role of a 3'-untranslated region pyrimidine-rich sequence.",
@@ -136,6 +165,20 @@
     "year": 2002,
     "doi": "10.1128/MCB.22.21.7372-7384.2002"
   },
+  "12449375": {
+    "pmid": "12449375",
+    "title": "Cryptic promoter activity of pBLCAT3 induced by overexpression of AP1 factors.",
+    "authors": [
+      "Hall MC",
+      "Young DA",
+      "Rowan AD",
+      "Edwards DR",
+      "Clark IM"
+    ],
+    "journal": "Biotechniques",
+    "year": 2002,
+    "doi": "10.2144/02335bm07"
+  },
   "12702875": {
     "pmid": "12702875",
     "title": "Common structure of soluble amyloid oligomers implies common mechanism of pathogenesis.",
@@ -151,6 +194,20 @@
     "journal": "Science",
     "year": 2003,
     "doi": "10.1126/science.1079469"
+  },
+  "12951775": {
+    "pmid": "12951775",
+    "title": "Aberrant cryptic responsiveness of the pCAT 3- and pGL3-promoter reporter vectors.",
+    "authors": [
+      "Giannakis G",
+      "Edmondson SR",
+      "Favaloro JM",
+      "Zajac JD",
+      "Greenland KJ"
+    ],
+    "journal": "Biotechniques",
+    "year": 2003,
+    "doi": "10.2144/03352st06"
   },
   "15039777": {
     "pmid": "15039777",
@@ -540,6 +597,19 @@
     "journal": "Cell Stem Cell",
     "year": 2012,
     "doi": "10.1016/j.stem.2012.02.014"
+  },
+  "22618870": {
+    "pmid": "22618870",
+    "title": "Cryptic transcripts from a ubiquitous plasmid origin of replication confound tests for cis-regulatory function.",
+    "authors": [
+      "Lemp NA",
+      "Hiraoka K",
+      "Kasahara N",
+      "Logg CR"
+    ],
+    "journal": "Nucleic Acids Res",
+    "year": 2012,
+    "doi": "10.1093/nar/gks451"
   },
   "22696657": {
     "pmid": "22696657",
@@ -1859,6 +1929,22 @@
     "journal": "Stem cell research & therapy",
     "year": 2020,
     "doi": "10.1186/s13287-019-1523-3"
+  },
+  "31914802": {
+    "pmid": "31914802",
+    "title": "Adeno-Associated Virus Serotype-Specific Inverted Terminal Repeat Sequence Role in Vector Transgene Expression.",
+    "authors": [
+      "Earley LF",
+      "Conatser LM",
+      "Lue VM",
+      "Dobbins AL",
+      "Li C",
+      "Hirsch ML",
+      "Samulski RJ"
+    ],
+    "journal": "Hum Gene Ther",
+    "year": 2020,
+    "doi": "10.1089/hum.2019.274"
   },
   "32460021": {
     "pmid": "32460021",
@@ -3224,6 +3310,18 @@
     "journal": "Science",
     "year": 2026,
     "doi": "10.1126/science.adz1884"
+  },
+  "41840058": {
+    "pmid": "41840058",
+    "title": "When RNA goes off script: ensuring transcript fidelity in transgene expression.",
+    "authors": [
+      "Anderson R",
+      "Ausler C",
+      "Jain A"
+    ],
+    "journal": "EMBO J",
+    "year": 2026,
+    "doi": "10.1038/s44318-026-00733-z"
   },
   "41951603": {
     "pmid": "41951603",

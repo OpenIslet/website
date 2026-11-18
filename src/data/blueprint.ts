@@ -239,10 +239,10 @@ const named: Scenario[] = [
           { label: 'PD-L1 (SYN6)', kind: 'cds', grow: 1.8 },
         ],
         notes: [
-          'Stages six 2A-free research comparators (c1..c6 in islet1_design_b_complete_constructs_v0.8.0.fasta, binding primary CXCL10 c1 and divergent AAVS1 CD47 + iCasp9 c5 at State 3 with execution_supported = false), reconciling complete +CD47 Design B reference-unmatched 8–11-amino-acid stretches at 108 mature / 109 precursor in B2 and 146 / 147 in B2 + TYK2 P1104A while gating the upstream 5xISRE start on N_UMI_eff >= 3,689 5′-RACE; actual expression and antigen presentation remain unmeasured.',
+          'Stages six 2A-free research comparators (c1..c6 in islet1_design_b_complete_constructs_v0.8.0.fasta, binding primary CXCL10 c1 and divergent AAVS1 CD47 + iCasp9 c5 at State 3 with execution_supported = false), reconciling complete +CD47 Design B reference-unmatched 8–11-amino-acid stretches at 108 mature / 109 precursor in B2 and 146 / 147 in B2 + TYK2 P1104A while requiring resting (0 h) and interferon-stimulated (24 h) promoter-of-origin 5′-RACE (N_UMI_eff >= 3,689, insert-matched controls, and omitted/null c1/c2 PD-L1 start-site holds) plus conditional AAV-ITR RNA-origin checks; actual expression and antigen presentation remain unmeasured.',
           'Inserting an EIF4G2-driven bicistronic cassette into the 73-nt INS 3′-UTR (OQ-011) is permanently retired (rule GY-022: 48.6% non-beta graft cells unshielded, 37.1x 3′-UTR expansion and 8/15 guides hitting PTBP1 ins-PRS). In the four-hurdle assessment, Design B pairs B2 (TYK2 P1104A) with the 140 µm bead-free pre-vascularized sheet comparator as an independent chemical-free route.',
         ],
-        pmids: ['12370285', '11696543', '21029861', '27667365'],
+        pmids: ['12370285', '22618870', '12951775', '31914802', '11696543', '21029861', '27667365'],
       },
       aavs1,
       {

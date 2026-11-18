@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-18",
+    "title": "Resting and interferon-stimulated CXCL10 promoter-of-origin 5′-RACE checks, 2A-free 6-PWM annotation ledger, and conditional BIO-06 AAV-ITR RNA-origin attribution",
+    "summary": "Credited to giufra (@frafra013): requires separate resting (0 h) and interferon-stimulated (24 h) promoter-of-origin 5′-RACE start-site attribution per named CXCL10 donor and transcription unit with insert-matched controls (keeping OQ-011 open), archives whole-donor 6-PWM JASPAR scans across all materialized 2A-free comparators plus the 145-bp AAV2 ITR (0/0/0) strictly as descriptive annotation, closes the omitted/null c1/c2 PD-L1 5′-RACE skip across all three Stage-0 paths, and links Readout 1 BIO-06 to conditional AAV-ITR RNA-origin checks (Earley 2020) with zero change to scores or headline odds.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "Added Stage-0 resting (0 h) and interferon-stimulated (24 h) CXCL10 promoter-of-origin 5′-RACE TSS attribution and conditional BIO-06 AAV-ITR RNA-origin checks across scripts/wetlab_contract.py, scripts/ingest_wetlab_results.py and data/protocols/stage0_decision_tree_v1.json (341 Stage-0 endpoints, 64 metadata keys, 103 boolean policy keys; requiring named donor and transcription unit, insert-matched comparator controls per Giannakis 2003 PMID 12951775, recovery-adjusted N_UMI_eff >= 3,689 where expressed and k = 0 unexpected or unresolved starts, keeping OQ-011 open and cross-referenced in OQ-010 and OQ-019; DEC-107, IIP-0027)."
+      },
+      {
+        "kind": "added",
+        "text": "Archived whole-donor 6-PWM JASPAR part-resolved motif scans (pseudocounts 0.8 and 0.5, both strands) in Layer 2 across DX-L3 (10/3/5), L3-BF-B (12/5/5; attributing the 53-bp direct repeat at 650–702 / 680–732 wholly inside Unit 1's declared 230-bp basal-floor promoter), staged DEC-105 c1..c6 (12/5/5, 10/3/5, 3/2/2, 1/1/0, 0/0/0, 1/1/0), IIP-0018 ARM1 (12/5/5) and the 145-bp AAV2 ITR (0/0/0), proving all 2A-free cargo hits map to declared promoters/insulators while AAV2 ITR scores 0/0/0 despite proven RBE initiation (Earley 2020 PMID 31914802) and rejecting motif counts as an OQ-011 stopping rule."
+      },
+      {
+        "kind": "fixed",
+        "text": "Tightened design_b_locus5_pdl1_5prime_race_coord_bp on c1/c2 bound to DESIGN_B_C1_C5_PAIR_SHA256 so omitted and null values emit HOLD_PENDING_5PRIME_RACE_TSS identically to explicit UNRESOLVED across Direct, Serialized JSON Ingestion and Chronological Replay paths, and paired conditional AAV-ITR RNA-origin checks (Earley 2020 PMID 31914802; Haberman 2000 PMID 10954575; Flotte 1993 PMID 7679117) with Hanlon 2019 (PMID 31570731) in Readout 1 BIO-06."
+      }
+    ],
+    "contribution": "IIP-0027"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-18",
     "title": "Post-depletion Gate 0d and intact-plus-increment CD16+ ADCC routing, measured-potency 70:20:10 mixture qualification, 72-h/Day-28/Day-84 IAPP gates, and archival NM_021999.5 ITM2B reserve",
     "summary": "Enforces registry-bound arm-separated Gate 0d checks without cross-arm batch borrowing, caps both intact-serum killing and paired IgG-attributable CD16+ ADCC increment at U95_t <= 5.0%, pre-registers the paired Design A vs ISLET1_B2_5LOCUS_BASE responder study (n = 24–29 exact McNemar + 2×2 phi_AB concordance), conditions 70:20:10 loading on measured starting per-beta output and glucagon retention, replaces standalone 72-h A11 dot-blots with 72-h/Day-28/Day-84 dual-modality IAPP checks alongside viable beta mass (GY-023), and archives NM_021999.5 ITM2B at 0% active weight with zero change to scores or headline odds.",
     "changes": [

@@ -321,7 +321,7 @@
     "id": "OQ-010",
     "title": "At CXCL10, does it matter which protective gene comes first?",
     "plain": "The design adds SERPINB9 and PD-L1 at CXCL10 so they switch on only during inflammation. Stage-0 tests compare the SERPINB9-first reference cassette against the reverse order, scar-free 2A-free donors, and a 6-arm synthetic-intron IL-1 and Fas receptor shield inside one AAV6 virus.",
-    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1, compared head-to-head with CXCL10::PD-L1-GSG-P2A-SERPINB9, scar-free (2A-free) dual-promoter L3-BF-B (4,078 bp) and DX-L3 (3,799 bp) donors with antisense-ART3 splice hardening (IIP-0015, IIP-0017), and a held 6-arm 5'-UTR synthetic-intron Multi-miR(IL1R1 + FAS) Stage-0 challenger suite built on the 2A-free L3-BF-B backbone (4,398-bp donor / 4,688 bp single-AAV6; IIP-0018) gated on calibrated UMI splicing, >= 85% retained SERPINB9/PD-L1 induction, >= 90% miR-375 AGO2 occupancy (Poy 2004), unblunted postprandial IL-1beta-amplified GSIS (Dror 2017) and >= 99.99% AP1903 iCasp9 kill.",
+    "detail": "Locus 3 is CXCL10::SERPINB9-GSG-P2A-PD-L1, compared head-to-head with CXCL10::PD-L1-GSG-P2A-SERPINB9, scar-free (2A-free) dual-promoter L3-BF-B (4,078 bp) and DX-L3 (3,799 bp) donors with antisense-ART3 splice hardening (IIP-0015, IIP-0017), and a held 6-arm 5'-UTR synthetic-intron Multi-miR(IL1R1 + FAS) Stage-0 challenger suite built on the 2A-free L3-BF-B backbone (4,398-bp donor / 4,688 bp single-AAV6; IIP-0018) gated on calibrated UMI splicing, >= 85% retained SERPINB9/PD-L1 induction, >= 90% miR-375 AGO2 occupancy (Poy 2004), unblunted postprandial IL-1beta-amplified GSIS (Dror 2017) and >= 99.99% AP1903 iCasp9 kill. Under IIP-0027 (cross-referenced with OQ-011 and OQ-019), each named CXCL10 donor and transcription unit also requires promoter-of-origin 5'-RACE start-site attribution separately in resting (0 h) and interferon-stimulated (24 h) cells with insert-matched comparator controls (Giannakis 2003, PMID 12951775) plus conditional AAV-ITR RNA-origin checks whenever Readout 1 BIO-06 documents retained ITR DNA (Earley 2020, PMID 31914802).",
     "tests": [
       "4",
       "2B"
@@ -337,25 +337,29 @@
       "28813417",
       "35880017",
       "15538371",
-      "28092375"
+      "28092375",
+      "12951775",
+      "31914802"
     ],
-    "settle": "Edit cells with each order and with the 6-arm Multi-miR(IL1R1 + FAS) synthetic-intron challenger panel, comparing SERPINB9/PD-L1 levels, splicing fidelity, miR-375 loading, insulin secretion and survival under inflammation and killer-cell attack.",
-    "source": "Concise specification section 4.3; IIP-0015, IIP-0017 and IIP-0018",
+    "settle": "Edit cells with each order, the 2A-free DX-L3 and L3-BF-B comparators, and the 6-arm Multi-miR(IL1R1 + FAS) synthetic-intron challenger panel, reporting resting and interferon-stimulated promoter-of-origin 5'-RACE start-site attribution per donor and unit alongside SERPINB9/PD-L1 levels, splicing fidelity, miR-375 loading, insulin secretion and survival under inflammation and killer-cell attack.",
+    "source": "Concise specification section 4.3; OQ-011; IIP-0015, IIP-0017, IIP-0018 and IIP-0027",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
   },
   {
     "id": "OQ-011",
-    "title": "Does Design B's staged 2A-free CXCL10 promoter switch on cleanly after retiring INS 3'-UTR knock-ins?",
-    "plain": "Design B drops the viral 2A linker so the kept HLA-C gene cannot display it to T cells. Inserting protective genes into the insulin (INS) 3'-UTR via an EIF4G2 leader has been permanently retired because nearly half of the graft's support and hormone cells do not make insulin and stretching insulin mRNA 37-fold risks destabilising it; instead, a six-construct 2A-free CXCL10 and divergent AAVS1 research-comparator FASTA is staged on hold until RNA start-site sequencing rules out leaky or upstream transcription.",
-    "detail": "IIP-0026 permanently retires chr11p15.5 INS 3'-UTR EIF4G2 bicistronic knock-ins into Idea Graveyard guardrail GY-022 (kept distinct from scored B1's separate INS signal-peptide point-edit hypothesis): 48.58% of curative-graft non-beta cells (alpha, delta, vascular and stromal) do not transcribe INS (Baron 2016, PMID 27667365), 8/15 Cas9 guides inside the 73-nt INS 3'-UTR disrupt PTBP1 ins-PRS stability motifs (Tillmar 2002, PMID 11696543), expanding the 3'-UTR 37.14-fold to 2,711 nt invites Upf1-mediated mRNA decay (Hogg 2010, PMID 21029861), and human EIF4G2 leader fragments carry cryptic-promoter and upstream-AUG liabilities (Henis-Korenblit 2000, PMID 10611228; Han 2002, PMID 12370285). Instead, IIP-0026 stages the 6-construct 2A-free Design B research-comparator FASTA (islet1_design_b_complete_constructs_v0.8.0.fasta, c1..c6, binding primary c1 CXCL10 and c5 divergent AAVS1 CD47 + iCasp9 donors at State 3 with execution_supported = false and reconciling complete +CD47 Design B reference-unmatched 8-to-11-mers at 108 mature / 109 precursor in B2 and 146 / 147 in B2 + TYK2 P1104A; IIP-0017, IIP-0026), while holding c1 (2308-3282) and c2 (2029-3003) at HOLD_PENDING_5PRIME_RACE_TSS until N_UMI_eff >= 3,689 5'-RACE / 3'-RACE verifies the mature PD-L1 transcript start site and rules out resting cryptic promoter activity.",
+    "title": "Do the inserted CXCL10 donors start RNA only from their intended promoters in both resting and inflamed cells?",
+    "plain": "Checking whether added DNA switches on accidentally only while cells are calm misses any hidden start site that needs inflammation to fire — and measuring total RNA after inflammation still cannot tell whether transcripts began at the intended switch or at an unexpected start inside the insert. In Design B, inserting protective genes into the insulin (INS) 3'-UTR via an EIF4G2 leader has been permanently retired, and Stage 0 now requires promoter-of-origin 5'-RACE start-site attribution separately in both resting and interferon-stimulated cells for each named CXCL10 donor and transcription unit, plus conditional AAV terminal-repeat RNA checks whenever retained ITR DNA is found.",
+    "detail": "IIP-0026 permanently retires chr11p15.5 INS 3'-UTR EIF4G2 bicistronic knock-ins into Idea Graveyard guardrail GY-022 (kept distinct from scored B1's separate INS signal-peptide point-edit hypothesis): 48.58% of curative-graft non-beta cells do not transcribe INS (Baron 2016, PMID 27667365), 8/15 Cas9 guides inside the 73-nt INS 3'-UTR disrupt PTBP1 ins-PRS stability motifs (Tillmar 2002, PMID 11696543), expanding the 3'-UTR 37.14-fold to 2,711 nt invites Upf1-mediated mRNA decay (Hogg 2010, PMID 21029861), and human EIF4G2 leader fragments carry cryptic-promoter and upstream-AUG liabilities (Henis-Korenblit 2000, PMID 10611228; Han 2002, PMID 12370285, paired with plasmid-origin cryptic transcription in Lemp 2012, PMID 22618870). Instead, IIP-0026 stages the 6-construct 2A-free Design B research-comparator FASTA (islet1_design_b_complete_constructs_v0.8.0.fasta, c1..c6, binding primary c1 CXCL10 and c5 divergent AAVS1 CD47 + iCasp9 donors at State 3 with execution_supported = false), while holding c1 (2308-3282) and c2 (2029-3003) at HOLD_PENDING_5PRIME_RACE_TSS across omitted, null and unresolved PD-L1 5'-RACE coordinates until N_UMI_eff >= 3,689 5'-RACE verifies the mature start site. IIP-0027 sharpens OQ-011 across Design B's staged comparators and Design A / Design X's CXCL10 donors (cross-referenced in OQ-010 and OQ-019): resting-only checks miss stimulus-inducible cryptic starts (Hall 2002, PMID 12449375; Giannakis 2003, PMID 12951775) and bulk stimulated RNA leaves promoter origin unknown (Anderson 2026, PMID 41840058). Layer 2 archives exact 6-PWM JASPAR scans across DX-L3 (10/3/5), L3-BF-B (12/5/5; 53-bp direct repeat at 650-702 / 680-732 inside Unit 1's declared 230-bp basal-floor promoter), DEC-105 c1..c6 (12/5/5, 10/3/5, 3/2/2, 1/1/0, 0/0/0, 1/1/0), IIP-0018 ARM1 (12/5/5) and the 145-bp AAV2 ITR (0/0/0) strictly as part-resolved descriptive annotation — rejecting motif counts as a closure rule because all 2A-free cargo hits sit inside declared intended promoters while the AAV2 ITR scores 0/0/0 despite proven Rep-binding-element initiation (Earley 2020, PMID 31914802; Haberman 2000, PMID 10954575; Flotte 1993, PMID 7679117). OQ-011 stays open until origin-resolved RNA is measured in both resting and stimulated cells, paired with conditional BIO-06 AAV-ITR RNA-origin checks whenever retained ITR DNA is documented (Hanlon 2019, PMID 31570731).",
     "tests": [
       "4",
       "2B"
     ],
     "designs": [
-      "B"
+      "A",
+      "B",
+      "X"
     ],
     "rules": [
       "GY-021",
@@ -363,13 +367,21 @@
     ],
     "pmids": [
       "12370285",
+      "22618870",
       "10611228",
       "11696543",
       "21029861",
-      "27667365"
+      "27667365",
+      "12449375",
+      "12951775",
+      "31914802",
+      "10954575",
+      "7679117",
+      "31570731",
+      "41840058"
     ],
-    "settle": "Run N_UMI_eff >= 3,689 5'-RACE and 3'-RACE plus resting vs interferon-stimulated expression checks on Design B's staged 2A-free CXCL10 (c1..c3) and divergent AAVS1 (c5..c6) comparators to verify mature transcript boundaries and rule out leaky promoter activity.",
-    "source": "Concise specification sections 4.5, 8 and 9; rules GY-021 and GY-022; IIP-0017 and IIP-0026",
+    "settle": "Run recovery-adjusted N_UMI_eff >= 3,689 promoter-of-origin 5'-RACE and 3'-RACE separately in resting (0 h) and interferon-stimulated (24 h) cells for each named CXCL10 donor and transcription unit (Design A, Design X and Design B c1..c3, plus divergent AAVS1 c5..c6) with insert-matched comparator controls, classifying expected host, designed internal, unexpected (k = 0) and unresolved (k = 0) transcript starts, and verify k = 0 ITR-origin transcripts whenever Readout 1 BIO-06 documents retained AAV ITR DNA.",
+    "source": "Concise specification sections 4.3, 4.5, 8 and 9; OQ-010 and OQ-019; rules GY-021 and GY-022; IIP-0017, IIP-0026 and IIP-0027",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -570,7 +582,7 @@
     "id": "OQ-019",
     "title": "Do the core gene insertions leave nearby genes and splicing intact, and does shed PD-L1 act in the liquid around the graft?",
     "plain": "Inserting protective genes at B2M, CXCL10 and AAVS1 or switching off CIITA could accidentally disturb nearby genes, splice in either direction into surrounding host exons, form repeated hairpins in AAV6 templates, or lose promoter activity over time. At CXCL10, enzymes can also clip PD-L1 off the cell surface into the surrounding liquid, where its effect on immune cells is unknown.",
-    "detail": "Raised in IIP-0005, IIP-0011, IIP-0015 and IIP-0016. Sequence, two-strand splice-motif and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation, ships a 20-construct two-strand splice-hardened HLA-E comparator panel at B2M (0 created splice donors or new acceptor coordinates, alongside the silent stop-seam check against splicing into B2M exon 2's 32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene, 5'/3'-RACE and clonal UMI junction sequencing (at least 3,700 UMIs) across Loci 1, 3 and 4, and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283). Separately, inside the <= 20% wildcard firewall (IIP-0023), Stage 0 audits the 3-construct Design Y landing-pad FASTA (5'/3'-RACE verifying 0 sense ATGs across the 75-bp B2M 5'-UTR + attR leader, 201-bp vs 601-bp CIITA-pIV CpG-island reconciliation alongside Nunez 2021 PMID 33838111 CRISPRoff and full-length CIITA isoforms PMID 9184229, and hCDH5 + 4x miR-375-3p CD200 iEC:SC-beta >= 50:1 selectivity sparing beta-cell miR-375 and human ADORA1/ADORA2A GSIS, PMID 42660457, PMID 35297680).",
+    "detail": "Raised in IIP-0005, IIP-0011, IIP-0015, IIP-0016 and IIP-0027. Sequence, two-strand splice-motif, 6-PWM motif annotation (part-resolved across 2A-free comparators and the 145-bp AAV2 ITR, strictly descriptive rather than an initiation gate) and repeat scans flag places to test (and reconcile the 326 Class-I and 112 Class-II boundary peptide windows across the reference junctions) without certifying splicing or initiation safety, while all canonical reference FASTAs remain untouched. Stage 0 tracks Arm 1B promoter CpG methylation, ships a 20-construct two-strand splice-hardened HLA-E comparator panel at B2M (0 created splice donors or new acceptor coordinates, alongside the silent stop-seam check against splicing into B2M exon 2's 32-amino-acid foreign tail), checks CIITA transcript clean-up, verifies at CXCL10 (4q21.1) that CXCL9, CXCL11 and opposite-strand ART3 stay undisturbed while comparing one-factor-at-a-time synonymous PD-L1 variants (Forrest 2020, PMID 32053646), a bGH 3'-end cleavage check and an optional single-sided 80 bp cHS4 FII element avoiding AAV6 hairpin repeats (Xie 2017, PMID 28462820), runs calibrated EndoC-betaH1 minigene, resting (0 h) and interferon-stimulated (24 h) promoter-of-origin 5'-RACE / 3'-RACE with insert-matched comparator controls (Giannakis 2003, PMID 12951775; Hall 2002, PMID 12449375; Anderson 2026, PMID 41840058; cross-referenced with OQ-011), clonal UMI junction sequencing (N_UMI_eff >= 3,689) across Loci 1, 3 and 4, conditional AAV-ITR RNA-origin attribution whenever Readout 1 BIO-06 documents retained ITR DNA (Earley 2020, PMID 31914802; Hanlon 2019, PMID 31570731), and tests minimally processed cell-free medium conditioned by inflamed edited islets on an independent PD-1 reporter beside protease-shedding assays (Hira-Miyazawa 2018, PMID 29345283). Separately, inside the <= 20% wildcard firewall (IIP-0023), Stage 0 audits the 3-construct Design Y landing-pad FASTA (5'/3'-RACE verifying 0 sense ATGs across the 75-bp B2M 5'-UTR + attR leader, 201-bp vs 601-bp CIITA-pIV CpG-island reconciliation alongside Nunez 2021 PMID 33838111 CRISPRoff and full-length CIITA isoforms PMID 9184229, and hCDH5 + 4x miR-375-3p CD200 iEC:SC-beta >= 50:1 selectivity sparing beta-cell miR-375 and human ADORA1/ADORA2A GSIS, PMID 42660457, PMID 35297680).",
     "tests": [
       "2A",
       "2B",
@@ -595,10 +607,15 @@
       "9184229",
       "33838111",
       "35297680",
-      "42660457"
+      "42660457",
+      "12951775",
+      "12449375",
+      "31914802",
+      "31570731",
+      "41840058"
     ],
-    "settle": "Run calibrated host-context minigene assays, 5'/3'-RACE, clonal UMI splice-junction sequencing (at least 3,700 UMIs), host-mRNA equivalence checks and bisulfite methylation assays across resting and inflamed edited islets alongside the one-factor-at-a-time Stage-0 comparators, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
-    "source": "Concise specification sections 4.1 to 4.6, 6 and 9; IIP-0005, IIP-0011, IIP-0015, IIP-0016 and IIP-0023",
+    "settle": "Run calibrated host-context minigene assays, separate resting (0 h) and interferon-stimulated (24 h) promoter-of-origin 5'-RACE / 3'-RACE with insert-matched comparator controls, clonal UMI splice-junction sequencing (N_UMI_eff >= 3,689), conditional AAV-ITR RNA-origin checks whenever retained ITR DNA is detected, host-mRNA equivalence checks and bisulfite methylation assays across resting and inflamed edited islets alongside the one-factor-at-a-time Stage-0 comparators, and test cell-free conditioned medium with and without PD-L1 blockade on a stimulated PD-1 reporter.",
+    "source": "Concise specification sections 4.1 to 4.6, 6 and 9; OQ-011; IIP-0005, IIP-0011, IIP-0015, IIP-0016, IIP-0023 and IIP-0027",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

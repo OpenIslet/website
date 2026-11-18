@@ -1,12 +1,12 @@
 {
-  "ISLET-1-BLUEPRINT.md": 223891,
+  "ISLET-1-BLUEPRINT.md": 226278,
   "docs/ISLET-1-CANDIDATE-BLUEPRINTS-AND-OPTIMIZER-v0.2.md": 46208,
   "data/extracted/context_evidence_graph_v1.json": 22871655,
   "data/extracted/ring1_atomic_effects_v0.5.jsonl": 8887785,
   "data/extracted/cross_study_discovery_graph.json": 4750804,
   "data/extracted/islet1_combinatorial_pareto_and_ladder_v0.8.0.json": 2043396,
   "data/protocols/hip_core_fractional_factorial_v0.6.2.json": 251016,
-  "data/protocols/wetlab_endpoint_contract_v0.8.0.json": 142223,
+  "data/protocols/wetlab_endpoint_contract_v0.8.0.json": 145661,
   "data/graveyard/idea_graveyard_v0.5.json": 58321,
   "schemas/extraction_schema_v0.2.json": 43354,
   "manifest.json": 298876,
@@ -17,7 +17,7 @@
   "data/constructs/islet1_locus3_multimir_modeb_comparators_v0.8.0.fasta": 27582,
   "data/constructs/nm_021999_5_archival_mrna.fasta": 10303,
   "data/extracted/layer1_context_evidence_graph_atlas.json": 581846,
-  "data/extracted/layer2_regulatory_and_perturbation_atlas.json": 1434705,
+  "data/extracted/layer2_regulatory_and_perturbation_atlas.json": 1680589,
   "data/extracted/layer3_structural_verification_atlas.json": 340830,
   "data/extracted/layer4_tissue_and_metabolic_twin_atlas.json": 1381480,
   "data/extracted/layer5_personalized_patient_and_crispr_atlas.json": 1390833

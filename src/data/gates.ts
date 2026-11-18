@@ -75,7 +75,7 @@ export const gates: Gate[] = [
     ask: 'Can the cells survive inflammation, killer-cell toxins, insulin-making stress and low oxygen, without dying or losing their identity?',
     explain: [
       'Even when nothing attacks them directly, an inflamed graft can kill beta cells, build up toxic IAPP amyloid clumps over weeks, or make cells forget how to make insulin. Killer cells also fire a toxin, granzyme B, into their targets.',
-      'An edit at the CXCL10 gene (a gene that switches on during inflammation) is designed to make the cells switch on two protections only when inflammation appears: SERPINB9, which should block granzyme B, and PD-L1, a “back off” signal for T cells—paired with 72-hour, Day-28 and Day-84 amyloid checks alongside viable beta-cell mass.',
+      'An edit at the CXCL10 gene (a gene that switches on during inflammation) is designed to make the cells switch on two protections only when inflammation appears: SERPINB9, which should block granzyme B, and PD-L1, a “back off” signal for T cells—paired with resting and inflamed RNA start-site checks (plus retained AAV-ITR RNA checks) and 72-hour, Day-28 and Day-84 amyloid checks alongside viable beta-cell mass.',
     ],
   },
   {

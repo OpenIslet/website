@@ -782,6 +782,33 @@
     }
   },
   {
+    "id": "IIP-0027",
+    "date": "2026-11-18",
+    "decided": "2026-11-18",
+    "title": "Inserted DNA is never audited for unintended transcription initiation, and OQ-011's proposed test cannot detect it",
+    "summary": "Requires promoter-of-origin 5′-RACE start-site attribution separately in resting (0 h) and interferon-stimulated (24 h) cells per named CXCL10 donor and transcription unit with insert-matched controls (keeping OQ-011 open), archives part-resolved 6-PWM scans across all 2A-free comparators plus the 145-bp AAV2 ITR (0/0/0) as descriptive annotation, closes the omitted/null c1/c2 PD-L1 5′-RACE skip, and links BIO-06 to conditional AAV-ITR RNA-origin checks (Earley 2020) with zero score or odds change.",
+    "type": "Problem found",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "frafra013",
+      "kind": "person",
+      "github": "frafra013",
+      "name": "giufra",
+      "verified": {
+        "github": true,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Claude Opus 5 (Anthropic)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now requires separate resting and interferon-stimulated CXCL10 promoter-of-origin 5′-RACE checks per donor and unit (keeping OQ-011 open), archives descriptive 6-PWM scans across 2A-free comparators and the AAV2 ITR, tightens omitted/null c1/c2 PD-L1 5′-RACE holds, and adds conditional BIO-06 AAV-ITR RNA checks (Earley 2020)."
+    }
+  },
+  {
     "id": "IIP-0028",
     "date": "2026-11-18",
     "decided": "2026-11-18",

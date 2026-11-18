@@ -3336,5 +3336,96 @@
     "journal": "Mol Metab",
     "year": 2025,
     "doi": "10.1016/j.molmet.2025.102115"
+  },
+  "31914802": {
+    "title": "Adeno-Associated Virus Serotype-Specific Inverted Terminal Repeat Sequence Role in Vector Transgene Expression.",
+    "authors": [
+      "Earley LF",
+      "Conatser LM",
+      "Lue VM",
+      "Dobbins AL",
+      "Li C",
+      "Hirsch ML",
+      "Samulski RJ"
+    ],
+    "journal": "Hum Gene Ther",
+    "year": 2020,
+    "doi": "10.1089/hum.2019.274"
+  },
+  "10954575": {
+    "title": "Novel transcriptional regulatory signals in the adeno-associated virus terminal repeat A/D junction element.",
+    "authors": [
+      "Haberman RP",
+      "McCown TJ",
+      "Samulski RJ"
+    ],
+    "journal": "J Virol",
+    "year": 2000,
+    "doi": "10.1128/jvi.74.18.8732-8739.2000"
+  },
+  "7679117": {
+    "title": "Expression of the cystic fibrosis transmembrane conductance regulator from a novel adeno-associated virus promoter.",
+    "authors": [
+      "Flotte TR",
+      "Afione SA",
+      "Solow R",
+      "Drumm ML",
+      "Markakis D",
+      "Guggino WB",
+      "Zeitlin PL",
+      "Carter BJ"
+    ],
+    "journal": "J Biol Chem",
+    "year": 1993,
+    "doi": ""
+  },
+  "22618870": {
+    "title": "Cryptic transcripts from a ubiquitous plasmid origin of replication confound tests for cis-regulatory function.",
+    "authors": [
+      "Lemp NA",
+      "Hiraoka K",
+      "Kasahara N",
+      "Logg CR"
+    ],
+    "journal": "Nucleic Acids Res",
+    "year": 2012,
+    "doi": "10.1093/nar/gks451"
+  },
+  "12951775": {
+    "title": "Aberrant cryptic responsiveness of the pCAT 3- and pGL3-promoter reporter vectors.",
+    "authors": [
+      "Giannakis G",
+      "Edmondson SR",
+      "Favaloro JM",
+      "Zajac JD",
+      "Greenland KJ"
+    ],
+    "journal": "Biotechniques",
+    "year": 2003,
+    "doi": "10.2144/03352st06"
+  },
+  "12449375": {
+    "title": "Cryptic promoter activity of pBLCAT3 induced by overexpression of AP1 factors.",
+    "authors": [
+      "Hall MC",
+      "Young DA",
+      "Rowan AD",
+      "Edwards DR",
+      "Clark IM"
+    ],
+    "journal": "Biotechniques",
+    "year": 2002,
+    "doi": "10.2144/02335bm07"
+  },
+  "41840058": {
+    "title": "When RNA goes off script: ensuring transcript fidelity in transgene expression.",
+    "authors": [
+      "Anderson R",
+      "Ausler C",
+      "Jain A"
+    ],
+    "journal": "EMBO J",
+    "year": 2026,
+    "doi": "10.1038/s44318-026-00733-z"
   }
 }
