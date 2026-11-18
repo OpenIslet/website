@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-18",
+    "title": "Post-depletion Gate 0d and intact-plus-increment CD16+ ADCC routing, measured-potency 70:20:10 mixture qualification, 72-h/Day-28/Day-84 IAPP gates, and archival NM_021999.5 ITM2B reserve",
+    "summary": "Enforces registry-bound arm-separated Gate 0d checks without cross-arm batch borrowing, caps both intact-serum killing and paired IgG-attributable CD16+ ADCC increment at U95_t <= 5.0%, pre-registers the paired Design A vs ISLET1_B2_5LOCUS_BASE responder study (n = 24–29 exact McNemar + 2×2 phi_AB concordance), conditions 70:20:10 loading on measured starting per-beta output and glucagon retention, replaces standalone 72-h A11 dot-blots with 72-h/Day-28/Day-84 dual-modality IAPP checks alongside viable beta mass (GY-023), and archives NM_021999.5 ITM2B at 0% active weight with zero change to scores or headline odds.",
+    "changes": [
+      {
+        "kind": "fixed",
+        "text": "Locked Stage-0 Gate 0d and humoral ADCC evaluation across scripts/wetlab_contract.py and scripts/ingest_wetlab_results.py (333 Stage-0 endpoints, 99 boolean policy flags): rejected omitted, whitespace-padded or caller-overridden product_defs dictionaries, segregated Arm 1 reference, Arm 2 post-depletion (all 6 explicit-SE endpoints + parallel active Arm 3 control + RETAINED_ACTIVE SA-FHL-1 partial-depletion hold) and Arm 3 verified-active histories without cross-arm batch borrowing, capped both intact-serum cellular lysis and paired IgG-attributable CD16+ ADCC increment at U95_t <= 5.0% (preventing 30% intact vs 29% depleted high background injury from clearing on a 1% delta), gated ISLET1_B2_5LOCUS_BASE (82c351af..., execution_supported = false) on verified upstream comparator registration, and recorded the exact conditional McNemar size profile (3.6699% worst-case null size at total discordance q = 0.96335; 3.1957% at q = 1.0) plus 2×2 concordance tables for conditional H2/H3 phi_AB (DEC-106, IIP-0028, GY-023)."
+      },
+      {
+        "kind": "added",
+        "text": "Audited measured-potency DEC-084 equal-output 70:20:10 / 70:25:5 loading ((6/7) × (out_A / out_B) × 1,500 IEQ/cm^2) in Layer 4 and Stage 0: at 1.00x potency (1,285.71 IEQ/cm^2), whole-graft OCR drops to 0.87578x / 0.85714x and rescues 80 µm +10%-stress dual-band worst-face oxygen on 40×40×70 and 60×60×105 meshes (13.45 / 13.71 -> 15.37–15.96 mmHg at P_b = 35 mmHg; recording P_b = 34 mmHg 14.41/14.69 mmHg sensitivity and matched +10%-stress 100 µm 10.19/10.47 -> 11.84/12.10 mmHg fail baselines), whereas 0.95x (1,353.38 IEQ/cm^2) fails OCR (0.91500 / 0.90226 > 0.90) and 0.90x (1,428.57 IEQ/cm^2) fails both OCR and oxygen, paired with n = 8 confirmation-block C-peptide and glucagon AUC (L95_t >= 0.85; Readout 2 glucagon >= 2.0x; 24-h RK4 exercise TBR 1.1652% at 60:30:10 vs 3.4544 / 3.3827 mM nadirs at 0.85x glucagon flux)."
+      },
+      {
+        "kind": "added",
+        "text": "Replaced standalone 72-h A11 oligomer dot-blot clearance with visit-, lot- and sister-device-bound 72-h, Day-28 and Day-84 dual-modality IAPP oligomer ELISA (U95_t <= 1.5x) and insulin/proIAPP-colocalized fibril area (U95_t <= 1.0%) across >= 6 distinct lots evaluated alongside viable beta mass (>= 80%) and stimulated secretion (SI >= 2.5), requiring within-lot dual-modality L95_t co-exceedance or disjoint >= 6-lot replication for chronic P2 eligibility while staging archival data/constructs/nm_021999_5_archival_mrna.fasta (801-nt CDS 156..956 SHA-256 6fc8d3d7a9b4851a9b50c026d44f02e7d2539e122a0b727d2a5cc4ee93df8903, 0 / 1,030 8–11-mer and 0 / 252 15-mer unmatched windows vs 34/14 in SP-BRICHOS chimeras; Cen 2025 90–263 vs Oskarsson 2018 90–236 coordinates; 2,755-bp dedicated donor vs 5,181+ / 4,876-bp Locus 3/4 overflow) strictly at 0% active weight."
+      }
+    ],
+    "contribution": "IIP-0028"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-18",
     "title": "69-key gnomAD v4.1 variant join, 17-record HLA-C guide scoping, staged 2A-free Design B comparator FASTA on State-3 hold, and INS 3′-UTR knock-in retirement",
     "summary": "Replaces fixed dbSnp155 screening frequencies with a 69-key VCF-normalized gnomAD v4.1 join, scopes HLA-A/B guides across 17 HLA-C records paired with matched HLA-E-only DT9 specificity controls, stages the 6-construct 2A-free Design B research-comparator FASTA on State-3 hold (execution_supported = false), holds PE4max and 63k/90k-GE Design Y ddPCR specs, and retires INS 3′-UTR EIF4G2 knock-ins (OQ-011) into Idea Graveyard rule GY-022 alongside GY-021 with zero change to scores or headline odds.",
     "changes": [

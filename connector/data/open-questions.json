@@ -291,7 +291,7 @@
     "id": "OQ-009",
     "title": "Which layout should be used to add CD47 and HLA-E at B2M?",
     "plain": "Two layouts for adding CD47 and HLA-E at B2M are being compared, alongside a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells while fitting inside one delivery virus.",
-    "detail": "Layout 1 (Arm 1A) joins the genes with a porcine GSG-P2A sequence (4,880 base pairs, over the single-AAV6 limit and carrying uncleaved 697-aa readthrough risk; IIP-0017). Layout 2 (Arm 1B, 3,974 base pairs, alongside 4,143-bp Embodiment A*) uses separate promoters facing opposite directions with no 2A joint and fits in one AAV6 virus, paired in Stage 0 with silent B2M exon-2 stop-seam hardening against a 32-aa out-of-frame tail (IIP-0015) and a 20-construct two-strand splice-cleaned HLA-E NKG2C/NKG2A comparator panel (Lin 2023, PMID 37264229; Lauterbach 2015, PMID 26382247; IIP-0016).",
+    "detail": "Layout 1 (Arm 1A) joins the genes with a porcine GSG-P2A sequence (4,880 base pairs, over the single-AAV6 limit and carrying uncleaved 697-aa readthrough risk; IIP-0017). Layout 2 (Arm 1B, 3,974 base pairs, alongside 4,143-bp Embodiment A*) uses separate promoters facing opposite directions with no 2A joint and fits in one AAV6 virus, paired in Stage 0 with silent B2M exon-2 stop-seam hardening against a 32-aa out-of-frame tail (IIP-0015), a 20-construct two-strand splice-cleaned HLA-E NKG2C/NKG2A comparator panel (Lin 2023, PMID 37264229; Lauterbach 2015, PMID 26382247; IIP-0016), and a pre-registered crossed Donor x Design A (ISLET1_A4_ARM1B) vs staged Design B2 (ISLET1_B2_5LOCUS_BASE, c1 + c5 digest 82c351af..., execution_supported = false) responder study across >= 2 banks and typed NKG2A- KIR+ / HCMV+ NKG2C+ / SIRPA donors (n = 6 feasibility U95 = 39.30%, n = 24 exact conditional McNemar 80.08%-98.28% power with 3.67% global worst-case null size at total discordance q = 0.96335 and n = 29 for >= 88%, plus paired intact-and-depleted CD16+ ADCC U95_t <= 5.0% and 2x2 concordance tables; IIP-0028).",
     "tests": [
       "2A",
       "3"
@@ -301,16 +301,18 @@
       "X"
     ],
     "rules": [
-      "GY-009"
+      "GY-009",
+      "GY-023"
     ],
     "pmids": [
       "28504668",
       "37156915",
       "37264229",
-      "26382247"
+      "26382247",
+      "27787618"
     ],
-    "settle": "Compare Layout 1, Layout 2 and the 20-construct splice-cleaned HLA-E comparator panel across resting and interferon-stimulated islet and vascular cells for surface density, splicing fidelity, promoter methylation, editing yield and NK/CD8 response.",
-    "source": "Concise specification section 4.1; rule GY-009; IIP-0015, IIP-0016 and IIP-0017",
+    "settle": "Compare Layout 1, Layout 2 and the 20-construct splice-cleaned HLA-E comparator panel across resting and interferon-stimulated islet and vascular cells for surface density, splicing fidelity, promoter methylation, editing yield, paired intact-plus-increment CD16+ ADCC, and crossed Design A vs Design B2 NK/CD8 responder concordance.",
+    "source": "Concise specification sections 4.1, 4.5 and 9; rules GY-009 and GY-023; IIP-0015, IIP-0016, IIP-0017 and IIP-0028",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -484,7 +486,7 @@
     "id": "OQ-016",
     "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
     "plain": "The 27%, 31% and 36% single-design figures (Designs A, B and X) and the 53% three-design figure are uncalibrated computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits or biomaterial shields together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
-    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline), IIP-0024 enforces strict non-finite and marginal-above-common-shock validation plus logs the conditional two-seedline Hurdle-1 sensitivity (phi_donor = 0.25: 50.78% -> 51.53%-51.74% shared A/X; 52.59% -> 53.33%-53.50% three-slot), and IIP-0025 separates zero-primate Contrast B2 route qualification from the joint-failure data required for 52.594% three-route portfolio credit while keeping published 27% / 31% / 36% / 53% headline percentages unchanged.",
+    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline), IIP-0024 enforces strict non-finite and marginal-above-common-shock validation plus logs the conditional two-seedline Hurdle-1 sensitivity (phi_donor = 0.25: 50.78% -> 51.53%-51.74% shared A/X; 52.59% -> 53.33%-53.50% three-slot), IIP-0025 separates zero-primate Contrast B2 route qualification from the joint-failure data required for 52.594% three-route portfolio credit, and IIP-0028 defines conditional H2/H3 Frechet dependence phi_AB via full 2x2 Design A vs Design B2 concordance tables (phi_AB = 1.0 shifts shared-A/X locked 50.78% -> 49.03% and 3-route locked 52.59% -> 49.72%) while keeping published 27% / 31% / 36% / 53% headline percentages unchanged.",
     "tests": [
       "1",
       "2A",
@@ -501,7 +503,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Fix one clinical definition of success, test the per-design and shared failure assumptions in Stage 0-2 experiments, and replace the computational judgements with measured pass rates as lab and preclinical results arrive.",
-    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, IIP-0024, IIP-0025, and the full blueprint (warning 4)",
+    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, IIP-0024, IIP-0025, IIP-0028, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
     "since": "v0.8.0"
@@ -605,7 +607,7 @@
     "id": "OQ-020",
     "title": "Do edited islets stay protected after temporary gel signals wear off, and do biomaterial antibodies or shed FasL compromise the cuff?",
     "plain": "Temporary gel particles carrying clotting-control and Fas-ligand proteins wash out after the early transplant window, while pre-existing anti-PEG antibodies or Day-28 anti-streptavidin antibodies could neutralise or opsonise the cuff. Stage-0 tests therefore challenge the streptavidin cuff alongside a held all-human CFH, THBD and Hexa-FasL comparator on self-hydrolyzing linkers, and test ectopic CD55 while keeping intracellular CD59 intact.",
-    "detail": "Raised in IIP-0012 and expanded in IIP-0020. Prior SA-FasL microgel studies used short-course rapamycin in single-dose grafts (where Lei 2022, PMID 35559682 still observed anti-SA-FasL IgG seroconversion alongside tolerability of ~200 ug tethered SA-FasL) and measured fluorescent retention rather than functional depletion half-life (Headen 2018, PMID 29867165; Turan 2024, PMID 38709159). Core bacterial streptavidin is 100% foreign to the human proteome (508/508 8-to-11-mers; baseline human anti-SA reactivity in Berth 2018 PMID 29466233 and Verougstraete 2020 PMID 31782946, plus clinical secondary antibody surges in Breitz 2000 PMID 10647616 and Orozco 2025 PMID 40605797), ~72% of adults carry detectable anti-PEG antibodies (~7% IgG > 500 ng/mL, Yang 2016 PMID 27804292), and unhydrolyzed maleimides can shed soluble oligomeric FasL via retro-Michael exchange (Lyon 2014 PMID 25194818; soluble APO010 hepatotoxicity context in Verbrugge 2009 PMID 19276268, Eisele 2011 PMID 21183510 and Jandu 2020 PMID 32619459). Stage 0 therefore challenges SA-FasL/SA-THBD alongside a held Mode-B human cuff comparator panel (CFH[19-448] + THBD[363-497]-Cys + H1a ADIPOQ-Hexa-FasL on >= 98% ring-hydrolyzed DPR-maleimide linkers, <= 5% 14-day bioactive FasL shedding, and 72-h primary human hepatocyte caspase-3/7 & ALT/LDH <= 1.2x) across >= 12 unpooled human sera stratified by anti-PEG and Day-28 anti-SA IgG (surface C3b and fluid sC5b-9 <= 5%, two-sided FasL EC50 within [0.50, 2.00]x and Emax >= 80%), compares never-conditioned, gel-depleted and active-gel aliquots for immune rebound, tests ectopic CD55(SCR1-4) while preserving endogenous CD59 (Golec 2022 PMID 35666870; van der Torren 2017 PMID 27787618), and holds TYMS, NLRC5, endogenous CD274 and TXNIP outside core designs.",
+    "detail": "Raised in IIP-0012 and expanded in IIP-0020 and IIP-0028. Prior SA-FasL microgel studies used short-course rapamycin in single-dose grafts (where Lei 2022, PMID 35559682 still observed anti-SA-FasL IgG seroconversion alongside tolerability of ~200 ug tethered SA-FasL) and measured fluorescent retention rather than functional depletion half-life (Headen 2018, PMID 29867165; Turan 2024, PMID 38709159). Core bacterial streptavidin is 100% foreign to the human proteome (508/508 8-to-11-mers; baseline human anti-SA reactivity in Berth 2018 PMID 29466233 and Verougstraete 2020 PMID 31782946, plus clinical secondary antibody surges in Breitz 2000 PMID 10647616 and Orozco 2025 PMID 40605797), ~72% of adults carry detectable anti-PEG antibodies (~7% IgG > 500 ng/mL, Yang 2016 PMID 27804292), and unhydrolyzed maleimides can shed soluble oligomeric FasL via retro-Michael exchange (Lyon 2014 PMID 25194818; soluble APO010 hepatotoxicity context in Verbrugge 2009 PMID 19276268, Eisele 2011 PMID 21183510 and Jandu 2020 PMID 32619459). Stage 0 therefore challenges SA-FasL/SA-THBD alongside a held Mode-B human cuff comparator panel (CFH[19-448] + THBD[363-497]-Cys + H1a ADIPOQ-Hexa-FasL on >= 98% ring-hydrolyzed DPR-maleimide linkers, <= 5% 14-day bioactive FasL shedding, and 72-h primary human hepatocyte caspase-3/7 & ALT/LDH <= 1.2x) across >= 12 unpooled human sera stratified by anti-PEG and Day-28 anti-SA IgG (surface C3b and fluid sC5b-9 <= 5%, two-sided FasL EC50 within [0.50, 2.00]x and Emax >= 80%), enforces registry-bound arm-separated Gate 0d checks across Arm 1 never-conditioned, Arm 2 post-depletion (all 6 explicit-SE endpoints, unpooled washout vs natural decay, contemporaneous active Arm 3 control, and segregated RETAINED_ACTIVE SA-FHL-1 partial-depletion hold without cross-arm batch borrowing) and Arm 3 verified-active aliquots alongside paired intact-serum and IgG-attributable CD16+ ADCC limits (both U95_t <= 5.0%; rule GY-023), tests ectopic CD55(SCR1-4) while preserving endogenous CD59 (Golec 2022 PMID 35666870; van der Torren 2017 PMID 27787618; Aubert 2014 PMID 24804568), and holds TYMS, NLRC5, endogenous CD274 and TXNIP outside core designs.",
     "tests": [
       "1",
       "2A",
@@ -619,13 +621,16 @@
       "B",
       "X"
     ],
-    "rules": [],
+    "rules": [
+      "GY-023"
+    ],
     "pmids": [
       "29867165",
       "35559682",
       "38709159",
       "35666870",
       "27787618",
+      "24804568",
       "38867450",
       "10647616",
       "19276268",
@@ -637,8 +642,8 @@
       "32619459",
       "40605797"
     ],
-    "settle": "Challenge SA-FasL/SA-THBD and the held DPR-hydrolyzed human CFH + THBD + ADIPOQ-Hexa-FasL cuff comparator across >= 12 unpooled human sera stratified by baseline anti-PEG and Day-28 anti-SA IgG (checking surface C3b, fluid sC5b-9, two-sided FasL EC50/Emax, THBD/CFH retention, <= 5% 14-day bioactive FasL shedding and 72-h primary human hepatocyte safety), compare gel-depleted vs never-treated islets for immune rebound, and test ectopic CD55 alongside intact endogenous CD59.",
-    "source": "Concise specification sections 4.6, 5 and 9; IIP-0012 and IIP-0020",
+    "settle": "Challenge SA-FasL/SA-THBD and the held DPR-hydrolyzed human CFH + THBD + ADIPOQ-Hexa-FasL cuff comparator across >= 12 unpooled human sera stratified by baseline anti-PEG and Day-28 anti-SA IgG (checking surface C3b, fluid sC5b-9, two-sided FasL EC50/Emax, THBD/CFH retention, <= 5% 14-day bioactive FasL shedding and 72-h primary human hepatocyte safety), verify segregated Arm 1/2/3 Gate 0d post-depletion protection and paired intact-plus-increment CD16+ ADCC (<= 5.0%), and test ectopic CD55 alongside intact endogenous CD59.",
+    "source": "Concise specification sections 4.6, 5 and 9; rule GY-023; IIP-0012, IIP-0020 and IIP-0028",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

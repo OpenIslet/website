@@ -31,7 +31,7 @@ export const gates: Gate[] = [
     ask: 'Do the cells release insulin in the right amount when blood sugar rises, and stop quickly when it falls?',
     explain: [
       'A healthy pancreas gives a quick burst of insulin when sugar rises, then a steady supply, and shuts off fast when sugar drops. The new cells have to do the same, or blood sugar swings too high or too low.',
-      'That means growing the right mix of mature cells (about 60% beta, 30% alpha and 10% delta) in small clusters, so every cell gets oxygen and can sense sugar. Insulin should stop within about 3 minutes of sugar falling.',
+      'That means growing the right mix of mature cells (about 60% beta, 30% alpha and 10% delta, with beta-rich 70:20:10 mixes gated on measured per-beta insulin output and preserved glucagon response) in small clusters, so every cell gets oxygen and can sense sugar. Insulin should stop within about 3 minutes of sugar falling.',
     ],
   },
   {
@@ -52,7 +52,7 @@ export const gates: Gate[] = [
       {
         code: '2B',
         title: 'The autoimmune attack',
-        text: 'Type 1 diabetes began when the immune system learned to attack beta cells, and it still remembers. Even if the cells hide their flags, the patient’s own immune cells can pick up debris from the graft and restart the attack. Small clusters and a pre-built blood supply are meant to leave less debris behind.',
+        text: 'Type 1 diabetes began when the immune system learned to attack beta cells, and it still remembers. Even if the cells hide their flags, the patient’s own immune cells can pick up debris from the graft and restart the attack, including after temporary protective coatings wear off. Small clusters, a pre-built blood supply, and post-coating immune checks are meant to leave less debris behind.',
       },
     ],
   },
@@ -63,8 +63,8 @@ export const gates: Gate[] = [
     name: 'Early attack by natural killer cells, macrophages and blood reactions',
     ask: 'In the first hours, are the cells protected from natural killer cells, macrophages, and the clotting and inflammation that blood contact can trigger?',
     explain: [
-      'Cells that have lost their ID flags can look suspicious. Natural killer cells check for those flags, and macrophages eat cells that don’t carry a “don’t eat me” signal. Blood contact can also set off clotting and inflammation.',
-      'So the cells are designed to carry two protective signals from the very first hour: HLA-E, which calms natural killer cells, and CD47, which tells macrophages to leave them alone. Both have to be present in large enough amounts from hour zero.',
+      'Cells that have lost their ID flags can look suspicious. Natural killer cells check for those flags, antibodies can still flag cells for CD16+ killer immune cells even when complement is quiet, and macrophages eat cells that don’t carry a “don’t eat me” signal. Blood contact can also set off clotting and inflammation.',
+      'So the cells are designed to carry two protective signals from the very first hour: HLA-E, which calms natural killer cells, and CD47, which tells macrophages to leave them alone—tested alongside paired intact-and-depleted serum antibody-killer checks from hour zero.',
     ],
   },
   {
@@ -74,8 +74,8 @@ export const gates: Gate[] = [
     name: 'Survival under stress',
     ask: 'Can the cells survive inflammation, killer-cell toxins, insulin-making stress and low oxygen, without dying or losing their identity?',
     explain: [
-      'Even when nothing attacks them directly, an inflamed graft can kill beta cells or make them forget how to make insulin. Killer cells also fire a toxin, granzyme B, into their targets.',
-      'An edit at the CXCL10 gene (a gene that switches on during inflammation) is designed to make the cells switch on two protections only when inflammation appears: SERPINB9, which should block granzyme B, and PD-L1, a “back off” signal for T cells.',
+      'Even when nothing attacks them directly, an inflamed graft can kill beta cells, build up toxic IAPP amyloid clumps over weeks, or make cells forget how to make insulin. Killer cells also fire a toxin, granzyme B, into their targets.',
+      'An edit at the CXCL10 gene (a gene that switches on during inflammation) is designed to make the cells switch on two protections only when inflammation appears: SERPINB9, which should block granzyme B, and PD-L1, a “back off” signal for T cells—paired with 72-hour, Day-28 and Day-84 amyloid checks alongside viable beta-cell mass.',
     ],
   },
   {

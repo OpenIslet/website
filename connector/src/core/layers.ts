@@ -15,7 +15,7 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   dna: {
     name: 'The DNA layer (layer 2 of 5)',
     plain: (c) =>
-      `Holds ${c.constructs ?? 'unavailable'} genomic reference constructs, their sequence, strand-specific transcribed-interval ORF, translation, two-strand splice-motif, cellular and extracellular biomaterial Swiss-Prot-subtracted peptide-census and repeat checks, and pre-registered Stage-0 donor comparators (including the 6-construct 2A-free Design B research-comparator FASTA on State-3 hold and the 3-construct Design Y landing-pad wildcard FASTA). AlphaGenome variant-impact scores are neither published nor used as evidence here (its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release), and no computational grammar or peptide check establishes insertion, splicing or immune safety.`,
+      `Holds ${c.constructs ?? 'unavailable'} genomic reference constructs, their sequence, strand-specific transcribed-interval ORF, translation, two-strand splice-motif, cellular and extracellular biomaterial Swiss-Prot-subtracted peptide-census and repeat checks, and pre-registered Stage-0 donor comparators (including the 6-construct 2A-free Design B research-comparator FASTA on State-3 hold, the 3-construct Design Y landing-pad wildcard FASTA, and the archival NM_021999.5 ITM2B reserve FASTA held at 0% active weight). AlphaGenome variant-impact scores are neither published nor used as evidence here (its output terms restrict outputs to non-commercial use, which conflicts with this CC-BY-4.0 release), and no computational grammar or peptide check establishes insertion, splicing or immune safety.`,
   },
   proteins: {
     name: 'The protein layer (layer 3 of 5)',
@@ -24,12 +24,12 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   },
   tissue: {
     name: 'The tissue layer (layer 4 of 5)',
-    plain: () => "Simulates the graft's 14-day oxygen supply with two-scale lineage-partitioned oxygen accounting, unrounded multi-mesh 3D worst-face cluster-oxygen gates, discrete microbead-peroxide barrier transport with two-timepoint P04040 catalase and z = 70 µm interface peroxide checks alongside a 140 µm bead-free sheet comparator and closed-slab M101 reservoir bounds, plus 24-hour blood-sugar and hormone control with exact threshold-crossing time-below-range duration checks. These are computer models and have not been tested in the lab.",
+    plain: () => "Simulates the graft's 14-day oxygen supply with two-scale lineage-partitioned oxygen accounting, unrounded multi-mesh 3D worst-face cluster-oxygen gates (including measured-potency 70:20:10 equal-output loading and glucagon-retention sweeps), discrete microbead-peroxide barrier transport with two-timepoint P04040 catalase and z = 70 µm interface peroxide checks alongside a 140 µm bead-free sheet comparator and closed-slab M101 reservoir bounds, plus 24-hour blood-sugar and hormone control with exact threshold-crossing time-below-range duration checks. These are computer models and have not been tested in the lab.",
   },
   patient: {
     name: 'The patient layer (layer 5 of 5)',
     plain: (c) =>
-      `Checks declared reference edit instructions, 69-key normalized gnomAD v4.1 variant joins, 17-record HLA-C guide scoping, typed locus routing and genotype inputs, and runs a simulated population of ${typeof c.virtualPatients === 'number' ? c.virtualPatients.toLocaleString('en-GB') : 'unavailable'} virtual patients alongside batch-isolated Stage-0 wet-lab provenance contracts. The results are scenario simulations, not predictions for any person. Staged 2A-free Design B comparators remain strictly on research hold (execution_supported = false), and clinical eligibility remains unresolved. Matching your own genotype is not offered yet.`,
+      `Checks declared reference edit instructions, 69-key normalized gnomAD v4.1 variant joins, 17-record HLA-C guide scoping, typed locus routing and genotype inputs, and runs a simulated population of ${typeof c.virtualPatients === 'number' ? c.virtualPatients.toLocaleString('en-GB') : 'unavailable'} virtual patients alongside batch-isolated Stage-0 wet-lab provenance, segregated Arm 1/2/3 conditioning, paired intact-plus-increment CD16+ ADCC and 72-h/Day-28/Day-84 dual-modality IAPP contracts. The results are scenario simulations, not predictions for any person. Staged 2A-free Design B comparators remain strictly on research hold (execution_supported = false), and clinical eligibility remains unresolved. Matching your own genotype is not offered yet.`,
   },
 };
 

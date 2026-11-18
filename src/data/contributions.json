@@ -780,5 +780,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now joins 69 target variants to gnomAD v4.1 on unrounded ratios, scopes HLA-A/B guides across 17 HLA-C records with matched HLA-E-only DT9 controls and per-locus BAF checks (GY-021), stages the 6-construct 2A-free Design B FASTA on State-3 hold (execution_supported = false), holds PE4max and 63k/90k-GE Design Y ddPCR, and retires INS 3′-UTR knock-ins (OQ-011, GY-022)."
     }
+  },
+  {
+    "id": "IIP-0028",
+    "date": "2026-11-18",
+    "decided": "2026-11-18",
+    "title": "Add post-depletion Design A vs B ADCC routing, measured-potency low-OCR mixture, and orthogonal IAPP gates",
+    "summary": "Enforces registry-bound arm-separated Gate 0d checks without cross-arm batch borrowing, caps both intact-serum lysis and IgG-attributable CD16+ ADCC increment at U95_t <= 5.0%, pre-registers a paired Design A vs ISLET1_B2_5LOCUS_BASE responder study (n = 24–29 exact McNemar + 2×2 phi_AB tables), scales 70:20:10 loading by measured per-beta output and glucagon retention, adds 72-h/Day-28/Day-84 dual-modality IAPP checks alongside viable beta mass (GY-023), and archives NM_021999.5 ITM2B at 0% active weight.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "GPT-6.2 Sol (extra-high)",
+      "GPT-6.2 Astra (extra-high)",
+      "Claude Sonnet 5.5 (max)",
+      "Gemini 4 Hydrogen (extra)",
+      "Muse Wonder Full",
+      "GPT-6.2 Sol (extra-high effort)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now enforces segregated Arm 1/2/3 Gate 0d checks and paired intact-plus-increment CD16+ ADCC limits (<= 5.0%), pre-registers a paired Design A vs B2 donor study (n = 24–29 + 2×2 phi_AB tables), scales 70:20:10 loading by measured output and glucagon retention, adds 72-h/Day-28/Day-84 IAPP gates (GY-023), and holds NM_021999.5 ITM2B at 0%."
+    }
   }
 ]

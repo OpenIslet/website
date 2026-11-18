@@ -1,5 +1,18 @@
 [
   {
+    "id": "GY-023",
+    "source": "OFFGRID_GUARD_013_",
+    "title": "Trusting 72-hour amyloid or complement-only antibody checks, pooling coating washout with natural decay, scaling 70:20:10 loading from assumed cell ratios, or splicing unverified BRICHOS fusions",
+    "tests": ["1", "2", "3", "4", "5"],
+    "idea": "Clear chronically stressed grafts on a single 72-hour amyloid stain, clear sensitised recipients on complement lysis without Fc-receptor killer cells, pool fast washout and natural coating decay or count retained SA-FHL-1 as complete depletion, cut cell loading by 14.3% from a nominal 70:20:10 label without measuring beta-cell output, or splice chimeric INS/PCSK1/Bri2 BRICHOS constructs into active safe-harbour payloads.",
+    "why": "Amyloid toxicity in stem-cell and encapsulated islets builds over weeks rather than 72 hours, and non-complement IgG1/IgG3 antibodies can still trigger CD16+ natural-killer ADCC even when complement is quiet—while subtracting high depleted-serum background could hide 30% total killing behind a 1% net difference. Pooling fast washout with aged coatings blurs distinct rebound risks, a 5% drop in per-beta output raises equal-dose oxygen demand past the 0.90 ceiling, and oversized or furin-cleaved Bri2 chimeras exceed the 2,755-bp AAVS1 donor cap or release secreted C-terminal fragments.",
+    "check": "Cap both intact-serum killing and IgG-attributable CD16+ ADCC increment at or below 5.0% against FcγRIIIa-158V/V effectors, segregate Arm 2 washout, natural decay and parallel active Arm 3 controls without cross-arm batch borrowing, scale 70:20:10 loading by measured starting per-beta output while holding both insulin and glucagon AUC ratios at or above 0.85, and require concordant 72-hour, Day-28 and Day-84 oligomer ELISA plus colocalized fibril imaging across at least 6 lots alongside viable beta mass.",
+    "instead": "Enforce paired intact-plus-increment CD16+ ADCC and segregated post-depletion Gate 0d checks, gate 70:20:10 loading on measured output and dual-band worst-face oxygen, and hold native ITM2B (NM_021999.5) at 0% active weight unless concordant chronic amyloid breach is confirmed.",
+    "added": "2026-11-18",
+    "version": "v0.8.0",
+    "contribution": "IIP-0028"
+  },
+  {
     "id": "GY-022",
     "source": "OFFGRID_GUARD_012_",
     "title": "Inserting protective genes into the insulin (INS) 3′-UTR via an EIF4G2 leader, leaving half the graft unshielded and stretching insulin mRNA 37-fold",
