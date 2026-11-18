@@ -180,7 +180,7 @@
     "id": "OQ-006",
     "title": "Do many gene edits at once cause DNA rearrangements?",
     "plain": "Each extra edit is another chance for the cell's DNA to be rearranged by mistake, and cells with cancer-linked changes could take over. This is why the scoring model penalises extra edits.",
-    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Open-license CC-BY-4.0 AlphaMissense v3 annotations (Cheng 2023, PMID 37733863) are attached strictly as descriptive context across 27 priority genes and the TYK2 prime-edit window, because 30x whole-genome sequencing misses ~21.5% of 5%-allele-fraction clones and cannot replace >= 63,000x duplex sequencing or manufacturing-scale structural checks (IIP-0017). Inside Stage 0's <= 20% wildcard allocation (IIP-0023), the unscored Design Y landing-pad wildcard compares two-step eePASSIGE 73-bp B2M exon-1 TwinPE excision -> 52-bp attP-in-genome + 11,066-bp 7-unit attB-minicircle (Pandey 2025, PMID 38858586; Levesque 2026, PMID 42749803; avoiding Cas9-DSB AAV capture in Hanlon 2019, PMID 31570731) and 2-locus TadCBEd (Neugebauer 2023, PMID 36357719, gating full C>T + A>G + indel haplotypes) while retaining mandatory CAST-Seq (< 10^-5), k = 0 OT1/OT2/OT4/WGS pseudo-site checks and >= 63,000x TP53/PPM1D/BCOR duplex sequencing.",
+    "detail": "Adenine base editors caused DNA rearrangements in the cited study (PMID 39529170). The project extends that concern to multiple base and prime edits as an engineering precaution (rule GY-006). Open-license CC-BY-4.0 AlphaMissense v3 annotations (Cheng 2023, PMID 37733863) are attached strictly as descriptive context across 27 priority genes and the TYK2 prime-edit window, because 30x whole-genome sequencing misses ~21.5% of 5%-allele-fraction clones and cannot replace >= 63,000x duplex sequencing or manufacturing-scale structural checks (IIP-0017). Inside Stage 0's <= 20% wildcard allocation (IIP-0023), the unscored Design Y landing-pad wildcard compares two-step eePASSIGE 73-bp B2M exon-1 TwinPE excision -> 52-bp attP-in-genome + 11,066-bp 7-unit attB-minicircle (Pandey 2025, PMID 38858586; Levesque 2026, PMID 42749803; avoiding Cas9-DSB AAV capture in Hanlon 2019, PMID 31570731) and 2-locus TadCBEd (Neugebauer 2023, PMID 36357719, gating full C>T + A>G + indel haplotypes) while retaining mandatory CAST-Seq (< 10^-5), k = 0 OT1/OT2/OT4/WGS pseudo-site checks and >= 63,000x TP53/PPM1D/BCOR duplex sequencing. IIP-0024 further enforces paired master-cell-bank and Stage-7 clonal copy-number ([1.85, 2.15]) plus >= 299-cell single-cell mosaicism checks on both 1q32.1 MDM4 (Stavish 2024, PMID 38964325) and 20q11.21 BCL2L1 (Avery 2013, PMID 24286026; Halliwell 2021, PMID 33757297), conjunctive IC1/IC2/IG-DMR methylation (Kagami 2010, PMID 20585555; Court 2014, PMID 24402520), female 46,XX X-inactivation competence (k >= 279 / 300 cells; Mekhoubad 2012, PMID 22560080; Patel 2017, PMID 27989715), >= 1,000x NUMT-filtered mtDNA sequencing (< 5% pathogenic SNV VAF, < 1% deletion burden, Seahorse reserve >= 1.5x; Perales-Clemente 2016, PMID 27436875; Kang 2016, PMID 27151456), and Donor-1 paired lot blocking (n >= 6; Kilpinen 2017, PMID 28489815) with >= 2 unrelated ABO O/O seedlines (6 + 6 exact Welch 90% TOST; rules GY-018 and GY-019).",
     "tests": [
       "5"
     ],
@@ -190,7 +190,9 @@
       "X"
     ],
     "rules": [
-      "GY-006"
+      "GY-006",
+      "GY-018",
+      "GY-019"
     ],
     "pmids": [
       "39529170",
@@ -198,10 +200,20 @@
       "31570731",
       "36357719",
       "38858586",
-      "42749803"
+      "42749803",
+      "38964325",
+      "24286026",
+      "33757297",
+      "28489815",
+      "20585555",
+      "24402520",
+      "22560080",
+      "27989715",
+      "27436875",
+      "27151456"
     ],
-    "settle": "Deep duplex sequencing (>= 63,000x) and long-read phasing of edited cell lines for rearrangements and cancer-linked changes, with the same checks repeated at manufacturing scale.",
-    "source": "Concise specification sections 4.5, 4.6, 6 and 9; rule GY-006; IIP-0017 and IIP-0023",
+    "settle": "Deep duplex sequencing (>= 63,000x), long-read phasing, paired bank-and-Stage-7 1q32.1 MDM4 and 20q11.21 copy-number and >= 299-cell mosaicism checks, IC1/IC2/IG-DMR methylation, 46,XX X-inactivation and 1,000x mtDNA screening across >= 2 unrelated O/O donor banks (6 + 6 batches).",
+    "source": "Concise specification sections 4.5, 4.6, 6 and 9; rules GY-006, GY-018 and GY-019; IIP-0017, IIP-0023 and IIP-0024",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -338,7 +350,7 @@
     "id": "OQ-012",
     "title": "Can the safety switch remove almost every cell?",
     "plain": "Every cell carries a safety switch that a drug (AP1903) should trigger to remove them. The proposed target is fewer than one cell in 100 million able to regrow. Nothing has shown that yet.",
-    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9; IIP-0011 and IIP-0015). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches). For the unscored Stage-0 Design Y landing-pad wildcard (IIP-0023), where cHS4 + HNRNPA2B1 UCOE + UBC-iCasp9 sits as the 7th transcription unit inside a biallelic 11,066-bp B2M minicircle, gate Y-04 additionally checks 60-day multi-cistron co-retention against supercoiling coupling (Naughton 2013, PMID 23416946; Gilbert 2014, PMID 24584092) and requires k = 0 clonogenic survivors across N_eff = N * f_clonogenic * eta >= 299,573,228 effective trials (exact Poisson upper95 <= 1.0e-8).",
+    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9, reconciling 565/746 canonical vs 562/746 insertion-code-inclusive heavy-atom pairs < 2.2 A on 1NW9/1JXQ; IIP-0011, IIP-0015 and IIP-0024). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed), and IIP-0024 enforces strict pre-normalisation integer (k, n) cell counts, exact independent recovery-calibrated bounds U95 = (1 - 0.05**(1/n)) / eta (rejecting floor(n * eta) or unverified cluster-design shortcuts), sister-unit Day-90 Gate 0S en-bloc recovery (L95_t >= 0.99) plus dual < 10^-6 shedding (n >= 2,995,731), and monotonic safety-stop latching across batches (Di Stasi 2011, PMID 22047558; Wunderlich 2022, PMID 35795779; rule GY-018). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches). For the unscored Stage-0 Design Y landing-pad wildcard (IIP-0023), where cHS4 + HNRNPA2B1 UCOE + UBC-iCasp9 sits as the 7th transcription unit inside a biallelic 11,066-bp B2M minicircle, gate Y-04 additionally checks 60-day multi-cistron co-retention against supercoiling coupling (Naughton 2013, PMID 23416946; Gilbert 2014, PMID 24584092) and requires k = 0 clonogenic survivors across N_eff = N * f_clonogenic * eta >= 299,573,228 effective trials (exact Poisson upper95 <= 1.0e-8).",
     "tests": [
       "5"
     ],
@@ -348,7 +360,8 @@
       "X"
     ],
     "rules": [
-      "GY-002"
+      "GY-002",
+      "GY-018"
     ],
     "pmids": [
       "23307570",
@@ -360,10 +373,12 @@
       "11734640",
       "12620238",
       "23416946",
-      "24584092"
+      "24584092",
+      "22047558",
+      "35795779"
     ],
-    "settle": "Compare the AAVS1 anti-silencing, orientation and splice-cleaned arms across maturation with calibrated minigene and UMI junction sequencing, check PPP1R12C splicing, double-stranded RNA stress and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count clonogenic survivors.",
-    "source": "Concise specification sections 4.4, 4.6 and 9; IIP-0011, IIP-0015 and IIP-0023",
+    "settle": "Compare the AAVS1 anti-silencing, orientation and splice-cleaned arms across maturation with calibrated minigene and UMI junction sequencing, check PPP1R12C splicing, double-stranded RNA stress and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count integer clonogenic survivors against exact recovery-calibrated bounds.",
+    "source": "Concise specification sections 4.4, 4.6 and 9; IIP-0011, IIP-0015, IIP-0023 and IIP-0024",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -443,7 +458,7 @@
     "id": "OQ-016",
     "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
     "plain": "The 27%, 31% and 36% single-design figures (Designs A, B and X) and the 53% three-design figure are uncalibrated computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits or biomaterial shields together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
-    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline) with zero change to published headline percentages.",
+    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline), and IIP-0024 enforces strict non-finite and marginal-above-common-shock validation plus logs the conditional two-seedline Hurdle-1 sensitivity (phi_donor = 0.25: 50.78% -> 51.53%-51.74% shared A/X; 52.59% -> 53.33%-53.50% three-slot) while keeping published 27% / 31% / 36% / 53% headline percentages unchanged.",
     "tests": [
       "1",
       "2A",
@@ -460,7 +475,7 @@
     "rules": [],
     "pmids": [],
     "settle": "Fix one clinical definition of success, test the per-design and shared failure assumptions in Stage 0-2 experiments, and replace the computational judgements with measured pass rates as lab and preclinical results arrive.",
-    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, and the full blueprint (warning 4)",
+    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, IIP-0024, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
     "since": "v0.8.0"

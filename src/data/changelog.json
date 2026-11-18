@@ -1,6 +1,27 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-18",
+    "title": "Stage-0 atomic batch/device provenance scopes, donor-blocked Student-t / 6 + 6 Welch TOST, and conjunctive imprinting, XCI, MDM4 and mtDNA guardrails",
+    "summary": "Binds Stage-0 readouts to immutable 4/5/7-key bank, lot and assembled-device scopes, registers non-executable wildcard entry ISLET1_Z_X_MOL_140UM_ZERO_CAO2, adds off-grid Idea Graveyard rules GY-018 and GY-019 for donor-blocked 6 + 6 bank equivalence and epigenetic/clonal/mitochondrial QC, and hardens numerical and routing checks across Layers 1, 3, 4 and 5 with zero change to scores or headline odds.",
+    "changes": [
+      {
+        "kind": "fixed",
+        "text": "Enforced immutable 4/5/7-key MCBScopeKey, LotScopeKey and AssembledDeviceLotScopeKey envelopes with versioned ENDPOINT_REGISTRY_SPEC in wetlab_contract.py and ingest_wetlab_results.py: blocked cross-lot and cross-device evidence inheritance plus stale prior-batch SE pairing, held all execution_supported = false comparators (including newly registered ISLET1_Z_X_MOL_140UM_ZERO_CAO2 inside the <= 20% Y/Z firewall, ISLET1_B_SCT_* with product-specific locus1_construct, and unmaterialized ISLET1_B2_5LOCUS_BASE), rejected fractional or missing rare-event denominators, enforced observed k == 0 vetoes on Day-28 Gate 0V and sister-unit Day-90 Gate 0S (n >= 2,995,731), computed exact independent recovery bounds U95 = (1 - 0.05**(1/n)) / eta, and latched S9 safety stops until same-scope independent-QP washout reset (DEC-103, IIP-0024, GY-018)."
+      },
+      {
+        "kind": "added",
+        "text": "Replaced small-sample asymptotic normal z cut-offs with exact one-sided Student-t (df = n - 1, n >= 6), enforced Donor-1 paired lot blocking (n >= 6) plus >= 2 unrelated ABO O/O seedlines (pi_hat < 0.05) with 6 + 6 unpooled Welch 90% TOST equivalence (97.00% power vs 41.38% at 6 + 3, <= 5.04% boundary size), and registered 23 synchronized Stage-0 endpoints (286 total) for conjunctive 11p15.5 IC1/IC2 + 14q32.2 IG-DMR methylation (MEG3-DMR routed to diagnostic HOLD), female 46,XX XCI (k >= 279 / 300), paired bank-and-Stage-7 1q32.1 MDM4 + 20q11.21 copy number ([1.85, 2.15] + >= 299-cell mosaicism), and >= 1,000x NUMT-filtered mtDNA (< 5% SNV VAF, < 1% deletions, Seahorse reserve >= 1.5x; GY-019)."
+      },
+      {
+        "kind": "fixed",
+        "text": "Hardened shared Layer 1, 3, 4 and 5 engines: strict non-finite and pv > ch validation in the 2^12 common-shock tree plus phi_donor = 0.25 two-seedline sensitivity (50.78% -> 51.53%–51.74% shared A/X, keeping all 2,160 stack scores and 27% / 31% / 36% / 53% headline odds unchanged), product-scoped 5/5 (A, B2, Z) vs 6/6 (B'-SCT) function resolution and 1NW9/1JXQ insertion-code clash audit (565/746 vs 562/746) in Layer 3, exact linear threshold-crossing elapsed TBR < 4.0% (<= 15 min max step) in Layer 4, and explicit-false B'-SCT sub-check precedence plus 3-valued stealth-axis helpers in Layer 5."
+      }
+    ],
+    "contribution": "IIP-0024"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-16",
     "title": "Stage-0 Design Y wildcard eePASSIGE landing-pad FASTA, TadCBEd vs CRISPRoff reconciliation, ADORA1/ADORA2A physics and Y-01..Y-04 contract",
     "summary": "Materializes the 3-comparator Design Y wildcard FASTA inside the <= 20% Y/Z Stage-0 firewall, reconciles eePASSIGE polarity, TadCBEd haplotypes, CIITA isoforms and human ADORA1/ADORA2A diffusion, and adds fail-closed Y-01..Y-04 endpoints with zero change to core blueprints or headline odds.",

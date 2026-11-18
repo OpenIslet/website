@@ -105,7 +105,7 @@ export const stages: Stage[] = [
       `Corpus: ${n(c.studies)} study records and ${n(c.findings)} extracted findings in the scoring set, alongside ${n(c.cegStudies)} primary empirical studies (${n(c.cegArms)} groups, ${n(c.cegOutcomes)} structured outcomes and ${n(c.cegLinks)} blueprint links, screened from ${n(c.cegScreened)} candidate records) in the Context–Evidence Graph. ${n(c.designs)} designs are scored under ${c.graveyardGridRules ?? 10} grid-firing Idea Graveyard rules (${c.graveyardRules} Idea Graveyard entries in total, including ${c.graveyardOffGridRules ?? 0} Stage-0 guardrails).`,
       'Five layers: the literature, the DNA (sequence, two-strand splicing, 22-species foreign-peptide and grammar checks), the proteins (AlphaFold models and experimental structures), tissue and body simulations (including explicit 3D crowding and peroxide-barrier checks), and a patient compiler run on synthetic patients.',
       'Direction and penalty labels in the corpus are rule-based heuristics. They have not been independently adjudicated.',
-      'The first construct, cluster-density, differentiation and immune and insulin-secretion acceptance experiments are pre-registered and still pending.',
+      'The first construct, cluster-density, differentiation and immune and insulin-secretion acceptance experiments are pre-registered under typed bank/lot/device provenance scopes and donor-blocked 6 + 6 bank equivalence guardrails, and remain pending.',
     ],
     timing: `The open draft started on ${day(draft.opens)}. Islet-1.0 locks on ${day(planned[0].lock)}.`,
   },

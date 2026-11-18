@@ -20,16 +20,16 @@ const INTRO: Record<Layer, { name: string; plain: (c: Record<string, number | nu
   proteins: {
     name: 'The protein layer (layer 3 of 5)',
     plain: (c) =>
-      `Replays reference-coordinate geometry from ${c.experimentalStructures ?? 'unavailable'} pinned experimental structures and ${c.predictedStructures ?? 'unavailable'} AlphaFold models across ${c.proteinPairs ?? 'unavailable'} core protein pairs, supplemented by a 13-structure peptide-bound HLA-E crystal survey, four cytokine/death-receptor crystal checks, four PVR/HLA-G1 crystal coordinate audits, biomaterial catalase/cuff structural and bioconjugation audits, soluble receptor-affinity reconciliations and non-gating CC-BY-4.0 AlphaMissense v3 variant provenance. Reference compatibility does not establish engineered-product folding, receptor selectivity, immune protection, clonal safety or pan-allelic function.`,
+      `Replays reference-coordinate geometry from ${c.experimentalStructures ?? 'unavailable'} pinned experimental structures and ${c.predictedStructures ?? 'unavailable'} AlphaFold models across ${c.proteinPairs ?? 'unavailable'} core protein pairs, supplemented by a 13-structure peptide-bound HLA-E crystal survey, four cytokine/death-receptor crystal checks, four PVR/HLA-G1 crystal coordinate audits, biomaterial catalase/cuff structural and bioconjugation audits, product-scoped 5/5 vs 6/6 functional requirement resolution, 1NW9/1JXQ insertion-code clash reconciliation, soluble receptor-affinity reconciliations and non-gating CC-BY-4.0 AlphaMissense v3 variant provenance. Reference compatibility does not establish engineered-product folding, receptor selectivity, immune protection, clonal safety or pan-allelic function.`,
   },
   tissue: {
     name: 'The tissue layer (layer 4 of 5)',
-    plain: () => "Simulates the graft's 14-day oxygen supply with two-scale lineage-partitioned oxygen accounting, explicit 3D cluster-clumping and discrete microbead-peroxide barrier transport alongside a 140 µm bead-free sheet comparator and closed-slab M101 reservoir bounds, plus 24-hour blood-sugar and hormone control. These are computer models and have not been tested in the lab.",
+    plain: () => "Simulates the graft's 14-day oxygen supply with two-scale lineage-partitioned oxygen accounting, explicit 3D cluster-clumping and discrete microbead-peroxide barrier transport alongside a 140 µm bead-free sheet comparator and closed-slab M101 reservoir bounds, plus 24-hour blood-sugar and hormone control with exact threshold-crossing time-below-range duration checks. These are computer models and have not been tested in the lab.",
   },
   patient: {
     name: 'The patient layer (layer 5 of 5)',
     plain: (c) =>
-      `Checks declared reference edit instructions and genotype inputs, and runs a simulated population of ${typeof c.virtualPatients === 'number' ? c.virtualPatients.toLocaleString('en-GB') : 'unavailable'} virtual patients. The results are scenario simulations, not predictions for any person. Exact B donor designs and clinical eligibility remain unresolved. Matching your own genotype is not offered yet.`,
+      `Checks declared reference edit instructions, product-scoped routing and genotype inputs, and runs a simulated population of ${typeof c.virtualPatients === 'number' ? c.virtualPatients.toLocaleString('en-GB') : 'unavailable'} virtual patients alongside batch-isolated Stage-0 wet-lab provenance contracts. The results are scenario simulations, not predictions for any person. Exact B donor designs and clinical eligibility remain unresolved. Matching your own genotype is not offered yet.`,
   },
 };
 

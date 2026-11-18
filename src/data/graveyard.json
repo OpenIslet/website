@@ -1,5 +1,31 @@
 [
   {
+    "id": "GY-019",
+    "source": "OFFGRID_GUARD_009_",
+    "title": "Comparing edits across mismatched donor lines, using normal-curve shortcuts on small batch counts, or skipping imprinting, X-inactivation, 1q32.1 MDM4 and mtDNA checks",
+    "tests": ["1", "5", "manufacturing"],
+    "idea": "Compare candidate gene edits across stem-cell lines from different people, pass six-batch release checks with large-sample normal-curve cut-offs or underpowered 6-versus-3 bank comparisons, or skip DNA imprinting, female X-chromosome silencing, late 1q32.1 MDM4 copy-number and mitochondrial DNA checks.",
+    "why": "Differences between human stem-cell donors often outweigh the effect of a single gene edit, while normal-curve cut-offs inflate false passes more than twofold at six batches and 6-versus-3 bank tests miss real equivalence less than half the time. Stem-cell banking and differentiation can also select for silent 1q32.1 MDM4 or 20q11.21 BCL2L1 chromosome gains, disrupt 11p15.5 or 14q32.2 imprinted genes that govern beta-cell maturation, erode X-inactivation in female lines, or expand inherited mitochondrial DNA mutations.",
+    "check": "Compare gene edits inside paired batches from the same donor line, confirm agreement across at least two unrelated blood-group O/O seedlines using six batches per bank with exact Student-t and Welch equivalence tests, and run paired bank-and-Stage-7 checks for IC1/IC2/IG-DMR methylation, 46,XX X-inactivation (at least 279 of 300 cells), 1q32.1 MDM4 and 20q11.21 copy number, and 1,000x mitochondrial DNA sequencing with respiration reserve.",
+    "instead": "Block primary edit comparisons within Donor 1 (at least 6 paired batches), require 6 + 6 batches across at least two unrelated O/O banks for confirmatory equivalence, and enforce conjunctive imprinting, X-inactivation, MDM4/BCL2L1 and mitochondrial release gates.",
+    "added": "2026-11-18",
+    "version": "v0.8.0",
+    "contribution": "IIP-0024"
+  },
+  {
+    "id": "GY-018",
+    "source": "OFFGRID_GUARD_008_",
+    "title": "Carrying prior-batch test passes onto an untested batch, releasing research-only comparators, or rounding rare-event cell counts",
+    "tests": ["3", "5", "manufacturing"],
+    "idea": "Let a new cell batch inherit passing lab readouts or old standard errors from an earlier batch of the same cell bank, clear research-only comparators for encapsulation, or shrink rare-event cell counts by a simple recovery fraction or unverified cluster adjustment.",
+    "why": "Testing a master cell bank once does not prove that a newly differentiated islet batch or assembled pouch passed potency, sterility, viral persistence or safety-switch checks, and pairing a new batch average with an old batch standard error hides measurement uncertainty. Likewise, fractional cell counts, rounded-down recovery adjustments (such as 0 in 920 cells at 32.5% recovery, whose true 95% upper bound still exceeds 1%) or unlatched safety stops can let clonal escape, persistent viral antigen or unsupported research comparators slip past release.",
+    "check": "Bind every measurement to an immutable 4-, 5- or 7-part bank, batch or assembled-device identity, reject fractional or missing cell denominators, require zero observed persistent-virus or shedding events, compute exact binomial/Poisson upper bounds divided by measured recovery, and keep safety stops latched until a verified same-scope root-cause reset.",
+    "instead": "Isolate batch- and device-level evidence strictly per lot and device, hold all research-only comparators out of clinical release, and enforce integer rare-event counts with latched safety stops.",
+    "added": "2026-11-18",
+    "version": "v0.8.0",
+    "contribution": "IIP-0024"
+  },
+  {
     "id": "GY-017",
     "source": "OFFGRID_GUARD_007_",
     "title": "Using DNA breaks and bacterial plasmids for large multi-gene inserts, or copying rodent adenosine rules to human islets",
