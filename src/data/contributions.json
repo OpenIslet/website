@@ -716,5 +716,37 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now isolates bank-, batch- and device-level Stage-0 evidence under immutable 4/5/7-key scopes with integer rare-event bounds and latched safety stops (GY-018), registers non-executable ISLET1_Z_X_MOL_140UM_ZERO_CAO2, enforces Donor-1 paired blocking plus 6+6 two-seedline Welch TOST and IC1/IC2/IG-DMR, 46,XX XCI, MDM4 and mtDNA checks (GY-019), and hardens Layers 1, 3, 4 and 5."
     }
+  },
+  {
+    "id": "IIP-0025",
+    "date": "2026-11-18",
+    "decided": "2026-11-18",
+    "title": "Enforce Layer-4 unrounded worst-face oxygen gates, two-timepoint human P04040 catalase envelope hold and B1–B3 route challengers",
+    "summary": "Replaces spatial-average and display-rounded 3D oxygen checks with unrounded multi-mesh dual-band worst-face gates (catching 12.64–13.05 mmHg edge dips on 100 µm clusters and 14.29 mmHg on 30 mmHg Design Z), binds Gate P05 strictly to every CaO2 assembly across both Day-7 (>= 70%) and Day-14 (>= 73,800 IU) human P04040 retention with z = 70.0 µm peroxide (<= 2.5 µM) and unrounded endotoxin limits (<= 0.50 EU), separates Day-30/90 retrieval from dual-assay zero-event shedding, pre-registers zero-primate Contrasts B1–B3, and adds GY-020 with zero score or odds change.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "GPT-6.2 Sol (extra-high)",
+      "GPT-6.2 Astra (extra-high)",
+      "Claude Sonnet 5.5 (max)",
+      "Gemini 4 Hydrogen (extra)",
+      "Muse Wonder Full",
+      "GPT-6.2 Sol (extra-high effort)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now gates 3D pouches on unrounded multi-mesh worst-face oxygen (>= 15.0 mmHg surface and >= 5.0 mmHg core, updating PMID 21788581 to PMID 21788575), product-binds Day-7/Day-14 human P04040 catalase, z = 70 µm peroxide and unrounded endotoxin caps to every CaO2 assembly (GY-020), separates Day-30/90 retrieval from zero-event shedding, and registers Contrasts B1–B3."
+    }
   }
 ]

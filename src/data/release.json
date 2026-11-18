@@ -1,5 +1,5 @@
 {
-  "source_manifest_sha256": "18ffadfbf89550276718ea0441146779458dca908720cb46feec15c61ab437fc",
+  "source_manifest_sha256": "1c15a9c62a3b06ad12a24fe065edb1543ead962019534ecbdad348baba645f3e",
   "source_ranking_sha256": "c17e82c5e35f3202c0fa52e0184c34abb3a1f6439c63b0fe6fdb7d908f1a6e17",
   "champion_challenger_portfolio": {
     "slots": {
@@ -214,9 +214,9 @@
     "designs": 2160,
     "feasible": 480,
     "blocked": 1680,
-    "graveyardRules": 19,
+    "graveyardRules": 20,
     "graveyardGridRules": 10,
-    "graveyardOffGridRules": 9,
+    "graveyardOffGridRules": 10,
     "pinnedFiles": 1362,
     "constructs": 4,
     "dnaChanges": null,

@@ -1,5 +1,18 @@
 [
   {
+    "id": "GY-020",
+    "source": "OFFGRID_GUARD_010_",
+    "title": "Passing 3D pouch oxygen on spatial averages instead of worst-face edges, sizing catalase from Day-7 retention alone, or halving dose at fixed microwell pitch",
+    "tests": ["1", "5"],
+    "idea": "Judge 3D pouch oxygenation from the average surface oxygen across all clusters, size the catalase peroxide barrier from 7-day retention alone (or let unrelated device fields skip human catalase checks), or shrink clusters from 100 µm to 80 µm at the old microwell spacing without adjusting pouch area.",
+    "why": "A pouch can average over 17 mmHg across its clusters while edge faces on 100 µm clusters dip to 12.6–13.1 mmHg (or 14.3 mmHg on a 30 mmHg bead-free sheet) below the 15 mmHg insulin-secretion threshold. Catalase sized only for 70% retention at Day 7 can also fall below the 14-day 73,800 IU floor if second-week loss continues or if extra loading breaches the 158,300 U pre-cure and 0.50 EU endotoxin caps, and switching to 80 µm clusters at fixed 198.8 µm pitch halves islet dose from 1,500 to 768 IEQ per cm².",
+    "check": "Require unrounded worst-face oxygen at or above 15.0 mmHg and core oxygen at or above 5.0 mmHg across both cell bands on 40, 60 and 80 meshes, enforce same-lot Day-7 (at least 70%) and Day-14 (at least 73,800 IU) human P04040 catalase retention with z = 70.0 µm peroxide at or below 2.5 µM and unrounded 0.50 EU total endotoxin on every calcium-peroxide device, and tighten 80 µm microwells to 142.22 µm square / 152.83 µm hexagonal spacing.",
+    "instead": "Gate every 3D pouch on unrounded multi-mesh worst-face oxygen, bind two-timepoint human P04040 catalase and endotoxin limits directly to every calcium-peroxide assembly, and keep 1,500 IEQ per cm² dose-matched on 80 µm clusters.",
+    "added": "2026-11-18",
+    "version": "v0.8.0",
+    "contribution": "IIP-0025"
+  },
+  {
     "id": "GY-019",
     "source": "OFFGRID_GUARD_009_",
     "title": "Comparing edits across mismatched donor lines, using normal-curve shortcuts on small batch counts, or skipping imprinting, X-inactivation, 1q32.1 MDM4 and mtDNA checks",

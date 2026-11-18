@@ -2,6 +2,27 @@
   {
     "version": "v0.8.0",
     "date": "2026-11-18",
+    "title": "Layer-4 unrounded multi-mesh worst-face oxygen gates, two-timepoint human P04040 catalase envelope hold, and zero-primate B1–B3 route challengers",
+    "summary": "Replaces spatial-average and display-rounded 3D oxygen pass checks with unrounded multi-mesh dual-band worst-face gates, product-binds Gate P05 human P04040 catalase across Day-7 and Day-14 retention plus z = 70.0 µm peroxide and unrounded endotoxin limits, separates Day-30/90 retrieval from dual-assay zero-event shedding, pre-registers zero-primate Contrasts B1–B3, and adds Idea Graveyard guardrail GY-020 with zero change to scores or headline odds.",
+    "changes": [
+      {
+        "kind": "fixed",
+        "text": "Gated ordered 3D unit-cell oxygen pass status on unrounded min over nx in {40, 60, 80} across both cell bands (fv_harmonic_face_min_mmhg >= 15.0 mmHg and min_core_po2_mmhg >= 5.0 mmHg: flagging 12.64–13.05 mmHg worst-face hypoxia on 100 µm clusters masked by 17.08 mmHg spatial mean, while dose-matched 80 µm at 142.22 µm pitch clears 15.71–16.32 mmHg nominal and fails 13.45–13.71 mmHg under +10% joint stress, with reflection-consistent 390 µm +2.68 mmHg vs 350 µm +3.07 mmHg B1 paired gains), gated 140 µm Design Z on unrounded min-face >= 15.0 mmHg (30.71–30.90 mmHg chronic cut-offs vs 14.29 mmHg fail at 30 mmHg and 35.60 mmHg at D_chronic/3), replaced rounded Wigner-Seitz BVP comparisons (0.497 -> 0.50 mmHg) with unrounded checks, and updated PMID 21788581 to syngeneic-mouse graft study Olsson 2011 PMID 21788575 (DEC-104, IIP-0025, GY-020)."
+      },
+      {
+        "kind": "fixed",
+        "text": "Bound Stage-0 Gate P05 applicability strictly to CaO2-containing product routes so extra Design Z fields never suppress species or barrier holds, requiring same-lot Day-7 L95_t >= 70.0% (shed mass U95_t <= 30.0%), 336-h L95_t >= 73,800 IU recombinant human catalase (UniProt P04040), reconciled pre-cure input <= 158,300 U (>= 71.72% Day-14 retention at 65% cure yield, vs incompatible < 93.24% yield if Day-14 retention <= 50%), dual-basis z = 70.0 µm gel-interface 24-h repeat-burst H2O2 U95_t <= 2.5 µM (0.70–3.60 µM at 1,500 IEQ/cm^2 and 1.17–6.00 µM at 2,500 IEQ/cm^2; > 5.0 µM hard stop), unrounded U95_t(EU/mg) <= min(0.10, 0.50 / m_mg) (0.0550474 EU/mg at 9.083 mg), and canonical obs_p05_total_implant_catalase_endotoxin_eu U95_t <= 0.50 EU."
+      },
+      {
+        "kind": "added",
+        "text": "Unified Student-t (df = n - 1, default df = 5) Day-30 and Day-90 Gate 0S en-bloc retrieval (L95_t >= 0.99) across wetlab_contract.py and ingest_wetlab_results.py while keeping recovery distinct from sister-unit zero-event (k == 0, N_eff >= 2,995,731) ddPCR and viable-outgrowth shedding, and registered 16 synchronized Stage-0 endpoints (302 total), 3 arm enums and 4 boolean controls for zero-primate Contrasts B1 (80 vs 100 µm), B2 (declined human omental/suprafascial perfusion + porcine Day-30/90 retrieval, kept distinct from 52.594% portfolio credit) and B3 (140 µm Design Z +/- donor iEC)."
+      }
+    ],
+    "contribution": "IIP-0025"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-18",
     "title": "Stage-0 atomic batch/device provenance scopes, donor-blocked Student-t / 6 + 6 Welch TOST, and conjunctive imprinting, XCI, MDM4 and mtDNA guardrails",
     "summary": "Binds Stage-0 readouts to immutable 4/5/7-key bank, lot and assembled-device scopes, registers non-executable wildcard entry ISLET1_Z_X_MOL_140UM_ZERO_CAO2, adds off-grid Idea Graveyard rules GY-018 and GY-019 for donor-blocked 6 + 6 bank equivalence and epigenetic/clonal/mitochondrial QC, and hardens numerical and routing checks across Layers 1, 3, 4 and 5 with zero change to scores or headline odds.",
     "changes": [

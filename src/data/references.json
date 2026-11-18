@@ -138,6 +138,24 @@
     "year": 2007,
     "doi": "10.1371/journal.pbio.0050143"
   },
+  "19074987": {
+    "pmid": "19074987",
+    "title": "Reduced adipose tissue oxygenation in human obesity: evidence for rarefaction, macrophage chemotaxis, and inflammation without an angiogenic response.",
+    "authors": [
+      "Pasarica M",
+      "Sereda OR",
+      "Redman LM",
+      "Albarado DC",
+      "Hymel DT",
+      "Roan LE",
+      "Rood JC",
+      "Burk DH",
+      "Smith SR"
+    ],
+    "journal": "Diabetes",
+    "year": 2009,
+    "doi": "10.2337/db08-1098"
+  },
   "19276268": {
     "pmid": "19276268",
     "title": "Combining radiotherapy with APO010 in cancer treatment.",
@@ -228,16 +246,28 @@
     "year": 2011,
     "doi": "10.1038/nature09857"
   },
-  "21788581": {
-    "pmid": "21788581",
-    "title": "A low-oxygenated subpopulation of pancreatic islets constitutes a functional reserve of endocrine cells.",
+  "21693022": {
+    "pmid": "21693022",
+    "title": "A local glucose-and oxygen concentration-based insulin secretion model for pancreatic islets.",
+    "authors": [
+      "Buchwald P"
+    ],
+    "journal": "Theor Biol Med Model",
+    "year": 2011,
+    "doi": "10.1186/1742-4682-8-20"
+  },
+  "21788575": {
+    "pmid": "21788575",
+    "title": "Increased numbers of low-oxygenated pancreatic islets after intraportal islet transplantation.",
     "authors": [
       "Olsson R",
+      "Olerud J",
+      "Pettersson U",
       "Carlsson PO"
     ],
     "journal": "Diabetes",
     "year": 2011,
-    "doi": "10.2337/db09-0877"
+    "doi": "10.2337/db09-0490"
   },
   "22371586": {
     "pmid": "22371586",
@@ -913,6 +943,24 @@
     "year": 2017,
     "doi": "10.1038/nature22403"
   },
+  "28489987": {
+    "pmid": "28489987",
+    "title": "Bioengineering of an Intraabdominal Endocrine Pancreas.",
+    "authors": [
+      "Baidal DA",
+      "Ricordi C",
+      "Berman DM",
+      "Alvarez A",
+      "Padilla N",
+      "Ciancio G",
+      "Linetsky E",
+      "Pileggi A",
+      "Alejandro R"
+    ],
+    "journal": "N Engl J Med",
+    "year": 2017,
+    "doi": "10.1056/NEJMc1613959"
+  },
   "28504668": {
     "pmid": "28504668",
     "title": "HLA-E-expressing pluripotent stem cells escape allogeneic responses and lysis by NK cells.",
@@ -1264,6 +1312,21 @@
     "year": 2020,
     "doi": "10.1515/cclm-2019-1064"
   },
+  "31900242": {
+    "pmid": "31900242",
+    "title": "Pro-inflammatory cytokines induce cell death, inflammatory responses, and endoplasmic reticulum stress in human iPSC-derived beta cells.",
+    "authors": [
+      "Demine S",
+      "Schiavo AA",
+      "Marín-Cañas S",
+      "Marchetti P",
+      "Cnop M",
+      "Eizirik DL"
+    ],
+    "journal": "Stem cell research & therapy",
+    "year": 2020,
+    "doi": "10.1186/s13287-019-1523-3"
+  },
   "32619459": {
     "pmid": "32619459",
     "title": "Characterization of resistance to a recombinant hexameric Fas-ligand (APO010) in human cancer cell lines.",
@@ -1457,6 +1520,28 @@
     "journal": "Antioxidants (Basel)",
     "year": 2021,
     "doi": "10.3390/antiox10091347"
+  },
+  "35152257": {
+    "pmid": "35152257",
+    "title": "Ex Vivo Normothermic Perfusion of Human Upper Limbs.",
+    "authors": [
+      "Rezaei M",
+      "Ordenana C",
+      "Figueroa BA",
+      "Said SA",
+      "Fahradyan V",
+      "Dalla Pozza E",
+      "Orfahli LM",
+      "Annunziata MJ",
+      "Rohde E",
+      "Madajka M",
+      "Papay F",
+      "Rampazzo A",
+      "Bassiri Gharb B"
+    ],
+    "journal": "Transplantation",
+    "year": 2022,
+    "doi": "10.1097/TP.0000000000004045"
   },
   "35241836": {
     "pmid": "35241836",
@@ -1953,6 +2038,26 @@
     "journal": "Cell reports. Medicine",
     "year": 2024,
     "doi": "10.1016/j.xcrm.2024.101450"
+  },
+  "38603470": {
+    "pmid": "38603470",
+    "title": "Efficient Vascular and Neural Engraftment of Stem Cell-Derived Islets.",
+    "authors": [
+      "Thorngren J",
+      "Brboric A",
+      "Vasylovska S",
+      "Hjelmqvist D",
+      "Westermark GT",
+      "Saarimäki-Vire J",
+      "Kvist J",
+      "Balboa D",
+      "Otonkoski T",
+      "Carlsson PO",
+      "Lau J"
+    ],
+    "journal": "Diabetes",
+    "year": 2024,
+    "doi": "10.2337/db23-0123"
   },
   "38709159": {
     "pmid": "38709159",
