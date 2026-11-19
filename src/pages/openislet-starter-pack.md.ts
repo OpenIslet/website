@@ -20,6 +20,7 @@ import {
   oddsLastUpdated,
   oddsLaunchSingle,
   oddsLaunchThree,
+  oddsPortfolioScenarios,
   wholePercent,
 } from '../data/successProbability';
 import changelog from '../data/changelog.json';
@@ -81,13 +82,15 @@ const sources = technicalSources
 
 // ---- the four-hurdle computational odds, from the same data as /blueprint#odds ----
 const oddsSummary = [
-  ` Computational estimates across the four hurdles (reassessed ${longDate(oddsLastUpdated)}, up from about ${oddsLaunchThree}% across three designs and about ${oddsLaunchSingle}% for one design alone when the open draft opened on ${longDate(draft.opens)}; not clinical cure rates or lab measurements):`,
+  ` Computational estimates across the four hurdles (reassessed ${longDate(oddsLastUpdated)}, up from about ${oddsLaunchThree}% across three designs and about ${oddsLaunchSingle}% for one design alone when the open draft opened on ${longDate(draft.opens)}; unchanged after IIP-0029 and IIP-0030; not clinical cure rates or lab measurements):`,
   `- **Design A (lead baseline):** about ${wholePercent(oddsDesignA)}% (${oddsGates.map((g) => `${g.singleArmPct}%`).join(' × ')})`,
   `- **Design B (matched HLA-C and 140 µm bead-free sheet):** about ${wholePercent(oddsDesignB)}% (${oddsGates.map((g) => `${g.designBPct}%`).join(' × ')})`,
   `- **Design X (simulated Stage-0 frontier upgrades):** about ${wholePercent(oddsDesignX)}% (${oddsGates.map((g) => `${g.designXPct}%`).join(' × ')})`,
-  `- **Three designs tested side by side (at least one clears all four hurdles):** about ${wholePercent(oddsThree)}% (${oddsGates.map((g) => `${g.threeArmPct}%`).join(' × ')})`,
+  `- **Three designs tested side by side (legacy three-slot figure):** about ${wholePercent(oddsThree)}% (${oddsPortfolioScenarios.legacyThreeSlotLockedPct.toFixed(2)}% locked, ${oddsGates.map((g) => `${g.threeArmPct}%`).join(' × ')}; about ${wholePercent(oddsPortfolioScenarios.legacyThreeSlotModularPct)}% / ${oddsPortfolioScenarios.legacyThreeSlotModularPct.toFixed(2)}% modular)`,
+  `- **Shared-A/X two-route pouch architecture (exact 2^12 common-shock tree):** about ${wholePercent(oddsPortfolioScenarios.sharedAxLockedPct)}% (${oddsPortfolioScenarios.sharedAxLockedPct.toFixed(2)}%) locked when Designs A and X share one calcium-peroxide + catalase pouch route — or about ${wholePercent(oddsPortfolioScenarios.sharedAxModularPct)}% (${oddsPortfolioScenarios.sharedAxModularPct.toFixed(2)}%) modular if Stage 0 confirms cell-line × pouch compatibility (common-shock ceiling ${oddsPortfolioScenarios.commonShockCeilingPct.toFixed(2)}%)`,
   ...oddsGates.map(
-    (g) => `  - Hurdle ${g.number} (${g.title}): A ${g.singleArmPct}%, B ${g.designBPct}%, X ${g.designXPct}%, three side by side ${g.threeArmPct}%. ${g.plain}`,
+    (g) =>
+      `  - Hurdle ${g.number} (${g.title}): A ${g.singleArmPct}%, B ${g.designBPct}%, X ${g.designXPct}%, three side by side ${g.threeArmPct}%. ${g.plain}${g.pmid ? ` [PMID ${g.pmid}${g.followUpPmid ? `; 14-month follow-up n = 1: PMID ${g.followUpPmid}` : ''}]` : ''}`,
   ),
 ].join('\n');
 

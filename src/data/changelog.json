@@ -1,6 +1,48 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-19",
+    "title": "Curated Ring-1 oxygen-carrier, stem-cell source, and Wang/Liang/Reichman evidence-record repairs",
+    "summary": "Repairs oxygen-bridge false positives, missed exogenous oxygenation devices, mislabeled stem-cell islet sources, and three landmark clinical/primate records across exactly 32 of 563 Ring-1 studies (531 byte-identical), advancing atomic effects from 3,093 to 3,094 while keeping all construct sequences, Idea Graveyard entries, 2,160 Layer-1 stack scores, Layer-2 numerical predictions, and OQ-016 odds unchanged.",
+    "changes": [
+      {
+        "kind": "fixed",
+        "text": "Replaced bare substring checks in scripts/extract_ring1_corpus.py with a clause- and carrier-family-scoped oxygen-bridge classifier (48/48 synthetic adversarial controls) plus a comparator-arm guard preventing unoxygenated control arms from inheriting study-level exogenous O2 labels: cleared all 17/17 verified hemoglobin/PFC false positives (-> None) and recovered both missed exogenous O2 devices (Carlsson 2018 betaAir PMID:29288549 and Krishnan 2026 wireless O2-Macrodevice PMID:42182975, cross-referenced to CEG R1_0378 -> Exogenous_O2_Chamber_or_Bioelectronic; DEC-109, IIP-0030)."
+      },
+      {
+        "kind": "fixed",
+        "text": "Added hPSC_Derived_Unspecified_Line to schemas/extraction_schema_v0.2.json (11 -> 12 cell_source_class values, additionalProperties: false preserved) and scripts/build_cross_study_graph.py, and repaired all 15/15 misclassified stem-cell studies across 7 primary-source exact classes/lines (Kenty 2021 HUES8 hESC, Triolo 2022 MEL1 hESC, Yabe 2023 TkDN4-M hiPSC with separate donor-health provenance noted, Liang 2023 hCiPSC-8#/hPSC-8 CiPSC, Zhu 2023 H1/WA01 hESC with null multi-stage label preserving primary donor comparisons, O'Brien 2025 WA01/H1 hESC, and Reichman 2025 zimislecel USAN-documented hESC origin) plus 8 unspecified-line hPSC studies, with zero unintended site or stage regressions across the remaining 531 byte-identical studies."
+      },
+      {
+        "kind": "fixed",
+        "text": "Applied strictly schema-clean curated overrides to Wang 2024 (PMID:39326417: ChiCTR2300072200, cleared 2 garbled hemoglobin causal edges, preserved tacrolimus immunosuppression and chronic liver-disease HbA1c caveat), Liang 2023 (PMID:36624157: sub-ARS site distinct from intramuscular comparator in n = 4 diabetic macaques within n = 8 total, SI ng ml-1 normalization, and atomic split into post-prandial C-peptide 2.0 ng/mL at 8 wpt and HbA1c -44% at 12 wpt advancing atomic effects 3,093 -> 3,094 under the <= 240-char public excerpt cap), and Reichman 2025 (PMID:40544428: NCT04786262, glucocorticoid-free systemic immunosuppression, and transparent clinical safety/mortality domain repair on eff2) with exact 2,160/2,160 Layer-1 score/rank and Layer-2 numerical invariance."
+      }
+    ],
+    "contribution": "IIP-0030"
+  },
+  {
+    "version": "v0.8.0",
+    "date": "2026-11-19",
+    "title": "Reconciled ALK5i-free Stage-7 maturation (Rule S8), fail-closed two-clock and two-pulse qualification gates with > 138.3 IU Gate 0S escalation, and opt-in exploratory Mode B v2 granule sensitivity",
+    "summary": "Removes terminal ALK5i II / TGF-beta-inhibitor continuation from extended Stage-7 maturation across Layer 4, the Playbook, decision tree, Master Spec, ranker, and Blueprint, adds source-bound two-clock and two-pulse Readout 2 qualification with adult-islet reference floors, matched 40/100 mmHg independent blocks, per-trace inert-tracer alignment, and identical non-overridable > 138.3 IU Gate 0S atomic-ledger escalation across all Stage-0 paths, exposes an opt-in exploratory conserved two-pool Mode B v2 sensitivity comparator verified against piecewise SciPy DOP853 with exact Mode A parity, and adds off-grid guardrail GY-024 with zero change to construct sequences, scores, or headline odds.",
+    "changes": [
+      {
+        "kind": "fixed",
+        "text": "Reconciled the four-way Stage-7 maturation conflict across Layer 4 (pivot_rule_S8 replacing pivot_rule_S6), Playbook Contingency Matrix rows 7 (S8 / Gate 0M-maturity) and 8 (S8b / Gate 0E-epistasis), stage0_decision_tree_v1.json, rank_islet1_stacks.py / hip_core_fractional_factorial_v0.6.2.json, and ISLET-1-BLUEPRINT.md (aligned with ISLET-1-MASTER-SPEC-v0.1.md line 181 ALK5i_II withdrawal): prohibited terminal ALK5i II / TGF-beta-inhibitor continuation (Velazco-Cruz et al. 2019), retained 10 nM T3 + 1 mM NAC alongside logged ZM447439 (distinguishing Balboa et al. 2022 / Barsby et al. 2022 continuous 0.5 uM endocrine Stage-7 supplementation from OpenIslet's S7w0-only 0.0 uM post-sort covariate), and required analytical LC-MS/MS washout <= LLOQ <= 0.005 uM across >= 3 washes with 80-120% matrix spike recovery plus verified pre-co-assembly iEC/pericyte vascular function (DEC-108, IIP-0029, GY-024)."
+      },
+      {
+        "kind": "added",
+        "text": "Implemented the fail-closed Stage-0 two-clock and two-pulse maturation contract across scripts/wetlab_contract.py and scripts/ingest_wetlab_results.py (354 Stage-0 endpoints, 72 metadata keys, 110 boolean policy keys), delegating final clinical release strictly to evaluate_iip0024_atomic_stage0_ledger (preserving ISLET1_B2_5LOCUS_BASE and ISLET1_Z_X_MOL_140UM_ZERO_CAO2 execution_supported = false holds). Enforces unit-bound plus contemporaneous primary adult-islet second-pulse increment floors inside and outside Rule S8, immutable within-recipe Rule S8 Fieller (theta_0 = 0.85) under locked-plan Bonferroni or disjoint n >= 3 pilot, preserved canonical Readout 2 (Peak1/Basal1 >= 4.5x <= 8.0 min, t50 <= 3.0 min) and full Gate 0M (t90 <= 3.0 min, t50 < t90, strict pre-step Basal1/Peak1 <= 0.15 explicitly distinguished from 4.5x, glucagon >= 2.0x, threshold >= 4.5 mM, UCN3 >= 0.70, counterregulation >= 0.80), locked UTC dual clocks, independent differentiation blocks with matched 40 and 100 mmHg coverage, per-trace tracer alignment (tau_chamber <= 0.50 min) and censored short-interval holds, common-denominator sorting+reaggregation recovery eta_sort, registered-mixture plus measured (beta, alpha, delta) DEC-084 linkage, mature-insulin-specific inventory conservation with exploratory Stage-0 labeling on proinsulin:C-peptide <= 0.10 (Keymeulen et al. 2024), and identical non-overridable > 138.3 IU Gate 0S escalation plus source-replacement latching across flat, ingested, replayed, and atomic-ledger paths."
+      },
+      {
+        "kind": "added",
+        "text": "Added the strictly opt-in exploratory two-pool (RRP + Reserve) Mode B v2 granule-store sensitivity comparator and Layer 4 Part B audit (exploratory_two_clock_granule_store_sensitivity_audit_iip_0029) with strict physiological domain guards, uncapped stiffness-rate RK4 verified against piecewise SciPy DOP853 across glucose (1.73e-7 mM), Q_P, Q_R, and cumulative pre-hepatic secretion, censored short-interval shutoff, explicit f_hepatic in [0.40, 0.60] drawdown sweep kept distinct from Layer 4's f_sys_ins, ceteris-paribus isolated tau_refill meal sensitivity, local 4-schedule FIM conditioning diagnostics, and exact Mode A default parity, alongside off-grid Idea Graveyard guardrail GY-024 (24 total = 10 combinatorial grid + 14 off-grid)."
+      }
+    ],
+    "contribution": "IIP-0029"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-18",
     "title": "Resting and interferon-stimulated CXCL10 promoter-of-origin 5′-RACE checks, 2A-free 6-PWM annotation ledger, and conditional BIO-06 AAV-ITR RNA-origin attribution",
     "summary": "Credited to giufra (@frafra013): requires separate resting (0 h) and interferon-stimulated (24 h) promoter-of-origin 5′-RACE start-site attribution per named CXCL10 donor and transcription unit with insert-matched controls (keeping OQ-011 open), archives whole-donor 6-PWM JASPAR scans across all materialized 2A-free comparators plus the 145-bp AAV2 ITR (0/0/0) strictly as descriptive annotation, closes the omitted/null c1/c2 PD-L1 5′-RACE skip across all three Stage-0 paths, and links Readout 1 BIO-06 to conditional AAV-ITR RNA-origin checks (Earley 2020) with zero change to scores or headline odds.",

@@ -4,6 +4,13 @@
     "singleArmPct": 21,
     "threeArmPct": 37
   },
+  "portfolioScenarios": {
+    "sharedAxLockedPct": 50.78,
+    "sharedAxModularPct": 54.12,
+    "legacyThreeSlotLockedPct": 52.59,
+    "legacyThreeSlotModularPct": 55.63,
+    "commonShockCeilingPct": 57.92
+  },
   "gates": [
     {
       "id": "people",
@@ -28,9 +35,10 @@
       "threeArmPct": 87,
       "badge": "Seen in one person",
       "badgeKind": "partial",
-      "plain": "It has worked once: in one person, edited donor islet cells were left alone for more than a year with no anti-rejection drugs. Rather than bet all three blueprints on one identical cloak, Design A uses the standard HLA-E and CD47 cloak, Design B keeps one matched HLA-C gene checked against a 22-species foreign-peptide scan, and Design X screens a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells alongside a streptavidin-free human cuff comparator against pre-existing anti-PEG and secondary anti-streptavidin antibodies.",
-      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025, plus Islet-1’s HLA-E, HLA-C and biomaterial sequence models (IIP-0016, IIP-0017, IIP-0020).",
+      "plain": "It has worked once: in one person, edited donor islet cells were left alone for more than a year (14-month follow-up in the same recipient, n = 1) with no anti-rejection drugs. Rather than bet all three blueprints on one identical cloak, Design A uses the standard HLA-E and CD47 cloak, Design B keeps one matched HLA-C gene checked against a 22-species foreign-peptide scan, and Design X screens a 20-variant HLA-E panel to avoid triggering activating NKG2C natural killer cells alongside a streptavidin-free human cuff comparator against pre-existing anti-PEG and secondary anti-streptavidin antibodies.",
+      "evidence": "Sana UP421. Carlsson and colleagues, New England Journal of Medicine, 2025 (with 14-month follow-up correspondence in the same single recipient, n = 1, 2026), plus Islet-1’s HLA-E, HLA-C and biomaterial sequence models (IIP-0016, IIP-0017, IIP-0020).",
       "pmid": "40757665",
+      "followUpPmid": "42430558",
       "next": "Next: test all three cloaks head to head on stem-cell islets (Stage 1, lab testing)."
     },
     {

@@ -1,5 +1,18 @@
 [
   {
+    "id": "GY-024",
+    "source": "OFFGRID_GUARD_014_",
+    "title": "Keeping ALK5i II during late islet maturation, qualifying maturation on a single glucose pulse, mixing unwashed ZM447439 with blood-vessel cells, or skipping > 138.3 IU burst safety checks",
+    "tests": ["1", "4", "5"],
+    "idea": "Extend Stage-7 maturation with terminal ALK5i II (TGF-beta inhibitor) continuation, co-assemble blood-vessel cells without verifying ZM447439 washout, clear extended maturation on a single glucose pulse or a universal cross-protocol second-pulse ratio, report post-sort gains without sorting recovery, or bypass full Gate 0S safety checks when mature stored insulin exceeds 138.3 IU.",
+    "why": "Continuing ALK5i II during late maturation blunts dynamic glucose-stimulated insulin release roughly 8- to 9-fold, and unwashed ZM447439 can impair dividing blood-vessel and support cells during co-assembly. A single glucose pulse misses late-culture second-pulse secretory depletion (-33% to -38%), while a rigid cross-protocol second-pulse floor (such as 80%) falsely rejects most healthy primary adult human islet controls. Likewise, omitting common-denominator sorting recovery exaggerates yield, and high stored-insulin lots above 138.3 IU carry acute insulin-burst risk unless escalated through full atomic-ledger Gate 0S checks.",
+    "check": "Run locked-timestamp two-clock and two-pulse microfluidic perifusion (+35-minute second glucose pulse) across independent batches at matched 40 and 100 mmHg with contemporaneous primary adult human islet controls, inert-tracer alignment (tau_chamber at or below 0.50 minutes), common-denominator sorting recovery, analytical LC-MS/MS ZM447439 washout at or below 0.005 µM across at least 3 washes plus endothelial vascular function verification, mature-insulin-specific inventory measurement, and atomic-ledger Gate 0S burst/dump checks whenever stored insulin exceeds 138.3 IU.",
+    "instead": "Lock Stage-7 maturation (Rule S8) strictly to ALK5i-free culture (10 nM T3 + 1 mM NAC + washed ZM447439), require two-clock two-pulse Readout 2 checks with adult-islet controls and automatic > 138.3 IU Gate 0S escalation across every evaluation path, and keep the two-pool granule model strictly as an opt-in exploratory sensitivity tool.",
+    "added": "2026-11-19",
+    "version": "v0.8.0",
+    "contribution": "IIP-0029"
+  },
+  {
     "id": "GY-023",
     "source": "OFFGRID_GUARD_013_",
     "title": "Trusting 72-hour amyloid or complement-only antibody checks, pooling coating washout with natural decay, scaling 70:20:10 loading from assumed cell ratios, or splicing unverified BRICHOS fusions",

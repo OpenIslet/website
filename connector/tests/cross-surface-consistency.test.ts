@@ -25,7 +25,14 @@ describe('cross-surface propagation in the connector', () => {
     expect(odds).toBeTruthy();
     expect(odds.last_updated).toBe(oddsFile.lastUpdated);
     expect(odds.hurdles).toHaveLength(oddsFile.gates.length);
+    expect(odds.portfolio_scenarios?.shared_ax_two_route_locked_pct).toBe(50.78);
+    expect(odds.portfolio_scenarios?.shared_ax_two_route_modular_pct).toBe(54.12);
+    expect(odds.portfolio_scenarios?.legacy_three_slot_locked_pct).toBe(52.59);
+    expect(odds.portfolio_scenarios?.common_shock_ceiling_pct).toBe(57.92);
+    expect(odds.hurdles.find((h: { id: string }) => h.id === 'cloak')?.followUpPmid).toBe('42430558');
     expect(res.text).toContain(`about ${odds.three_designs_pct}%`);
+    expect(res.text).toContain('50.78%');
+    expect(res.text).toContain('54.12%');
 
     const x = await s.call('get_blueprint_overview', { design: 'X' });
     expect(x.text).not.toMatch(/HLA-E (?:itself )?stays unchanged/i);
@@ -81,8 +88,8 @@ describe('cross-surface propagation in the connector', () => {
     const ledger = readJson('contributions/ledger.json') as { records: Array<{ id: string }> };
 
     expect(gys).toHaveLength(10);
-    expect(publicRules.length).toBeGreaterThanOrEqual(17);
-    expect(publicRules.map((r) => r.id)).toEqual(expect.arrayContaining(['GY-011', 'GY-012', 'GY-013', 'GY-014', 'GY-015', 'GY-016', 'GY-017']));
+    expect(publicRules.length).toBeGreaterThanOrEqual(24);
+    expect(publicRules.map((r) => r.id)).toEqual(expect.arrayContaining(['GY-011', 'GY-012', 'GY-013', 'GY-014', 'GY-015', 'GY-016', 'GY-017', 'GY-024']));
     expect(scores.pareto_by_edits).toHaveLength(8);
     expect(scores.stepping_stones?.find((st) => st.id === 'MINIMAL_HIP_NICHE_PLUS_SWITCH')).toMatchObject({ rank: 45, children: 0.0526 });
 

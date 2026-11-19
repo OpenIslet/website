@@ -10,6 +10,7 @@ import {
   oddsLastUpdated,
   oddsLaunchSingle,
   oddsLaunchThree,
+  oddsPortfolioScenarios,
   wholePercent,
 } from '../data/successProbability';
 import { longDate, pubmed, release } from '../data/site';
@@ -60,6 +61,14 @@ const bVal = wholePercent(oddsDesignB);
 const xVal = wholePercent(oddsDesignX);
 const threeVal = wholePercent(oddsThree);
 const threeFormula = formula('threeArmPct');
+const sharedAxLockedVal = wholePercent(oddsPortfolioScenarios.sharedAxLockedPct);
+const sharedAxLockedExact = oddsPortfolioScenarios.sharedAxLockedPct.toFixed(2);
+const sharedAxModularVal = wholePercent(oddsPortfolioScenarios.sharedAxModularPct);
+const sharedAxModularExact = oddsPortfolioScenarios.sharedAxModularPct.toFixed(2);
+const legacyThreeLockedExact = oddsPortfolioScenarios.legacyThreeSlotLockedPct.toFixed(2);
+const legacyThreeModularVal = wholePercent(oddsPortfolioScenarios.legacyThreeSlotModularPct);
+const legacyThreeModularExact = oddsPortfolioScenarios.legacyThreeSlotModularPct.toFixed(2);
+const ceilingExact = oddsPortfolioScenarios.commonShockCeilingPct.toFixed(2);
 
 const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip chip--warn' } as const;
 ---
@@ -104,6 +113,7 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
             <p class="odd__ev footnote">
               {g.evidence}
               {g.pmid && <> <a href={pubmed(g.pmid)} target="_blank" rel="noopener">PMID {g.pmid}</a></>}
+              {g.followUpPmid && <> (14-month follow-up, n = 1: <a href={pubmed(g.followUpPmid)} target="_blank" rel="noopener">PMID {g.followUpPmid}</a>)</>}
               {g.next && <span class="odd__next">{g.next}</span>}
             </p>
           </article>
@@ -144,15 +154,18 @@ const chipClass = { shown: 'chip chip--pass', partial: 'chip', unknown: 'chip ch
             Because Designs A, B and X use genuinely different immune shields and pouch layouts across hurdles 2, 3 and 4, testing all
             three side by side pushes the chance that at least one clears every hurdle past half.
           </p>
+          <p class="res__why pretty">
+            <strong>Shared-A/X two-route pouch check:</strong> the headline about {threeVal}% ({legacyThreeLockedExact}% locked; about {legacyThreeModularVal}% / {legacyThreeModularExact}% modular) is the legacy three-slot figure. When Designs A and X share one calcium-peroxide + catalase pouch route alongside Design B’s bead-free sheet, the exact 4,096-state (2<sup>12</sup>) two-route figure is <strong>about {sharedAxLockedVal}% ({sharedAxLockedExact}%) locked</strong> — or <strong>about {sharedAxModularVal}% ({sharedAxModularExact}%) modular</strong> if the winning cell line and pouch route prove compatible in Stage 0 (common-shock ceiling {ceilingExact}%).
+          </p>
         </div>
       </div>
       <p class="odds__rule">Chance of getting past every hurdle = hurdle 1 × hurdle 2 × hurdle 3 × hurdle 4, each the chance that a design still in the running clears it.</p>
 
       <div class="notes">
         <p><strong>What these numbers are.</strong> Our own computational estimates for each combined design, anchored to human trial data where partial proof exists (hurdles 1 and 2) and to 3D physics and sequence models where it does not yet (hurdles 3 and 4). Layering new untested edits together can shift earlier hurdles too, so none of these figures is a lab measurement or the chance of a cure.</p>
-        <p><strong>Why three designs.</strong> Even the highest-scoring simulated design (Design X, about {xVal}%) faces real biological risk on its own, while Design A (about {aVal}%) keeps the simplest genetic build as a low-risk baseline control and Design B (about {bVal}%) covers an independent HLA-C and chemical-free pouch route. Advancing all three side by side reaches about {threeVal}% (see warning 4 in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a>).</p>
+        <p><strong>Why three designs — and two pouch routes.</strong> Even the highest-scoring simulated design (Design X, about {xVal}%) faces real biological risk on its own, while Design A (about {aVal}%) keeps the simplest genetic build as a low-risk baseline control and Design B (about {bVal}%) covers an independent HLA-C and chemical-free pouch route. Advancing all three side by side reaches about {threeVal}% ({legacyThreeLockedExact}% exact) on the legacy three-slot calculation, or about {sharedAxLockedVal}% ({sharedAxLockedExact}%) locked / about {sharedAxModularVal}% ({sharedAxModularExact}%) modular under the shared-A/X two-route pouch architecture (common-shock ceiling {ceilingExact}%; see warning 4 in the <a href="/downloads/ISLET-1-BLUEPRINT.md" download>full blueprint</a>).</p>
         <p><strong>Not the same as the model score.</strong> The 0 to 1 scores on the home page rank fixed-grid designs against each other. They are not percentages, and they are not these odds.</p>
-        <p><strong>Updated as designs and results evolve.</strong> Up from about {oddsLaunchThree}% across three designs (and about {oddsLaunchSingle}% for one design alone) when the open draft opened on {longDate(draft.opens)}. We review these percentages when accepted blueprint changes, new human trial data or OpenIslet lab results change our assessment. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
+        <p><strong>Updated as designs and results evolve.</strong> Up from about {oddsLaunchThree}% across three designs (and about {oddsLaunchSingle}% for one design alone) when the open draft opened on {longDate(draft.opens)}. We review these percentages when accepted blueprint changes, new human trial data or OpenIslet lab results change our assessment; all figures remain unchanged pre-wet-lab computational engineering judgements after IIP-0029 and IIP-0030. Estimates last changed {longDate(oddsLastUpdated)}; checked against the {longDate(latestBlueprintDate)} blueprint.</p>
       </div>
     </div>
   </div>

@@ -1,4 +1,20 @@
 {
+  "3891471": {
+    "pmid": "3891471",
+    "title": "The disposal of an oral glucose load in healthy subjects. A quantitative study.",
+    "authors": [
+      "Ferrannini E",
+      "Bjorkman O",
+      "Reichard GA",
+      "Pilo A",
+      "Olsson M",
+      "Wahren J",
+      "DeFronzo RA"
+    ],
+    "journal": "Diabetes",
+    "year": 1985,
+    "doi": "10.2337/diab.34.6.580"
+  },
   "7679117": {
     "pmid": "7679117",
     "title": "Expression of the cystic fibrosis transmembrane conductance regulator from a novel adeno-associated virus promoter.",
@@ -195,6 +211,17 @@
     "year": 2003,
     "doi": "10.1126/science.1079469"
   },
+  "12879249": {
+    "pmid": "12879249",
+    "title": "Insulin granule dynamics in pancreatic beta cells.",
+    "authors": [
+      "Rorsman P",
+      "Renström E"
+    ],
+    "journal": "Diabetologia",
+    "year": 2003,
+    "doi": "10.1007/s00125-003-1153-1"
+  },
   "12951775": {
     "pmid": "12951775",
     "title": "Aberrant cryptic responsiveness of the pCAT 3- and pGL3-promoter reporter vectors.",
@@ -255,6 +282,18 @@
     "journal": "Nature",
     "year": 2004,
     "doi": "10.1038/nature03076"
+  },
+  "15919785": {
+    "pmid": "15919785",
+    "title": "Pulsatile insulin secretion dictates systemic insulin delivery by regulating hepatic insulin extraction in humans.",
+    "authors": [
+      "Meier JJ",
+      "Veldhuis JD",
+      "Butler PC"
+    ],
+    "journal": "Diabetes",
+    "year": 2005,
+    "doi": "10.2337/diabetes.54.6.1649"
   },
   "16897713": {
     "pmid": "16897713",
@@ -962,6 +1001,24 @@
     "year": 2015,
     "doi": "10.1007/s00125-014-3407-5"
   },
+  "25303535": {
+    "pmid": "25303535",
+    "title": "Generation of functional human pancreatic β cells in vitro.",
+    "authors": [
+      "Pagliuca FW",
+      "Millman JR",
+      "Gürtler M",
+      "Segel M",
+      "Van Dervort A",
+      "Ryu JH",
+      "Peterson QP",
+      "Greiner D",
+      "Melton DA"
+    ],
+    "journal": "Cell",
+    "year": 2014,
+    "doi": "10.1016/j.cell.2014.09.040"
+  },
   "25311805": {
     "pmid": "25311805",
     "title": "Uncovering the peptide-binding specificities of HLA-C: a general strategy to determine the specificity of any MHC class I molecule.",
@@ -1108,6 +1165,21 @@
     "journal": "Cell Stem Cell",
     "year": 2016,
     "doi": "10.1016/j.stem.2016.02.005"
+  },
+  "27163171": {
+    "pmid": "27163171",
+    "title": "Generation of stem cell-derived β-cells from patients with type 1 diabetes.",
+    "authors": [
+      "Millman JR",
+      "Xie C",
+      "Van Dervort A",
+      "Gürtler M",
+      "Pagliuca FW",
+      "Melton DA"
+    ],
+    "journal": "Nature communications",
+    "year": 2016,
+    "doi": "10.1038/ncomms11463"
   },
   "27436875": {
     "pmid": "27436875",
@@ -1745,6 +1817,48 @@
     "year": 2019,
     "doi": "10.1038/s41586-018-0858-8"
   },
+  "30661993": {
+    "pmid": "30661993",
+    "title": "Acquisition of Dynamic Function in Human Stem Cell-Derived β Cells.",
+    "authors": [
+      "Velazco-Cruz L",
+      "Song J",
+      "Maxwell KG",
+      "Goedegebuure MM",
+      "Augsornworawat P",
+      "Hogrebe NJ",
+      "Millman JR"
+    ],
+    "journal": "Stem Cell Reports",
+    "year": 2019,
+    "doi": "10.1016/j.stemcr.2018.12.012"
+  },
+  "30710150": {
+    "pmid": "30710150",
+    "title": "Recapitulating endocrine cell clustering in culture promotes maturation of human stem-cell-derived β cells.",
+    "authors": [
+      "Nair GG",
+      "Liu JS",
+      "Russ HA",
+      "Tran S",
+      "Saxton MS",
+      "Chen R",
+      "Juang C",
+      "Li ML",
+      "Nguyen VQ",
+      "Giacometti S",
+      "Puri S",
+      "Xing Y",
+      "Wang Y",
+      "Szot GL",
+      "Oberholzer J",
+      "Bhushan A",
+      "Hebrok M"
+    ],
+    "journal": "Nat Cell Biol",
+    "year": 2019,
+    "doi": "10.1038/s41556-018-0271-4"
+  },
   "30830873": {
     "pmid": "30830873",
     "title": "Targeting insulin to the liver corrects defects in glucose metabolism caused by peripheral insulin delivery.",
@@ -1800,6 +1914,19 @@
     "journal": "Cell stem cell",
     "year": 2019,
     "doi": "10.1016/j.stem.2019.02.005"
+  },
+  "30931946": {
+    "pmid": "30931946",
+    "title": "YAP inhibition enhances the differentiation of functional stem cell-derived insulin-producing β cells.",
+    "authors": [
+      "Rosado-Olivieri EA",
+      "Anderson K",
+      "Kenty JH",
+      "Melton DA"
+    ],
+    "journal": "Nat Commun",
+    "year": 2019,
+    "doi": "10.1038/s41467-019-09404-6"
   },
   "31068696": {
     "pmid": "31068696",
@@ -1915,6 +2042,24 @@
     "year": 2020,
     "doi": "10.1515/cclm-2019-1064"
   },
+  "31839570": {
+    "pmid": "31839570",
+    "title": "Circadian Entrainment Triggers Maturation of Human In Vitro Islets.",
+    "authors": [
+      "Alvarez-Dominguez JR",
+      "Donaghey J",
+      "Rasouli N",
+      "Kenty JHR",
+      "Helman A",
+      "Charlton J",
+      "Straubhaar JR",
+      "Meissner A",
+      "Melton DA"
+    ],
+    "journal": "Cell Stem Cell",
+    "year": 2020,
+    "doi": "10.1016/j.stem.2019.11.011"
+  },
   "31900242": {
     "pmid": "31900242",
     "title": "Pro-inflammatory cytokines induce cell death, inflammatory responses, and endoplasmic reticulum stress in human iPSC-derived beta cells.",
@@ -1945,6 +2090,20 @@
     "journal": "Hum Gene Ther",
     "year": 2020,
     "doi": "10.1089/hum.2019.274"
+  },
+  "32094658": {
+    "pmid": "32094658",
+    "title": "Targeting the cytoskeleton to direct pancreatic differentiation of human pluripotent stem cells.",
+    "authors": [
+      "Hogrebe NJ",
+      "Augsornworawat P",
+      "Maxwell KG",
+      "Velazco-Cruz L",
+      "Millman JR"
+    ],
+    "journal": "Nature biotechnology",
+    "year": 2020,
+    "doi": "10.1038/s41587-020-0430-6"
   },
   "32460021": {
     "pmid": "32460021",
@@ -2017,6 +2176,16 @@
     "journal": "Cell Regen",
     "year": 2020,
     "doi": "10.1186/s13619-020-00055-3"
+  },
+  "33737253": {
+    "pmid": "33737253",
+    "title": "Glucose-induced insulin secretion in isolated human islets: Does it truly reflect β-cell function in vivo?",
+    "authors": [
+      "Henquin JC"
+    ],
+    "journal": "Mol Metab",
+    "year": 2021,
+    "doi": "10.1016/j.molmet.2021.101212"
   },
   "33838111": {
     "pmid": "33838111",
@@ -2456,6 +2625,24 @@
     "year": 2022,
     "doi": "10.1016/j.stemcr.2022.08.002"
   },
+  "36136756": {
+    "pmid": "36136756",
+    "title": "Differentiating functional human islet-like aggregates from pluripotent stem cells.",
+    "authors": [
+      "Barsby T",
+      "Ibrahim H",
+      "Lithovius V",
+      "Montaser H",
+      "Balboa D",
+      "Vähäkangas E",
+      "Chandra V",
+      "Saarimäki-Vire J",
+      "Otonkoski T"
+    ],
+    "journal": "STAR Protoc",
+    "year": 2022,
+    "doi": "10.1016/j.xpro.2022.101711"
+  },
   "36170817": {
     "pmid": "36170817",
     "title": "Engineering of immune checkpoints B7-H3 and CD155 enhances immune compatibility of MHC-I-/- iPSCs for β cell replacement.",
@@ -2533,6 +2720,14 @@
     "journal": "Nat Genet",
     "year": 2023,
     "doi": "10.1038/s41588-022-01257-y"
+  },
+  "36624157": {
+    "pmid": "36624157",
+    "title": "Implantation underneath the abdominal anterior rectus sheath enables effective and functional engraftment of stem-cell-derived islets.",
+    "authors": [],
+    "journal": "Nature metabolism",
+    "year": 2023,
+    "doi": "10.1038/s42255-022-00713-7"
   },
   "36707047": {
     "pmid": "36707047",
@@ -2811,6 +3006,27 @@
     "journal": "Science translational medicine",
     "year": 2023,
     "doi": "10.1126/scitranslmed.add2387"
+  },
+  "38012450": {
+    "pmid": "38012450",
+    "title": "Encapsulated stem cell-derived β cells exert glucose control in patients with type 1 diabetes.",
+    "authors": [
+      "Keymeulen B",
+      "De Groot K",
+      "Jacobs-Tulleneers-Thevissen D",
+      "Thompson DM",
+      "Bellin MD",
+      "Kroon EJ",
+      "Daniels M",
+      "Wang R",
+      "Jaiman M",
+      "Kieffer TJ",
+      "Foyt HL",
+      "Pipeleers D"
+    ],
+    "journal": "Nat Biotechnol",
+    "year": 2024,
+    "doi": "10.1038/s41587-023-02055-5"
   },
   "38508139": {
     "pmid": "38508139",
@@ -3141,6 +3357,36 @@
     "year": 2025,
     "doi": "10.1038/s41467-025-59924-7"
   },
+  "40544428": {
+    "pmid": "40544428",
+    "title": "Stem Cell-Derived, Fully Differentiated Islets for Type 1 Diabetes.",
+    "authors": [
+      "Reichman TW",
+      "Markmann JF",
+      "Odorico J",
+      "Witkowski P",
+      "Fung JJ",
+      "Wijkstrom M",
+      "Kandeel F",
+      "de Koning EJP",
+      "Peters AL",
+      "Mathieu C",
+      "Kean LS",
+      "Bruinsma BG",
+      "Wang C",
+      "Mascia M",
+      "Sanna B",
+      "Marigowda G",
+      "Pagliuca F",
+      "Melton D",
+      "Ricordi C",
+      "Rickels MR",
+      "VX-880-101 FORWARD Study Group"
+    ],
+    "journal": "The New England journal of medicine",
+    "year": 2025,
+    "doi": "10.1056/NEJMoa2506549"
+  },
   "40605797": {
     "pmid": "40605797",
     "title": "Pretargeted Anti-CD20 Radioimmunotherapy with scFv Fusion Protein Safely Combines with BEAM and ASCT in Patients with High-risk B-cell Lymphomas.",
@@ -3285,6 +3531,39 @@
     "year": 2026,
     "doi": "10.1007/s00125-025-06582-5"
   },
+  "41372150": {
+    "pmid": "41372150",
+    "title": "Limitations in PPARα-dependent mitochondrial programming restrain the differentiation of human stem cell-derived β cells.",
+    "authors": [
+      "Lietzke AC",
+      "Walker EM",
+      "Bealer E",
+      "Crumley K",
+      "King J",
+      "Stendahl AM",
+      "Zhu J",
+      "Pearson GL",
+      "Levi-D'Ancona E",
+      "Henry-Kanarek B",
+      "Davidson RK",
+      "Li J",
+      "Reck EC",
+      "Wu Y",
+      "Arnipalli M",
+      "Pham JP",
+      "Mundada L",
+      "Sidarala V",
+      "Herron TJ",
+      "Coronel MM",
+      "Pennathur S",
+      "Madsen JGS",
+      "Shea LD",
+      "Soleimanpour SA"
+    ],
+    "journal": "Nature communications",
+    "year": 2025,
+    "doi": "10.1038/s41467-025-66022-1"
+  },
   "41642947": {
     "pmid": "41642947",
     "title": "Programmable genome editing in human cells using RNA-guided bridge recombinases.",
@@ -3340,6 +3619,57 @@
     "journal": "Cell death & disease",
     "year": 2026,
     "doi": "10.1038/s41419-026-08728-8"
+  },
+  "41997152": {
+    "pmid": "41997152",
+    "title": "An optimized protocol for efficient derivation of pancreatic islets from multiple human pluripotent stem cell lines.",
+    "authors": [
+      "Wu S",
+      "Chandel S",
+      "Bryzgalova G",
+      "Efstathopoulos P",
+      "Blust K",
+      "Zhao C",
+      "Erbil E",
+      "Falk A",
+      "Hedhammar M",
+      "Berggren PO",
+      "Lanner F"
+    ],
+    "journal": "Stem Cell Reports",
+    "year": 2026,
+    "doi": "10.1016/j.stemcr.2026.102892"
+  },
+  "42182975": {
+    "pmid": "42182975",
+    "title": "Wireless battery-free oxygenation devices enable extended immunosuppression-free islet transplantation in minimally invasive sites.",
+    "authors": [],
+    "journal": "Device",
+    "year": 2026,
+    "doi": "10.1016/j.device.2026.101084"
+  },
+  "42430558": {
+    "pmid": "42430558",
+    "title": "Long-Term Survival of Hypoimmune Allogeneic Islets without Immunosuppression.",
+    "authors": [
+      "Carlsson PO",
+      "Hu X",
+      "Scholz H",
+      "Lundgren T",
+      "Ingvast S",
+      "Scholz T",
+      "Eriksson O",
+      "Liss P",
+      "Velikyan I",
+      "Yu D",
+      "Tediashvili G",
+      "Deuse T",
+      "Korsgren O",
+      "Schrepfer S"
+    ],
+    "journal": "The New England journal of medicine",
+    "year": 2026,
+    "doi": "10.1056/NEJMc2604408"
   },
   "42547502": {
     "pmid": "42547502",

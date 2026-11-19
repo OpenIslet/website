@@ -1,6 +1,6 @@
 {
-  "source_manifest_sha256": "13e6c5692013b810d8bb81d7124b830dac153fc5b165d822a69ca35bf2246b57",
-  "source_ranking_sha256": "82989771f6aeab2791efca908cc009ba640588d57a09efe223d105e75f713e1f",
+  "source_manifest_sha256": "c128c1c7028bc79be518fa422df19700ddc10917bb45b3f5f0521cd169c62c76",
+  "source_ranking_sha256": "7926bbe94330e75b6ac209507d1c4cb0bcec51033b45954fe16b6366d70141dc",
   "champion_challenger_portfolio": {
     "slots": {
       "A": {
@@ -205,7 +205,7 @@
   "counts": {
     "studies": 563,
     "arms": 596,
-    "findings": 3093,
+    "findings": 3094,
     "cegScreened": 3922,
     "cegStudies": 1151,
     "cegArms": 7659,
@@ -214,9 +214,9 @@
     "designs": 2160,
     "feasible": 480,
     "blocked": 1680,
-    "graveyardRules": 23,
+    "graveyardRules": 24,
     "graveyardGridRules": 10,
-    "graveyardOffGridRules": 13,
+    "graveyardOffGridRules": 14,
     "pinnedFiles": 1364,
     "constructs": 4,
     "dnaChanges": null,

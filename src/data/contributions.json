@@ -839,5 +839,67 @@
       "kind": "changed_blueprint",
       "note": "The blueprint now enforces segregated Arm 1/2/3 Gate 0d checks and paired intact-plus-increment CD16+ ADCC limits (<= 5.0%), pre-registers a paired Design A vs B2 donor study (n = 24–29 + 2×2 phi_AB tables), scales 70:20:10 loading by measured output and glucagon retention, adds 72-h/Day-28/Day-84 IAPP gates (GY-023), and holds NM_021999.5 ITM2B at 0%."
     }
+  },
+  {
+    "id": "IIP-0029",
+    "date": "2026-11-19",
+    "decided": "2026-11-19",
+    "title": "Fix Stage-7 ALK5i maturation bug, add two-clock two-pulse gates, and granule sensitivity",
+    "summary": "Reconciles Stage-7 maturation on ALK5i-free culture (10 nM T3 + 1 mM NAC + washed ZM447439 with pre-co-assembly vascular verification), adds two-clock and two-pulse Readout 2 checks with adult-islet controls, tracer alignment, and non-overridable > 138.3 IU Gate 0S escalation, exposes an opt-in exploratory two-pool granule comparator, and adds GY-024.",
+    "type": "Problem found",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "GPT-6.2 Sol (extra-high)",
+      "GPT-6.2 Astra (extra-high)",
+      "Claude Sonnet 5.5 (max)",
+      "Muse Wonder Full",
+      "GPT-6.2 Sol (extra-high effort)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now bars late-stage ALK5i II continuation during islet maturation, requires two-clock and two-pulse glucose checks with adult-islet controls, tracer alignment, and vascular-safe ZM447439 washout, escalates high stored-insulin lots (> 138.3 IU) into full Gate 0S safety checks, adds an opt-in exploratory granule-reserve model, and records GY-024."
+    }
+  },
+  {
+    "id": "IIP-0030",
+    "date": "2026-11-19",
+    "decided": "2026-11-19",
+    "title": "Repair Ring-1 oxygen-carrier false positives, hPSC cell-source labels, and Wang/Liang curated records",
+    "summary": "Replaces bare substring checks with a clause-scoped oxygen-carrier classifier and comparator-arm guard across the 563-study corpus (clearing 17 false tags and recovering Carlsson betaAir and Krishnan O2-Macrodevice), repairs 15 stem-cell labels with hPSC_Derived_Unspecified_Line, and fixes Wang 2024, Liang 2023 (3,093 -> 3,094 effects), and Reichman 2025.",
+    "type": "Problem found",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "GPT-6.2 Sol (extra-high)",
+      "GPT-6.2 Astra (extra-high)",
+      "Claude Sonnet 5.5 (max)",
+      "Muse Wonder Full",
+      "GPT-6.2 Sol (extra-high effort)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The evidence record behind the blueprint now removes 17 mistaken oxygen-device tags caused by blood-test mentions, flags two real oxygen-supplying devices that were missed, fixes cell-source labels across 15 stem-cell islet studies, and separates mixed blood-sugar and C-peptide results in key clinical and primate studies, without changing any construct sequence, score, or odds."
+    }
   }
 ]

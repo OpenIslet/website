@@ -390,7 +390,7 @@
     "id": "OQ-012",
     "title": "Can the safety switch remove almost every cell?",
     "plain": "Every cell carries a safety switch that a drug (AP1903) should trigger to remove them. The proposed target is fewer than one cell in 100 million able to regrow. Nothing has shown that yet.",
-    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9, reconciling 565/746 canonical vs 562/746 insertion-code-inclusive heavy-atom pairs < 2.2 A on 1NW9/1JXQ; IIP-0011, IIP-0015 and IIP-0024). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed), and IIP-0024 enforces strict pre-normalisation integer (k, n) cell counts, exact independent recovery-calibrated bounds U95 = (1 - 0.05**(1/n)) / eta (rejecting floor(n * eta) or unverified cluster-design shortcuts), sister-unit Day-90 Gate 0S en-bloc recovery (L95_t >= 0.99) plus dual < 10^-6 shedding (n >= 2,995,731), and monotonic safety-stop latching across batches (Di Stasi 2011, PMID 22047558; Wunderlich 2022, PMID 35795779; rule GY-018). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches). For the unscored Stage-0 Design Y landing-pad wildcard (IIP-0023), where cHS4 + HNRNPA2B1 UCOE + UBC-iCasp9 sits as the 7th transcription unit inside a biallelic 11,066-bp B2M minicircle, gate Y-04 additionally checks 60-day multi-cistron co-retention against supercoiling coupling (Naughton 2013, PMID 23416946; Gilbert 2014, PMID 24584092) and requires k = 0 clonogenic survivors across N_eff = N * f_clonogenic * eta >= 299,573,228 effective trials (exact Poisson upper95 <= 1.0e-8).",
+    "detail": "iCasp9 is inserted on both AAVS1 copies from a promoter active in every cell type, flanked by an HNRNPA2B1-proximal 455 bp CpG-core anti-silencing candidate (GRCh38 chr7:26200580-26201034; CBX3 is a legacy alias, not proof of identity to the published CBX3-side fragment). Stage-0 tests compare four anti-silencing and orientation arms alongside matched 2x2 co-directional and convergent splice-cleaned comparators (Knight 2012, PMID 22696657; excluding intron-blocking SPA poly(A) inside PPP1R12C) while checking host-gene (PPP1R12C) splicing, calibrated minigene and clonal UMI junction sequencing (at least 3,700 UMIs), double-stranded RNA stress and DNA methylation alongside the untouched reference donor, and audit local geometry across three crystal structures of the switch's domains (PDB 1BL4, 1JXQ and 1NW9, reconciling 565/746 canonical vs 562/746 insertion-code-inclusive heavy-atom pairs < 2.2 A on 1NW9/1JXQ; IIP-0011, IIP-0015 and IIP-0024). The bound of one in 100 million counts only cells able to regrow, which is a different endpoint from the early bulk-kill screen (99.9% of cells killed), and IIP-0024 enforces strict pre-normalisation integer (k, n) cell counts, exact independent recovery-calibrated bounds U95 = (1 - 0.05**(1/n)) / eta (rejecting floor(n * eta) or unverified cluster-design shortcuts), sister-unit Day-90 Gate 0S en-bloc recovery (L95_t >= 0.99) plus dual < 10^-6 shedding (n >= 2,995,731), and monotonic safety-stop latching across batches (Di Stasi 2011, PMID 22047558; Wunderlich 2022, PMID 35795779; rule GY-018). Under IIP-0029 (rule GY-024), any lot whose mature stored-insulin inventory exceeds 138.3 IU (on either U95_t or max lot) also triggers identical non-overridable escalation into scope-matched atomic-ledger Gate 0S burst (<= 2.8 IU 1-h) and 24-h dump (<= 0.15) safety checks across flat, ingested, replayed and atomic-ledger paths (with exploratory Stage-0 proinsulin:C-peptide <= 0.10 tracking per Keymeulen 2024, PMID 38012450). Killing efficiency in hypoxic, immature or rogue cells across all 9.335 x 10^8 total living cells (including endothelial and pericyte support cells) is unmeasured (rule GY-002 excludes lineage-restricted switches). For the unscored Stage-0 Design Y landing-pad wildcard (IIP-0023), where cHS4 + HNRNPA2B1 UCOE + UBC-iCasp9 sits as the 7th transcription unit inside a biallelic 11,066-bp B2M minicircle, gate Y-04 additionally checks 60-day multi-cistron co-retention against supercoiling coupling (Naughton 2013, PMID 23416946; Gilbert 2014, PMID 24584092) and requires k = 0 clonogenic survivors across N_eff = N * f_clonogenic * eta >= 299,573,228 effective trials (exact Poisson upper95 <= 1.0e-8).",
     "tests": [
       "5"
     ],
@@ -401,7 +401,8 @@
     ],
     "rules": [
       "GY-002",
-      "GY-018"
+      "GY-018",
+      "GY-024"
     ],
     "pmids": [
       "23307570",
@@ -415,10 +416,11 @@
       "23416946",
       "24584092",
       "22047558",
-      "35795779"
+      "35795779",
+      "38012450"
     ],
-    "settle": "Compare the AAVS1 anti-silencing, orientation and splice-cleaned arms across maturation with calibrated minigene and UMI junction sequencing, check PPP1R12C splicing, double-stranded RNA stress and CpG methylation, and give AP1903 to edited cultures, including at low oxygen, to count integer clonogenic survivors against exact recovery-calibrated bounds.",
-    "source": "Concise specification sections 4.4, 4.6 and 9; IIP-0011, IIP-0015, IIP-0023 and IIP-0024",
+    "settle": "Compare the AAVS1 anti-silencing, orientation and splice-cleaned arms across maturation with calibrated minigene and UMI junction sequencing, check PPP1R12C splicing, double-stranded RNA stress and CpG methylation, give AP1903 to edited cultures (including at low oxygen) to count integer clonogenic survivors against exact recovery-calibrated bounds, and verify scope-matched atomic-ledger Gate 0S 1-h burst (<= 2.8 IU) and 24-h dump (<= 0.15) safety checks whenever mature stored-insulin inventory exceeds 138.3 IU.",
+    "source": "Concise specification sections 4.4, 4.6, 5 and 9; rules GY-002, GY-018 and GY-024; IIP-0011, IIP-0015, IIP-0023, IIP-0024 and IIP-0029",
     "status": "open",
     "added": "2026-10-24",
     "since": "v0.8.0"
@@ -497,8 +499,8 @@
   {
     "id": "OQ-016",
     "title": "Which assumptions and definition of success sit behind the four-hurdle odds estimate?",
-    "plain": "The 27%, 31% and 36% single-design figures (Designs A, B and X) and the 53% three-design figure are uncalibrated computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits or biomaterial shields together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
-    "detail": "Raised in IIP-0003 (issue #3) and reassessed on 2026-11-16 after IIP-0016..IIP-0020. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked products or 55.63% under Stage-0 cell-line by pouch modularity (up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline), IIP-0024 enforces strict non-finite and marginal-above-common-shock validation plus logs the conditional two-seedline Hurdle-1 sensitivity (phi_donor = 0.25: 50.78% -> 51.53%-51.74% shared A/X; 52.59% -> 53.33%-53.50% three-slot), IIP-0025 separates zero-primate Contrast B2 route qualification from the joint-failure data required for 52.594% three-route portfolio credit, and IIP-0028 defines conditional H2/H3 Frechet dependence phi_AB via full 2x2 Design A vs Design B2 concordance tables (phi_AB = 1.0 shifts shared-A/X locked 50.78% -> 49.03% and 3-route locked 52.59% -> 49.72%) while keeping published 27% / 31% / 36% / 53% headline percentages unchanged.",
+    "plain": "The 27%, 31% and 36% single-design figures (Designs A, B and X) and the 53% legacy three-slot figure (or about 51% / 50.78% locked and about 54% / 54.12% modular under the shared-A/X two-route pouch architecture) are uncalibrated computational judgements for clearing four in-body hurdles in sequence, assuming the edited cells work as designed and pass lab safety checks before any trial. Layering new untested edits or biomaterial shields together can shift earlier human-anchored hurdles too, moving from one design to three depends on how much the designs overlap at each hurdle, and the estimate depends on which clinical outcome counts as success.",
+    "detail": "Raised in IIP-0003 (issue #3), reassessed on 2026-11-16 after IIP-0016..IIP-0020, and held unchanged (0.00 percentage-point change) on 2026-11-19 after IIP-0029 and IIP-0030. Each step in the four-hurdle estimate is judged for a design still in the running after the earlier hurdles, with three-design conditional pass rates (88% x 87% x 86% x 80%) derived from an explicit 4,096-state (2^12) common-shock tree across Designs A (27.0%, ~27%), B (31.1%, ~31%) and X (36.3%, ~36%) giving 52.59% (about 53%; 52.22% if Hurdle-3 common shock stays fixed at c_3 = 0.88) for three locked slots or 55.63% (about 56%) modular, whereas under the shared-A/X two-route CaO2+catalase pouch architecture alongside Design B's bead-free sheet the exact 2^12 figure is 50.78% (about 51%) locked or 54.12% (about 54%) modular under Stage-0 cell-line x pouch compatibility (common-shock ceiling 57.92%; up from 21% and 37% on 2026-11-05, and 26% / 31% / 34% / 51.48% on 2026-11-15). Hurdle 2 cites both Sana UP421's primary 12-week NEJM report (Carlsson 2025, PMID 40757665) and its 14-month follow-up correspondence in the same single recipient (n = 1; Carlsson 2026, PMID 42430558). Lab release gates (OQ-012 safety-switch escape, OQ-006 DNA rearrangements, and product-specific Gate 1 insulin and glucagon function plus Stage-0 construct and biomaterial gates) sit outside the four hurdles as pre-trial pass/fail conditions, and a single clinical endpoint (such as one-year insulin independence without anti-rejection drugs and without severe hypoglycaemia) must be fixed before replacing starting judgements with data. IIP-0022 replaces hard-coded 2^12 portfolio decimals in Layer 1 with an executable 4,096-state (1,024 positive-mass states) common-shock generator reporting both legacy 3-slot (55.63% modular / 52.59% locked) and shared-A/X 2-route CaO2+catalase pouch unions (54.12% modular / 50.78% locked; 53.16% and 49.71% on the 2026-11-15 DEC-098 baseline), IIP-0024 enforces strict non-finite and marginal-above-common-shock validation plus logs the conditional two-seedline Hurdle-1 sensitivity (phi_donor = 0.25: 50.78% -> 51.53%-51.74% shared A/X; 52.59% -> 53.33%-53.50% three-slot), IIP-0025 separates zero-primate Contrast B2 route qualification from the joint-failure data required for 52.594% three-route portfolio credit, and IIP-0028 defines conditional H2/H3 Frechet dependence phi_AB via full 2x2 Design A vs Design B2 concordance tables (phi_AB = 1.0 shifts shared-A/X locked 50.78% -> 49.03% and 3-route locked 52.59% -> 49.72%) while keeping published 27% / 31% / 36% / 53% headline percentages unchanged on 2026-11-19.",
     "tests": [
       "1",
       "2A",
@@ -513,9 +515,12 @@
       "X"
     ],
     "rules": [],
-    "pmids": [],
+    "pmids": [
+      "40757665",
+      "42430558"
+    ],
     "settle": "Fix one clinical definition of success, test the per-design and shared failure assumptions in Stage 0-2 experiments, and replace the computational judgements with measured pass rates as lab and preclinical results arrive.",
-    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, IIP-0024, IIP-0025, IIP-0028, and the full blueprint (warning 4)",
+    "source": "IIP-0003, IIP-0016..IIP-0020, IIP-0022, IIP-0024, IIP-0025, IIP-0028, IIP-0029, IIP-0030, and the full blueprint (warning 4)",
     "status": "open",
     "added": "2026-11-05",
     "since": "v0.8.0"
@@ -554,8 +559,8 @@
   {
     "id": "OQ-018",
     "title": "Do insulin and glucagon release recover after low oxygen, and can higher-beta mixes match the 60:30:10 default?",
-    "plain": "Surviving the first 14 days of low oxygen does not guarantee that the cells still release insulin and glucagon properly afterwards. Separately, packing more beta cells into each cluster could shrink the graft if insulin shut-off and low-sugar glucagon rescue still hold up.",
-    "detail": "Raised in IIP-0004 and IIP-0006. Surviving a 336-hour hypoxic bridge does not establish preserved glucose-regulated insulin secretion, rapid shut-off, or low-glucose glucagon rescue during and after reoxygenation (Wang 2025, PMID 40404627; Chendke 2023, PMID 37476069). Stage 0 measures hormone function after recovery before crediting functional dose, and compares intermediate beta:alpha:delta mixtures (70:20:10, 70:25:5, 80:15:5 and 80:10:10) beside the 60:30:10 default and pure beta-cell controls (Perez-Frances 2024, PMID 39169271), keeping 60:30:10 unless independent batches pass both shut-off and glucagon-rescue checks. IIP-0021 also records conditional 13-state portal exercise insulin-washout lag bounds across 150,000 (v = 0.18, kept distinct from Stage-5A's 25,000-35,000 IEQ forearm sentinel; 4.64 mM preserved paracrine vs 3.53 mM scaled), 300,000 (v = 0.36, T_ins <= 3.64 min) and non-waivable full-dose 500,000 total IEQ (v = 0.60, T_ins <= 1.96-2.71 min), and requires post-washout dynamic GSIS SI >= 3.0, >= 85% absolute insulin output retention and >= 2.0-fold low-glucose alpha-cell glucagon induction after any metabolic-rest or Nec-1s x Ferrostatin-1 conditioning exposure (MacDonald 2007, PMID 17503968).",
+    "plain": "Surviving the first 14 days of low oxygen does not guarantee that the cells still release insulin and glucagon properly afterwards, and single-pulse lab tests can miss late-culture second-pulse depletion or ALK5i-inhibited maturation. Separately, packing more beta cells into each cluster could shrink the graft if insulin shut-off and low-sugar glucagon rescue still hold up.",
+    "detail": "Raised in IIP-0004 and IIP-0006, and expanded in IIP-0021 and IIP-0029. Surviving a 336-hour hypoxic bridge does not establish preserved glucose-regulated insulin secretion, rapid shut-off, or low-glucose glucagon rescue during and after reoxygenation (Wang 2025, PMID 40404627; Chendke 2023, PMID 37476069). Stage 0 measures hormone function after recovery before crediting functional dose, and compares intermediate beta:alpha:delta mixtures (70:20:10, 70:25:5, 80:15:5 and 80:10:10) beside the 60:30:10 default and pure beta-cell controls (Perez-Frances 2024, PMID 39169271), keeping 60:30:10 unless independent batches pass both shut-off and glucagon-rescue checks. IIP-0021 also records conditional 13-state portal exercise insulin-washout lag bounds across 150,000 (v = 0.18, kept distinct from Stage-5A's 25,000-35,000 IEQ forearm sentinel; 4.64 mM preserved paracrine vs 3.53 mM scaled), 300,000 (v = 0.36, T_ins <= 3.64 min) and non-waivable full-dose 500,000 total IEQ (v = 0.60, T_ins <= 1.96-2.71 min), and requires post-washout dynamic GSIS SI >= 3.0, >= 85% absolute insulin output retention and >= 2.0-fold low-glucose alpha-cell glucagon induction after any metabolic-rest or Nec-1s x Ferrostatin-1 conditioning exposure (MacDonald 2007, PMID 17503968). Under IIP-0029 (rule GY-024), Stage-7 maturation (Rule S8) is reconciled on ALK5i-free culture (prohibiting terminal ALK5i II continuation that blunts dynamic GSIS ~8-9-fold, Velazco-Cruz 2019 PMID 30661993; keeping 10 nM T3 + 1 mM NAC + logged ZM447439 per Balboa 2022 PMID 35241836 and Barsby 2022 PMID 36136756 with analytical LC-MS/MS <= 0.005 uM washout across >= 3 washes and pre-co-assembly endothelial vascular function verification) and Readout 2 adds source-bound locked-UTC two-clock and two-pulse microfluidic perifusion (+35-min second pulse with unit-bound and contemporaneous primary adult-islet reference floors instead of universal ratios, matched 40/100 mmHg independent blocks, per-trace inert-tracer alignment tau_chamber <= 0.50 min, common-denominator sorting+reaggregation recovery eta_sort, registered-mixture + measured (beta, alpha, delta) DEC-084 linkage, exploratory proinsulin:C-peptide <= 0.10 per Keymeulen 2024 PMID 38012450, and non-overridable > 138.3 IU Gate 0S escalation), alongside an opt-in exploratory conserved two-pool Mode B v2 granule-store sensitivity comparator (Rorsman 2003 PMID 12879249; Meier 2005 PMID 15919785; Henquin 2021 PMID 33737253) verified against piecewise SciPy DOP853 with exact Mode A parity.",
     "tests": [
       "1",
       "5"
@@ -565,15 +570,25 @@
       "B",
       "X"
     ],
-    "rules": [],
+    "rules": [
+      "GY-024"
+    ],
     "pmids": [
       "40404627",
       "37476069",
       "39169271",
-      "17503968"
+      "17503968",
+      "30661993",
+      "35241836",
+      "36136756",
+      "31068696",
+      "38012450",
+      "12879249",
+      "15919785",
+      "33737253"
     ],
-    "settle": "Measure dynamic insulin secretion, 3-minute shut-off and low-sugar glucagon release after recovery from the 14-day low-oxygen window, and compare intermediate beta:alpha:delta mixtures against 60:30:10 across independent differentiation batches.",
-    "source": "Concise specification sections 5 and 9; IIP-0004, IIP-0006 and IIP-0021",
+    "settle": "Run ALK5i-free Stage-7 maturation with verified pre-iEC ZM447439 LC-MS/MS <= 0.005 uM washout and vascular function checks, measure locked-clock two-pulse insulin release, 3-minute shut-off, contemporaneous adult-islet reference floors, inert-tracer alignment, common-denominator sorting recovery and low-sugar glucagon release during and after recovery from the 14-day low-oxygen window, escalate > 138.3 IU stored-insulin lots into atomic Gate 0S checks, and compare intermediate beta:alpha:delta mixtures against 60:30:10 across independent differentiation blocks.",
+    "source": "Concise specification sections 5 and 9; rule GY-024; IIP-0004, IIP-0006, IIP-0021 and IIP-0029",
     "status": "open",
     "added": "2026-11-12",
     "since": "v0.8.0"

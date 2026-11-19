@@ -19,6 +19,7 @@ export {
   oddsLastUpdated,
   oddsLaunchSingle,
   oddsLaunchThree,
+  oddsPortfolioScenarios,
   wholePercent,
 } from '../../src/data/successProbability';
 export * as versions from '../../src/data/versions';

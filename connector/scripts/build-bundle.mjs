@@ -623,6 +623,13 @@ put('blueprint/overview.json', {
     design_b_pct: site.wholePercent(site.oddsDesignB),
     design_x_pct: site.wholePercent(site.oddsDesignX),
     three_designs_pct: site.wholePercent(site.oddsThree),
+    portfolio_scenarios: {
+      shared_ax_two_route_locked_pct: site.oddsPortfolioScenarios.sharedAxLockedPct,
+      shared_ax_two_route_modular_pct: site.oddsPortfolioScenarios.sharedAxModularPct,
+      legacy_three_slot_locked_pct: site.oddsPortfolioScenarios.legacyThreeSlotLockedPct,
+      legacy_three_slot_modular_pct: site.oddsPortfolioScenarios.legacyThreeSlotModularPct,
+      common_shock_ceiling_pct: site.oddsPortfolioScenarios.commonShockCeilingPct,
+    },
     hurdles: site.oddsGates,
   },
   tests: site.gates.map((g) => ({ id: g.id, number: g.n, short: g.short, name: g.name, question: g.ask, explanation: g.explain, parts: g.parts ?? null })),

@@ -84,6 +84,25 @@ test('a hurdle links to PubMed only where its evidence is a paper, and the PubMe
   for (const g of cited) assert.match(g.pmid, /^\d{5,9}$/, g.id);
   assert.equal(new Set(cited.map((g) => g.pmid)).size, cited.length, 'a paper is cited twice');
   assert.ok(cited.length >= 2, 'the two human trials should be cited');
+  for (const g of odds.oddsGates.filter((x) => x.followUpPmid)) {
+    assert.match(g.followUpPmid, /^\d{5,9}$/, `${g.id} followUpPmid`);
+    assert.notEqual(g.followUpPmid, g.pmid, `${g.id} followUpPmid duplicates pmid`);
+  }
+  const cloak = odds.oddsGates.find((g) => g.id === 'cloak');
+  assert.equal(cloak?.pmid, '40757665');
+  assert.equal(cloak?.followUpPmid, '42430558');
+});
+
+test('structured two-route and legacy three-slot 2^12 portfolio scenarios are exported and ordered sensibly', () => {
+  const s = odds.oddsPortfolioScenarios;
+  assert.equal(s.sharedAxLockedPct, 50.78);
+  assert.equal(s.sharedAxModularPct, 54.12);
+  assert.equal(s.legacyThreeSlotLockedPct, 52.59);
+  assert.equal(s.legacyThreeSlotModularPct, 55.63);
+  assert.equal(s.commonShockCeilingPct, 57.92);
+  assert.ok(s.sharedAxLockedPct < s.legacyThreeSlotLockedPct);
+  assert.ok(s.sharedAxLockedPct < s.sharedAxModularPct);
+  assert.ok(s.legacyThreeSlotModularPct < s.commonShockCeilingPct);
 });
 
 test('a slip in the file stops the build with a clear message', async () => {
@@ -108,7 +127,8 @@ test('a slip in the file stops the build with a clear message', async () => {
 test('the page takes its numbers from the file, so none of the figures is typed into the page', async () => {
   const section = await readFile(join(root, 'src/components/Odds.astro'), 'utf8');
   const markup = section.slice(0, section.indexOf('<style>'));
-  assert.ok(!/\b(21|26|27|31|34|36|37|51|53)\s*%/.test(markup), 'a combined figure is written into the section instead of being worked out');
+  assert.ok(!/\b(21|26|27|31|34|36|37|51|53|54|56)\s*%/.test(markup), 'a combined figure is written into the section instead of being worked out');
+  assert.ok(!/\b(50\.78|54\.12|52\.59|55\.63|57\.92)\s*%/.test(markup), 'a portfolio scenario figure is written into the section instead of being worked out');
   for (const g of odds.oddsGates) {
     for (const key of ['singleArmPct', 'designBPct', 'designXPct', 'threeArmPct']) {
       assert.ok(!markup.includes(`>${g[key]}%<`), `${g.id} ${key} is written into the section`);

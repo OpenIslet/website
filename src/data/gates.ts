@@ -31,7 +31,7 @@ export const gates: Gate[] = [
     ask: 'Do the cells release insulin in the right amount when blood sugar rises, and stop quickly when it falls?',
     explain: [
       'A healthy pancreas gives a quick burst of insulin when sugar rises, then a steady supply, and shuts off fast when sugar drops. The new cells have to do the same, or blood sugar swings too high or too low.',
-      'That means growing the right mix of mature cells (about 60% beta, 30% alpha and 10% delta, with beta-rich 70:20:10 mixes gated on measured per-beta insulin output and preserved glucagon response) in small clusters, so every cell gets oxygen and can sense sugar. Insulin should stop within about 3 minutes of sugar falling.',
+      'That means growing the right mix of mature cells (about 60% beta, 30% alpha and 10% delta, matured in ALK5i-free Stage-7 culture with washed ZM447439 and checked on two-clock, two-pulse glucose challenges with adult-islet controls and inert-tracer alignment, with beta-rich 70:20:10 mixes gated on measured per-beta insulin output and preserved glucagon response) in small clusters, so every cell gets oxygen and can sense sugar. Insulin should stop within about 3 minutes of sugar falling.',
     ],
   },
   {
@@ -86,7 +86,7 @@ export const gates: Gate[] = [
     ask: 'Do the cells get oxygen in the first 3 days, and can they be removed or destroyed on command if needed?',
     explain: [
       'A new graft has no blood vessels at first, so cells can run out of oxygen in the first 3 days. The baseline design uses small clusters, pre-built blood-vessel fragments and a layer that releases oxygen; 3D transport checks gate unrounded worst-face oxygen across ordered microwells (comparing dose-matched 80 µm vs 100 µm clusters), wet-sieved calcium-peroxide beads of 50 µm or less with two-timepoint recombinant human catalase (P04040) barrier films at least 20 µm thick, alongside a 140 µm bead-free sheet comparator and separated Day-30/90 retrieval vs zero-event cell-shedding checks. Even so, the margin is thin if our assumptions are pessimistic, and nothing has been measured yet.',
-      'Every cell is designed to carry a safety switch (iCasp9). If anything goes wrong, a drug called AP1903, designed to act only on cells that carry the switch, could be given to remove them. Nothing has shown yet that the switch works in every cell.',
+      'Every cell is designed to carry a safety switch (iCasp9). If anything goes wrong, a drug called AP1903, designed to act only on cells that carry the switch, could be given to remove them, and any batch whose mature stored insulin exceeds 138.3 IU automatically escalates into full Gate 0S burst and dump safety checks. Nothing has shown yet that the switch works in every cell.',
     ],
   },
 ];

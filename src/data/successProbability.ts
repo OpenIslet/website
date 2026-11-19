@@ -24,8 +24,23 @@ export interface OddsGate {
   evidence: string;
   /** A PubMed ID, or an empty string when the evidence is the blueprint's own model. */
   pmid: string;
+  /** Optional follow-up PubMed ID on the same recipient/cohort (empty string when absent). */
+  followUpPmid: string;
   /** What comes next for this hurdle. Empty when nothing more is needed. */
   next: string;
+}
+
+export interface PortfolioScenarios {
+  /** Exact 2^12 two-route portfolio figure when Designs A and X share one CaO2+catalase pouch route (locked products). */
+  sharedAxLockedPct: number;
+  /** Exact 2^12 two-route portfolio figure under Stage-0 cell-line x pouch compatibility (modular). */
+  sharedAxModularPct: number;
+  /** Exact 2^12 legacy three-slot locked figure matching 88% x 87% x 86% x 80%. */
+  legacyThreeSlotLockedPct: number;
+  /** Exact 2^12 legacy three-slot modular figure. */
+  legacyThreeSlotModularPct: number;
+  /** Exact 2^12 common-shock ceiling across all hurdles. */
+  commonShockCeilingPct: number;
 }
 
 const KINDS: readonly string[] = ['shown', 'partial', 'unknown'];
@@ -61,9 +76,19 @@ export const oddsLaunchThree: number = percent(
   'launchBaseline.threeArmPct',
 );
 
+const rawScenarios = (data as { portfolioScenarios?: Record<string, unknown> }).portfolioScenarios;
+export const oddsPortfolioScenarios: PortfolioScenarios = {
+  sharedAxLockedPct: percent(rawScenarios?.sharedAxLockedPct ?? 50.78, 'portfolioScenarios.sharedAxLockedPct'),
+  sharedAxModularPct: percent(rawScenarios?.sharedAxModularPct ?? 54.12, 'portfolioScenarios.sharedAxModularPct'),
+  legacyThreeSlotLockedPct: percent(rawScenarios?.legacyThreeSlotLockedPct ?? 52.59, 'portfolioScenarios.legacyThreeSlotLockedPct'),
+  legacyThreeSlotModularPct: percent(rawScenarios?.legacyThreeSlotModularPct ?? 55.63, 'portfolioScenarios.legacyThreeSlotModularPct'),
+  commonShockCeilingPct: percent(rawScenarios?.commonShockCeilingPct ?? 57.92, 'portfolioScenarios.commonShockCeilingPct'),
+};
+
 export const oddsGates: OddsGate[] = data.gates.map((g, i) => {
   const where = `gates[${i}]`;
   if (!KINDS.includes(g.badgeKind)) throw new Error(`success-probability.json: ${where}.badgeKind must be one of ${KINDS.join(', ')}.`);
+  const followUp = (g as { followUpPmid?: unknown }).followUpPmid;
   return {
     id: words(g.id, `${where}.id`),
     number: i + 1,
@@ -77,6 +102,7 @@ export const oddsGates: OddsGate[] = data.gates.map((g, i) => {
     plain: words(g.plain, `${where}.plain`),
     evidence: words(g.evidence, `${where}.evidence`),
     pmid: words(g.pmid, `${where}.pmid`, false),
+    followUpPmid: followUp === undefined ? '' : words(followUp, `${where}.followUpPmid`, false),
     next: words(g.next, `${where}.next`, false),
   };
 });
