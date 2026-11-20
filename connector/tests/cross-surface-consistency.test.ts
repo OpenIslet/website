@@ -31,6 +31,7 @@ describe('cross-surface propagation in the connector', () => {
     expect(odds.portfolio_scenarios?.common_shock_ceiling_pct).toBe(57.92);
     expect(odds.hurdles.find((h: { id: string }) => h.id === 'cloak')?.followUpPmid).toBe('42430558');
     expect(res.text).toContain(`about ${odds.three_designs_pct}%`);
+    expect(res.text).toContain('about 54% (modular');
     expect(res.text).toContain('50.78%');
     expect(res.text).toContain('54.12%');
 
