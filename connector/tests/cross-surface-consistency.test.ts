@@ -88,8 +88,8 @@ describe('cross-surface propagation in the connector', () => {
     const ledger = readJson('contributions/ledger.json') as { records: Array<{ id: string }> };
 
     expect(gys).toHaveLength(10);
-    expect(publicRules.length).toBeGreaterThanOrEqual(24);
-    expect(publicRules.map((r) => r.id)).toEqual(expect.arrayContaining(['GY-011', 'GY-012', 'GY-013', 'GY-014', 'GY-015', 'GY-016', 'GY-017', 'GY-024']));
+    expect(publicRules.length).toBeGreaterThanOrEqual(25);
+    expect(publicRules.map((r) => r.id)).toEqual(expect.arrayContaining(['GY-011', 'GY-012', 'GY-013', 'GY-014', 'GY-015', 'GY-016', 'GY-017', 'GY-024', 'GY-025']));
     expect(scores.pareto_by_edits).toHaveLength(8);
     expect(scores.stepping_stones?.find((st) => st.id === 'MINIMAL_HIP_NICHE_PLUS_SWITCH')).toMatchObject({ rank: 45, children: 0.0526 });
 

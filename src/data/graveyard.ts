@@ -51,6 +51,7 @@ interface OffGridGuardrailRaw {
 const confidence = (s: string): string => {
   if (s === 'corroborated') return 'Backed by published work';
   if (s === 'contested_single_study') return 'One study, and it is disputed';
+  if (s === 'provisional_stage0_computational_guardrail') return 'Provisional Stage-0 guardrail, pending lab checks';
   if (s.startsWith('precautionary')) return 'A precaution, not yet shown';
   if (s.startsWith('conservative_project_exclusion')) return 'A cautious project decision';
   return s.replace(/_/g, ' ');
@@ -58,6 +59,7 @@ const confidence = (s: string): string => {
 
 const basis = (s: string): string => {
   if (s === 'direct_islet_empirical') return 'Shown directly in islet cells';
+  if (s === 'direct_in_silico_sequence_structural_and_contract_falsification') return 'Checked in DNA sequence, 3D structures and software rules';
   if (s.startsWith('mechanistic_precaution')) return 'Reasoned from how the biology works';
   if (s === 'project_policy_exclusion') return 'A project policy';
   return s.replace(/_/g, ' ');

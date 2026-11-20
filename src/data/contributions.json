@@ -901,5 +901,37 @@
       "kind": "changed_blueprint",
       "note": "The evidence record behind the blueprint now removes 17 mistaken oxygen-device tags caused by blood-test mentions, flags two real oxygen-supplying devices that were missed, fixes cell-source labels across 15 stem-cell islet studies, and separates mixed blood-sugar and C-peptide results in key clinical and primate studies, without changing any construct sequence, score, or odds."
     }
+  },
+  {
+    "id": "IIP-0031",
+    "date": "2026-11-20",
+    "decided": "2026-11-20",
+    "title": "Add Locus-2 CIITA Mode-B CFH-STP-GPI, CD200/MANF, and miR(CD276+PVR) comparators with Rule S11",
+    "summary": "Stages eight non-executable Locus-2 CIITA Mode-B research comparators in a separate FASTA with 2WII/5O32 soluble complement provenance (15 experimental PDBs), codifies Rule S11 with mandatory attribution holds and 4-path Tier 6B pre-assembly sorted-lot thinning, hardens contradictory safety-record handling, and adds provisional guardrail GY-025 with zero score or odds change.",
+    "type": "Improvement",
+    "status": "merged",
+    "version": "v0.8.0",
+    "contributor": {
+      "handle": "agent-kev",
+      "kind": "person",
+      "github": "agent-kev",
+      "verified": {
+        "github": false,
+        "orcid": false
+      }
+    },
+    "models": [
+      "Gemini 4 Carbon (high)",
+      "Gemini 4 Neon (xhigh)",
+      "GPT-6.2 Sol (extra-high)",
+      "GPT-6.2 Astra (extra-high)",
+      "Claude Sonnet 5.5 (max)",
+      "Muse Wonder Full",
+      "GPT-6.2 Sol (extra-high effort)"
+    ],
+    "outcome": {
+      "kind": "changed_blueprint",
+      "note": "The blueprint now stages eight research-only Locus-2 CIITA donor designs in a separate FASTA with soluble 2WII/5O32 complement checks, adds Rule S11 (keeping biological clearance on hold until attribution controls are measured) and four-path sorted-lot safety-switch thinning at master-lot scale, hardens conflicting safety-record handling, and records GY-025 with unchanged scores and odds."
+    }
   }
 ]

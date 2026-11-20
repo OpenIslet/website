@@ -1,6 +1,27 @@
 [
   {
     "version": "v0.8.0",
+    "date": "2026-11-20",
+    "title": "Locus-2 CIITA Mode-B research comparators, Rule S11 attribution holds, and four-path sorted-lot Tier 6B thinning",
+    "summary": "Stages eight non-executable Locus-2 CIITA Mode-B donor comparators in a separate FASTA with soluble 2WII/5O32 complement provenance (15 experimental PDBs), codifies Rule S11 with mandatory attribution holds and master-lot Tier 6B per-fraction binomial thinning across all four Stage-0 entry paths, hardens contradictory safety-record handling, and adds provisional Idea Graveyard guardrail GY-025 with zero change to scored designs or published odds.",
+    "changes": [
+      {
+        "kind": "added",
+        "text": "Staged eight non-executable Locus-2 CIITA Exon-5 Mode-B donor comparators in data/constructs/islet1_locus2_ciita_modeb_comparators_v0.8.0.fasta (SHA-256 25ffcb10..., execution_supported = false, lifecycle_state = STAGE0_RESEARCH_COMPARATOR_PENDING_ALLELE_QC) with Layer-2 repeat/splice/finite-seed-panel provenance and Layer-3 soluble complement crystal audits on PDB 2WII (33.04 A Glu264-CA to C3b TED Gln1013-CA) and 5O32 (15 pinned experimental PDBs total), keeping all 6 canonical FASTAs, 2,160 Layer-1 stacks, and OQ-016 odds byte-identical (DEC-110, IIP-0031)."
+      },
+      {
+        "kind": "added",
+        "text": "Codified Rule S11 and provisional Idea Graveyard guardrail GY-025 (25 total = 10 grid + 15 off-grid): holds biological clearance pending phased biallelic CIITA Ex4->Ex6 splicing across all 8 RefSeq transcripts, 16p13.13 cis sentinels, post-cuff alternative/classical/lectin complement and paired GY-023 ADCC, PLVAP+ iEC/pericyte function, reconciled AAV6 species, dual-promoter 5'-RACE (>= 3,689 UMIs), Stage-0 to Stage-7 methylation/CTCF ChIP, and matched intronless/scramble/CFH-only/empty-carrier/mock attribution controls."
+      },
+      {
+        "kind": "fixed",
+        "text": "Implemented and hardened four-path Stage-0 parity (Direct, Atomic Ledger, Serialized JSON Ingestion, Chronological Replay) for pre-assembly Stage-7 CD31-/CD144- sorted-lot Tier 6B master-lot thinning (three-way simultaneous Clopper-Pearson p_lot_U95 <= 3.0e-7, closed positive fraction-role grammar plus optional typed fraction_role, separate disjoint untreated CFU controls and dual calibrants, source-owned multi-observation IDs, and un-downgradeable k >= 1 hard stops) and flat/nested S11 cross-container conflict probes so contradictory safe values cannot erase attributable S9, Tier 6B, or S11 hard stops."
+      }
+    ],
+    "contribution": "IIP-0031"
+  },
+  {
+    "version": "v0.8.0",
     "date": "2026-11-19",
     "title": "Curated Ring-1 oxygen-carrier, stem-cell source, and Wang/Liang/Reichman evidence-record repairs",
     "summary": "Repairs oxygen-bridge false positives, missed exogenous oxygenation devices, mislabeled stem-cell islet sources, and three landmark clinical/primate records across exactly 32 of 563 Ring-1 studies (531 byte-identical), advancing atomic effects from 3,093 to 3,094 while keeping all construct sequences, Idea Graveyard entries, 2,160 Layer-1 stack scores, Layer-2 numerical predictions, and OQ-016 odds unchanged.",

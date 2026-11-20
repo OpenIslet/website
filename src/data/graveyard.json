@@ -1,5 +1,18 @@
 [
   {
+    "id": "GY-025",
+    "source": "OFFGRID_GUARD_015_",
+    "title": "Deploying unshielded CIITA Locus-2 inserts, undeclared AAV6 repeats, uncontrolled B2M-null miRNAs, or unqualified sorted-lot safety-switch counts",
+    "tests": ["1", "2", "3", "4", "5", "manufacturing"],
+    "idea": "Insert candidate complement- and immune-shielding cassettes into CIITA Exon 5 without PAM/seed blocking, all-isoform splice checks, or matched attribution controls; place active CD276/PVR microRNAs on HLA-C-intact Design B or Syn_5xISRE-CD200 on Design Y; or certify pre-assembly sorted-lot safety-switch clearance on single-dose cell counts, omitted flow-through fractions, ambiguous fraction labels, or borrowed calibration controls.",
+    "why": "Editing CIITA Exon 5 can trigger exon skipping or unexpected transcripts that restore HLA Class II under inflammation, while soluble crystal structures (2WII and 5O32) do not prove that a membrane-tethered CFH–STP–GPI fusion blocks classical or lectin complement or cellular ADCC on cells. Active CD276/PVR knockdown is NK-context-dependent and barred on HLA-C-intact Design B, MANF and CCL22 carry proliferation/NF-κB and effector-chemotaxis risks, and certifying a sorted cell lot on single-dose counts, missing flow-through fractions, ambiguous labels (such as 'depleted enriched'), or borrowed calibrants can hide rare cells able to regrow after AP1903.",
+    "check": "Keep all eight Locus-2 Mode-B comparators on research hold (non-executable) until Rule S11 clears phased biallelic CIITA Ex4→Ex6 splicing (all 8 RefSeq transcripts, 16p13.13 SOCS1/DEXI/CLEC16A cis sentinels, and lineage-matched WT HLA-II inducibility >= 50%), post-cuff alternative, classical, and lectin complement plus paired GY-023 ADCC, PLVAP+ iEC and pericyte function, reconciled AAV6 species, dual-promoter 5′-RACE (>= 3,689 UMIs), Stage-0 to Stage-7 methylation/CTCF ChIP, and independent cargo-matched intronless, scramble, CFH-only, empty-carrier, and mock controls. For pre-assembly Stage-7 CD31-/CD144- sorted lots, require exact 3-way simultaneous Clopper–Pearson master-lot thinning (p_lot_U95 <= 3.0e-7 across reconciled unambiguous enriched and flow-through fractions, separate untreated CFU controls, separate hPSC and differentiated calibrants, source-owned multi-observation IDs, and un-downgradeable k >= 1 hard stops across all four contract entry paths).",
+    "instead": "Stage the eight Locus-2 comparators in a separate research FASTA without altering scored Designs A, B, or X, enforce Rule S11's mandatory attribution hold alongside fail-closed 4-path Tier 6B sorted-lot thinning, and retain S9 hard safety stops at first precedence.",
+    "added": "2026-11-20",
+    "version": "v0.8.0",
+    "contribution": "IIP-0031"
+  },
+  {
     "id": "GY-024",
     "source": "OFFGRID_GUARD_014_",
     "title": "Keeping ALK5i II during late islet maturation, qualifying maturation on a single glucose pulse, mixing unwashed ZM447439 with blood-vessel cells, or skipping > 138.3 IU burst safety checks",

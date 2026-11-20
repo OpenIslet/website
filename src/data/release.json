@@ -1,5 +1,5 @@
 {
-  "source_manifest_sha256": "c128c1c7028bc79be518fa422df19700ddc10917bb45b3f5f0521cd169c62c76",
+  "source_manifest_sha256": "fa7909cf62e344a542060e2997e2298dca0dbcbf4773fce125272fd5ce9e5197",
   "source_ranking_sha256": "7926bbe94330e75b6ac209507d1c4cb0bcec51033b45954fe16b6366d70141dc",
   "champion_challenger_portfolio": {
     "slots": {
@@ -214,13 +214,13 @@
     "designs": 2160,
     "feasible": 480,
     "blocked": 1680,
-    "graveyardRules": 24,
+    "graveyardRules": 25,
     "graveyardGridRules": 10,
-    "graveyardOffGridRules": 14,
-    "pinnedFiles": 1364,
+    "graveyardOffGridRules": 15,
+    "pinnedFiles": 1367,
     "constructs": 4,
     "dnaChanges": null,
-    "experimentalStructures": 13,
+    "experimentalStructures": 15,
     "predictedStructures": 2,
     "proteinPairs": 4,
     "guides": 5,

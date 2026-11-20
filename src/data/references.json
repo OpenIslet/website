@@ -283,6 +283,20 @@
     "year": 2004,
     "doi": "10.1038/nature03076"
   },
+  "15544620": {
+    "pmid": "15544620",
+    "title": "The quantitative role of alternative pathway amplification in classical pathway induced terminal complement activation.",
+    "authors": [
+      "Harboe M",
+      "Ulvund G",
+      "Vien L",
+      "Fung M",
+      "Mollnes TE"
+    ],
+    "journal": "Clin Exp Immunol",
+    "year": 2004,
+    "doi": "10.1111/j.1365-2249.2004.02627.x"
+  },
   "15919785": {
     "pmid": "15919785",
     "title": "Pulsatile insulin secretion dictates systemic insulin delivery by regulating hepatic insulin extraction in humans.",
@@ -431,6 +445,36 @@
     "journal": "Diabetes",
     "year": 2009,
     "doi": "10.2337/db08-1510"
+  },
+  "19503104": {
+    "pmid": "19503104",
+    "title": "Structure of complement fragment C3b-factor H and implications for host protection by complement regulators.",
+    "authors": [
+      "Wu J",
+      "Wu YQ",
+      "Ricklin D",
+      "Janssen BJ",
+      "Lambris JD",
+      "Gros P"
+    ],
+    "journal": "Nat Immunol",
+    "year": 2009,
+    "doi": "10.1038/ni.1755"
+  },
+  "19549636": {
+    "pmid": "19549636",
+    "title": "The disease-protective complement factor H allotypic variant Ile62 shows increased binding affinity for C3b and enhanced cofactor activity.",
+    "authors": [
+      "Tortajada A",
+      "Montes T",
+      "Martínez-Barricarte R",
+      "Morgan BP",
+      "Harris CL",
+      "de Córdoba SR"
+    ],
+    "journal": "Hum Mol Genet",
+    "year": 2009,
+    "doi": "10.1093/hmg/ddp289"
   },
   "20086230": {
     "pmid": "20086230",
@@ -1515,6 +1559,47 @@
     "year": 2017,
     "doi": "10.1038/nbt.3860"
   },
+  "28615073": {
+    "pmid": "28615073",
+    "title": "CRISPR/Cas9-mediated genome editing induces exon skipping by alternative splicing or exon deletion.",
+    "authors": [
+      "Mou H",
+      "Smith JL",
+      "Peng L",
+      "Yin H",
+      "Moore J",
+      "Zhang XO",
+      "Song CQ",
+      "Sheel A",
+      "Wu Q",
+      "Ozata DM",
+      "Li Y",
+      "Anderson DG",
+      "et al."
+    ],
+    "journal": "Genome Biol",
+    "year": 2017,
+    "doi": "10.1186/s13059-017-1237-8"
+  },
+  "28671664": {
+    "pmid": "28671664",
+    "title": "Regulator-dependent mechanisms of C3b processing by factor I allow differentiation of immune responses.",
+    "authors": [
+      "Xue X",
+      "Wu J",
+      "Ricklin D",
+      "Forneris F",
+      "Di Crescenzio P",
+      "Schmidt CQ",
+      "Granneman J",
+      "Sharp TH",
+      "Lambris JD",
+      "Gros P"
+    ],
+    "journal": "Nat Struct Mol Biol",
+    "year": 2017,
+    "doi": "10.1038/nsmb.3427"
+  },
   "28867344": {
     "pmid": "28867344",
     "title": "NK Cell Alloreactivity against KIR-Ligand-Mismatched HLA-Haploidentical Tissue Derived from HLA Haplotype-Homozygous iPSCs.",
@@ -1693,6 +1778,31 @@
     "journal": "Nat Biotechnol",
     "year": 2018,
     "doi": "10.1038/nbt.4192"
+  },
+  "30032427": {
+    "pmid": "30032427",
+    "title": "MANF protects human pancreatic beta cells against stress-induced cell death.",
+    "authors": [
+      "Hakonen E",
+      "Chandra V",
+      "Fogarty CL",
+      "Yu NY",
+      "Ustinov J",
+      "Katayama S",
+      "Galli E",
+      "Danilova T",
+      "Lindholm P",
+      "Vartiainen A",
+      "Einarsdottir E",
+      "Krjutškov K",
+      "Kere J",
+      "Saarma M",
+      "Lindahl M",
+      "Otonkoski T"
+    ],
+    "journal": "Diabetologia",
+    "year": 2018,
+    "doi": "10.1007/s00125-018-4687-y"
   },
   "30478640": {
     "pmid": "30478640",
@@ -1999,6 +2109,27 @@
     "journal": "Diabetes Care",
     "year": 2019,
     "doi": "10.2337/dci19-0028"
+  },
+  "31492834": {
+    "pmid": "31492834",
+    "title": "CRISPR-Cas9-based mutagenesis frequently provokes on-target mRNA misregulation.",
+    "authors": [
+      "Tuladhar R",
+      "Yeu Y",
+      "Tyler Piazza J",
+      "Tan Z",
+      "Rene Clemenceau J",
+      "Wu X",
+      "Barrett Q",
+      "Herbert J",
+      "Mathews DH",
+      "Kim J",
+      "Hyun Hwang T",
+      "Lum L"
+    ],
+    "journal": "Nat Commun",
+    "year": 2019,
+    "doi": "10.1038/s41467-019-12028-5"
   },
   "31570731": {
     "pmid": "31570731",

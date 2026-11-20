@@ -3695,5 +3695,209 @@
     "journal": "N Engl J Med",
     "year": 2026,
     "doi": "10.1056/NEJMc2604408"
+  },
+  "19503104": {
+    "title": "Structure of complement fragment C3b-factor H and implications for host protection by complement regulators.",
+    "authors": [
+      "Wu J",
+      "Wu YQ",
+      "Ricklin D",
+      "Janssen BJ",
+      "Lambris JD",
+      "Gros P"
+    ],
+    "journal": "Nat Immunol",
+    "year": 2009,
+    "doi": "10.1038/ni.1755"
+  },
+  "28671664": {
+    "title": "Regulator-dependent mechanisms of C3b processing by factor I allow differentiation of immune responses.",
+    "authors": [
+      "Xue X",
+      "Wu J",
+      "Ricklin D",
+      "Forneris F",
+      "Di Crescenzio P",
+      "Schmidt CQ",
+      "Granneman J",
+      "Sharp TH",
+      "Lambris JD",
+      "Gros P"
+    ],
+    "journal": "Nat Struct Mol Biol",
+    "year": 2017,
+    "doi": "10.1038/nsmb.3427"
+  },
+  "28615073": {
+    "title": "CRISPR/Cas9-mediated genome editing induces exon skipping by alternative splicing or exon deletion.",
+    "authors": [
+      "Mou H",
+      "Smith JL",
+      "Peng L",
+      "Yin H",
+      "Moore J",
+      "Zhang XO",
+      "Song CQ",
+      "Sheel A",
+      "Wu Q",
+      "Ozata DM",
+      "Li Y",
+      "Anderson DG",
+      "et al."
+    ],
+    "journal": "Genome Biol",
+    "year": 2017,
+    "doi": "10.1186/s13059-017-1237-8"
+  },
+  "31492834": {
+    "title": "CRISPR-Cas9-based mutagenesis frequently provokes on-target mRNA misregulation.",
+    "authors": [
+      "Tuladhar R",
+      "Yeu Y",
+      "Tyler Piazza J",
+      "Tan Z",
+      "Rene Clemenceau J",
+      "Wu X",
+      "Barrett Q",
+      "Herbert J",
+      "Mathews DH",
+      "Kim J",
+      "Hyun Hwang T",
+      "Lum L"
+    ],
+    "journal": "Nat Commun",
+    "year": 2019,
+    "doi": "10.1038/s41467-019-12028-5"
+  },
+  "30032427": {
+    "title": "MANF protects human pancreatic beta cells against stress-induced cell death.",
+    "authors": [
+      "Hakonen E",
+      "Chandra V",
+      "Fogarty CL",
+      "Yu NY",
+      "Ustinov J",
+      "Katayama S",
+      "Galli E",
+      "Danilova T",
+      "Lindholm P",
+      "Vartiainen A",
+      "Einarsdottir E",
+      "Krjutškov K",
+      "Kere J",
+      "Saarma M",
+      "Lindahl M",
+      "Otonkoski T"
+    ],
+    "journal": "Diabetologia",
+    "year": 2018,
+    "doi": "10.1007/s00125-018-4687-y"
+  },
+  "15544620": {
+    "title": "The quantitative role of alternative pathway amplification in classical pathway induced terminal complement activation.",
+    "authors": [
+      "Harboe M",
+      "Ulvund G",
+      "Vien L",
+      "Fung M",
+      "Mollnes TE"
+    ],
+    "journal": "Clin Exp Immunol",
+    "year": 2004,
+    "doi": "10.1111/j.1365-2249.2004.02627.x"
+  },
+  "19549636": {
+    "title": "The disease-protective complement factor H allotypic variant Ile62 shows increased binding affinity for C3b and enhanced cofactor activity.",
+    "authors": [
+      "Tortajada A",
+      "Montes T",
+      "Martínez-Barricarte R",
+      "Morgan BP",
+      "Harris CL",
+      "de Córdoba SR"
+    ],
+    "journal": "Hum Mol Genet",
+    "year": 2009,
+    "doi": "10.1093/hmg/ddp289"
+  },
+  "21266852": {
+    "title": "Early epigenetic events regulate the adaptive immune response gene CIITA.",
+    "authors": [
+      "Mehta NT",
+      "Truax AD",
+      "Boyd NH",
+      "Greer SF"
+    ],
+    "journal": "Epigenetics",
+    "year": 2011,
+    "doi": "10.4161/epi.6.4.14516"
+  },
+  "21989056": {
+    "title": "Long-range DNA looping and gene expression analyses identify DEXI as an autoimmune disease candidate gene.",
+    "authors": [
+      "Davison LJ",
+      "Wallace C",
+      "Cooper JD",
+      "Cope NF",
+      "Wilson NK",
+      "Smyth DJ",
+      "Howson JM",
+      "Saleh N",
+      "Al-Jeffery A",
+      "Angus KL",
+      "Stevens HE",
+      "Nutland S",
+      "et al."
+    ],
+    "journal": "Hum Mol Genet",
+    "year": 2012,
+    "doi": "10.1093/hmg/ddr468"
+  },
+  "12011446": {
+    "title": "Position-effect protection and enhancer blocking by the chicken beta-globin insulator are separable activities.",
+    "authors": [
+      "Recillas-Targa F",
+      "Pikaart MJ",
+      "Burgess-Beusse B",
+      "Bell AC",
+      "Litt MD",
+      "West AG",
+      "Gaszner M",
+      "Felsenfeld G"
+    ],
+    "journal": "Proc Natl Acad Sci U S A",
+    "year": 2002,
+    "doi": "10.1073/pnas.102179399"
+  },
+  "28723575": {
+    "title": "CRISPR-Mediated Integration of Large Gene Cassettes Using AAV Donor Vectors.",
+    "authors": [
+      "Bak RO",
+      "Porteus MH"
+    ],
+    "journal": "Cell Rep",
+    "year": 2017,
+    "doi": "10.1016/j.celrep.2017.06.064"
+  },
+  "37996616": {
+    "title": "Immune-privileged tissues formed from immunologically cloaked mouse embryonic stem cells survive long term in allogeneic hosts.",
+    "authors": [
+      "Harding J",
+      "Vintersten-Nagy K",
+      "Yang H",
+      "Tang JK",
+      "Shutova M",
+      "Jong ED",
+      "Lee JH",
+      "Massumi M",
+      "Oussenko T",
+      "Izadifar Z",
+      "Zhang P",
+      "Rogers IM",
+      "et al."
+    ],
+    "journal": "Nat Biomed Eng",
+    "year": 2024,
+    "doi": "10.1038/s41551-023-01133-y"
   }
 }
